@@ -14,6 +14,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@hiveio/wax": "1.27.6-rc1-stable.240731102828",
     "@pinia/nuxt": "^0.5.1",
     "@radix-icons/vue": "^1.0.0",
     "class-variance-authority": "^0.7.0",
