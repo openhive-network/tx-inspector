@@ -1,0 +1,9 @@
+.eslintrc.cjs
+.husky
+.github
+.commitlintrc.ts
+.nuxt
+node_modules
+dist
+tailwind.config.js
+components/shadcn
