@@ -11,7 +11,7 @@
           Check your transaction
         </s-dialog-title>
         <s-dialog-description>
-          Simply paste your transaction ...
+          Simply paste your transaction in choosen format
         </s-dialog-description>
       </s-dialog-header>
       <TrxForm />

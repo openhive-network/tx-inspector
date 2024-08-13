@@ -2,11 +2,32 @@
   <div class="flex flex-col">
     <div class="my-2">
       <s-label>
-        Transaction (... format)
+        Transaction ({{ radioState }} format)
       </s-label>
-      <s-textarea placeholder="Provide your transaction" class="min-h-64 max-h-64" required />
+      <s-input v-if="radioState === 'hash'" placeholder="Provide your transaction hash" class="my-3" required />
+      <s-textarea v-else :placeholder="`Provide your transaction ${radioState}`" class="min-h-64 max-h-64 my-3" required />
     </div>
-    <s-dialog-footer>
+    <s-dialog-footer class="flex justify-between sm:justify-between items-center">
+      <s-radio-group v-model="radioState" default-value="json">
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="json" value="json" />
+          <s-label for="json">
+            JSON
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="hash" value="hash" />
+          <s-label for="hash">
+            Hash (ID)
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="binary" value="binary" />
+          <s-label for="binary">
+            Binary
+          </s-label>
+        </div>
+      </s-radio-group>
       <s-dialog-close as-child>
         <Button>
           Submit
@@ -18,4 +39,6 @@
 
 <script lang="ts" setup>
 import Button from '~/components/ui/Button.vue';
+
+const radioState = ref('json');
 </script>
