@@ -4,8 +4,20 @@
       <s-label>
         Transaction ({{ radioState }} format)
       </s-label>
-      <s-input v-if="radioState === 'hash'" placeholder="Provide your transaction hash" class="my-3" required />
-      <s-textarea v-else :placeholder="`Provide your transaction ${radioState}`" class="min-h-64 max-h-64 my-3" required />
+      <s-input
+        v-if="radioState === 'hash'"
+        v-model="trx"
+        placeholder="Provide your transaction hash"
+        class="my-3"
+        required
+      />
+      <s-textarea
+        v-else
+        v-model="trx"
+        :placeholder="`Provide your transaction ${radioState}`"
+        class="min-h-64 max-h-64 my-3"
+        required
+      />
     </div>
     <s-dialog-footer class="flex justify-between sm:justify-between items-center">
       <s-radio-group v-model="radioState" default-value="json">
@@ -29,7 +41,7 @@
         </div>
       </s-radio-group>
       <s-dialog-close as-child>
-        <Button>
+        <Button @click="submitTransaction()">
           Submit
         </Button>
       </s-dialog-close>
@@ -38,7 +50,25 @@
 </template>
 
 <script lang="ts" setup>
+import type { ApiTransaction } from '@hiveio/wax';
 import Button from '~/components/ui/Button.vue';
 
+const { $wax } = useNuxtApp();
+
 const radioState = ref('json');
+
+const trx = defineModel<string>('transaction');
+
+const submitTransaction = async () => {
+  try {
+    if (trx.value === undefined)
+      throw new Error('Transaction is required');
+
+    const signatureKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value?.trim())) as ApiTransaction);
+
+    console.log(signatureKeys);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>

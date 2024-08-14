@@ -44,7 +44,8 @@ export default defineNuxtConfig({
   },
 
   plugins: [
-    '~/plugins/vuetify.ts'
+    '~/plugins/vuetify.ts',
+    '~/plugins/wax.ts'
   ],
 
   components: {

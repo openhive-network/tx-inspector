@@ -15,7 +15,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@hiveio/wax": "1.27.6-rc1-stable.240731102828",
+    "@hiveio/wax": "1.27.6-rc2-240813094135",
     "@pinia/nuxt": "^0.5.1",
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^10.11.1",

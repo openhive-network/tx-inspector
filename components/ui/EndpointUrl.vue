@@ -30,16 +30,24 @@
 import { useLocalStorage } from '@vueuse/core';
 import Button from '~/components/ui/Button.vue';
 
+const { $wax } = useNuxtApp();
+
 const localStorage = useLocalStorage('endpointUrl', 'https://api.hive.blog');
 
 const endpointUrl = ref(localStorage.value);
 
 const changeEndpointUrl = (): void => {
-  localStorage.value = endpointUrl.value;
+  try {
+    localStorage.value = endpointUrl.value;
+    $wax.changeEndpointUrl(endpointUrl.value);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const backToDefault = () => {
   localStorage.value = 'https://api.hive.blog';
   endpointUrl.value = localStorage.value;
+  $wax.changeEndpointUrl(endpointUrl.value);
 };
 </script>
