@@ -13,7 +13,9 @@
 </template>
 
 <script lang="ts" setup>
+import { useLocalStorage } from '@vueuse/core';
+
 const commitHash = COMMIT_HASH.slice(0, 7);
-// XXX: Fetch dynamically in the future
-const endpointUrl = 'http://test.com';
+
+const endpointUrl = useLocalStorage('endpointUrl', 'https://api.hive.blog');
 </script>

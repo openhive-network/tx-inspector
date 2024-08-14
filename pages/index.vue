@@ -12,6 +12,7 @@
           </s-card-description>
         </div>
       </div>
+      <EndpointUrl />
       <TrxDialog />
     </s-card-header>
   </s-card>
@@ -19,6 +20,7 @@
 
 <script lang="ts" setup>
 import TrxDialog from '~/components/ui/TrxDialog.vue';
+import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 </script>
 
 <style scoped>
