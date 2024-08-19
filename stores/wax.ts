@@ -4,6 +4,8 @@ import { defineStore } from 'pinia';
 export const useWaxStore = defineStore('wax', {
   state: () => ({
     authorityPath: new Map<TAccountName, IAuthorityNode>(),
+    id: '',
+    sigDigest: '',
     isLoading: false
   })
 });

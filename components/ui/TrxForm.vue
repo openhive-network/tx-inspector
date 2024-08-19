@@ -69,6 +69,8 @@ const submitTransaction = async () => {
       throw new Error('Transaction is required');
 
     store.$state.authorityPath = await getAuthorityPath($wax, trx.value as ApiTransaction);
+    store.$state.id = await $wax.getTransactionId(trx.value as ApiTransaction);
+    store.$state.sigDigest = await $wax.getSigDigest(trx.value as ApiTransaction);
   } catch (error) {
     console.error(error);
   } finally {

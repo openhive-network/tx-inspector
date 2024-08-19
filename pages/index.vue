@@ -17,6 +17,7 @@
     </s-card-header>
     <s-card-content>
       <AuthorityPath />
+      <TrxTable class="w-1/2" />
     </s-card-content>
   </s-card>
 </template>
@@ -25,13 +26,14 @@
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPath from '~/components/ui/AuthorityPath.vue';
+import TrxTable from '~/components/ui/TrxTable.vue';
 </script>
 
 <style scoped>
 .card {
   height: 95%;
   background-color: #000;
-  border-color: rgb(63 63 70) !important;
+  border-color: #3f3f46 !important;
   padding: 2rem;
 }
 </style>

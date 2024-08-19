@@ -14,6 +14,18 @@ export class WaxAccountInformation {
     return this.chain.Transaction.fromApi(trx).signatureKeys;
   }
 
+  public async getTransactionId (trx: ApiTransaction): Promise<string> {
+    await this.requireChain();
+
+    return this.chain.Transaction.fromApi(trx).id;
+  }
+
+  public async getSigDigest (trx: ApiTransaction): Promise<string> {
+    await this.requireChain();
+
+    return this.chain.Transaction.fromApi(trx).sigDigest;
+  }
+
   public async getRequiredAuthorities (trx: ApiTransaction): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
