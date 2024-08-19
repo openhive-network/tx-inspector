@@ -16,7 +16,8 @@
       <TrxDialog />
     </s-card-header>
     <s-card-content>
-      <AuthorityPath />
+      <AuthorityPathTable />
+      <hr class="my-8">
       <TrxTable class="w-1/2" />
     </s-card-content>
   </s-card>
@@ -25,7 +26,7 @@
 <script lang="ts" setup>
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
-import AuthorityPath from '~/components/ui/AuthorityPath.vue';
+import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 </script>
 
