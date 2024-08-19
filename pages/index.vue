@@ -15,12 +15,16 @@
       <EndpointUrl />
       <TrxDialog />
     </s-card-header>
+    <s-card-content>
+      <AuthorityPath />
+    </s-card-content>
   </s-card>
 </template>
 
 <script lang="ts" setup>
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
+import AuthorityPath from '~/components/ui/AuthorityPath.vue';
 </script>
 
 <style scoped>

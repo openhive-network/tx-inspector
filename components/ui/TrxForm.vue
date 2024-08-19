@@ -53,6 +53,8 @@
 import type { ApiTransaction } from '@hiveio/wax';
 import Button from '~/components/ui/Button.vue';
 
+const store = useWaxStore();
+
 const { $wax } = useNuxtApp();
 
 const radioState = ref('json');
@@ -60,15 +62,17 @@ const radioState = ref('json');
 const trx = defineModel<string>('transaction');
 
 const submitTransaction = async () => {
+  store.$state.isLoading = false;
   try {
+    store.$state.isLoading = true;
     if (trx.value === undefined)
       throw new Error('Transaction is required');
 
-    const signatureKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value?.trim())) as ApiTransaction);
-
-    console.log(signatureKeys);
+    store.$state.authorityPath = await getAuthorityPath($wax, trx.value as ApiTransaction);
   } catch (error) {
     console.error(error);
+  } finally {
+    store.$state.isLoading = false;
   }
 };
 </script>
