@@ -22,7 +22,7 @@
             {{ `${store.publicKeys.value[index].slice(0, 5)}...${store.publicKeys.value[index].slice(-5)}` }}
           </s-table-cell>
           <s-table-cell>
-            {{ `${Array.from(store.authorityPath.value)[index][0]} => ${Array.from(store.authorityPath.value)[index][1].name}` }}
+            {{ getPath().reverse().join(' > ') }}
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -33,6 +33,25 @@
 <script lang="ts" setup>
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
+
+const getPath = () => {
+  const path = [];
+  const pathElement = store.authorityPath.value.values().next().value;
+
+  if (pathElement) {
+    path.push(pathElement.name);
+
+    if (pathElement.rootNode) {
+      let currentNode = pathElement;
+      while (currentNode.rootNode) {
+        path.push(currentNode.rootNode.name);
+        currentNode = currentNode.rootNode;
+      }
+    }
+  }
+
+  return path;
+};
 </script>
 
 <style scoped>

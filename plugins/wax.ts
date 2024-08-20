@@ -58,8 +58,8 @@ export class WaxAccountInformation {
     return (await this.chain.api.database_api.find_accounts({ accounts })).accounts;
   }
 
-  public async findSigneesForKey (key: string): Promise<string[]> {
-    return (await this.chain.api.account_by_key_api.get_key_references({ keys: [key] })).accounts[0];
+  public async findSigneesForKeys (keys: string[]): Promise<string[][]> {
+    return (await this.chain.api.account_by_key_api.get_key_references({ keys })).accounts;
   }
 
   public async changeEndpointUrl (url: string): Promise<void> {

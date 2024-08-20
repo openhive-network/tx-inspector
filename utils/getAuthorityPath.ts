@@ -41,32 +41,32 @@ export default async function (wax: WaxAccountInformation, trx: ApiTransaction):
     const requiredAuthorities = await wax.getRequiredAuthorities(trx);
     const signatureKeys = await wax.getSignatureKeys(trx);
 
-    if (requiredAuthorities.posting.size > 0)
+    if (requiredAuthorities.posting.size !== 0)
       for (const requiredAuthority of requiredAuthorities.posting)
-        for (const key of signatureKeys) {
-          const signees = await wax.findSigneesForKey(key);
+        for (let i = 0; i < signatureKeys.length; ++i) {
+          const signees = await wax.findSigneesForKeys(signatureKeys);
 
-          const checkedAcc = await checkAccounts('posting', signees, undefined, [requiredAuthority]);
+          const checkedAcc = await checkAccounts('posting', signees[i], undefined, [requiredAuthority]);
 
           if (typeof checkedAcc !== 'undefined')
             paths.set(requiredAuthority, checkedAcc);
         }
-    else if (requiredAuthorities.active.size > 0)
+    else if (requiredAuthorities.active.size !== 0)
       for (const requiredAuthority of requiredAuthorities.active)
-        for (const key of signatureKeys) {
-          const signees = await wax.findSigneesForKey(key);
+        for (let i = 0; i < signatureKeys.length; ++i) {
+          const signees = await wax.findSigneesForKeys(signatureKeys);
 
-          const checkedAcc = await checkAccounts('active', signees, undefined, [requiredAuthority]);
+          const checkedAcc = await checkAccounts('active', signees[i], undefined, [requiredAuthority]);
 
           if (typeof checkedAcc !== 'undefined')
             paths.set(requiredAuthority, checkedAcc);
         }
-    else if (requiredAuthorities.owner.size > 0)
+    else if (requiredAuthorities.owner.size !== 0)
       for (const requiredAuthority of requiredAuthorities.owner)
-        for (const key of signatureKeys) {
-          const signees = await wax.findSigneesForKey(key);
+        for (let i = 0; i < signatureKeys.length; ++i) {
+          const signees = await wax.findSigneesForKeys(signatureKeys);
 
-          const checkedAcc = await checkAccounts('owner', signees, undefined, [requiredAuthority]);
+          const checkedAcc = await checkAccounts('owner', signees[i], undefined, [requiredAuthority]);
 
           if (typeof checkedAcc !== 'undefined')
             paths.set(requiredAuthority, checkedAcc);
