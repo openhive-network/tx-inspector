@@ -68,12 +68,16 @@ const submitTransaction = async () => {
     if (trx.value === undefined)
       throw new Error('Transaction is required');
 
+    const authorityPath = await getAuthorityPath($wax, JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+
     store.$state.signatures = $wax.getSignatures(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.pack = await $wax.getPackType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.publicKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.authorityPath = await getAuthorityPath($wax, JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.id = await $wax.getTransactionId(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.sigDigest = await $wax.getSigDigest(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+
+    if (authorityPath)
+      store.$state.authorityPath = authorityPath;
   } catch (error) {
     console.error(error);
   } finally {

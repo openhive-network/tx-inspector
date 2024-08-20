@@ -4,9 +4,9 @@ import { EPackType } from '~/types/wax';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
-    signatures: [],
+    signatures: [] as string[],
     pack: EPackType.HF26,
-    publicKeys: [],
+    publicKeys: [] as string [],
     authorityPath: new Map<TAccountName, IAuthorityNode>(),
     id: '',
     sigDigest: '',
