@@ -21,8 +21,11 @@
           <s-table-cell>
             {{ `${store.publicKeys.value[index].slice(0, 5)}...${store.publicKeys.value[index].slice(-5)}` }}
           </s-table-cell>
-          <s-table-cell>
-            {{ getPath().reverse().join(' > ') }}
+          <s-table-cell v-if="Array.isArray(getPath())">
+            {{ getPath()[index] }}
+          </s-table-cell>
+          <s-table-cell v-else>
+            {{ getPath() }}
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -36,6 +39,16 @@ const store = storeToRefs(waxStore);
 
 const getPath = () => {
   const path = [];
+
+  const authoritiesArr = Array.from(store.authorityPath.value);
+
+  if (authoritiesArr.length > 1) {
+    for (let i = 0; i < authoritiesArr.length; ++i)
+      path.push(authoritiesArr[i][0]);
+
+    return path;
+  }
+
   const pathElement = store.authorityPath.value.values().next().value;
 
   if (pathElement) {
@@ -49,8 +62,7 @@ const getPath = () => {
       }
     }
   }
-
-  return path;
+  return path.reverse().join(' > ');
 };
 </script>
 
