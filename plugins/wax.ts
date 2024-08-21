@@ -1,5 +1,5 @@
 import { ApiAccount, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
-import { EPackType, type TVerifyAuthority } from '~/types/wax';
+import { EAuthorityLevel, EPackType, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
   private chain!: IHiveChainInterface;
@@ -56,6 +56,23 @@ export class WaxAccountInformation {
     await this.requireChain();
 
     return (await this.chain.api.database_api.find_accounts({ accounts })).accounts;
+  }
+
+  public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel> {
+    await this.requireChain();
+
+    const requiredAuthorities = await this.getRequiredAuthorities(trx);
+
+    if (requiredAuthorities.owner.size !== 0)
+      return EAuthorityLevel.OWNER;
+
+    if (requiredAuthorities.active.size !== 0)
+      return EAuthorityLevel.ACTIVE;
+
+    if (requiredAuthorities.posting.size !== 0)
+      return EAuthorityLevel.POSTING;
+
+    return EAuthorityLevel.POSTING;
   }
 
   public async findSigneesForKeys (keys: string[]): Promise<string[][]> {

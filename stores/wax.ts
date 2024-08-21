@@ -1,6 +1,6 @@
 import type { TAccountName } from '@hiveio/wax';
 import { defineStore } from 'pinia';
-import { EPackType } from '~/types/wax';
+import { EAuthorityLevel, EPackType } from '~/types/wax';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
@@ -10,6 +10,7 @@ export const useWaxStore = defineStore('wax', {
     authorityPath: new Map<TAccountName, IAuthorityNode>(),
     id: '',
     sigDigest: '',
+    authorityType: EAuthorityLevel.POSTING,
     isLoading: false
   })
 });

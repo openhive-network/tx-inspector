@@ -18,7 +18,10 @@
     <s-card-content>
       <AuthorityPathTable />
       <hr class="my-8">
-      <TrxTable class="w-1/2" />
+      <div class="flex gap-4">
+        <TrxTable class="w-1/2" />
+        <AuthTable class="w-1/2" />
+      </div>
     </s-card-content>
   </s-card>
 </template>
@@ -28,6 +31,7 @@ import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
+import AuthTable from '~/components/ui/AuthTable.vue';
 </script>
 
 <style scoped>

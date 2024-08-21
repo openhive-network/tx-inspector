@@ -75,6 +75,7 @@ const submitTransaction = async () => {
     store.$state.publicKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.id = await $wax.getTransactionId(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
     store.$state.sigDigest = await $wax.getSigDigest(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+    store.$state.authorityType = await $wax.getAuthorityType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
 
     if (authorityPath)
       store.$state.authorityPath = authorityPath;

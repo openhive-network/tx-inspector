@@ -6,6 +6,12 @@ export enum EPackType {
   HF26 = 'hf26',
 }
 
+export enum EAuthorityLevel {
+  POSTING = 'Posting',
+  ACTIVE = 'Active',
+  OWNER = 'Owner',
+}
+
 export interface IGetTransactionRequest {
   id: string;
 }
