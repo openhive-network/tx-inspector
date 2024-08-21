@@ -12,6 +12,17 @@
           </s-card-description>
         </div>
       </div>
+      <div v-if="store.$state.id.length !== 0">
+        <s-skeleton v-if="store.$state.isLoading" class="w-[50px] h-[50px] skeleton" />
+        <div v-else>
+          <v-icon v-if="store.$state.isValid" color="green">
+            mdi-check
+          </v-icon>
+          <v-icon v-else color="red">
+            mdi-close
+          </v-icon>
+        </div>
+      </div>
       <EndpointUrl />
       <TrxDialog />
     </s-card-header>
@@ -32,6 +43,8 @@ import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
+
+const store = useWaxStore();
 </script>
 
 <style scoped>
@@ -40,5 +53,9 @@ import AuthTable from '~/components/ui/AuthTable.vue';
   background-color: #000;
   border-color: #3f3f46 !important;
   padding: 2rem;
+}
+
+.skeleton {
+  background: rgb(63 63 70);
 }
 </style>

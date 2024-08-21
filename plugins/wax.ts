@@ -79,6 +79,29 @@ export class WaxAccountInformation {
     return (await this.chain.api.account_by_key_api.get_key_references({ keys })).accounts;
   }
 
+  public async checkVerifyAuthority (trx: ApiTransaction): Promise<boolean> {
+    await this.requireChain();
+
+    try {
+      return (
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx,
+          pack: EPackType.HF26
+        })
+      ).valid;
+    } catch (error) {}
+    try {
+      return (
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx,
+          pack: EPackType.LEGACY
+        })
+      ).valid;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public async changeEndpointUrl (url: string): Promise<void> {
     await this.requireChain();
 

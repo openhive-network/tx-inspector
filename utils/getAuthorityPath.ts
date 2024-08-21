@@ -46,23 +46,6 @@ export default async function (wax: WaxAccountInformation, trx: ApiTransaction):
         for (let i = 0; i < signatureKeys.length; ++i) {
           const signees = await wax.findSigneesForKeys(signatureKeys);
 
-          const requiredAuthoritiesArr = Array.from(requiredAuthorities.posting);
-
-          if (requiredAuthoritiesArr.length === signees.length) {
-            const sorrtedRequiredAuthorities = requiredAuthoritiesArr.slice().sort();
-            const sortedSignees = signees.slice().sort();
-
-            for (let i = 0; i < sorrtedRequiredAuthorities.length; ++i)
-              if (sorrtedRequiredAuthorities[i] === sortedSignees[i][0])
-                paths.set(sorrtedRequiredAuthorities[i], {
-                  name: sorrtedRequiredAuthorities[i],
-                  accounts: [],
-                  rootNode: undefined
-                });
-
-            return paths;
-          }
-
           const checkedAcc = await checkAccounts('posting', signees[i], undefined, [requiredAuthority]);
 
           if (typeof checkedAcc !== 'undefined')
@@ -73,23 +56,6 @@ export default async function (wax: WaxAccountInformation, trx: ApiTransaction):
         for (let i = 0; i < signatureKeys.length; ++i) {
           const signees = await wax.findSigneesForKeys(signatureKeys);
 
-          const requiredAuthoritiesArr = Array.from(requiredAuthorities.active);
-
-          if (requiredAuthoritiesArr.length === signees.length) {
-            const sorrtedRequiredAuthorities = requiredAuthoritiesArr.slice().sort();
-            const sortedSignees = signees.slice().sort();
-
-            for (let i = 0; i < sorrtedRequiredAuthorities.length; ++i)
-              if (sorrtedRequiredAuthorities[i] === sortedSignees[i][0])
-                paths.set(sorrtedRequiredAuthorities[i], {
-                  name: sorrtedRequiredAuthorities[i],
-                  accounts: [],
-                  rootNode: undefined
-                });
-
-            return paths;
-          }
-
           const checkedAcc = await checkAccounts('active', signees[i], undefined, [requiredAuthority]);
 
           if (typeof checkedAcc !== 'undefined')
@@ -99,23 +65,6 @@ export default async function (wax: WaxAccountInformation, trx: ApiTransaction):
       for (const requiredAuthority of requiredAuthorities.owner)
         for (let i = 0; i < signatureKeys.length; ++i) {
           const signees = await wax.findSigneesForKeys(signatureKeys);
-
-          const requiredAuthoritiesArr = Array.from(requiredAuthorities.owner);
-
-          if (requiredAuthoritiesArr.length === signees.length) {
-            const sorrtedRequiredAuthorities = requiredAuthoritiesArr.slice().sort();
-            const sortedSignees = signees.slice().sort();
-
-            for (let i = 0; i < sorrtedRequiredAuthorities.length; ++i)
-              if (sorrtedRequiredAuthorities[i] === sortedSignees[i][0])
-                paths.set(sorrtedRequiredAuthorities[i], {
-                  name: sorrtedRequiredAuthorities[i],
-                  accounts: [],
-                  rootNode: undefined
-                });
-
-            return paths;
-          }
 
           const checkedAcc = await checkAccounts('owner', signees[i], undefined, [requiredAuthority]);
 

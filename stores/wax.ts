@@ -10,6 +10,7 @@ export const useWaxStore = defineStore('wax', {
     authorityPath: new Map<TAccountName, IAuthorityNode>(),
     id: '',
     sigDigest: '',
+    isValid: false,
     authorityType: EAuthorityLevel.POSTING,
     isLoading: false
   })
