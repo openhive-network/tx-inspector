@@ -12,7 +12,7 @@
       </s-table-header>
       <s-table-body>
         <s-table-row v-for="(signature, index) in store.signatures.value" :key="index">
-          <s-table-cell>
+          <s-table-cell @click="waxStore.copy(signature)">
             {{ `${signature.slice(0, 5)}...${signature.slice(-5)}` }}
           </s-table-cell>
           <s-table-cell>

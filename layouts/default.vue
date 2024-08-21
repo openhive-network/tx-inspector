@@ -2,6 +2,7 @@
   <v-app class="dark app-bg">
     <v-main class="flex justify-center items-center">
       <slot />
+      <s-toaster />
     </v-main>
     <Footer />
   </v-app>
