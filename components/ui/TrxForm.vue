@@ -6,7 +6,7 @@
       </s-label>
       <s-input
         v-if="radioState === 'hash'"
-        v-model="trx"
+        v-model="hash"
         placeholder="Provide your transaction hash"
         class="my-3"
         required
@@ -34,7 +34,7 @@
           </s-label>
         </div>
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="binary" value="binary" />
+          <s-radio-group-item id="binary" value="binary" disabled />
           <s-label for="binary">
             Binary
           </s-label>
@@ -60,26 +60,52 @@ const { $wax } = useNuxtApp();
 const radioState = ref('json');
 
 const trx = defineModel<string>('transaction');
+const hash = defineModel<string>('hash');
+
+const route = useRoute();
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   try {
+    console.log(route);
     store.$state.isLoading = true;
-    if (trx.value === undefined)
-      throw new Error('Transaction is required');
 
-    const authorityPath = await getAuthorityPath($wax, JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+    if (radioState.value === 'hash') {
+      if (hash.value === undefined)
+        throw new Error('Hash is required');
 
-    store.$state.signatures = $wax.getSignatures(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.pack = await $wax.getPackType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.publicKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.id = await $wax.getTransactionId(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.sigDigest = await $wax.getSigDigest(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.authorityType = await $wax.getAuthorityType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-    store.$state.isValid = await $wax.checkVerifyAuthority(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      trx.value = await $wax.getTransactionFromId(hash.value!);
 
-    if (authorityPath)
-      store.$state.authorityPath = authorityPath;
+      const authorityPath = await getAuthorityPath($wax, trx.value);
+
+      store.$state.signatures = $wax.getSignatures(trx.value);
+      store.$state.pack = await $wax.getPackType(trx.value);
+      store.$state.publicKeys = await $wax.getSignatureKeys(trx.value);
+      store.$state.id = await $wax.getTransactionId(trx.value);
+      store.$state.sigDigest = await $wax.getSigDigest(trx.value);
+      store.$state.authorityType = await $wax.getAuthorityType(trx.value);
+      store.$state.isValid = await $wax.checkVerifyAuthority(trx.value);
+
+      if (authorityPath)
+        store.$state.authorityPath = authorityPath;
+    } else if (radioState.value === 'json') {
+      if (trx.value === undefined)
+        throw new Error('Transaction is required');
+
+      const authorityPath = await getAuthorityPath($wax, JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+
+      store.$state.signatures = $wax.getSignatures(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.pack = await $wax.getPackType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.publicKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.id = await $wax.getTransactionId(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.sigDigest = await $wax.getSigDigest(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.authorityType = await $wax.getAuthorityType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+      store.$state.isValid = await $wax.checkVerifyAuthority(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
+
+      if (authorityPath)
+        store.$state.authorityPath = authorityPath;
+    } else
+      throw new Error('Provide transaction in choosen format');
   } catch (error) {
     console.error(error);
   } finally {

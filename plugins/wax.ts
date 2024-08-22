@@ -1,5 +1,5 @@
 import { ApiAccount, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
-import { EAuthorityLevel, EPackType, type TVerifyAuthority } from '~/types/wax';
+import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
   private chain!: IHiveChainInterface;
@@ -7,6 +7,17 @@ export class WaxAccountInformation {
   private async requireChain (): Promise<void> {
     if (typeof this.chain === 'undefined')
       this.chain = await createHiveChain();
+  }
+
+  public async getTransactionFromId (id: string): Promise<ApiTransaction> {
+    await this.requireChain();
+
+    const trx = (await this.chain.extend<TGetTransaction>().api.account_history_api.get_transaction({ id }));
+
+    if (typeof trx === 'undefined')
+      throw new Error('Transaction not found');
+
+    return trx;
   }
 
   async getPackType (transaction: ApiTransaction): Promise<EPackType> {
