@@ -62,12 +62,9 @@ const radioState = ref('json');
 const trx = defineModel<string>('transaction');
 const hash = defineModel<string>('hash');
 
-const route = useRoute();
-
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   try {
-    console.log(route);
     store.$state.isLoading = true;
 
     if (radioState.value === 'hash') {
