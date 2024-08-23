@@ -1,7 +1,7 @@
 <template>
   <v-app class="dark app-bg">
     <v-main class="flex justify-center items-center">
-      <slot />
+      <NuxtPage />
       <s-toaster />
     </v-main>
     <Footer />

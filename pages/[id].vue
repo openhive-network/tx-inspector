@@ -38,6 +38,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { ApiTransaction } from '@hiveio/wax';
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
@@ -59,10 +60,10 @@ onMounted(async () => {
     try {
       store.$state.isLoading = true;
 
-      let trx: ApiTransaction;
+      let trx!: ApiTransaction;
 
       try {
-        trx = await $wax.getTransactionFromId(id);
+        trx = await $wax.getTransactionFromId(id as string);
       } catch {
         toast({
           title: 'Transaction not found',
