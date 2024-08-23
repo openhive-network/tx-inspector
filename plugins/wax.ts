@@ -1,4 +1,4 @@
-import { ApiAccount, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
@@ -84,6 +84,12 @@ export class WaxAccountInformation {
       return EAuthorityLevel.POSTING;
 
     return EAuthorityLevel.POSTING;
+  }
+
+  public async getOperationsFromTransaction (trx: ApiTransaction): Promise<ApiOperation[]> {
+    await this.requireChain();
+
+    return trx.operations;
   }
 
   public async findSigneesForKeys (keys: string[]): Promise<string[][]> {

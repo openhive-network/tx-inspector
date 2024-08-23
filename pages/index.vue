@@ -33,6 +33,10 @@
         <TrxTable class="w-1/2" />
         <AuthTable class="w-1/2" />
       </div>
+      <hr class="my-8">
+      <div>
+        <Operations />
+      </div>
     </s-card-content>
   </s-card>
 </template>
@@ -43,6 +47,7 @@ import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
+import Operations from '~/components/ui/Operations.vue';
 
 const store = useWaxStore();
 </script>

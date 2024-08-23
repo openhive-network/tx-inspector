@@ -71,38 +71,28 @@ const submitTransaction = async () => {
       if (hash.value === undefined)
         throw new Error('Hash is required');
 
-      trx.value = await $wax.getTransactionFromId(hash.value!);
-
-      const authorityPath = await getAuthorityPath($wax, trx.value);
-
-      store.$state.signatures = $wax.getSignatures(trx.value);
-      store.$state.pack = await $wax.getPackType(trx.value);
-      store.$state.publicKeys = await $wax.getSignatureKeys(trx.value);
-      store.$state.id = await $wax.getTransactionId(trx.value);
-      store.$state.sigDigest = await $wax.getSigDigest(trx.value);
-      store.$state.authorityType = await $wax.getAuthorityType(trx.value);
-      store.$state.isValid = await $wax.checkVerifyAuthority(trx.value);
-
-      if (authorityPath)
-        store.$state.authorityPath = authorityPath;
+      (trx.value as unknown as ApiTransaction) = await $wax.getTransactionFromId(hash.value!);
     } else if (radioState.value === 'json') {
       if (trx.value === undefined)
         throw new Error('Transaction is required');
 
-      const authorityPath = await getAuthorityPath($wax, JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-
-      store.$state.signatures = $wax.getSignatures(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.pack = await $wax.getPackType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.publicKeys = await $wax.getSignatureKeys(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.id = await $wax.getTransactionId(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.sigDigest = await $wax.getSigDigest(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.authorityType = await $wax.getAuthorityType(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-      store.$state.isValid = await $wax.checkVerifyAuthority(JSON.parse(String(trx.value!.trim())) as ApiTransaction);
-
-      if (authorityPath)
-        store.$state.authorityPath = authorityPath;
+      trx.value = JSON.parse(String(trx.value!.trim()));
     } else
       throw new Error('Provide transaction in choosen format');
+
+    const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
+
+    store.$state.signatures = $wax.getSignatures(trx.value as unknown as ApiTransaction);
+    store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
+    store.$state.publicKeys = await $wax.getSignatureKeys(trx.value as unknown as ApiTransaction);
+    store.$state.id = await $wax.getTransactionId(trx.value as unknown as ApiTransaction);
+    store.$state.sigDigest = await $wax.getSigDigest(trx.value as unknown as ApiTransaction);
+    store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
+    store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
+    store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
+
+    if (authorityPath)
+      store.$state.authorityPath = authorityPath;
   } catch (error) {
     console.error(error);
   } finally {

@@ -1,4 +1,4 @@
-import type { TAccountName } from '@hiveio/wax';
+import { ApiOperation, type TAccountName } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from '~/components/shadcn/toast';
 import { EAuthorityLevel, EPackType } from '~/types/wax';
@@ -13,6 +13,7 @@ export const useWaxStore = defineStore('wax', {
     sigDigest: '',
     isValid: false,
     authorityType: EAuthorityLevel.POSTING,
+    operations: [] as ApiOperation[],
     isLoading: false
   }),
 

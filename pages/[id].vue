@@ -33,6 +33,10 @@
         <TrxTable class="w-1/2" />
         <AuthTable class="w-1/2" />
       </div>
+      <hr class="my-8">
+      <div>
+        <Operations />
+      </div>
     </s-card-content>
   </s-card>
 </template>
@@ -44,6 +48,7 @@ import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
+import Operations from '~/components/ui/Operations.vue';
 import { toast } from '~/components/shadcn/toast';
 
 const store = useWaxStore();
@@ -80,6 +85,7 @@ onMounted(async () => {
       store.$state.sigDigest = await $wax.getSigDigest(trx);
       store.$state.authorityType = await $wax.getAuthorityType(trx);
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
+      store.$state.operations = await $wax.getOperationsFromTransaction(trx);
 
       if (authorityPath)
         store.$state.authorityPath = authorityPath;
