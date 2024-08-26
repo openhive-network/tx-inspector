@@ -93,6 +93,12 @@ export class WaxAccountInformation {
     return accounts;
   }
 
+  public async getAccountsFromId (id: string): Promise<{ accounts: ApiAccount[] }> {
+    await this.requireChain();
+
+    return (await this.chain.api.database_api.find_accounts({ accounts: [id] }));
+  }
+
   public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel> {
     await this.requireChain();
 

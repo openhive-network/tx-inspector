@@ -78,7 +78,7 @@ onMounted(async () => {
         });
       }
 
-      const authorityPath = await getAuthorityPath($wax, trx);
+      await getAuthorityPath($wax, trx);
 
       store.$state.signatures = $wax.getSignatures(trx);
       store.$state.pack = await $wax.getPackType(trx);
@@ -89,8 +89,8 @@ onMounted(async () => {
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
 
-      if (authorityPath)
-        store.$state.authorityPath = authorityPath;
+      // if (authorityPath)
+      //   store.$state.authorityPath = authorityPath;
     } catch (error) {
       toast({
         title: 'Error',

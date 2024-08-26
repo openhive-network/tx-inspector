@@ -55,11 +55,10 @@
               </div>
             </v-tooltip>
           </s-table-cell>
-          <s-table-cell v-if="Array.isArray(getPath())">
-            {{ getPath()[index] }}
-          </s-table-cell>
-          <s-table-cell v-else>
-            {{ getPath() }}
+          <s-table-cell>
+            <span v-for="(item, key) in store.authorityPath.value.reverse()" :key="key">
+              {{ item.account ? item.account : item.key }} ({{ item.authWeight.weight }}/{{ item.authWeight.auth }})
+            </span>
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -70,34 +69,6 @@
 <script lang="ts" setup>
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
-
-const getPath = () => {
-  const path = [];
-
-  const authoritiesArr = Array.from(store.authorityPath.value);
-
-  if (authoritiesArr.length > 1) {
-    for (let i = 0; i < authoritiesArr.length; ++i)
-      path.push(authoritiesArr[i][0]);
-
-    return path;
-  }
-
-  const pathElement = store.authorityPath.value.values().next().value;
-
-  if (pathElement) {
-    path.push(pathElement.name);
-
-    if (pathElement.rootNode) {
-      let currentNode = pathElement;
-      while (currentNode.rootNode) {
-        path.push(currentNode.rootNode.name);
-        currentNode = currentNode.rootNode;
-      }
-    }
-  }
-  return path.reverse().join(' > ');
-};
 </script>
 
 <style scoped>
