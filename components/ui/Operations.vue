@@ -58,10 +58,3 @@ const store = useWaxStore();
 
 const radioState = ref('formatted');
 </script>
-
-<style scoped>
-.pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-</style>

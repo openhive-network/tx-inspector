@@ -62,6 +62,12 @@ const radioState = ref('json');
 const trx = defineModel<string>('transaction');
 const hash = defineModel<string>('hash');
 
+const useOperationsFormatter = (operations: any) => {
+  const { $formatter } = useNuxtApp();
+
+  return $formatter.format(operations);
+};
+
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   try {
@@ -90,6 +96,9 @@ const submitTransaction = async () => {
     store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
     store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
     store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
+    store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
+
+    console.log(store.$state.formattedOperations[0].value.children);
 
     if (authorityPath)
       store.$state.authorityPath = authorityPath;
