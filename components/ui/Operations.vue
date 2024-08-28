@@ -58,3 +58,9 @@ const store = useWaxStore();
 
 const radioState = ref('formatted');
 </script>
+
+<style scoped>
+.skeleton {
+  background: rgb(63 63 70);
+}
+</style>
