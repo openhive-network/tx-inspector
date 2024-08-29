@@ -96,6 +96,12 @@ export class WaxAccountInformation {
     return (await this.chain.api.account_by_key_api.get_key_references({ keys })).accounts;
   }
 
+  public async findSigneeForKey (key: string): Promise<string[][]> {
+    this.requireChain();
+
+    return (await this.chain.api.account_by_key_api.get_key_references({ keys: [key] })).accounts;
+  }
+
   public async checkVerifyAuthority (trx: ApiTransaction): Promise<boolean> {
     await this.requireChain();
 

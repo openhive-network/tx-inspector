@@ -96,9 +96,10 @@ const submitTransaction = async () => {
     store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
     store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
     store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
+    store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    console.log(store.$state.formattedOperations[0].value.children);
+    console.log(await $wax.findSigneeForKey('STM7S3wsVtQotgKLN8wFLPNBALe6YHt8MPLEHuTH5CxfxdhpGPBUP'));
 
     if (authorityPath)
       store.$state.authorityPath = authorityPath;
