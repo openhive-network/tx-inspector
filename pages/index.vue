@@ -34,8 +34,9 @@
         <AuthTable class="w-1/2" />
       </div>
       <hr class="my-8">
-      <div>
+      <div class="flex gap-4 mb-8">
         <Operations />
+        <OperationsAuthorities />
       </div>
     </s-card-content>
   </s-card>
@@ -48,6 +49,7 @@ import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import Operations from '~/components/ui/Operations.vue';
+import OperationsAuthorities from '~/components/ui/OperationsAuthorities.vue';
 
 const store = useWaxStore();
 </script>

@@ -45,7 +45,8 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/vuetify.ts',
-    '~/plugins/wax.ts'
+    '~/plugins/wax.ts',
+    '~/plugins/formatter.ts'
   ],
 
   components: {
@@ -57,6 +58,13 @@ export default defineNuxtConfig({
   vite: {
     define: {
       COMMIT_HASH: `'${getCommitHash()}'`
+    },
+    esbuild: {
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true
+        }
+      }
     }
   }
 });

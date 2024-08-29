@@ -51,6 +51,7 @@
 
 <script lang="ts" setup>
 import type { ApiTransaction } from '@hiveio/wax';
+import { toast } from '../shadcn/toast';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
@@ -61,6 +62,12 @@ const radioState = ref('json');
 
 const trx = defineModel<string>('transaction');
 const hash = defineModel<string>('hash');
+
+const useOperationsFormatter = (operations: any) => {
+  const { $formatter } = useNuxtApp();
+
+  return $formatter.format(operations);
+};
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
@@ -90,11 +97,17 @@ const submitTransaction = async () => {
     store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
     store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
     store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
+    store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
+    store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
     if (authorityPath)
       store.$state.authorityPath = authorityPath;
   } catch (error) {
-    console.error(error);
+    toast({
+      title: 'Error',
+      description: error instanceof Error ? error.message : 'Unknown error occured',
+      variant: 'destructive'
+    });
   } finally {
     store.$state.isLoading = false;
   }

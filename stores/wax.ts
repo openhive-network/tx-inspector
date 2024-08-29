@@ -14,6 +14,8 @@ export const useWaxStore = defineStore('wax', {
     isValid: false,
     authorityType: EAuthorityLevel.POSTING,
     operations: [] as ApiOperation[],
+    formattedOperations: [] as any[],
+    signeesByKeys: [] as string[][],
     isLoading: false
   }),
 
