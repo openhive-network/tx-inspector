@@ -92,7 +92,11 @@ onMounted(async () => {
       if (authorityPath)
         store.$state.authorityPath = authorityPath;
     } catch (error) {
-      console.error(error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Unknown error occured',
+        variant: 'destructive'
+      });
     } finally {
       store.$state.isLoading = false;
     }

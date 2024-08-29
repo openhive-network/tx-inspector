@@ -30,7 +30,6 @@ export class WaxAccountInformation {
       });
       return EPackType.HF26;
     } catch (error) {
-      console.log(error);
       return EPackType.LEGACY;
     }
   }
@@ -42,31 +41,56 @@ export class WaxAccountInformation {
   public async getSignatureKeys (trx: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
-    return this.chain.Transaction.fromApi(trx).signatureKeys;
+    const signatureKeys = this.chain.Transaction.fromApi(trx).signatureKeys;
+
+    if (typeof signatureKeys === 'undefined')
+      throw new Error('Signature keys not found');
+
+    return signatureKeys;
   }
 
   public async getTransactionId (trx: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    return this.chain.Transaction.fromApi(trx).id;
+    const id = this.chain.Transaction.fromApi(trx).id;
+
+    if (typeof id === 'undefined')
+      throw new Error('Transaction ID not found');
+
+    return id;
   }
 
   public async getSigDigest (trx: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    return this.chain.Transaction.fromApi(trx).sigDigest;
+    const sigDigest = this.chain.Transaction.fromApi(trx).sigDigest;
+
+    if (typeof sigDigest === 'undefined')
+      throw new Error('Signature digest not found');
+
+    return sigDigest;
   }
 
   public async getRequiredAuthorities (trx: ApiTransaction): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
-    return this.chain.Transaction.fromApi(trx).requiredAuthorities;
+    const requiredAuthorities = this.chain.Transaction.fromApi(trx).requiredAuthorities;
+
+    if (typeof requiredAuthorities === 'undefined')
+      throw new Error('Required authorities not found');
+
+    return requiredAuthorities;
   }
 
-  public async getAccounts (accounts: string[]): Promise<ApiAccount[]> {
+  public async getAccounts (accountsArr: string[]): Promise<ApiAccount[]> {
     await this.requireChain();
 
-    return (await this.chain.api.database_api.find_accounts({ accounts })).accounts;
+    const { accounts } = await this.chain.api.database_api.find_accounts({ accounts: accountsArr });
+
+    if (typeof accounts === 'undefined')
+      throw new Error('Accounts not found');
+
+    return accounts;
   }
 
   public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel> {
@@ -89,17 +113,23 @@ export class WaxAccountInformation {
   public async getOperationsFromTransaction (trx: ApiTransaction): Promise<ApiOperation[]> {
     await this.requireChain();
 
-    return trx.operations;
+    const operations = trx.operations;
+
+    if (typeof operations === 'undefined')
+      throw new Error('Operations not found');
+
+    return operations;
   }
 
   public async findSigneesForKeys (keys: string[]): Promise<string[][]> {
-    return (await this.chain.api.account_by_key_api.get_key_references({ keys })).accounts;
-  }
+    await this.requireChain();
 
-  public async findSigneeForKey (key: string): Promise<string[][]> {
-    this.requireChain();
+    const { accounts } = await this.chain.api.account_by_key_api.get_key_references({ keys });
 
-    return (await this.chain.api.account_by_key_api.get_key_references({ keys: [key] })).accounts;
+    if (typeof accounts === 'undefined')
+      throw new Error('Signees not found');
+
+    return accounts;
   }
 
   public async checkVerifyAuthority (trx: ApiTransaction): Promise<boolean> {
@@ -128,7 +158,11 @@ export class WaxAccountInformation {
   public async changeEndpointUrl (url: string): Promise<void> {
     await this.requireChain();
 
-    this.chain.api.account_by_key_api.endpointUrl = url;
+    try {
+      this.chain.api.account_by_key_api.endpointUrl = url;
+    } catch (error) {
+      throw new Error('Failed to change endpoint URL');
+    }
   }
 }
 

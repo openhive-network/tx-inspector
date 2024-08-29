@@ -51,6 +51,7 @@
 
 <script lang="ts" setup>
 import type { ApiTransaction } from '@hiveio/wax';
+import { toast } from '../shadcn/toast';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
@@ -99,12 +100,14 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    console.log(await $wax.findSigneeForKey('STM7S3wsVtQotgKLN8wFLPNBALe6YHt8MPLEHuTH5CxfxdhpGPBUP'));
-
     if (authorityPath)
       store.$state.authorityPath = authorityPath;
   } catch (error) {
-    console.error(error);
+    toast({
+      title: 'Error',
+      description: error instanceof Error ? error.message : 'Unknown error occured',
+      variant: 'destructive'
+    });
   } finally {
     store.$state.isLoading = false;
   }

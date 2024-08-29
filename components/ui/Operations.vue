@@ -33,16 +33,6 @@
                 <span class="mr-6">{{ `${index + 1}. ${item.type}` }}</span>
               </v-expansion-panel-title>
               <v-expansion-panel-text eager>
-                <span v-for="(type, key) in getRequiredAuthorityForOperation(item.type)" :key="key">
-                  <span>
-                    Signed by:
-                    <a class="text-blue" :href="`https://explore.openhive.network/@${store.$state.signeesByKeys[index][0]}`">
-                      {{ `@${store.$state.signeesByKeys[index][0]}` }}
-                    </a>
-                  </span>
-                  Auth type: <span :class="getColorForType(type)">{{ type }}</span>
-                </span>
-                <hr class="my-4">
                 <code>
                   {{ JSON.stringify(item.value, null, 2) }}
                 </code>
@@ -53,16 +43,6 @@
                 <span class="mr-6">{{ `${key + 1}. ${item.type}` }}</span>
               </v-expansion-panel-title>
               <v-expansion-panel-text eager>
-                <span v-for="(type, index) in getRequiredAuthorityForOperation(item.type)" :key="index">
-                  <span>
-                    Signed by:
-                    <a class="text-blue" :href="`https://explore.openhive.network/@${store.$state.signeesByKeys[key][0]}`">
-                      {{ `@${store.$state.signeesByKeys[key][0]}` }}
-                    </a>
-                  </span>
-                  Auth type: <span :class="getColorForType(type)">{{ type }}</span>
-                </span>
-                <hr class="my-4">
                 <component :is="item.value" />
               </v-expansion-panel-text>
             </v-expansion-panel>
