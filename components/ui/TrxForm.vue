@@ -111,7 +111,6 @@ const submitTransaction = async () => {
         totalThreshold += authorityPath[i].authWeight.weight;
       }
 
-      console.log(totalWeight, totalThreshold);
       if (totalWeight >= totalThreshold)
         store.$state.isSatisfied = true;
       else

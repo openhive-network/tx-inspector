@@ -58,6 +58,12 @@ const store = useWaxStore();
 const route = useRoute();
 const { $wax } = useNuxtApp();
 
+const useOperationsFormatter = (operations: any) => {
+  const { $formatter } = useNuxtApp();
+
+  return $formatter.format(operations);
+};
+
 onMounted(async () => {
   const id = route.params.id;
 
@@ -78,7 +84,7 @@ onMounted(async () => {
         });
       }
 
-      await getAuthorityPath($wax, trx);
+      const authorityPath = await getAuthorityPath($wax, trx);
 
       store.$state.signatures = $wax.getSignatures(trx);
       store.$state.pack = await $wax.getPackType(trx);
@@ -88,9 +94,25 @@ onMounted(async () => {
       store.$state.authorityType = await $wax.getAuthorityType(trx);
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
+      store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
+      store.$state.formattedOperations = useOperationsFormatter(trx).operations;
 
-      // if (authorityPath)
-      //   store.$state.authorityPath = authorityPath;
+      if (authorityPath) {
+        store.$state.authorityPath = authorityPath;
+
+        let totalWeight = 0;
+        let totalThreshold = 0;
+
+        for (let i = 0; i < authorityPath.length; ++i) {
+          totalWeight += authorityPath[i].authWeight.auth;
+          totalThreshold += authorityPath[i].authWeight.weight;
+        }
+
+        if (totalWeight >= totalThreshold)
+          store.$state.isSatisfied = true;
+        else
+          store.$state.isSatisfied = false;
+      }
     } catch (error) {
       toast({
         title: 'Error',
