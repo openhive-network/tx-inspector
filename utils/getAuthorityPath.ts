@@ -10,8 +10,7 @@ export interface IAuthorityNode {
 }
 
 export interface IAuthorityPaths {
-  key?: string;
-  account?: string;
+  account: string;
   authWeight: {
     weight: number;
     auth: number;
@@ -179,7 +178,6 @@ class CSignState implements ISignState {
       if (this.signedBy(key)) {
         totalWeight += weight;
 
-        paths.push({ key, authWeight: { weight, auth: auth.weight_threshold } });
         console.log(`Key: "${key}" auth: ${weight}/${auth.weight_threshold}`);
 
         if (totalWeight >= auth.weight_threshold) {

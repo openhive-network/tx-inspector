@@ -99,21 +99,23 @@ export class WaxAccountInformation {
     return (await this.chain.api.database_api.find_accounts({ accounts: [id] }));
   }
 
-  public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel> {
+  public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel[]> {
     await this.requireChain();
+
+    const authLevel: EAuthorityLevel[] = [];
 
     const requiredAuthorities = await this.getRequiredAuthorities(trx);
 
     if (requiredAuthorities.owner.size !== 0)
-      return EAuthorityLevel.OWNER;
+      authLevel.push(EAuthorityLevel.OWNER);
 
     if (requiredAuthorities.active.size !== 0)
-      return EAuthorityLevel.ACTIVE;
+      authLevel.push(EAuthorityLevel.ACTIVE);
 
     if (requiredAuthorities.posting.size !== 0)
-      return EAuthorityLevel.POSTING;
+      authLevel.push(EAuthorityLevel.POSTING);
 
-    return EAuthorityLevel.POSTING;
+    return authLevel;
   }
 
   public async getOperationsFromTransaction (trx: ApiTransaction): Promise<ApiOperation[]> {

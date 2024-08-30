@@ -100,8 +100,23 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    if (authorityPath)
+    if (authorityPath) {
       store.$state.authorityPath = authorityPath;
+
+      let totalWeight = 0;
+      let totalThreshold = 0;
+
+      for (let i = 0; i < authorityPath.length; ++i) {
+        totalWeight += authorityPath[i].authWeight.auth;
+        totalThreshold += authorityPath[i].authWeight.weight;
+      }
+
+      console.log(totalWeight, totalThreshold);
+      if (totalWeight >= totalThreshold)
+        store.$state.isSatisfied = true;
+      else
+        store.$state.isSatisfied = false;
+    }
   } catch (error) {
     toast({
       title: 'Error',

@@ -10,9 +10,14 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-if="store.id.value.length > 0">
+        <s-table-row v-for="(level, index) in store.authorityType.value" v-if="store.id.value.length > 0" :key="index">
           <s-table-cell>
-            {{ store.authorityType.value }}
+            {{ level }}
+          </s-table-cell>
+          <s-table-cell>
+            <v-icon :color="store.isSatisfied.value ? 'green' : 'red'">
+              {{ store.isSatisfied.value ? 'mdi-check' : 'mdi-close' }}
+            </v-icon>
           </s-table-cell>
         </s-table-row>
       </s-table-body>

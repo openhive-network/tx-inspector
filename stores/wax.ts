@@ -13,10 +13,11 @@ export const useWaxStore = defineStore('wax', {
     id: '',
     sigDigest: '',
     isValid: false,
-    authorityType: EAuthorityLevel.POSTING,
+    authorityType: [] as EAuthorityLevel[],
     operations: [] as ApiOperation[],
     formattedOperations: [] as any[],
     signeesByKeys: [] as string[][],
+    isSatisfied: false,
     isLoading: false
   }),
 

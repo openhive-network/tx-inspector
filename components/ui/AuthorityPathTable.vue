@@ -56,8 +56,8 @@
             </v-tooltip>
           </s-table-cell>
           <s-table-cell>
-            <span v-for="(item, key) in store.authorityPath.value.reverse()" :key="key">
-              {{ item.account ? item.account : item.key }} ({{ item.authWeight.weight }}/{{ item.authWeight.auth }})
+            <span v-for="(item, key) in store.authorityPath.value" :key="key">
+              {{ item.account }} ({{ item.authWeight.weight }}/{{ item.authWeight.auth }})
             </span>
           </s-table-cell>
         </s-table-row>
