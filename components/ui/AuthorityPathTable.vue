@@ -57,7 +57,7 @@
           </s-table-cell>
           <s-table-cell>
             <span v-for="(item, key) in store.authorityPath.value" :key="key">
-              {{ item.account }} ({{ item.authWeight.weight }}/{{ item.authWeight.auth }})
+              {{ item.account }} {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
             </span>
           </s-table-cell>
         </s-table-row>

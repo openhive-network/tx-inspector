@@ -103,10 +103,11 @@ onMounted(async () => {
         let totalWeight = 0;
         let totalThreshold = 0;
 
-        for (let i = 0; i < authorityPath.length; ++i) {
-          totalWeight += authorityPath[i].authWeight.auth;
-          totalThreshold += authorityPath[i].authWeight.weight;
-        }
+        for (let i = 0; i < authorityPath.length; ++i)
+          if (authorityPath[i].authWeight) {
+            totalWeight += authorityPath[i].authWeight!.auth;
+            totalThreshold += authorityPath[i].authWeight!.weight;
+          }
 
         if (totalWeight >= totalThreshold)
           store.$state.isSatisfied = true;

@@ -12,7 +12,7 @@ export interface IAuthorityNode {
 
 export interface IAuthorityPaths {
   account: string;
-  authWeight: {
+  authWeight?: {
     weight: number;
     auth: number;
   };
@@ -45,6 +45,8 @@ interface IAuthorityGetter {
 const max_recursion_depth = 2;
 const max_membership = 40;
 const max_account_auths = 125;
+
+const paths: IAuthorityPaths[] = [];
 
 const verifyAuthorityImpl = async (
   required_authorities: IVerifyAuthorityRequired,
@@ -97,8 +99,16 @@ const verifyAuthorityImpl = async (
       ''
     );
 
+    paths.push({ account: required_authorities.required_posting[0] });
+
     return;
   }
+
+  if (required_authorities.required_active.length > 0)
+    paths.push({ account: required_authorities.required_active[0] });
+
+  if (required_authorities.required_owner.length > 0)
+    paths.push({ account: required_authorities.required_owner[0] });
 
   const avail = new Set<string>();
   const s: ISignState = new CSignState(sigs, get_active, avail);
@@ -135,8 +145,6 @@ const verifyAuthorityImpl = async (
     ''
   );
 };
-
-const paths: IAuthorityPaths[] = [];
 
 class CSignState implements ISignState {
   constructor (
