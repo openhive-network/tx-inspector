@@ -4,7 +4,7 @@
       Operations Authorities:
     </h3>
     <s-skeleton v-if="store.$state.isLoading" class="w-full h-[100px] skeleton" />
-    <div v-for="(item, key) in store.$state.operations" v-else :key="key" class="mt-6">
+    <div v-for="(item, key) in store.$state.operations" v-else :key="key" class="mt-4">
       <span v-for="(type, index) in getRequiredAuthorityForOperation(item.type)" :key="index">
         <span>
           {{ key + 1 }}.

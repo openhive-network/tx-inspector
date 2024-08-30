@@ -11,10 +11,10 @@
       </s-table-header>
       <s-table-body>
         <s-table-row v-for="(level, index) in store.authorityType.value" v-if="store.id.value.length > 0" :key="index">
-          <s-table-cell>
+          <s-table-cell class="p-5">
             {{ level }}
           </s-table-cell>
-          <s-table-cell>
+          <s-table-cell class="p-5">
             <v-icon :color="store.isSatisfied.value ? 'green' : 'red'">
               {{ store.isSatisfied.value ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
