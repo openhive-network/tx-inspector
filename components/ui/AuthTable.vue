@@ -6,13 +6,21 @@
       <s-table-header>
         <s-table-row>
           <s-table-head>Authority type</s-table-head>
+          <s-table-head>Authority accounts</s-table-head>
           <s-table-head>Satisfied</s-table-head>
         </s-table-row>
       </s-table-header>
       <s-table-body>
         <s-table-row v-for="(level, index) in store.authorityType.value" v-if="store.id.value.length > 0" :key="index">
           <s-table-cell class="p-5">
-            {{ level }}
+            <span>{{ level.level }}</span>
+          </s-table-cell>
+          <s-table-cell>
+            <span class="flex flex-col">
+              <span v-for="(account, key) in level.accounts" :key="key" class="my-1">
+                {{ account }}
+              </span>
+            </span>
           </s-table-cell>
           <s-table-cell class="p-5">
             <v-icon :color="store.isSatisfied.value ? 'green' : 'red'">

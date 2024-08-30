@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
@@ -99,21 +99,21 @@ export class WaxAccountInformation {
     return (await this.chain.api.database_api.find_accounts({ accounts: [id] }));
   }
 
-  public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel[]> {
+  public async getAuthorityType (trx: ApiTransaction): Promise<{ level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[]> {
     await this.requireChain();
 
-    const authLevel: EAuthorityLevel[] = [];
+    const authLevel: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[] = [];
 
     const requiredAuthorities = await this.getRequiredAuthorities(trx);
 
     if (requiredAuthorities.owner.size !== 0)
-      authLevel.push(EAuthorityLevel.OWNER);
+      authLevel.push({ level: EAuthorityLevel.OWNER, accounts: requiredAuthorities.owner });
 
     if (requiredAuthorities.active.size !== 0)
-      authLevel.push(EAuthorityLevel.ACTIVE);
+      authLevel.push({ level: EAuthorityLevel.ACTIVE, accounts: requiredAuthorities.active });
 
     if (requiredAuthorities.posting.size !== 0)
-      authLevel.push(EAuthorityLevel.POSTING);
+      authLevel.push({ level: EAuthorityLevel.POSTING, accounts: requiredAuthorities.posting });
 
     return authLevel;
   }

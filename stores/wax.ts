@@ -1,4 +1,4 @@
-import { ApiOperation } from '@hiveio/wax';
+import { ApiOperation, authority } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from '~/components/shadcn/toast';
 import { EAuthorityLevel, EPackType } from '~/types/wax';
@@ -13,7 +13,7 @@ export const useWaxStore = defineStore('wax', {
     id: '',
     sigDigest: '',
     isValid: false,
-    authorityType: [] as EAuthorityLevel[],
+    authorityType: [] as { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[],
     operations: [] as ApiOperation[],
     formattedOperations: [] as any[],
     signeesByKeys: [] as string[][],
