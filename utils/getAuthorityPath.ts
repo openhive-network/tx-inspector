@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ApiTransaction, authority, TAccountName } from '@hiveio/wax';
+import { toast } from '~/components/shadcn/toast';
 import type { WaxAccountInformation } from '~/plugins/wax';
 
 export interface IAuthorityNode {
@@ -290,6 +291,11 @@ export default async function (wax: WaxAccountInformation, transaction: ApiTrans
     return paths;
   } catch (error) {
     console.log(`\n<FAILED>: ${error}\n======================================`);
+    toast({
+      title: 'Error',
+      description: error instanceof Error ? error.message : 'Unknown error occured',
+      variant: 'destructive'
+    });
   }
 }
 

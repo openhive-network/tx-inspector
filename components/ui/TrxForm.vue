@@ -100,6 +100,8 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
+    console.log(store.$state.signeesByKeys);
+
     if (authorityPath) {
       store.$state.authorityPath = authorityPath;
 
