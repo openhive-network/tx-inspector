@@ -1,26 +1,7 @@
 <template>
   <div class="flex flex-col">
     <div class="my-2">
-      <s-label>
-        Transaction ({{ radioState }} format)
-      </s-label>
-      <s-input
-        v-if="radioState === 'hash'"
-        v-model="hash"
-        placeholder="Provide your transaction hash"
-        class="my-3"
-        required
-      />
-      <s-textarea
-        v-else
-        v-model="trx"
-        :placeholder="`Provide your transaction ${radioState}`"
-        class="min-h-64 max-h-64 my-3"
-        required
-      />
-    </div>
-    <s-dialog-footer class="flex justify-between sm:justify-between items-center">
-      <s-radio-group v-model="radioState" default-value="json">
+      <s-radio-group v-model="radioState" default-value="json" class="flex mb-3">
         <div class="flex items-center space-x-2">
           <s-radio-group-item id="json" value="json" />
           <s-label for="json">
@@ -40,6 +21,25 @@
           </s-label>
         </div>
       </s-radio-group>
+      <s-label>
+        Transaction ({{ radioState }} format)
+      </s-label>
+      <s-input
+        v-if="radioState === 'hash'"
+        v-model="hash"
+        placeholder="Provide your transaction hash"
+        class="mt-3 mb-[14.5rem]"
+        required
+      />
+      <s-textarea
+        v-else
+        v-model="trx"
+        :placeholder="`Provide your transaction ${radioState}`"
+        class="min-h-64 max-h-64 my-3"
+        required
+      />
+    </div>
+    <s-dialog-footer>
       <s-dialog-close as-child>
         <Button @click="submitTransaction()">
           Submit
