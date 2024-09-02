@@ -27,9 +27,9 @@
                 </span>
               </template>
               <div class="flex flex-col">
-                <span class="text-lg">Signatures</span>
+                <span class="text-lg">Signature:</span>
                 <hr class="my-2">
-                <span v-for="(sig, key) in store.signatures.value" :key="key">{{ sig }}</span>
+                <span>{{ signature }}</span>
               </div>
             </v-tooltip>
           </s-table-cell>
@@ -49,9 +49,9 @@
                 </span>
               </template>
               <div class="flex flex-col">
-                <span class="text-lg">Public keys:</span>
+                <span class="text-lg">Public key:</span>
                 <hr class="my-2">
-                <span v-for="(publicKey, key) in store.publicKeys.value" :key="key">{{ publicKey }}</span>
+                <span>{{ store.publicKeys.value[index] }}</span>
               </div>
             </v-tooltip>
           </s-table-cell>
