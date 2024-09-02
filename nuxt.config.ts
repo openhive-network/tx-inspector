@@ -12,6 +12,12 @@ const getCommitHash = () => {
 };
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: 'Transaction inspector'
+    }
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
