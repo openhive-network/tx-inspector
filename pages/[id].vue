@@ -50,6 +50,7 @@
 
 <script lang="ts" setup>
 import type { ApiTransaction } from '@hiveio/wax';
+import { toast } from 'vue-sonner';
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
@@ -57,7 +58,6 @@ import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import Operations from '~/components/ui/Operations.vue';
 import OperationsAuthorities from '~/components/ui/OperationsAuthorities.vue';
-import { toast } from '~/components/shadcn/toast';
 
 const store = useWaxStore();
 
@@ -84,9 +84,8 @@ onMounted(async () => {
       try {
         trx = await $wax.getTransactionFromId(id as string);
       } catch {
-        toast({
-          title: 'Transaction not found',
-          variant: 'destructive'
+        toast.error('Error', {
+          description: 'Transaction not found'
         });
       }
 
@@ -121,10 +120,8 @@ onMounted(async () => {
           store.$state.isSatisfied = false;
       }
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Unknown error occured',
-        variant: 'destructive'
+      toast.error('Error', {
+        description: error instanceof Error ? error.message : 'Unknown error occured'
       });
     } finally {
       store.$state.isLoading = false;

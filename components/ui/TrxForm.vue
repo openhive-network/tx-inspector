@@ -51,7 +51,7 @@
 
 <script lang="ts" setup>
 import type { ApiTransaction } from '@hiveio/wax';
-import { toast } from '../shadcn/toast';
+import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
@@ -120,10 +120,8 @@ const submitTransaction = async () => {
         store.$state.isSatisfied = false;
     }
   } catch (error) {
-    toast({
-      title: 'Error',
+    toast.error('Error', {
       description: error instanceof Error ? error.message : 'Unknown error occured',
-      variant: 'destructive'
     });
   } finally {
     store.$state.isLoading = false;
