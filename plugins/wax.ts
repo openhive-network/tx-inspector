@@ -9,6 +9,12 @@ export class WaxAccountInformation {
       this.chain = await createHiveChain();
   }
 
+  public async getChain (): Promise<IHiveChainInterface> {
+    await this.requireChain();
+
+    return this.chain;
+  }
+
   public async getTransactionFromId (id: string): Promise<ApiTransaction> {
     await this.requireChain();
 
@@ -174,10 +180,13 @@ export class WaxAccountInformation {
   }
 }
 
-export default defineNuxtPlugin(() => {
+const wax = new WaxAccountInformation();
+
+export default defineNuxtPlugin(async () => {
   return {
     provide: {
-      wax: new WaxAccountInformation()
+      wax,
+      chain: await wax.getChain()
     }
   };
 });

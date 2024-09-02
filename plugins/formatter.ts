@@ -1,8 +1,8 @@
+/* eslint-disable no-useless-constructor */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import {
   CommunityOperationData,
-  createWaxFoundation,
   FollowOperationData,
   ReblogOperationData,
   ResourceCreditsOperationData,
@@ -103,17 +103,12 @@ import { NuxtLink } from '#components';
 import { formatPercent } from '~/utils/formatters';
 
 class OperationsFormatter implements IWaxCustomFormatter {
-  private wax!: IWaxBaseInterface;
+  constructor (
+    private readonly chain: IWaxBaseInterface
+  ) {}
 
-  private async requireWax (): Promise<void> {
-    if (typeof this.wax === 'undefined')
-      this.wax = await createWaxFoundation();
-  }
-
-  private async getFormattedAmount (supply: NaiAsset | undefined): Promise<string> {
-    await this.requireWax();
-
-    return (this.wax.formatter.format(supply));
+  private getFormattedAmount (supply: NaiAsset | undefined): string {
+    return (this.chain.formatter.format(supply));
   }
 
   private getFormattedDate (time: Date | string): string {
@@ -123,8 +118,8 @@ class OperationsFormatter implements IWaxCustomFormatter {
   private getFormattedMultipleAssets (assets: DeepReadonly<NaiAsset[]>): string {
     let assetsMessage = '';
 
-    assets.forEach(async (asset, index) => {
-      assetsMessage += `${index !== 0 ? ', ' : ''}${await this.getFormattedAmount(asset)}`;
+    assets.forEach((asset, index) => {
+      assetsMessage += `${index !== 0 ? ', ' : ''}${this.getFormattedAmount(asset)}`;
     });
 
     return assetsMessage;
@@ -162,11 +157,11 @@ class OperationsFormatter implements IWaxCustomFormatter {
     );
   }
 
-  private async getTransferMessage (transfer: transfer): Promise<VNode> {
+  private getTransferMessage (transfer: transfer): VNode {
     return this.generateVueLink([
       this.getAccountLink(transfer.from_account),
       'transfered ',
-      await this.getFormattedAmount(transfer.amount),
+      this.getFormattedAmount(transfer.amount),
       'to ',
       this.getAccountLink(transfer.to_account)
     ]);
@@ -225,18 +220,18 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_operation' })
-  public async formatTransfer ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
-    const message = await this.getTransferMessage(op);
+  public formatTransfer ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+    const message = this.getTransferMessage(op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_to_vesting_operation' })
-  public async formatTransferToVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+  public formatTransferToVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.from_account),
       'transfered ',
-      await this.getFormattedAmount(op.amount),
+      this.getFormattedAmount(op.amount),
       ' to vesting'
     ]);
 
@@ -244,26 +239,26 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'withdraw_vesting_operation' })
-  public async formatWithdrawVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: withdraw_vesting }>) {
+  public formatWithdrawVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: withdraw_vesting }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.account),
       'withdrawed ',
-      await this.getFormattedAmount(op.vesting_shares)
+      this.getFormattedAmount(op.vesting_shares)
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'limit_order_create_operation' })
-  public async formatLimitOrderCreateOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_create }>) {
+  public formatLimitOrderCreateOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_create }>) {
     const expiration = op.fill_or_kill ? '' : `, expiration: ${this.getFormattedDate(op.expiration)}`;
 
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
       'wants to sell ',
-      await this.getFormattedAmount(op.amount_to_sell),
+      this.getFormattedAmount(op.amount_to_sell),
       ' for at least',
-      await this.getFormattedAmount(op.min_to_receive),
+      this.getFormattedAmount(op.min_to_receive),
       `, ID: ${op.orderid}`,
       expiration
     ]);
@@ -282,24 +277,24 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'feed_publish_operation' })
-  public async formatFeedPublishOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: feed_publish }>) {
+  public formatFeedPublishOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: feed_publish }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.publisher),
       'published the exchange rate: ',
-      await this.getFormattedAmount(op.exchange_rate?.base),
+      this.getFormattedAmount(op.exchange_rate?.base),
       ' for ',
-      await this.getFormattedAmount(op.exchange_rate?.quote)
+      this.getFormattedAmount(op.exchange_rate?.quote)
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'convert_operation' })
-  public async formatConvertOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: convert }>) {
+  public formatConvertOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: convert }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
       `starts convert operation: ${op.requestid} with amount: `,
-      await this.getFormattedAmount(op.amount)
+      this.getFormattedAmount(op.amount)
     ]);
 
     return { ...target, value: message };
@@ -428,7 +423,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchInstanceOf: ResourceCreditsOperationData })
-  public async formatResourceCreditsOperation ({ target, source }: IFormatFunctionArguments<{ value: custom_json }, {value: ResourceCreditsOperationData}>) {
+  public formatResourceCreditsOperation ({ target, source }: IFormatFunctionArguments<{ value: custom_json }, {value: ResourceCreditsOperationData}>) {
     const { value: op } = target;
 
     if (op.rc.amount === '0')
@@ -450,7 +445,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       value: {
         message: this.generateVueLink([
           this.getAccountLink(op.from),
-          `delegated ${await this.getFormattedAmount(op.rc)} of RC for `,
+          `delegated ${this.getFormattedAmount(op.rc)} of RC for `,
           this.getMultipleAccountsListLink(op.delegatees),
           `(${source.value.id})`
         ]),
@@ -531,10 +526,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'comment_options_operation' })
-  public async formatcommentOptionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_options }>) {
+  public formatcommentOptionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_options }>) {
     const allowCurrationReward = !op.allow_curation_rewards ? 'disallow rewards, ' : '';
     const allowVotes = !op.allow_votes ? 'disallow votes, ' : '';
-    const maxPayout = op.max_accepted_payout?.amount !== '1000000000' ? `max payout: ${await this.getFormattedAmount(op.max_accepted_payout)}` : '';
+    const maxPayout = op.max_accepted_payout?.amount !== '1000000000' ? `max payout: ${this.getFormattedAmount(op.max_accepted_payout)}` : '';
     const percentHbd = op.percent_hbd !== 5000 ? `percent HBD: ${formatPercent(op.percent_hbd)}` : '';
 
     const message = this.generateVueLink([
@@ -562,23 +557,23 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'limit_order_create2_operation' })
-  public async formatLimitOrderCreate2Operation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_create2 }>) {
+  public formatLimitOrderCreate2Operation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_create2 }>) {
     const expiration = op.fill_or_kill ? '' : `, expiration: ${this.getFormattedDate(op.expiration)}`;
 
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `created limit order (id: ${op.orderid}) to sell: ${await this.getFormattedAmount(op.amount_to_sell)},
-      exchange rate: ${await this.getFormattedAmount(op.exchange_rate?.base)} to ${await this.getFormattedAmount(op.exchange_rate?.quote)}${expiration}`
+      `created limit order (id: ${op.orderid}) to sell: ${this.getFormattedAmount(op.amount_to_sell)},
+      exchange rate: ${this.getFormattedAmount(op.exchange_rate?.base)} to ${this.getFormattedAmount(op.exchange_rate?.quote)}${expiration}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'claim_account_operation' })
-  public async formatClaimAccountOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: claim_account }>) {
+  public formatClaimAccountOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: claim_account }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.creator),
-      `claimed an account with ${await this.getFormattedAmount(op.fee)}`
+      `claimed an account with ${this.getFormattedAmount(op.fee)}`
     ]);
 
     return { ...target, value: message };
@@ -649,9 +644,9 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'pow2_operation' })
-  public async formatPow2Operation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: pow2}>) {
+  public formatPow2Operation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: pow2}>) {
     const message = this.generateVueLink([
-      `Prove of Work 2, account creation fee: ${await this.getFormattedAmount(op.props?.account_creation_fee)},
+      `Prove of Work 2, account creation fee: ${this.getFormattedAmount(op.props?.account_creation_fee)},
       HBD interest rate: ${formatPercent(op.props?.hbd_interest_rate || 0)},
       maximum block size: ${op.props?.maximum_block_size}`
     ]);
@@ -709,22 +704,22 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'claim_reward_balance_operation' })
-  public async formatClaimRewardBalanceOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: claim_reward_balance }>) {
+  public formatClaimRewardBalanceOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: claim_reward_balance }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.account),
-      `claimed rewards: ${await this.getFormattedAmount(op.reward_hbd)},
-      ${await this.getFormattedAmount(op.reward_hive)},
-      ${await this.getFormattedAmount(op.reward_vests)}`
+      `claimed rewards: ${this.getFormattedAmount(op.reward_hbd)},
+      ${this.getFormattedAmount(op.reward_hive)},
+      ${this.getFormattedAmount(op.reward_vests)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'delegate_vesting_shares_operation' })
-  public async formatDelegateVestingSharesOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: delegate_vesting_shares }>) {
+  public formatDelegateVestingSharesOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: delegate_vesting_shares }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.delegator),
-      `delegated ${await this.getFormattedAmount(op.vesting_shares)} to `,
+      `delegated ${this.getFormattedAmount(op.vesting_shares)} to `,
       this.getAccountLink(op.delegatee)
     ]);
 
@@ -732,12 +727,12 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'account_create_with_delegation_operation' })
-  public async formatAccountCreateWithDelegationOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: account_create_with_delegation }>) {
+  public formatAccountCreateWithDelegationOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: account_create_with_delegation }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.creator),
       'created new account: ',
       this.getAccountLink(op.new_account_name),
-      `with delegation: ${await this.getFormattedAmount(op.delegation)} and fee: ${await this.getFormattedAmount(op.fee)}`
+      `with delegation: ${this.getFormattedAmount(op.delegation)} and fee: ${this.getFormattedAmount(op.fee)}`
     ]);
 
     return { ...target, value: message };
@@ -764,10 +759,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'create_proposal_operation' })
-  public async formatCreateProposalOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: create_proposal }>) {
+  public formatCreateProposalOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: create_proposal }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.creator),
-      `created a proposal for ${await this.getFormattedAmount(op.daily_pay)} daily to `,
+      `created a proposal for ${this.getFormattedAmount(op.daily_pay)} daily to `,
       this.getAccountLink(op.receiver),
       ', details: ',
       this.getPermlink(op.creator, op.permlink),
@@ -806,10 +801,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'update_proposal_operation' })
-  public async formatUpdateProposalOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: update_proposal }>) {
+  public formatUpdateProposalOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: update_proposal }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.creator),
-      `updated proposal ${op.proposal_id} for ${await this.getFormattedAmount(op.daily_pay)} daily, details:`,
+      `updated proposal ${op.proposal_id} for ${this.getFormattedAmount(op.daily_pay)} daily, details:`,
       this.getPermlink(op.creator, op.permlink)
     ]);
 
@@ -817,20 +812,20 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'collateralized_convert_operation' })
-  public async formatCollateralizedConvertOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: collateralized_convert }>) {
+  public formatCollateralizedConvertOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: collateralized_convert }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `collateralized convert ${await this.getFormattedAmount(op.amount)} with request ID: ${op.requestid}`
+      `collateralized convert ${this.getFormattedAmount(op.amount)} with request ID: ${op.requestid}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'recurrent_transfer_operation' })
-  public async formatRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: recurrent_transfer }>) {
+  public formatRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: recurrent_transfer }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.from_account),
-      `set recurrent transfer of ${await this.getFormattedAmount(op.amount)}, ${op.executions} executions every ${op.recurrence} hours to `,
+      `set recurrent transfer of ${this.getFormattedAmount(op.amount)}, ${op.executions} executions every ${op.recurrence} hours to `,
       this.getAccountLink(op.to_account)
     ]);
 
@@ -838,39 +833,39 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_convert_request_operation' })
-  public async formatFillConverRequest ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_convert_request }>) {
+  public formatFillConverRequest ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_convert_request }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `converted ${await this.getFormattedAmount(op.amount_in)} to ${await this.getFormattedAmount(op.amount_out)} for request ID: ${op.requestid}`
+      `converted ${this.getFormattedAmount(op.amount_in)} to ${this.getFormattedAmount(op.amount_out)} for request ID: ${op.requestid}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'author_reward_operation' })
-  public async formatAuthorRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: author_reward }>) {
+  public formatAuthorRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: author_reward }>) {
     const mustBeClaimed = op.payout_must_be_claimed ? '' : ", doesn't have to be claimed";
 
     const message = this.generateVueLink([
       this.getAccountLink(op.author),
       'got an author reward for ',
       this.getPermlink(op.author, op.permlink),
-      `curators payout: ${await this.getFormattedAmount(op.curators_vesting_payout)},
-      payouts: ${await this.getFormattedAmount(op.vesting_payout)},
-      ${await this.getFormattedAmount(op.hive_payout)},
-      ${await this.getFormattedAmount(op.hbd_payout)}${mustBeClaimed}`
+      `curators payout: ${this.getFormattedAmount(op.curators_vesting_payout)},
+      payouts: ${this.getFormattedAmount(op.vesting_payout)},
+      ${this.getFormattedAmount(op.hive_payout)},
+      ${this.getFormattedAmount(op.hbd_payout)}${mustBeClaimed}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'curation_reward_operation' })
-  public async formatCurationRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: curation_reward }>) {
+  public formatCurationRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: curation_reward }>) {
     const mustBeClaimed = op.payout_must_be_claimed ? '' : ", doesn't have to be claimed";
 
     const message = this.generateVueLink([
       this.getAccountLink(op.curator),
-      `got a curation reward ${await this.getFormattedAmount(op.reward)} for `,
+      `got a curation reward ${this.getFormattedAmount(op.reward)} for `,
       this.getPermlink(op.author, op.permlink),
       mustBeClaimed
     ]);
@@ -879,10 +874,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'comment_reward_operation' })
-  public async formatCommentReward ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_reward }>) {
+  public formatCommentReward ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_reward }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.author),
-      `got a comment reward ${await this.getFormattedAmount(op.payout)} for `,
+      `got a comment reward ${this.getFormattedAmount(op.payout)} for `,
       this.getPermlink(op.author, op.permlink)
     ]);
 
@@ -890,22 +885,22 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'liquidity_reward_operation' })
-  public async formatLiquidityRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: liquidity_reward }>) {
+  public formatLiquidityRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: liquidity_reward }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `got a liquidity reward ${await this.getFormattedAmount(op.payout)}`
+      `got a liquidity reward ${this.getFormattedAmount(op.payout)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'interest_operation' })
-  public async formatInterestOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: interest }>) {
+  public formatInterestOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: interest }>) {
     const wasLiquidModified = op.is_saved_into_hbd_balance ? ', liquid balance modified' : '';
 
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `got interest paid ${await this.getFormattedAmount(op.interest)} `,
+      `got interest paid ${this.getFormattedAmount(op.interest)} `,
       wasLiquidModified
     ]);
 
@@ -913,22 +908,22 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_vesting_withdraw_operation' })
-  public async formatFillVestingWithdrawOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_vesting_withdraw }>) {
+  public formatFillVestingWithdrawOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_vesting_withdraw }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.from_account),
-      `withdrawed ${await this.getFormattedAmount(op.withdrawn)} and `,
+      `withdrawed ${this.getFormattedAmount(op.withdrawn)} and `,
       this.getAccountLink(op.to_account),
-      `deposited ${await this.getFormattedAmount(op.deposited)}`
+      `deposited ${this.getFormattedAmount(op.deposited)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_order_operation' })
-  public async formatFillOrderOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_order }>) {
+  public formatFillOrderOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_order }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.current_owner),
-      `paid ${await this.getFormattedAmount(op.current_pays)} for ${await this.getFormattedAmount(op.open_pays)} from `,
+      `paid ${this.getFormattedAmount(op.current_pays)} for ${this.getFormattedAmount(op.open_pays)} from `,
       this.getAccountLink(op.open_owner),
       `(IDs: ${op.current_orderid} -> ${op.open_orderid})`
     ]);
@@ -948,11 +943,11 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_transfer_from_savings_operation' })
-  public async formatFillTransferFromSavings ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_transfer_from_savings }>) {
+  public formatFillTransferFromSavings ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_transfer_from_savings }>) {
     const memo = op.memo !== '' ? `, memo: "${op.memo}"` : '';
 
     const message = this.generateVueLink([
-      `${await this.getFormattedAmount(op.amount)} was transfered from `,
+      `${this.getFormattedAmount(op.amount)} was transfered from `,
       this.getAccountLink(op.from_account),
       'to ',
       this.getAccountLink(op.to_account),
@@ -983,24 +978,24 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'return_vesting_delegation_operation' })
-  public async formatReturnVestingDelegationOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: return_vesting_delegation }>) {
+  public formatReturnVestingDelegationOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: return_vesting_delegation }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.account),
-      `received ${await this.getFormattedAmount(op.vesting_shares)}`
+      `received ${this.getFormattedAmount(op.vesting_shares)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'comment_benefactor_reward_operation' })
-  public async formatCommentBenefactorRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_benefactor_reward }>) {
+  public formatCommentBenefactorRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: comment_benefactor_reward }>) {
     const mustBeClaimed = op.payout_must_be_claimed ? '' : ", doesn't have to be claimed";
 
     const message = this.generateVueLink([
       this.getAccountLink(op.benefactor),
-      `received ${await this.getFormattedAmount(op.vesting_payout)},
-      ${await this.getFormattedAmount(op.hbd_payout)},
-      ${await this.getFormattedAmount(op.hbd_payout)} for comment `,
+      `received ${this.getFormattedAmount(op.vesting_payout)},
+      ${this.getFormattedAmount(op.hbd_payout)},
+      ${this.getFormattedAmount(op.hbd_payout)} for comment `,
       this.getPermlink(op.author, op.permlink),
       mustBeClaimed
     ]);
@@ -1009,10 +1004,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'producer_reward_operation' })
-  public async formatProducerReward ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: producer_reward }>) {
+  public formatProducerReward ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: producer_reward }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.producer),
-      `received ${await this.getFormattedAmount(op.vesting_shares)} reward`
+      `received ${this.getFormattedAmount(op.vesting_shares)} reward`
     ]);
 
     return { ...target, value: message };
@@ -1028,10 +1023,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'proposal_pay_operation' })
-  public async formatProposalPayOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: proposal_pay }>) {
+  public formatProposalPayOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: proposal_pay }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.receiver),
-      `was paid ${await this.getFormattedAmount(op.payment)} for his proposal ${op.proposal_id} by `,
+      `was paid ${this.getFormattedAmount(op.payment)} for his proposal ${op.proposal_id} by `,
       this.getAccountLink(op.payer)
     ]);
 
@@ -1039,23 +1034,23 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'dhf_funding_operation' })
-  public async formatDhfFundingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: dhf_funding }>) {
+  public formatDhfFundingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: dhf_funding }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.treasury),
-      `received ${await this.getFormattedAmount(op.additional_funds)}`
+      `received ${this.getFormattedAmount(op.additional_funds)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'hardfork_hive_operation' })
-  public async formatHardforkHiveOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: hardfork_hive }>) {
+  public formatHardforkHiveOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: hardfork_hive }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.account),
-      `aidrop of ${await this.getFormattedAmount(op.hbd_transferred)},
-      ${await this.getFormattedAmount(op.hive_transferred)},
-      ${await this.getFormattedAmount(op.total_hive_from_vests)},
-      ${await this.getFormattedAmount(op.vests_converted)} went to `,
+      `aidrop of ${this.getFormattedAmount(op.hbd_transferred)},
+      ${this.getFormattedAmount(op.hive_transferred)},
+      ${this.getFormattedAmount(op.total_hive_from_vests)},
+      ${this.getFormattedAmount(op.vests_converted)} went to `,
       this.getAccountLink(op.treasury)
     ]);
 
@@ -1063,10 +1058,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'hardfork_hive_restore_operation' })
-  public async formatHardforkHiveRestoreOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: hardfork_hive_restore }>) {
+  public formatHardforkHiveRestoreOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: hardfork_hive_restore }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.account),
-      `received ${await this.getFormattedAmount(op.hive_transferred)} and ${await this.getFormattedAmount(op.hbd_transferred)} from `,
+      `received ${this.getFormattedAmount(op.hive_transferred)} and ${this.getFormattedAmount(op.hbd_transferred)} from `,
       this.getAccountLink(op.treasury)
     ]);
 
@@ -1093,12 +1088,12 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'effective_comment_vote_operation' })
-  public async formatEffectiveCommentVoteOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: effective_comment_vote }>) {
+  public formatEffectiveCommentVoteOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: effective_comment_vote }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.voter),
       'voted for ',
       this.getPermlink(op.author, op.permlink),
-      ` and generated ${await this.getFormattedAmount(op.pending_payout)} pending payout`
+      ` and generated ${this.getFormattedAmount(op.pending_payout)} pending payout`
     ]);
 
     return { ...target, value: message };
@@ -1116,10 +1111,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'dhf_conversion_operation' })
-  public async formatDhfConversionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: dhf_conversion }>) {
+  public formatDhfConversionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: dhf_conversion }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.treasury),
-      `converted ${await this.getFormattedAmount(op.hive_amount_in)} to ${await this.getFormattedAmount(op.hbd_amount_out)}`
+      `converted ${this.getFormattedAmount(op.hive_amount_in)} to ${this.getFormattedAmount(op.hbd_amount_out)}`
     ]);
 
     return { ...target, value: message };
@@ -1149,58 +1144,58 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_to_vesting_completed_operation' })
-  public async formatTransferToVestingCompletedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer_to_vesting_completed }>) {
+  public formatTransferToVestingCompletedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer_to_vesting_completed }>) {
     const message = this.generateVueLink([
       'Vesting transfer from ',
       this.getAccountLink(op.from_account),
       'to ',
       this.getAccountLink(op.to_account),
-      `was completed with ${await this.getFormattedAmount(op.hive_vested)} -> ${await this.getFormattedAmount(op.vesting_shares_received)}`
+      `was completed with ${this.getFormattedAmount(op.hive_vested)} -> ${this.getFormattedAmount(op.vesting_shares_received)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'pow_reward_operation' })
-  public async formatPowRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: pow_reward }>) {
+  public formatPowRewardOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: pow_reward }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.worker),
-      `received ${await this.getFormattedAmount(op.reward)} reward`
+      `received ${this.getFormattedAmount(op.reward)} reward`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'vesting_shares_split_operation' })
-  public async formatVestingSharesSplitOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: vesting_shares_split }>) {
+  public formatVestingSharesSplitOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: vesting_shares_split }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `splited vests ${await this.getFormattedAmount(op.vesting_shares_before_split)} -> ${await this.getFormattedAmount(op.vesting_shares_after_split)}`
+      `splited vests ${this.getFormattedAmount(op.vesting_shares_before_split)} -> ${this.getFormattedAmount(op.vesting_shares_after_split)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'account_created_operation' })
-  public async formatAccountCreatedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: account_created }>) {
+  public formatAccountCreatedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: account_created }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.new_account_name),
       'was created by ',
       this.getAccountLink(op.creator),
-      `with initials: vesting shares ${await this.getFormattedAmount(op.initial_vesting_shares)}
-      and delegations ${await this.getFormattedAmount(op.initial_delegation)}`
+      `with initials: vesting shares ${this.getFormattedAmount(op.initial_vesting_shares)}
+      and delegations ${this.getFormattedAmount(op.initial_delegation)}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_collateralized_convert_request_operation' })
-  public async formatFillCollateralizedConvertRequestOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_collateralized_convert_request }>) {
+  public formatFillCollateralizedConvertRequestOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_collateralized_convert_request }>) {
     const message = this.generateVueLink([
       `Collateralized convert reuqest of ${op.owner}
-      (ID: ${op.requestid}) was filled with ${await this.getFormattedAmount(op.amount_in)}
-      -> ${await this.getFormattedAmount(op.amount_out)}
-      and ${await this.getFormattedAmount(op.excess_collateral)} excess`
+      (ID: ${op.requestid}) was filled with ${this.getFormattedAmount(op.amount_in)}
+      -> ${this.getFormattedAmount(op.amount_out)}
+      and ${this.getFormattedAmount(op.excess_collateral)} excess`
     ]);
 
     return { ...target, value: message };
@@ -1216,20 +1211,20 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'fill_recurrent_transfer_operation' })
-  public async formatFillRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_recurrent_transfer }>) {
+  public formatFillRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: fill_recurrent_transfer }>) {
     const message = this.generateVueLink([
       'Recurrent transfer from ',
       this.getAccountLink(op.from_account),
       'to ',
       this.getAccountLink(op.to_account),
-      `with amount: ${await this.getFormattedAmount(op.amount)} and ${op.remaining_executions} remaining executions`
+      `with amount: ${this.getFormattedAmount(op.amount)} and ${op.remaining_executions} remaining executions`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'failed_recurrent_transfer_operation' })
-  public async formatFailedRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: failed_recurrent_transfer }>) {
+  public formatFailedRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: failed_recurrent_transfer }>) {
     const deleted = op.deleted ? ' and was deleted' : '';
 
     const message = this.generateVueLink([
@@ -1237,7 +1232,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       this.getAccountLink(op.from_account),
       'to ',
       this.getAccountLink(op.to_account),
-      `with amount: ${await this.getFormattedAmount(op.amount)}
+      `with amount: ${this.getFormattedAmount(op.amount)}
       and ${op.remaining_executions} remaining executions failed for ${op.consecutive_failures} times`,
       deleted
     ]);
@@ -1246,11 +1241,11 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'limit_order_cancelled_operation' })
-  public async formatLimitOrderCancelledOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_cancelled }>) {
+  public formatLimitOrderCancelledOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: limit_order_cancelled }>) {
     const message = this.generateVueLink([
       `Order ${op.orderid} by `,
       this.getAccountLink(op.seller),
-      `was cancelled and ${await this.getFormattedAmount(op.amount_back)} was sent back`
+      `was cancelled and ${this.getFormattedAmount(op.amount_back)} was sent back`
     ]);
 
     return { ...target, value: message };
@@ -1267,10 +1262,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'proposal_fee_operation' })
-  public async formatProposalFeeOperations ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: proposal_fee }>) {
+  public formatProposalFeeOperations ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: proposal_fee }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.creator),
-      `got proposal fee ${await this.getFormattedAmount(op.fee)} ID: ${op.proposal_id} from `,
+      `got proposal fee ${this.getFormattedAmount(op.fee)} ID: ${op.proposal_id} from `,
       this.getAccountLink(op.treasury)
     ]);
 
@@ -1278,17 +1273,17 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'collateralized_convert_immediate_conversion_operation' })
-  public async formatCollateralizedConvertImmediateConversionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: collateralized_convert_immediate_conversion }>) {
+  public formatCollateralizedConvertImmediateConversionOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: collateralized_convert_immediate_conversion }>) {
     const message = this.generateVueLink([
       this.getAccountLink(op.owner),
-      `received ${await this.getFormattedAmount(op.hbd_out)} for conversion ID: ${op.requestid}`
+      `received ${this.getFormattedAmount(op.hbd_out)} for conversion ID: ${op.requestid}`
     ]);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_approved_operation' })
-  public async formatEscrowApprovedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_approved }>) {
+  public formatEscrowApprovedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_approved }>) {
     const message = this.generateVueLink([
       'Escrow from ',
       this.getAccountLink(op.from_account),
@@ -1296,7 +1291,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       this.getAccountLink(op.to_account),
       'by agent ',
       this.getAccountLink(op.agent),
-      `with fee: ${await this.getFormattedAmount(op.fee)},
+      `with fee: ${this.getFormattedAmount(op.fee)},
       ID: ${op.escrow_id} was approved`
     ]);
 
@@ -1304,7 +1299,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_rejected_operation' })
-  public async formatEscrowRejectedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_rejected }>) {
+  public formatEscrowRejectedOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_rejected }>) {
     const message = this.generateVueLink([
       'Escrow from ',
       this.getAccountLink(op.from_account),
@@ -1312,7 +1307,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       this.getAccountLink(op.to_account),
       'by agent ',
       this.getAccountLink(op.agent),
-      `with fee: ${await this.getFormattedAmount(op.fee)},
+      `with fee: ${this.getFormattedAmount(op.fee)},
       ID: ${op.escrow_id} was rejected`
     ]);
 
@@ -1341,10 +1336,10 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 }
 
-const operationsFormatter = async (): Promise<IWaxExtendableFormatter> => {
-  const wax = await createWaxFoundation();
+const operationsFormatter = (): IWaxExtendableFormatter => {
+  const { $chain } = useNuxtApp();
 
-  let basicFormatter = wax.formatter;
+  let basicFormatter = $chain.formatter;
 
   basicFormatter = basicFormatter.extend(OperationsFormatter, {
     transaction: { displayAsId: false }
@@ -1353,10 +1348,10 @@ const operationsFormatter = async (): Promise<IWaxExtendableFormatter> => {
   return basicFormatter;
 };
 
-export default defineNuxtPlugin(async () => {
+export default defineNuxtPlugin(() => {
   return {
     provide: {
-      formatter: await operationsFormatter()
+      formatter: operationsFormatter()
     }
   };
 });
