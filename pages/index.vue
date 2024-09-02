@@ -13,14 +13,20 @@
         </div>
       </div>
       <div v-if="store.$state.id.length !== 0">
-        <s-skeleton v-if="store.$state.isLoading" class="w-[50px] h-[50px] skeleton" />
+        <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
-          <v-icon v-if="store.$state.isValid" color="green">
-            mdi-check
-          </v-icon>
-          <v-icon v-else color="red">
-            mdi-close
-          </v-icon>
+          <span v-if="store.$state.isValid" class="text-green">
+            Transaction valid
+            <v-icon class="ml-2 mb-2">
+              mdi-check
+            </v-icon>
+          </span>
+          <span v-else class="text-red">
+            Transaction invalid
+            <v-icon class="ml-2 mb-1">
+              mdi-close
+            </v-icon>
+          </span>
         </div>
       </div>
       <EndpointUrl />
