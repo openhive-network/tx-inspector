@@ -57,7 +57,11 @@
           </s-table-cell>
           <s-table-cell>
             <span v-for="(item, key) in store.authorityPath.value" :key="key">
-              {{ item.account }} {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
+              <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
+                {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
+              </a>
+              {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
+              <v-icon v-if="store.authorityPath.value[key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
         </s-table-row>
