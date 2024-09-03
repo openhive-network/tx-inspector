@@ -26,8 +26,9 @@
         <s-table-row>
           <s-table-head>Operation type</s-table-head>
           <s-table-head>Operation content</s-table-head>
-          <s-table-head>Signed By</s-table-head>
+          <s-table-head>Authority account</s-table-head>
           <s-table-head>Authority type</s-table-head>
+          <s-table-head>Satisfied</s-table-head>
         </s-table-row>
       </s-table-header>
       <s-table-body v-show="radioState === 'formatted'">
@@ -47,6 +48,11 @@
             <span :class="getColorForType(getRequiredAuthorityForOperation(item.type)[0])">
               {{ getRequiredAuthorityForOperation(item.type)[0] }}
             </span>
+          </s-table-cell>
+          <s-table-cell>
+            <v-icon :color="checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'green' : 'red'">
+              {{ checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'mdi-check' : 'mdi-close' }}
+            </v-icon>
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -70,6 +76,11 @@
               {{ getRequiredAuthorityForOperation(item.type)[0] }}
             </span>
           </s-table-cell>
+          <s-table-cell>
+            <v-icon :color="checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'green' : 'red'">
+              {{ checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'mdi-check' : 'mdi-close' }}
+            </v-icon>
+          </s-table-cell>
         </s-table-row>
       </s-table-body>
     </s-table>
@@ -79,41 +90,63 @@
 <script lang="ts" setup>
 /* eslint-disable array-callback-return */
 
+import { toast } from 'vue-sonner';
+import { EAuthorityLevel } from '~/types/wax';
+
 const store = useWaxStore();
 
 const radioState = ref('formatted');
 
-const getRequiredAuthorityForOperation = (operationType: string): string[] => {
+const checkSatisfied = (authType: EAuthorityLevel | string, authAccount: string): boolean => {
+  const requiredAuthorityType = store.$state.authorityType;
+
+  if (requiredAuthorityType === undefined)
+    toast.error('Error', {
+      description: 'Cannot find required authorities'
+    });
+
+  for (let i = 0; i < requiredAuthorityType.length; ++i) {
+    const el = requiredAuthorityType[i];
+
+    for (const acc of el.accounts)
+      if (acc === authAccount && el.level === authType)
+        return true;
+  }
+
+  return false;
+};
+
+const getRequiredAuthorityForOperation = (operationType: string): EAuthorityLevel[] | string[] => {
   const authorityTypes: string[] = [];
 
   requiredPostingAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Posting');
+      authorityTypes.push(EAuthorityLevel.POSTING);
   });
 
   requiredActiveAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Active');
+      authorityTypes.push(EAuthorityLevel.ACTIVE);
   });
 
   requiredOwnerAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Owner');
+      authorityTypes.push(EAuthorityLevel.OWNER);
   });
 
   requiredPostingAndActiveAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Posting', 'and', 'Active');
+      authorityTypes.push(EAuthorityLevel.POSTING, 'and', EAuthorityLevel.ACTIVE);
   });
 
   requiredPostingOrActiveAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Posting', 'or', 'Active');
+      authorityTypes.push(EAuthorityLevel.POSTING, 'or', EAuthorityLevel.ACTIVE);
   });
 
   requiredActiveOrOwnerAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Active', 'or', 'Owner');
+      authorityTypes.push(EAuthorityLevel.ACTIVE, 'or', EAuthorityLevel.OWNER);
   });
 
   requiredAnyAuthority.some((operation) => {
