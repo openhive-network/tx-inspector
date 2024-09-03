@@ -101,6 +101,7 @@ onMounted(async () => {
       store.$state.formattedOperations = useOperationsFormatter(trx).operations;
 
       if (authorityPath) {
+        authorityPath.push(authorityPath.shift()!);
         store.$state.authorityPath = authorityPath;
 
         let totalWeight = 0;

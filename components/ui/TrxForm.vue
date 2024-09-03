@@ -71,6 +71,7 @@ const useOperationsFormatter = (operations: any) => {
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
+  store.$state.authorityPath.length = 0;
   try {
     store.$state.isLoading = true;
 
@@ -100,9 +101,8 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    console.log('here', authorityPath);
-
     if (authorityPath) {
+      authorityPath.push(authorityPath.shift()!);
       store.$state.authorityPath = authorityPath;
 
       let totalWeight = 0;
