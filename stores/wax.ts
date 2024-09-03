@@ -1,4 +1,4 @@
-import { ApiOperation, authority } from '@hiveio/wax';
+import { ApiOperation, authority, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 import { EAuthorityLevel, EPackType } from '~/types/wax';
@@ -18,6 +18,7 @@ export const useWaxStore = defineStore('wax', {
     formattedOperations: [] as any[],
     signeesByKeys: [] as string[][],
     isSatisfied: false,
+    requiredAuthoritiesForOperation: [] as unknown as TTransactionRequiredAuthorities[],
     isLoading: false
   }),
 

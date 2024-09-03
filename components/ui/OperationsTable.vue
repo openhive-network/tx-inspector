@@ -40,18 +40,18 @@
             <component :is="item.value" />
           </s-table-cell>
           <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${store.$state.signeesByKeys[index][0]}`">
-              {{ `@${store.$state.signeesByKeys[index][0]}` }}
+            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths}`">
+              {{ `@${getAuthorityForOperation(index)?.auths}` }}
             </a>
           </s-table-cell>
           <s-table-cell>
-            <span :class="getColorForType(getRequiredAuthorityForOperation(item.type)[0])">
-              {{ getRequiredAuthorityForOperation(item.type)[0] }}
+            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
+              {{ getAuthorityForOperation(index)?.type }}
             </span>
           </s-table-cell>
           <s-table-cell>
-            <v-icon :color="checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'green' : 'red'">
-              {{ checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'mdi-check' : 'mdi-close' }}
+            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
+              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
           </s-table-cell>
         </s-table-row>
@@ -67,18 +67,18 @@
             </code>
           </s-table-cell>
           <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${store.$state.signeesByKeys[index][0]}`">
-              {{ `@${store.$state.signeesByKeys[index][0]}` }}
+            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths}`">
+              {{ `@${getAuthorityForOperation(index)?.auths}` }}
             </a>
           </s-table-cell>
           <s-table-cell>
-            <span :class="getColorForType(getRequiredAuthorityForOperation(item.type)[0])">
-              {{ getRequiredAuthorityForOperation(item.type)[0] }}
+            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
+              {{ getAuthorityForOperation(index)?.type }}
             </span>
           </s-table-cell>
           <s-table-cell>
-            <v-icon :color="checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'green' : 'red'">
-              {{ checkSatisfied(getRequiredAuthorityForOperation(item.type)[0], store.$state.signeesByKeys[index][0]) ? 'mdi-check' : 'mdi-close' }}
+            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
+              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
           </s-table-cell>
         </s-table-row>
@@ -90,6 +90,7 @@
 <script lang="ts" setup>
 /* eslint-disable array-callback-return */
 
+import type { authority } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import { EAuthorityLevel } from '~/types/wax';
 
@@ -97,27 +98,50 @@ const store = useWaxStore();
 
 const radioState = ref('formatted');
 
-const checkSatisfied = (authType: EAuthorityLevel | string, authAccount: string): boolean => {
-  const requiredAuthorityType = store.$state.authorityType;
+const checkSatisfied = (index: number): boolean => {
+  const requiredAuthority = getRequiredAuthorityTypeForOperation(store.$state.operations[index].type);
+  const authForCurrentOperation = getAuthorityForOperation(index);
 
-  if (requiredAuthorityType === undefined)
+  console.log(requiredAuthority, authForCurrentOperation);
+
+  if (authForCurrentOperation === undefined) {
     toast.error('Error', {
-      description: 'Cannot find required authorities'
+      description: 'Cannot find operations required authorities'
     });
-
-  for (let i = 0; i < requiredAuthorityType.length; ++i) {
-    const el = requiredAuthorityType[i];
-
-    for (const acc of el.accounts)
-      if (acc === authAccount && el.level === authType)
-        return true;
+    return false;
   }
+
+  if (requiredAuthority.includes(authForCurrentOperation.type as EAuthorityLevel))
+    return true;
 
   return false;
 };
 
-const getRequiredAuthorityForOperation = (operationType: string): EAuthorityLevel[] | string[] => {
-  const authorityTypes: string[] = [];
+const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | string, auths: Array<string | authority> } | undefined => {
+  const auths = store.$state.requiredAuthoritiesForOperation[index];
+
+  if (auths === undefined) {
+    toast.error('Error', {
+      description: 'Cannot find operations required authorities'
+    });
+    return;
+  }
+
+  if (auths.posting.size !== 0)
+    return { type: EAuthorityLevel.POSTING, auths: Array.from(auths.posting) };
+
+  if (auths.active.size !== 0)
+    return { type: EAuthorityLevel.ACTIVE, auths: Array.from(auths.active) };
+
+  if (auths.owner.size !== 0)
+    return { type: EAuthorityLevel.OWNER, auths: Array.from(auths.owner) };
+
+  if (auths.other.length !== 0)
+    return { type: 'other', auths: auths.other };
+};
+
+const getRequiredAuthorityTypeForOperation = (operationType: string): EAuthorityLevel[] => {
+  const authorityTypes: EAuthorityLevel[] = [];
 
   requiredPostingAuthority.some((operation) => {
     if (operation === operationType)
@@ -136,33 +160,31 @@ const getRequiredAuthorityForOperation = (operationType: string): EAuthorityLeve
 
   requiredPostingAndActiveAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING, 'and', EAuthorityLevel.ACTIVE);
+      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE);
   });
 
   requiredPostingOrActiveAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING, 'or', EAuthorityLevel.ACTIVE);
+      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE);
   });
 
   requiredActiveOrOwnerAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.ACTIVE, 'or', EAuthorityLevel.OWNER);
-  });
-
-  requiredAnyAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push('Any');
+      authorityTypes.push(EAuthorityLevel.ACTIVE, EAuthorityLevel.OWNER);
   });
 
   requiredEveryAuthority.some((operation) => {
     if (operation === operationType)
-      authorityTypes.push('Every');
+      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE, EAuthorityLevel.OWNER);
   });
 
   return authorityTypes;
 };
 
-const getColorForType = (type: string): string => {
+const getColorForType = (type?: string): string => {
+  if (type === undefined)
+    return 'gray';
+
   switch (type) {
     case 'Posting':
       return 'text-green';

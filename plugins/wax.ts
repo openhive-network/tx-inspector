@@ -88,6 +88,22 @@ export class WaxAccountInformation {
     return requiredAuthorities;
   }
 
+  public async getRequiredAuthoritiesForOperation (trx: ApiTransaction, operationIndex: number): Promise<TTransactionRequiredAuthorities> {
+    await this.requireChain();
+
+    const builtTx = this.chain.Transaction.fromApi(trx);
+
+    if (trx.operations.length === 1)
+      return builtTx.requiredAuthorities;
+
+    // Ignore TaPoS as we do not check transaction validity, just extract the required authorities
+    const tx = new this.chain.Transaction('', trx.expiration);
+
+    tx.pushOperation(builtTx.transaction.operations[operationIndex]);
+
+    return tx.requiredAuthorities;
+  }
+
   public async getAccounts (accountsArr: string[]): Promise<ApiAccount[]> {
     await this.requireChain();
 

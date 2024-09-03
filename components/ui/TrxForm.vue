@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax';
+import type { ApiTransaction, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
@@ -100,6 +100,15 @@ const submitTransaction = async () => {
     store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
+
+    const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
+    for (let i = 0; i < store.$state.operations.length; ++i) {
+      const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);
+
+      authoritiesForOperation.push(requiredAuthorityForOperation);
+    }
+
+    store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
 
     if (authorityPath) {
       authorityPath.push(authorityPath.shift()!);
