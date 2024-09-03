@@ -60,8 +60,20 @@ const verifyAuthorityImpl = async (
   const posting_approvals = new Set<string>();
 
   const VERIFY_AUTHORITY_CHECK = (test: boolean, problem: string, id: string): void => {
-    if (!test)
-      throw new Error(`"${id}": ${problem}`);
+    if (!test) {
+      toast.error('Error', {
+        description: `${id}: ${problem}`
+      });
+
+      if (problem === 'missing_posting' || problem === 'missing_active' || problem === 'missing_owner')
+        paths.forEach((item) => {
+          if (Array.isArray(item.account))
+            item.account.forEach((account, index) => {
+              if (account === id)
+                (item.account as Array<string>)[index] = '';
+            });
+        });
+    }
   };
 
   const VERIFY_AUTHORITY_CHECK_OTHER_AUTH = (test: boolean, _auth: authority): void => {
@@ -86,6 +98,8 @@ const verifyAuthorityImpl = async (
 
     posting_approvals.forEach(id => s.approvedBy.add(id));
 
+    paths.push({ account: required_authorities.required_posting });
+
     for (const id of required_authorities.required_posting)
       VERIFY_AUTHORITY_CHECK(
         await s.checkAuthority(id) || await s.checkAuthority(await get_active(id)) || await s.checkAuthority(await get_owner(id)),
@@ -98,8 +112,6 @@ const verifyAuthorityImpl = async (
       'unused_signature',
       ''
     );
-
-    paths.push({ account: required_authorities.required_posting });
 
     return;
   }

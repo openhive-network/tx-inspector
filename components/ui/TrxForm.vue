@@ -100,7 +100,7 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    console.log(store.$state.signeesByKeys);
+    console.log('here', authorityPath);
 
     if (authorityPath) {
       store.$state.authorityPath = authorityPath;
@@ -121,7 +121,7 @@ const submitTransaction = async () => {
     }
   } catch (error) {
     toast.error('Error', {
-      description: error instanceof Error ? error.message : 'Unknown error occured',
+      description: error instanceof Error ? error.message : 'Unknown error occured'
     });
   } finally {
     store.$state.isLoading = false;
