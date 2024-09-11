@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax';
+import type { ApiTransaction, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
@@ -99,6 +99,15 @@ onMounted(async () => {
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
       store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
       store.$state.formattedOperations = useOperationsFormatter(trx).operations;
+
+      const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
+      for (let i = 0; i < store.$state.operations.length; ++i) {
+        const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx, i);
+
+        authoritiesForOperation.push(requiredAuthorityForOperation);
+      }
+
+      store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
 
       if (authorityPath) {
         authorityPath.push(authorityPath.shift()!);
