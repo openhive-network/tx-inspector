@@ -13,14 +13,20 @@
         </div>
       </div>
       <div v-if="store.$state.id.length !== 0">
-        <s-skeleton v-if="store.$state.isLoading" class="w-[50px] h-[50px] skeleton" />
+        <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
-          <v-icon v-if="store.$state.isValid" color="green">
-            mdi-check
-          </v-icon>
-          <v-icon v-else color="red">
-            mdi-close
-          </v-icon>
+          <span v-if="store.$state.isValid" class="text-green">
+            Transaction valid
+            <v-icon class="ml-2 mb-2">
+              mdi-check
+            </v-icon>
+          </span>
+          <span v-else class="text-red">
+            Transaction invalid
+            <v-icon class="ml-2 mb-1">
+              mdi-close
+            </v-icon>
+          </span>
         </div>
       </div>
       <EndpointUrl />
@@ -34,9 +40,8 @@
         <AuthTable class="w-1/2" />
       </div>
       <hr class="my-8">
-      <div class="flex gap-4 mb-8">
-        <Operations />
-        <OperationsAuthorities />
+      <div class="mb-16">
+        <OperationsTable />
       </div>
     </s-card-content>
   </s-card>
@@ -48,8 +53,7 @@ import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
-import Operations from '~/components/ui/Operations.vue';
-import OperationsAuthorities from '~/components/ui/OperationsAuthorities.vue';
+import OperationsTable from '~/components/ui/OperationsTable.vue';
 
 const store = useWaxStore();
 </script>

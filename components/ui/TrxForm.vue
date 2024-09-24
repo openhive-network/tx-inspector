@@ -1,26 +1,7 @@
 <template>
   <div class="flex flex-col">
     <div class="my-2">
-      <s-label>
-        Transaction ({{ radioState }} format)
-      </s-label>
-      <s-input
-        v-if="radioState === 'hash'"
-        v-model="hash"
-        placeholder="Provide your transaction hash"
-        class="my-3"
-        required
-      />
-      <s-textarea
-        v-else
-        v-model="trx"
-        :placeholder="`Provide your transaction ${radioState}`"
-        class="min-h-64 max-h-64 my-3"
-        required
-      />
-    </div>
-    <s-dialog-footer class="flex justify-between sm:justify-between items-center">
-      <s-radio-group v-model="radioState" default-value="json">
+      <s-radio-group v-model="radioState" default-value="json" class="flex mb-3">
         <div class="flex items-center space-x-2">
           <s-radio-group-item id="json" value="json" />
           <s-label for="json">
@@ -40,6 +21,25 @@
           </s-label>
         </div>
       </s-radio-group>
+      <s-label>
+        Transaction ({{ radioState }} format)
+      </s-label>
+      <s-input
+        v-if="radioState === 'hash'"
+        v-model="hash"
+        placeholder="Provide your transaction hash"
+        class="mt-3 mb-[14.5rem]"
+        required
+      />
+      <s-textarea
+        v-else
+        v-model="trx"
+        :placeholder="`Provide your transaction ${radioState}`"
+        class="min-h-64 max-h-64 my-3"
+        required
+      />
+    </div>
+    <s-dialog-footer>
       <s-dialog-close as-child>
         <Button @click="submitTransaction()">
           Submit
@@ -50,8 +50,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax';
-import { toast } from '../shadcn/toast';
+import type { ApiTransaction, TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
@@ -71,6 +71,7 @@ const useOperationsFormatter = (operations: any) => {
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
+  store.$state.authorityPath.length = 0;
   try {
     store.$state.isLoading = true;
 
@@ -100,13 +101,36 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
 
-    if (authorityPath)
+    const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
+    for (let i = 0; i < store.$state.operations.length; ++i) {
+      const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);
+
+      authoritiesForOperation.push(requiredAuthorityForOperation);
+    }
+
+    store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
+
+    if (authorityPath) {
+      authorityPath.push(authorityPath.shift()!);
       store.$state.authorityPath = authorityPath;
+
+      let totalWeight = 0;
+      let totalThreshold = 0;
+
+      for (let i = 0; i < authorityPath.length; ++i)
+        if (authorityPath[i].authWeight) {
+          totalWeight += authorityPath[i].authWeight!.auth;
+          totalThreshold += authorityPath[i].authWeight!.weight;
+        }
+
+      if (totalWeight >= totalThreshold)
+        store.$state.isSatisfied = true;
+      else
+        store.$state.isSatisfied = false;
+    }
   } catch (error) {
-    toast({
-      title: 'Error',
-      description: error instanceof Error ? error.message : 'Unknown error occured',
-      variant: 'destructive'
+    toast.error('Error', {
+      description: error instanceof Error ? error.message : 'Unknown error occured'
     });
   } finally {
     store.$state.isLoading = false;

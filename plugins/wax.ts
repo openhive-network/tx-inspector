@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, ApiTransaction, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
@@ -7,6 +7,12 @@ export class WaxAccountInformation {
   private async requireChain (): Promise<void> {
     if (typeof this.chain === 'undefined')
       this.chain = await createHiveChain();
+  }
+
+  public async getChain (): Promise<IHiveChainInterface> {
+    await this.requireChain();
+
+    return this.chain;
   }
 
   public async getTransactionFromId (id: string): Promise<ApiTransaction> {
@@ -38,10 +44,12 @@ export class WaxAccountInformation {
     return trx.signatures;
   }
 
-  public async getSignatureKeys (trx: ApiTransaction): Promise<string[]> {
+  public async getSignatureKeys (transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
-    const signatureKeys = this.chain.Transaction.fromApi(trx).signatureKeys;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const signatureKeys = await this.getPackType(transaction) === EPackType.HF26 ? trx.signatureKeys : trx.legacy_signatureKeys;
 
     if (typeof signatureKeys === 'undefined')
       throw new Error('Signature keys not found');
@@ -49,10 +57,12 @@ export class WaxAccountInformation {
     return signatureKeys;
   }
 
-  public async getTransactionId (trx: ApiTransaction): Promise<string> {
+  public async getTransactionId (transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    const id = this.chain.Transaction.fromApi(trx).id;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const id = await this.getPackType(transaction) === EPackType.HF26 ? trx.id : trx.legacy_id;
 
     if (typeof id === 'undefined')
       throw new Error('Transaction ID not found');
@@ -60,10 +70,12 @@ export class WaxAccountInformation {
     return id;
   }
 
-  public async getSigDigest (trx: ApiTransaction): Promise<string> {
+  public async getSigDigest (transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    const sigDigest = this.chain.Transaction.fromApi(trx).sigDigest;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const sigDigest = await this.getPackType(transaction) === EPackType.HF26 ? trx.sigDigest : trx.legacy_sigDigest;
 
     if (typeof sigDigest === 'undefined')
       throw new Error('Signature digest not found');
@@ -82,6 +94,22 @@ export class WaxAccountInformation {
     return requiredAuthorities;
   }
 
+  public async getRequiredAuthoritiesForOperation (trx: ApiTransaction, operationIndex: number): Promise<TTransactionRequiredAuthorities> {
+    await this.requireChain();
+
+    const builtTx = this.chain.Transaction.fromApi(trx);
+
+    if (trx.operations.length === 1)
+      return builtTx.requiredAuthorities;
+
+    // Ignore TaPoS as we do not check transaction validity, just extract the required authorities
+    const tx = new this.chain.Transaction('', trx.expiration);
+
+    tx.pushOperation(builtTx.transaction.operations[operationIndex]);
+
+    return tx.requiredAuthorities;
+  }
+
   public async getAccounts (accountsArr: string[]): Promise<ApiAccount[]> {
     await this.requireChain();
 
@@ -93,21 +121,29 @@ export class WaxAccountInformation {
     return accounts;
   }
 
-  public async getAuthorityType (trx: ApiTransaction): Promise<EAuthorityLevel> {
+  public async getAccountsFromId (id: string): Promise<{ accounts: ApiAccount[] }> {
     await this.requireChain();
+
+    return (await this.chain.api.database_api.find_accounts({ accounts: [id] }));
+  }
+
+  public async getAuthorityType (trx: ApiTransaction): Promise<{ level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[]> {
+    await this.requireChain();
+
+    const authLevel: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[] = [];
 
     const requiredAuthorities = await this.getRequiredAuthorities(trx);
 
     if (requiredAuthorities.owner.size !== 0)
-      return EAuthorityLevel.OWNER;
+      authLevel.push({ level: EAuthorityLevel.OWNER, accounts: requiredAuthorities.owner });
 
     if (requiredAuthorities.active.size !== 0)
-      return EAuthorityLevel.ACTIVE;
+      authLevel.push({ level: EAuthorityLevel.ACTIVE, accounts: requiredAuthorities.active });
 
     if (requiredAuthorities.posting.size !== 0)
-      return EAuthorityLevel.POSTING;
+      authLevel.push({ level: EAuthorityLevel.POSTING, accounts: requiredAuthorities.posting });
 
-    return EAuthorityLevel.POSTING;
+    return authLevel;
   }
 
   public async getOperationsFromTransaction (trx: ApiTransaction): Promise<ApiOperation[]> {
@@ -166,10 +202,13 @@ export class WaxAccountInformation {
   }
 }
 
-export default defineNuxtPlugin(() => {
+const wax = new WaxAccountInformation();
+
+export default defineNuxtPlugin(async () => {
   return {
     provide: {
-      wax: new WaxAccountInformation()
+      wax,
+      chain: await wax.getChain()
     }
   };
 });

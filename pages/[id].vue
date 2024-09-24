@@ -13,14 +13,20 @@
         </div>
       </div>
       <div v-if="store.$state.id.length !== 0">
-        <s-skeleton v-if="store.$state.isLoading" class="w-[50px] h-[50px] skeleton" />
+        <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
-          <v-icon v-if="store.$state.isValid" color="green">
-            mdi-check
-          </v-icon>
-          <v-icon v-else color="red">
-            mdi-close
-          </v-icon>
+          <span v-if="store.$state.isValid" class="text-green">
+            Transaction valid
+            <v-icon class="ml-2 mb-2">
+              mdi-check
+            </v-icon>
+          </span>
+          <span v-else class="text-red">
+            Transaction invalid
+            <v-icon class="ml-2 mb-1">
+              mdi-close
+            </v-icon>
+          </span>
         </div>
       </div>
       <EndpointUrl />
@@ -34,29 +40,33 @@
         <AuthTable class="w-1/2" />
       </div>
       <hr class="my-8">
-      <div class="flex gap-4 mb-8">
-        <Operations />
-        <OperationsAuthorities />
+      <div class="mb-16">
+        <OperationsTable />
       </div>
     </s-card-content>
   </s-card>
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax';
+import type { ApiTransaction, TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { toast } from 'vue-sonner';
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
-import Operations from '~/components/ui/Operations.vue';
-import OperationsAuthorities from '~/components/ui/OperationsAuthorities.vue';
-import { toast } from '~/components/shadcn/toast';
+import OperationsTable from '~/components/ui/OperationsTable.vue';
 
 const store = useWaxStore();
 
 const route = useRoute();
 const { $wax } = useNuxtApp();
+
+const useOperationsFormatter = (operations: any) => {
+  const { $formatter } = useNuxtApp();
+
+  return $formatter.format(operations);
+};
 
 onMounted(async () => {
   const id = route.params.id;
@@ -72,9 +82,8 @@ onMounted(async () => {
       try {
         trx = await $wax.getTransactionFromId(id as string);
       } catch {
-        toast({
-          title: 'Transaction not found',
-          variant: 'destructive'
+        toast.error('Error', {
+          description: 'Transaction not found'
         });
       }
 
@@ -88,14 +97,39 @@ onMounted(async () => {
       store.$state.authorityType = await $wax.getAuthorityType(trx);
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
+      store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
+      store.$state.formattedOperations = useOperationsFormatter(trx).operations;
 
-      if (authorityPath)
+      const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
+      for (let i = 0; i < store.$state.operations.length; ++i) {
+        const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx, i);
+
+        authoritiesForOperation.push(requiredAuthorityForOperation);
+      }
+
+      store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
+
+      if (authorityPath) {
+        authorityPath.push(authorityPath.shift()!);
         store.$state.authorityPath = authorityPath;
+
+        let totalWeight = 0;
+        let totalThreshold = 0;
+
+        for (let i = 0; i < authorityPath.length; ++i)
+          if (authorityPath[i].authWeight) {
+            totalWeight += authorityPath[i].authWeight!.auth;
+            totalThreshold += authorityPath[i].authWeight!.weight;
+          }
+
+        if (totalWeight >= totalThreshold)
+          store.$state.isSatisfied = true;
+        else
+          store.$state.isSatisfied = false;
+      }
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Unknown error occured',
-        variant: 'destructive'
+      toast.error('Error', {
+        description: error instanceof Error ? error.message : 'Unknown error occured'
       });
     } finally {
       store.$state.isLoading = false;
