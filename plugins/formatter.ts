@@ -23,7 +23,6 @@ import type {
   account_witness_proxy,
   account_witness_vote,
   author_reward,
-  cancel_transfer_from_savings,
   change_recovery_account,
   changed_recovery_account,
   claim_account,
@@ -53,7 +52,6 @@ import type {
   effective_comment_vote,
   escrow_approved,
   escrow_rejected,
-  escrow_transfer,
   expired_account_notification,
   failed_recurrent_transfer,
   feed_publish,
@@ -82,14 +80,12 @@ import type {
   proposal_pay,
   proxy_cleared,
   recover_account,
-  recurrent_transfer,
   remove_proposal,
   request_account_recovery,
   return_vesting_delegation,
   set_withdraw_vesting_route,
   shutdown_witness,
   system_warning,
-  transfer,
   transfer_to_vesting_completed,
   update_proposal,
   update_proposal_votes,
@@ -101,6 +97,7 @@ import type {
 } from '@hiveio/wax';
 import { NuxtLink } from '#components';
 import { formatPercent } from '~/utils/formatters';
+import type { ICancelTransferOperation, IEscrowTransferOperation, IRecurrentTransferOperation, ITransferOperation } from '~/types/hive';
 
 class OperationsFormatter implements IWaxCustomFormatter {
   constructor (
@@ -157,24 +154,24 @@ class OperationsFormatter implements IWaxCustomFormatter {
     );
   }
 
-  private getTransferMessage (transfer: transfer): VNode {
+  private getTransferMessage (transfer: ITransferOperation): VNode {
     return this.generateVueLink([
-      this.getAccountLink(transfer.from_account),
+      this.getAccountLink(transfer.from),
       'transfered ',
       this.getFormattedAmount(transfer.amount),
       'to ',
-      this.getAccountLink(transfer.to_account)
+      this.getAccountLink(transfer.to)
     ]);
   }
 
-  private getEscrowMessage (initialMessage: string, escrow: escrow_transfer, amounts?: { hbd_amount?: NaiAsset, hive_amount?: NaiAsset }): VNode {
+  private getEscrowMessage (initialMessage: string, escrow: IEscrowTransferOperation, amounts?: { hbd_amount?: NaiAsset, hive_amount?: NaiAsset }): VNode {
     const amountMessage = amounts ? `sent: ${this.getFormattedAmount(amounts.hbd_amount)} and ${this.getFormattedAmount(amounts.hive_amount)}` : '';
 
     return this.generateVueLink([
       initialMessage,
-      this.getAccountLink(escrow.from_account),
+      this.getAccountLink(escrow.from),
       'to ',
-      this.getAccountLink(escrow.to_account),
+      this.getAccountLink(escrow.to),
       'by agent ',
       this.getAccountLink(escrow.agent),
       amountMessage
@@ -220,16 +217,16 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_operation' })
-  public formatTransfer ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+  public formatTransfer ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: ITransferOperation }>) {
     const message = this.getTransferMessage(op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_to_vesting_operation' })
-  public formatTransferToVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+  public formatTransferToVestingOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: ITransferOperation }>) {
     const message = this.generateVueLink([
-      this.getAccountLink(op.from_account),
+      this.getAccountLink(op.from),
       'transfered ',
       this.getFormattedAmount(op.amount),
       ' to vesting'
@@ -623,21 +620,21 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_transfer_operation' })
-  public formatEscrowTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_transfer }>) {
+  public formatEscrowTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: IEscrowTransferOperation }>) {
     const message = this.getEscrowMessage('Escrow transfer from', op, { hbd_amount: op.hbd_amount, hive_amount: op.hive_amount });
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_dispute_operation' })
-  public formatEscrowDispute ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_transfer }>) {
+  public formatEscrowDispute ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: IEscrowTransferOperation }>) {
     const message = this.getEscrowMessage('Escrow dispute from', op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_release_operation' })
-  public formatEscrowReleaseOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_transfer }>) {
+  public formatEscrowReleaseOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: IEscrowTransferOperation }>) {
     const message = this.getEscrowMessage('Escrow release from', op, { hbd_amount: op.hbd_amount, hive_amount: op.hive_amount });
 
     return { ...target, value: message };
@@ -655,30 +652,30 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'escrow_approve_operation' })
-  public formatEscroweApproveOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: escrow_transfer }>) {
+  public formatEscroweApproveOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: IEscrowTransferOperation }>) {
     const message = this.getEscrowMessage('Escrow approve from', op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_to_savings_operation' })
-  public formatTransferToSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+  public formatTransferToSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: ITransferOperation }>) {
     const message = this.getTransferMessage(op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'transfer_from_savings_operation' })
-  public formatTransferFromSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: transfer }>) {
+  public formatTransferFromSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: ITransferOperation }>) {
     const message = this.getTransferMessage(op);
 
     return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'cancel_transfer_from_savings_operation' })
-  public formatCancelTransferFromSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: cancel_transfer_from_savings }>) {
+  public formatCancelTransferFromSavingsOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: ICancelTransferOperation }>) {
     const message = this.generateVueLink([
-      this.getAccountLink(op.from_account),
+      this.getAccountLink(op.from),
       `cancelled transfer with id: ${op.request_id}`
     ]);
 
@@ -822,11 +819,11 @@ class OperationsFormatter implements IWaxCustomFormatter {
   }
 
   @WaxFormattable({ matchProperty: 'type', matchValue: 'recurrent_transfer_operation' })
-  public formatRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: recurrent_transfer }>) {
+  public formatRecurrentTransferOperation ({ source: { value: op }, target }: IFormatFunctionArguments<{ value: IRecurrentTransferOperation }>) {
     const message = this.generateVueLink([
-      this.getAccountLink(op.from_account),
+      this.getAccountLink(op.from),
       `set recurrent transfer of ${this.getFormattedAmount(op.amount)}, ${op.executions} executions every ${op.recurrence} hours to `,
-      this.getAccountLink(op.to_account)
+      this.getAccountLink(op.to)
     ]);
 
     return { ...target, value: message };
