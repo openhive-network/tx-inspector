@@ -44,10 +44,12 @@ export class WaxAccountInformation {
     return trx.signatures;
   }
 
-  public async getSignatureKeys (trx: ApiTransaction): Promise<string[]> {
+  public async getSignatureKeys (transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
-    const signatureKeys = this.chain.Transaction.fromApi(trx).signatureKeys;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const signatureKeys = await this.getPackType(transaction) === EPackType.HF26 ? trx.signatureKeys : trx.legacy_signatureKeys;
 
     if (typeof signatureKeys === 'undefined')
       throw new Error('Signature keys not found');
@@ -55,10 +57,12 @@ export class WaxAccountInformation {
     return signatureKeys;
   }
 
-  public async getTransactionId (trx: ApiTransaction): Promise<string> {
+  public async getTransactionId (transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    const id = this.chain.Transaction.fromApi(trx).id;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const id = await this.getPackType(transaction) === EPackType.HF26 ? trx.id : trx.legacy_id;
 
     if (typeof id === 'undefined')
       throw new Error('Transaction ID not found');
@@ -66,10 +70,12 @@ export class WaxAccountInformation {
     return id;
   }
 
-  public async getSigDigest (trx: ApiTransaction): Promise<string> {
+  public async getSigDigest (transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
-    const sigDigest = this.chain.Transaction.fromApi(trx).sigDigest;
+    const trx = this.chain.Transaction.fromApi(transaction);
+
+    const sigDigest = await this.getPackType(transaction) === EPackType.HF26 ? trx.sigDigest : trx.legacy_sigDigest;
 
     if (typeof sigDigest === 'undefined')
       throw new Error('Signature digest not found');
