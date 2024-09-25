@@ -159,7 +159,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       this.getAccountLink(transfer.from),
       'transfered ',
       this.getFormattedAmount(transfer.amount),
-      'to ',
+      ' to ',
       this.getAccountLink(transfer.to)
     ]);
   }

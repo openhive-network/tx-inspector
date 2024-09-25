@@ -5,7 +5,7 @@
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
         <div class="ml-3">
           <s-card-title>
-            Information about your transaction
+            Transaction Inspector
           </s-card-title>
           <s-card-description class="mt-2">
             Check in easy and fast way all information about your transaction.
