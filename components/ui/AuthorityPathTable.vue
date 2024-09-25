@@ -62,7 +62,39 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <span v-for="(item, key) in store.authorityPath.value" :key="key">
+            <s-tooltip-provider v-if="store.authorityPath.value.length === 1 && store.authorityPath.value[0].account[0] === ''">
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <span
+                    class="flex items-center text-red font-semibold cursor-pointer"
+                  >
+                    <span class="mr-3">Cannot find any account attached to the public key</span>
+                    <v-icon>mdi-information-slab-circle</v-icon>
+                  </span>
+                </s-tooltip-trigger>
+                <s-tooltip-content class="bg-red">
+                  <div class="flex flex-col">
+                    <span class="text-lg font-semibold">Potential problems:</span>
+                    <hr class="my-2">
+                    <ul>
+                      <li class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The public key has been changed after the transaction was signed
+                      </li>
+                      <li class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The transaction has been signed with a incorrect public key
+                      </li>
+                    </ul>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
+            <span v-for="(item, key) in store.authorityPath.value" v-else :key="key">
               <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
                 {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
               </a>

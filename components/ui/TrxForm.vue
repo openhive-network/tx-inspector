@@ -114,6 +114,8 @@ const submitTransaction = async () => {
       authorityPath.push(authorityPath.shift()!);
       store.$state.authorityPath = authorityPath;
 
+      console.log(authorityPath);
+
       let totalWeight = 0;
       let totalThreshold = 0;
 
