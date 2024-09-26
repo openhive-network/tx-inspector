@@ -98,7 +98,7 @@ onMounted(async () => {
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
       store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-      store.$state.formattedOperations = useOperationsFormatter(trx).operations;
+      store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx)).operations;
 
       const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
       for (let i = 0; i < store.$state.operations.length; ++i) {

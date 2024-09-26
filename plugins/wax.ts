@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, transaction, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
@@ -13,6 +13,12 @@ export class WaxAccountInformation {
     await this.requireChain();
 
     return this.chain;
+  }
+
+  public async getProtoTransaction (transaction: ApiTransaction): Promise<transaction> {
+    await this.requireChain();
+
+    return this.chain.Transaction.fromApi(transaction).transaction;
   }
 
   public async getTransactionFromId (id: string): Promise<ApiTransaction> {
