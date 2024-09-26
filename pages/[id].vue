@@ -90,7 +90,7 @@ onMounted(async () => {
       const authorityPath = await getAuthorityPath($wax, trx);
 
       store.$state.signatures = $wax.getSignatures(trx);
-      store.$state.pack = await $wax.getPackType(trx);
+      store.$state.pack = await $wax.getPackType(trx, id as string);
       store.$state.publicKeys = await $wax.getSignatureKeys(trx);
       store.$state.id = await $wax.getTransactionId(trx);
       store.$state.sigDigest = await $wax.getSigDigest(trx);

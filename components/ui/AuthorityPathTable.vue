@@ -36,7 +36,7 @@
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
-          <s-table-cell>
+          <s-table-cell :class="store.pack.value === EPackType.UNKNOWN ? 'text-red' : ''">
             {{ store.pack.value }}
           </s-table-cell>
           <s-table-cell>
@@ -81,13 +81,19 @@
                         <v-icon class="mr-3">
                           mdi-lightbulb-question-outline
                         </v-icon>
-                        The public key has been changed after the transaction was signed
+                        The public key has been changed after the transaction was signed.
                       </li>
                       <li class="flex items-center font-semibold mb-2">
                         <v-icon class="mr-3">
                           mdi-lightbulb-question-outline
                         </v-icon>
-                        The transaction has been signed with a incorrect public key
+                        The transaction has been signed with a incorrect public key.
+                      </li>
+                      <li v-if="store.pack.value === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The pack type is unknown so we could not process the transaction correctly.
                       </li>
                     </ul>
                   </div>
@@ -109,6 +115,8 @@
 </template>
 
 <script lang="ts" setup>
+import { EPackType } from '~/types/wax';
+
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
 </script>

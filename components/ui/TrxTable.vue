@@ -14,7 +14,7 @@
           <s-table-cell>
             <s-tooltip-provider>
               <s-tooltip>
-                <s-tooltip-trigger as-child>
+                <s-tooltip-trigger v-if="typeof store.id.value === 'string'" as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
                     @click="waxStore.copy(store.id.value)"
@@ -25,9 +25,51 @@
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
-                <s-tooltip-content>
+                <div v-else class="flex flex-col">
+                  <s-tooltip-provider>
+                    <s-tooltip>
+                      <s-tooltip-trigger as-child>
+                        <span
+                          class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
+                          @click="waxStore.copy(store.id.value[0])"
+                        >
+                          <span>
+                            HF26: {{ `${store.id.value[0].slice(0, 5)}...${store.id.value[0].slice(-5)}` }}
+                          </span>
+                          <v-icon size="md">mdi-content-copy</v-icon>
+                        </span>
+                      </s-tooltip-trigger>
+                      <s-tooltip-content>
+                        <div class="flex flex-col">
+                          <span class="text-lg">HF26 ID</span>
+                          <hr class="my-2">
+                          <span>{{ store.id.value[0] }}</span>
+                        </div>
+                      </s-tooltip-content>
+                    </s-tooltip>
+                  </s-tooltip-provider>
+                  <s-tooltip-trigger as-child>
+                    <span
+                      class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
+                      @click="waxStore.copy(store.id.value[1])"
+                    >
+                      <span>
+                        Legacy: {{ `${store.id.value[1].slice(0, 5)}...${store.id.value[1].slice(-5)}` }}
+                      </span>
+                      <v-icon size="md">mdi-content-copy</v-icon>
+                    </span>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Legacy ID</span>
+                      <hr class="my-2">
+                      <span>{{ store.id.value[1] }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </div>
+                <s-tooltip-content v-if="typeof store.id.value === 'string'">
                   <div class="flex flex-col">
-                    <span class="text-lg">Transaction ID</span>
+                    <span class="text-lg">ID</span>
                     <hr class="my-2">
                     <span>{{ store.id.value }}</span>
                   </div>
@@ -38,7 +80,7 @@
           <s-table-cell>
             <s-tooltip-provider>
               <s-tooltip>
-                <s-tooltip-trigger as-child>
+                <s-tooltip-trigger v-if="typeof store.sigDigest.value === 'string'" as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
                     @click="waxStore.copy(store.sigDigest.value)"
@@ -49,7 +91,49 @@
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
-                <s-tooltip-content>
+                <div v-else class="flex flex-col">
+                  <s-tooltip-provider>
+                    <s-tooltip>
+                      <s-tooltip-trigger as-child>
+                        <span
+                          class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
+                          @click="waxStore.copy(store.sigDigest.value[0])"
+                        >
+                          <span>
+                            HF26: {{ `${store.sigDigest.value[0].slice(0, 5)}...${store.sigDigest.value[0].slice(-5)}` }}
+                          </span>
+                          <v-icon size="md">mdi-content-copy</v-icon>
+                        </span>
+                      </s-tooltip-trigger>
+                      <s-tooltip-content>
+                        <div class="flex flex-col">
+                          <span class="text-lg">HF26 Sig Digest</span>
+                          <hr class="my-2">
+                          <span>{{ store.sigDigest.value[0] }}</span>
+                        </div>
+                      </s-tooltip-content>
+                    </s-tooltip>
+                  </s-tooltip-provider>
+                  <s-tooltip-trigger as-child>
+                    <span
+                      class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
+                      @click="waxStore.copy(store.sigDigest.value[1])"
+                    >
+                      <span>
+                        Legacy: {{ `${store.sigDigest.value[1].slice(0, 5)}...${store.sigDigest.value[1].slice(-5)}` }}
+                      </span>
+                      <v-icon size="md">mdi-content-copy</v-icon>
+                    </span>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Legacy Sig Digest</span>
+                      <hr class="my-2">
+                      <span>{{ store.sigDigest.value[1] }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </div>
+                <s-tooltip-content v-if="typeof store.sigDigest.value === 'string'">
                   <div class="flex flex-col">
                     <span class="text-lg">Sig Digest</span>
                     <hr class="my-2">

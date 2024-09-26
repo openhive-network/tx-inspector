@@ -26,8 +26,20 @@ export class WaxAccountInformation {
     return trx;
   }
 
-  async getPackType (transaction: ApiTransaction): Promise<EPackType> {
+  async getPackType (transaction: ApiTransaction, id?: string): Promise<EPackType> {
     await this.requireChain();
+
+    if (id) {
+      const trx = this.chain.Transaction.fromApi(transaction);
+
+      if (id === trx.id)
+        return EPackType.HF26;
+
+      if (id === trx.legacy_id)
+        return EPackType.LEGACY;
+
+      return EPackType.UNKNOWN;
+    }
 
     try {
       await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
@@ -36,7 +48,15 @@ export class WaxAccountInformation {
       });
       return EPackType.HF26;
     } catch (error) {
-      return EPackType.LEGACY;
+      try {
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx: transaction,
+          pack: EPackType.LEGACY
+        });
+        return EPackType.LEGACY;
+      } catch (error) {
+        return EPackType.UNKNOWN;
+      }
     }
   }
 
@@ -57,10 +77,13 @@ export class WaxAccountInformation {
     return signatureKeys;
   }
 
-  public async getTransactionId (transaction: ApiTransaction): Promise<string> {
+  public async getTransactionId (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
     const trx = this.chain.Transaction.fromApi(transaction);
+
+    if (await this.getPackType(transaction) === EPackType.UNKNOWN)
+      return [trx.id, trx.legacy_id];
 
     const id = await this.getPackType(transaction) === EPackType.HF26 ? trx.id : trx.legacy_id;
 
@@ -70,10 +93,13 @@ export class WaxAccountInformation {
     return id;
   }
 
-  public async getSigDigest (transaction: ApiTransaction): Promise<string> {
+  public async getSigDigest (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
     const trx = this.chain.Transaction.fromApi(transaction);
+
+    if (await this.getPackType(transaction) === EPackType.UNKNOWN)
+      return [trx.sigDigest, trx.legacy_sigDigest];
 
     const sigDigest = await this.getPackType(transaction) === EPackType.HF26 ? trx.sigDigest : trx.legacy_sigDigest;
 

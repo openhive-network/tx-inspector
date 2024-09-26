@@ -90,8 +90,12 @@ const submitTransaction = async () => {
 
     const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
 
+    if (hash.value)
+      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction, hash.value);
+    else
+      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
+
     store.$state.signatures = $wax.getSignatures(trx.value as unknown as ApiTransaction);
-    store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
     store.$state.publicKeys = await $wax.getSignatureKeys(trx.value as unknown as ApiTransaction);
     store.$state.id = await $wax.getTransactionId(trx.value as unknown as ApiTransaction);
     store.$state.sigDigest = await $wax.getSigDigest(trx.value as unknown as ApiTransaction);
