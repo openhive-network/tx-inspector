@@ -9,6 +9,9 @@
     <span>
       Endpoint URL: {{ endpointUrl }}
     </span>
+    <span>
+      Chain ID: {{ chainId }}
+    </span>
   </footer>
 </template>
 
@@ -18,4 +21,5 @@ import { useLocalStorage } from '@vueuse/core';
 const commitHash = COMMIT_HASH.slice(0, 7);
 
 const endpointUrl = useLocalStorage('endpointUrl', 'https://api.hive.blog');
+const chainId = useLocalStorage('chainId', 'beeab0de00000000000000000000000000000000000000000000000000000000');
 </script>

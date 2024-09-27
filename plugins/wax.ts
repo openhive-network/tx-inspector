@@ -1,18 +1,32 @@
-import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, transaction, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, transaction, type IHiveChainInterface, type IWaxOptionsChain, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
   private chain!: IHiveChainInterface;
+  private options: IWaxOptionsChain = {
+    chainId: 'beeab0de00000000000000000000000000000000000000000000000000000000',
+    apiEndpoint: 'https://api.hive.blog/'
+  };
 
-  private async requireChain (): Promise<void> {
-    if (typeof this.chain === 'undefined')
-      this.chain = await createHiveChain();
+  private async requireChain (reinitialize = false): Promise<void> {
+    if (typeof this.chain === 'undefined' || reinitialize)
+      this.chain = await createHiveChain(this.options);
   }
 
   public async getChain (): Promise<IHiveChainInterface> {
     await this.requireChain();
 
     return this.chain;
+  }
+
+  public async changeChainId (chainId: string): Promise<void> {
+    this.options.chainId = chainId;
+    await this.requireChain(true);
+  }
+
+  public async changeEndpointUrl (url: string): Promise<void> {
+    this.options.apiEndpoint = url;
+    await this.requireChain(true);
   }
 
   public async getProtoTransaction (transaction: ApiTransaction): Promise<transaction> {
@@ -220,16 +234,6 @@ export class WaxAccountInformation {
       ).valid;
     } catch (error) {
       return false;
-    }
-  }
-
-  public async changeEndpointUrl (url: string): Promise<void> {
-    await this.requireChain();
-
-    try {
-      this.chain.api.account_by_key_api.endpointUrl = url;
-    } catch (error) {
-      throw new Error('Failed to change endpoint URL');
     }
   }
 }

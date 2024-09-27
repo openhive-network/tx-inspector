@@ -30,6 +30,7 @@
         </div>
       </div>
       <EndpointUrl />
+      <ChainId />
       <TrxDialog />
     </s-card-header>
     <s-card-content>
@@ -56,6 +57,7 @@ import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
+import ChainId from '~/components/ui/ChainId.vue';
 
 const store = useWaxStore();
 
