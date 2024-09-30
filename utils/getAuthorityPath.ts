@@ -199,13 +199,8 @@ class CSignState implements ISignState {
       if (this.signedBy(key)) {
         totalWeight += weight;
 
-        console.log(`Key: "${key}" auth: ${weight}/${auth.weight_threshold}`);
-
-        if (totalWeight >= auth.weight_threshold) {
-          console.log('Satisfied with key');
-
+        if (totalWeight >= auth.weight_threshold)
           return true;
-        }
       }
       if (this.maxMembership > 0 && membership++ >= this.maxMembership)
         return false;
@@ -227,25 +222,17 @@ class CSignState implements ISignState {
           totalWeight += weight;
 
           paths.push({ account, authWeight: { weight, auth: auth.weight_threshold } });
-          console.log(`Account: "${account}" auth: ${weight}/${auth.weight_threshold}`);
 
-          if (totalWeight >= auth.weight_threshold) {
-            console.log('Satisfied with account');
-
+          if (totalWeight >= auth.weight_threshold)
             return true;
-          }
         }
       } else {
         totalWeight += weight;
 
         paths.push({ account, authWeight: { weight, auth: auth.weight_threshold } });
-        console.log(`Account: "${account}" auth: ${weight}/${auth.weight_threshold}`);
 
-        if (totalWeight >= auth.weight_threshold) {
-          console.log('Satisfied with account');
-
+        if (totalWeight >= auth.weight_threshold)
           return true;
-        }
       }
 
       if (this.maxMembership > 0 && membership++ >= this.maxMembership)
@@ -276,8 +263,6 @@ class CSignState implements ISignState {
 }
 
 const getAuthority = async (wax: WaxAccountInformation, type: 'active' | 'owner' | 'posting', id: string): Promise<authority> => {
-  console.log(`Asking for ${type.toUpperCase()} authority for account @${id}`);
-
   const { accounts: [account] } = await wax.getAccountsFromId(id);
 
   if (account === undefined)
@@ -307,10 +292,8 @@ const createModuleForTransaction = async (wax: WaxAccountInformation, transactio
 export default async function (wax: WaxAccountInformation, transaction: ApiTransaction): Promise<IAuthorityPaths[] | undefined> {
   try {
     await createModuleForTransaction(wax, transaction);
-    console.log('\n<DONE>\n======================================');
     return paths;
   } catch (error) {
-    console.log(`\n<FAILED>: ${error}\n======================================`);
     toast.error('Error', {
       description: error instanceof Error ? error.message : 'Unknown error occured'
     });

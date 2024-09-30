@@ -5,7 +5,7 @@
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
         <div class="ml-3">
           <s-card-title>
-            Information about your transaction
+            Transaction Inspector
           </s-card-title>
           <s-card-description class="mt-2">
             Check in easy and fast way all information about your transaction.
@@ -30,6 +30,7 @@
         </div>
       </div>
       <EndpointUrl />
+      <ChainId />
       <TrxDialog />
     </s-card-header>
     <s-card-content>
@@ -54,6 +55,7 @@ import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
+import ChainId from '~/components/ui/ChainId.vue';
 
 const store = useWaxStore();
 </script>

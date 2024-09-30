@@ -13,50 +13,94 @@
       <s-table-body>
         <s-table-row v-for="(signature, index) in store.signatures.value" :key="index">
           <s-table-cell>
-            <v-tooltip location="top">
-              <template #activator="{props}">
-                <span
-                  v-bind="props"
-                  class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                  @click="waxStore.copy(signature)"
-                >
-                  <span>
-                    {{ `${signature.slice(0, 5)}...${signature.slice(-5)}` }}
+            <s-tooltip-provider>
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <span
+                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+                    @click="waxStore.copy(signature)"
+                  >
+                    <span>
+                      {{ `${signature.slice(0, 5)}...${signature.slice(-5)}` }}
+                    </span>
+                    <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
-                  <v-icon size="md">mdi-content-copy</v-icon>
-                </span>
-              </template>
-              <div class="flex flex-col">
-                <span class="text-lg">Signature:</span>
-                <hr class="my-2">
-                <span>{{ signature }}</span>
-              </div>
-            </v-tooltip>
+                </s-tooltip-trigger>
+                <s-tooltip-content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Signature:</span>
+                    <hr class="my-2">
+                    <span>{{ signature }}</span>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
           </s-table-cell>
-          <s-table-cell>
+          <s-table-cell :class="store.pack.value === EPackType.UNKNOWN ? 'text-red' : ''">
             {{ store.pack.value }}
           </s-table-cell>
           <s-table-cell>
-            <v-tooltip location="top">
-              <template #activator="{props}">
-                <span
-                  v-bind="props"
-                  class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                  @click="waxStore.copy(store.publicKeys.value[index])"
-                >
-                  <span>{{ `${store.publicKeys.value[index].slice(0, 5)}...${store.publicKeys.value[index].slice(-5)}` }}</span>
-                  <v-icon size="md">mdi-content-copy</v-icon>
-                </span>
-              </template>
-              <div class="flex flex-col">
-                <span class="text-lg">Public key:</span>
-                <hr class="my-2">
-                <span>{{ store.publicKeys.value[index] }}</span>
-              </div>
-            </v-tooltip>
+            <s-tooltip-provider>
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <span
+                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+                    @click="waxStore.copy(store.publicKeys.value[index])"
+                  >
+                    <span>{{ `${store.publicKeys.value[index].slice(0, 5)}...${store.publicKeys.value[index].slice(-5)}` }}</span>
+                    <v-icon size="md">mdi-content-copy</v-icon>
+                  </span>
+                </s-tooltip-trigger>
+                <s-tooltip-content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Public key:</span>
+                    <hr class="my-2">
+                    <span>{{ store.publicKeys.value[index] }}</span>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <span v-for="(item, key) in store.authorityPath.value" :key="key">
+            <s-tooltip-provider v-if="store.authorityPath.value.length === 1 && store.authorityPath.value[0].account[0] === ''">
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <span
+                    class="flex items-center text-red font-semibold cursor-pointer"
+                  >
+                    <span class="mr-3">Cannot find any account attached to the public key</span>
+                    <v-icon>mdi-information-slab-circle</v-icon>
+                  </span>
+                </s-tooltip-trigger>
+                <s-tooltip-content class="bg-red">
+                  <div class="flex flex-col">
+                    <span class="text-lg font-semibold">Potential problems:</span>
+                    <hr class="my-2">
+                    <ul>
+                      <li class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The public key has been changed after the transaction was signed.
+                      </li>
+                      <li class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The transaction has been signed with a incorrect public key.
+                      </li>
+                      <li v-if="store.pack.value === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
+                        <v-icon class="mr-3">
+                          mdi-lightbulb-question-outline
+                        </v-icon>
+                        The pack type is unknown so we could not process the transaction correctly.
+                      </li>
+                    </ul>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
+            <span v-for="(item, key) in store.authorityPath.value" v-else :key="key">
               <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
                 {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
               </a>
@@ -71,6 +115,8 @@
 </template>
 
 <script lang="ts" setup>
+import { EPackType } from '~/types/wax';
+
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
 </script>

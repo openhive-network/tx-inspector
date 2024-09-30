@@ -4,6 +4,7 @@ import type { ApiTransaction, TWaxApiRequest } from '@hiveio/wax';
 export enum EPackType {
   LEGACY = 'legacy',
   HF26 = 'hf26',
+  UNKNOWN = 'unknown',
 }
 
 export enum EAuthorityLevel {

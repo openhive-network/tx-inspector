@@ -5,7 +5,7 @@
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
         <div class="ml-3">
           <s-card-title>
-            Information about your transaction
+            Transaction Inspector
           </s-card-title>
           <s-card-description class="mt-2">
             Check in easy and fast way all information about your transaction.
@@ -30,6 +30,7 @@
         </div>
       </div>
       <EndpointUrl />
+      <ChainId />
       <TrxDialog />
     </s-card-header>
     <s-card-content>
@@ -56,6 +57,7 @@ import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
+import ChainId from '~/components/ui/ChainId.vue';
 
 const store = useWaxStore();
 
@@ -90,7 +92,7 @@ onMounted(async () => {
       const authorityPath = await getAuthorityPath($wax, trx);
 
       store.$state.signatures = $wax.getSignatures(trx);
-      store.$state.pack = await $wax.getPackType(trx);
+      store.$state.pack = await $wax.getPackType(trx, id as string);
       store.$state.publicKeys = await $wax.getSignatureKeys(trx);
       store.$state.id = await $wax.getTransactionId(trx);
       store.$state.sigDigest = await $wax.getSigDigest(trx);
@@ -98,7 +100,7 @@ onMounted(async () => {
       store.$state.isValid = await $wax.checkVerifyAuthority(trx);
       store.$state.operations = await $wax.getOperationsFromTransaction(trx);
       store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-      store.$state.formattedOperations = useOperationsFormatter(trx).operations;
+      store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx)).operations;
 
       const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
       for (let i = 0; i < store.$state.operations.length; ++i) {

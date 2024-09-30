@@ -34,7 +34,7 @@
       <s-table-body v-show="radioState === 'formatted'">
         <s-table-row v-for="(item, index) in store.$state.formattedOperations" :key="index">
           <s-table-cell>
-            <span>{{ item.type }}</span>
+            <span>{{ store.$state.operations[index].type }}</span>
           </s-table-cell>
           <s-table-cell class="max-w-[30vw]">
             <component :is="item.value" />
@@ -101,8 +101,6 @@ const radioState = ref('formatted');
 const checkSatisfied = (index: number): boolean => {
   const requiredAuthority = getRequiredAuthorityTypeForOperation(store.$state.operations[index].type);
   const authForCurrentOperation = getAuthorityForOperation(index);
-
-  console.log(requiredAuthority, authForCurrentOperation);
 
   if (authForCurrentOperation === undefined) {
     toast.error('Error', {

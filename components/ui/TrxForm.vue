@@ -90,8 +90,12 @@ const submitTransaction = async () => {
 
     const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
 
+    if (hash.value)
+      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction, hash.value);
+    else
+      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
+
     store.$state.signatures = $wax.getSignatures(trx.value as unknown as ApiTransaction);
-    store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
     store.$state.publicKeys = await $wax.getSignatureKeys(trx.value as unknown as ApiTransaction);
     store.$state.id = await $wax.getTransactionId(trx.value as unknown as ApiTransaction);
     store.$state.sigDigest = await $wax.getSigDigest(trx.value as unknown as ApiTransaction);
@@ -99,7 +103,7 @@ const submitTransaction = async () => {
     store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
     store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-    store.$state.formattedOperations = useOperationsFormatter(trx.value).operations;
+    store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
 
     const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
     for (let i = 0; i < store.$state.operations.length; ++i) {

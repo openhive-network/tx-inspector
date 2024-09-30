@@ -2,19 +2,19 @@
   <s-dialog>
     <s-dialog-trigger as-child>
       <Button class="button">
-        Change endpoint url
+        Change chain ID
       </Button>
     </s-dialog-trigger>
     <s-dialog-content>
       <s-dialog-header>
         <s-dialog-title>
-          Change endpoint URL
+          Change chain ID
         </s-dialog-title>
       </s-dialog-header>
-      <s-input v-model="endpointUrl" placeholder="Endpoint url" />
+      <s-input v-model="chainId" placeholder="Endpoint url" />
       <s-dialog-footer class="flex flex-row-reverse sm:justify-between">
         <s-dialog-close as-child>
-          <Button @click="changeEndpointUrl()">
+          <Button @click="changeChainId()">
             Save
           </Button>
         </s-dialog-close>
@@ -32,14 +32,14 @@ import Button from '~/components/ui/Button.vue';
 
 const { $wax } = useNuxtApp();
 
-const localStorage = useLocalStorage('endpointUrl', 'https://api.hive.blog');
+const localStorage = useLocalStorage('chainId', 'beeab0de00000000000000000000000000000000000000000000000000000000');
 
-const endpointUrl = ref(localStorage.value);
+const chainId = ref(localStorage.value);
 
-const changeEndpointUrl = async (): Promise<void> => {
+const changeChainId = async (): Promise<void> => {
   try {
-    localStorage.value = endpointUrl.value;
-    await $wax.changeEndpointUrl(endpointUrl.value);
+    localStorage.value = chainId.value;
+    await $wax.changeChainId(chainId.value);
   } catch (error) {
     console.error(error);
   }
@@ -47,7 +47,7 @@ const changeEndpointUrl = async (): Promise<void> => {
 
 const backToDefault = async (): Promise<void> => {
   localStorage.value = 'https://api.hive.blog';
-  endpointUrl.value = localStorage.value;
-  await $wax.changeEndpointUrl(endpointUrl.value);
+  chainId.value = localStorage.value;
+  await $wax.changeChainId(chainId.value);
 };
 </script>

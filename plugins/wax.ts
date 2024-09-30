@@ -1,18 +1,39 @@
-import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, type IHiveChainInterface, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, ApiTransaction, authority, createHiveChain, transaction, type IHiveChainInterface, type IWaxOptionsChain, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TGetTransaction, type TVerifyAuthority } from '~/types/wax';
 
 export class WaxAccountInformation {
   private chain!: IHiveChainInterface;
+  private options: IWaxOptionsChain = {
+    chainId: 'beeab0de00000000000000000000000000000000000000000000000000000000',
+    apiEndpoint: 'https://api.hive.blog/',
+    restApiEndpoint: 'https://api.syncad.com'
+  };
 
-  private async requireChain (): Promise<void> {
-    if (typeof this.chain === 'undefined')
-      this.chain = await createHiveChain();
+  private async requireChain (reinitialize = false): Promise<void> {
+    if (typeof this.chain === 'undefined' || reinitialize)
+      this.chain = await createHiveChain(this.options);
   }
 
   public async getChain (): Promise<IHiveChainInterface> {
     await this.requireChain();
 
     return this.chain;
+  }
+
+  public async changeChainId (chainId: string): Promise<void> {
+    this.options.chainId = chainId;
+    await this.requireChain(true);
+  }
+
+  public async changeEndpointUrl (url: string): Promise<void> {
+    this.options.apiEndpoint = url;
+    await this.requireChain(true);
+  }
+
+  public async getProtoTransaction (transaction: ApiTransaction): Promise<transaction> {
+    await this.requireChain();
+
+    return this.chain.createTransactionFromJson(transaction).transaction;
   }
 
   public async getTransactionFromId (id: string): Promise<ApiTransaction> {
@@ -26,8 +47,20 @@ export class WaxAccountInformation {
     return trx;
   }
 
-  async getPackType (transaction: ApiTransaction): Promise<EPackType> {
+  async getPackType (transaction: ApiTransaction, id?: string): Promise<EPackType> {
     await this.requireChain();
+
+    if (id) {
+      const trx = this.chain.createTransactionFromJson(transaction);
+
+      if (id === trx.id)
+        return EPackType.HF26;
+
+      if (id === trx.legacy_id)
+        return EPackType.LEGACY;
+
+      return EPackType.UNKNOWN;
+    }
 
     try {
       await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
@@ -36,7 +69,15 @@ export class WaxAccountInformation {
       });
       return EPackType.HF26;
     } catch (error) {
-      return EPackType.LEGACY;
+      try {
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx: transaction,
+          pack: EPackType.LEGACY
+        });
+        return EPackType.LEGACY;
+      } catch (error) {
+        return EPackType.UNKNOWN;
+      }
     }
   }
 
@@ -47,7 +88,7 @@ export class WaxAccountInformation {
   public async getSignatureKeys (transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
 
     const signatureKeys = await this.getPackType(transaction) === EPackType.HF26 ? trx.signatureKeys : trx.legacy_signatureKeys;
 
@@ -57,10 +98,13 @@ export class WaxAccountInformation {
     return signatureKeys;
   }
 
-  public async getTransactionId (transaction: ApiTransaction): Promise<string> {
+  public async getTransactionId (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
+
+    if (await this.getPackType(transaction) === EPackType.UNKNOWN)
+      return [trx.id, trx.legacy_id];
 
     const id = await this.getPackType(transaction) === EPackType.HF26 ? trx.id : trx.legacy_id;
 
@@ -70,10 +114,13 @@ export class WaxAccountInformation {
     return id;
   }
 
-  public async getSigDigest (transaction: ApiTransaction): Promise<string> {
+  public async getSigDigest (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
+
+    if (await this.getPackType(transaction) === EPackType.UNKNOWN)
+      return [trx.sigDigest, trx.legacy_sigDigest];
 
     const sigDigest = await this.getPackType(transaction) === EPackType.HF26 ? trx.sigDigest : trx.legacy_sigDigest;
 
@@ -86,7 +133,7 @@ export class WaxAccountInformation {
   public async getRequiredAuthorities (trx: ApiTransaction): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
-    const requiredAuthorities = this.chain.Transaction.fromApi(trx).requiredAuthorities;
+    const requiredAuthorities = this.chain.createTransactionFromJson(trx).requiredAuthorities;
 
     if (typeof requiredAuthorities === 'undefined')
       throw new Error('Required authorities not found');
@@ -97,13 +144,13 @@ export class WaxAccountInformation {
   public async getRequiredAuthoritiesForOperation (trx: ApiTransaction, operationIndex: number): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
-    const builtTx = this.chain.Transaction.fromApi(trx);
+    const builtTx = this.chain.createTransactionFromJson(trx);
 
     if (trx.operations.length === 1)
       return builtTx.requiredAuthorities;
 
     // Ignore TaPoS as we do not check transaction validity, just extract the required authorities
-    const tx = new this.chain.Transaction('', trx.expiration);
+    const tx = await this.chain.createTransaction(trx.expiration);
 
     tx.pushOperation(builtTx.transaction.operations[operationIndex]);
 
@@ -188,16 +235,6 @@ export class WaxAccountInformation {
       ).valid;
     } catch (error) {
       return false;
-    }
-  }
-
-  public async changeEndpointUrl (url: string): Promise<void> {
-    await this.requireChain();
-
-    try {
-      this.chain.api.account_by_key_api.endpointUrl = url;
-    } catch (error) {
-      throw new Error('Failed to change endpoint URL');
     }
   }
 }
