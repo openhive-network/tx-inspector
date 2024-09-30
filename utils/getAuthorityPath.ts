@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ApiTransaction, authority, TAccountName } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
-import type { WaxAccountInformation } from '~/plugins/wax';
+import type { WaxAccountInformation } from '../utils/waxAccountInformation';
 
 export interface IAuthorityNode {
   name: TAccountName;
