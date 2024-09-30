@@ -105,6 +105,8 @@ const submitTransaction = async () => {
     store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
     store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
 
+    console.log(store.$state.formattedOperations);
+
     const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
     for (let i = 0; i < store.$state.operations.length; ++i) {
       const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);

@@ -5,7 +5,8 @@ export class WaxAccountInformation {
   private chain!: IHiveChainInterface;
   private options: IWaxOptionsChain = {
     chainId: 'beeab0de00000000000000000000000000000000000000000000000000000000',
-    apiEndpoint: 'https://api.hive.blog/'
+    apiEndpoint: 'https://api.hive.blog/',
+    restApiEndpoint: 'https://api.syncad.com'
   };
 
   private async requireChain (reinitialize = false): Promise<void> {
@@ -32,7 +33,7 @@ export class WaxAccountInformation {
   public async getProtoTransaction (transaction: ApiTransaction): Promise<transaction> {
     await this.requireChain();
 
-    return this.chain.Transaction.fromApi(transaction).transaction;
+    return this.chain.createTransactionFromJson(transaction).transaction;
   }
 
   public async getTransactionFromId (id: string): Promise<ApiTransaction> {
@@ -50,7 +51,7 @@ export class WaxAccountInformation {
     await this.requireChain();
 
     if (id) {
-      const trx = this.chain.Transaction.fromApi(transaction);
+      const trx = this.chain.createTransactionFromJson(transaction);
 
       if (id === trx.id)
         return EPackType.HF26;
@@ -87,7 +88,7 @@ export class WaxAccountInformation {
   public async getSignatureKeys (transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
 
     const signatureKeys = await this.getPackType(transaction) === EPackType.HF26 ? trx.signatureKeys : trx.legacy_signatureKeys;
 
@@ -100,7 +101,7 @@ export class WaxAccountInformation {
   public async getTransactionId (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
 
     if (await this.getPackType(transaction) === EPackType.UNKNOWN)
       return [trx.id, trx.legacy_id];
@@ -116,7 +117,7 @@ export class WaxAccountInformation {
   public async getSigDigest (transaction: ApiTransaction): Promise<string | [string, string]> {
     await this.requireChain();
 
-    const trx = this.chain.Transaction.fromApi(transaction);
+    const trx = this.chain.createTransactionFromJson(transaction);
 
     if (await this.getPackType(transaction) === EPackType.UNKNOWN)
       return [trx.sigDigest, trx.legacy_sigDigest];
@@ -132,7 +133,7 @@ export class WaxAccountInformation {
   public async getRequiredAuthorities (trx: ApiTransaction): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
-    const requiredAuthorities = this.chain.Transaction.fromApi(trx).requiredAuthorities;
+    const requiredAuthorities = this.chain.createTransactionFromJson(trx).requiredAuthorities;
 
     if (typeof requiredAuthorities === 'undefined')
       throw new Error('Required authorities not found');
@@ -143,13 +144,13 @@ export class WaxAccountInformation {
   public async getRequiredAuthoritiesForOperation (trx: ApiTransaction, operationIndex: number): Promise<TTransactionRequiredAuthorities> {
     await this.requireChain();
 
-    const builtTx = this.chain.Transaction.fromApi(trx);
+    const builtTx = this.chain.createTransactionFromJson(trx);
 
     if (trx.operations.length === 1)
       return builtTx.requiredAuthorities;
 
     // Ignore TaPoS as we do not check transaction validity, just extract the required authorities
-    const tx = new this.chain.Transaction('', trx.expiration);
+    const tx = await this.chain.createTransaction(trx.expiration);
 
     tx.pushOperation(builtTx.transaction.operations[operationIndex]);
 
