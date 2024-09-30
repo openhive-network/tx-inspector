@@ -102,8 +102,6 @@ const checkSatisfied = (index: number): boolean => {
   const requiredAuthority = getRequiredAuthorityTypeForOperation(store.$state.operations[index].type);
   const authForCurrentOperation = getAuthorityForOperation(index);
 
-  console.log(requiredAuthority, authForCurrentOperation);
-
   if (authForCurrentOperation === undefined) {
     toast.error('Error', {
       description: 'Cannot find operations required authorities'
