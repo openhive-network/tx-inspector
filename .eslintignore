@@ -7,3 +7,4 @@ node_modules
 dist
 tailwind.config.js
 components/shadcn
+__tests__/detailed
