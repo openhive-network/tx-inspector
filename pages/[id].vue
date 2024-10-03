@@ -15,18 +15,24 @@
       <div v-if="store.$state.id.length !== 0">
         <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
-          <span v-if="store.$state.isValid" class="text-green">
+          <v-chip
+            v-if="store.$state.isValid"
+            class="text-green rounded-xl"
+            variant="outlined"
+            size="large"
+            append-icon="mdi-check"
+          >
             Transaction valid
-            <v-icon class="ml-2 mb-2">
-              mdi-check
-            </v-icon>
-          </span>
-          <span v-else class="text-red">
+          </v-chip>
+          <v-chip
+            v-else
+            class="text-red rounded-xl"
+            variant="outlined"
+            size="large"
+            append-icon="mdi-close"
+          >
             Transaction invalid
-            <v-icon class="ml-2 mb-1">
-              mdi-close
-            </v-icon>
-          </span>
+          </v-chip>
         </div>
       </div>
       <EndpointUrl />
