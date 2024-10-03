@@ -19,7 +19,8 @@ export const useWaxStore = defineStore('wax', {
     signeesByKeys: [] as string[][],
     isSatisfied: false,
     requiredAuthoritiesForOperation: [] as unknown as TTransactionRequiredAuthorities[],
-    isLoading: false
+    isLoading: false,
+    trxDialogOpen: false
   }),
 
   actions: {

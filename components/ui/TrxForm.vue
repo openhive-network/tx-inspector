@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col" @keydown.enter="handleKeydown">
     <div class="my-2">
       <s-radio-group v-model="radioState" default-value="json" class="flex mb-3">
         <div class="flex items-center space-x-2">
@@ -138,6 +138,16 @@ const submitTransaction = async () => {
     });
   } finally {
     store.$state.isLoading = false;
+  }
+};
+
+const handleKeydown = (event: KeyboardEvent): void => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    submitTransaction();
+
+    if (trx.value !== undefined)
+      store.$state.trxDialogOpen = false;
   }
 };
 </script>
