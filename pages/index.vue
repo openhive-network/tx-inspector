@@ -12,11 +12,11 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.$state.id.length !== 0">
-        <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
+      <div v-if="store.processedTransaction.value.transactionId.length !== 0">
+        <s-skeleton v-if="store.isLoading.value" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
           <v-chip
-            v-if="store.$state.isValid"
+            v-if="store.processedTransaction.value.isValid"
             class="text-green rounded-xl"
             variant="outlined"
             size="large"
@@ -63,7 +63,8 @@ import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
 import ChainId from '~/components/ui/ChainId.vue';
 
-const store = useWaxStore();
+const wax = useWaxStore();
+const store = storeToRefs(wax);
 </script>
 
 <style scoped>

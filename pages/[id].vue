@@ -12,11 +12,11 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.$state.id.length !== 0">
+      <div v-if="store.$state.processedTransaction.transactionId.length !== 0">
         <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
           <v-chip
-            v-if="store.$state.isValid"
+            v-if="store.$state.processedTransaction.isValid"
             class="text-green rounded-xl"
             variant="outlined"
             size="large"
@@ -68,7 +68,7 @@ import ChainId from '~/components/ui/ChainId.vue';
 const store = useWaxStore();
 
 const route = useRoute();
-const { $wax } = useNuxtApp();
+const { $wax, $txInspector } = useNuxtApp();
 
 const useOperationsFormatter = (operations: any) => {
   const { $formatter } = useNuxtApp();
@@ -95,27 +95,19 @@ onMounted(async () => {
         });
       }
 
-      const authorityPath = await getAuthorityPath($wax, trx);
-
-      store.$state.signatures = $wax.getSignatures(trx);
-      store.$state.pack = await $wax.getPackType(trx, id as string);
-      store.$state.publicKeys = await $wax.getSignatureKeys(trx);
-      store.$state.id = await $wax.getTransactionId(trx);
-      store.$state.sigDigest = await $wax.getSigDigest(trx);
-      store.$state.authorityType = await $wax.getAuthorityType(trx);
-      store.$state.isValid = await $wax.checkVerifyAuthority(trx);
-      store.$state.operations = await $wax.getOperationsFromTransaction(trx);
-      store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-      store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx)).operations;
+      store.$state.processedTransaction = await $txInspector.processTransactionId(id as string);
 
       const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
-      for (let i = 0; i < store.$state.operations.length; ++i) {
+      for (let i = 0; i < store.$state.processedTransaction.operations.length; ++i) {
         const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx, i);
 
         authoritiesForOperation.push(requiredAuthorityForOperation);
       }
 
       store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
+      store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx)).operations;
+
+      const authorityPath = await getAuthorityPath($wax, trx);
 
       if (authorityPath) {
         authorityPath.push(authorityPath.shift()!);

@@ -11,7 +11,7 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-for="(signature, index) in store.signatures.value" :key="index">
+        <s-table-row v-for="(signature, index) in store.processedTransaction.value.signatures" :key="index">
           <s-table-cell>
             <s-tooltip-provider>
               <s-tooltip>
@@ -36,8 +36,8 @@
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
-          <s-table-cell :class="store.pack.value === EPackType.UNKNOWN ? 'text-red' : ''">
-            {{ store.pack.value }}
+          <s-table-cell :class="store.processedTransaction.value.packType === EPackType.UNKNOWN ? 'text-red' : ''">
+            {{ store.processedTransaction.value.packType }}
           </s-table-cell>
           <s-table-cell>
             <s-tooltip-provider>
@@ -45,9 +45,9 @@
                 <s-tooltip-trigger as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(store.publicKeys.value[index])"
+                    @click="waxStore.copy(store.processedTransaction.value.signatureKeys[index])"
                   >
-                    <span>{{ `${store.publicKeys.value[index].slice(0, 5)}...${store.publicKeys.value[index].slice(-5)}` }}</span>
+                    <span>{{ `${store.processedTransaction.value.signatureKeys[index].slice(0, 5)}...${store.processedTransaction.value.signatureKeys[index].slice(-5)}` }}</span>
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
@@ -55,7 +55,7 @@
                   <div class="flex flex-col">
                     <span class="text-lg">Public key:</span>
                     <hr class="my-2">
-                    <span>{{ store.publicKeys.value[index] }}</span>
+                    <span>{{ store.processedTransaction.value.signatureKeys[index] }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
@@ -89,7 +89,7 @@
                         </v-icon>
                         The transaction has been signed with a incorrect public key.
                       </li>
-                      <li v-if="store.pack.value === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
+                      <li v-if="store.processedTransaction.value.packType === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
                         <v-icon class="mr-3">
                           mdi-lightbulb-question-outline
                         </v-icon>

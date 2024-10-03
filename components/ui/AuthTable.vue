@@ -11,7 +11,7 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-for="(level, index) in store.authorityType.value" v-if="store.id.value.length > 0" :key="index">
+        <s-table-row v-for="(level, index) in store.processedTransaction.value.authorityType" v-if="store.processedTransaction.value.transactionId.length > 0" :key="index">
           <s-table-cell class="p-5">
             <span>{{ level.level }}</span>
           </s-table-cell>

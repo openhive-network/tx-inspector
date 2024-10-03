@@ -1,7 +1,7 @@
 import { ApiOperation, authority, type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { EAuthorityLevel, EPackType } from '~/types/wax';
+import { EAuthorityLevel, EPackType, type IProcessedTransaction } from '~/types/wax';
 import type { IAuthorityPaths } from '~/utils/getAuthorityPath';
 
 export const useWaxStore = defineStore('wax', {
@@ -20,7 +20,19 @@ export const useWaxStore = defineStore('wax', {
     isSatisfied: false,
     requiredAuthoritiesForOperation: [] as unknown as TTransactionRequiredAuthorities[],
     isLoading: false,
-    trxDialogOpen: false
+    trxDialogOpen: false,
+    processedTransaction: {
+      packType: EPackType.UNKNOWN,
+      signatures: [],
+      signatureKeys: [],
+      transactionId: '',
+      sigDigest: '',
+      requiredAuthorities: [],
+      authorityType: [],
+      operations: [],
+      signeesByKeys: [],
+      isValid: false
+    } as unknown as IProcessedTransaction
   }),
 
   actions: {

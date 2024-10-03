@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiTransaction, TWaxApiRequest } from '@hiveio/wax';
+import type { ApiOperation, ApiTransaction, authority, TTransactionRequiredAuthorities, TWaxApiRequest } from '@hiveio/wax';
 
 export enum EPackType {
   LEGACY = 'legacy',
@@ -41,3 +41,16 @@ export type TVerifyAuthority = {
     verify_authority: TWaxApiRequest<IVerifyAuthorityRequest, IVerifyAuthorityResponse>;
   };
 };
+
+export interface IProcessedTransaction {
+  packType: EPackType;
+  signatures: string[];
+  signatureKeys: string[];
+  transactionId: string | [string, string];
+  sigDigest: string | [string, string];
+  requiredAuthorities: TTransactionRequiredAuthorities;
+  authorityType: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[];
+  operations: ApiOperation[];
+  signeesByKeys: string[][];
+  isValid: boolean;
+}

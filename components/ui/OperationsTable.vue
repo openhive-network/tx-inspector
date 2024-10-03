@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-3 w-full">
-    <s-radio-group v-if="store.$state.operations.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
+    <s-radio-group v-if="store.processedTransaction.value.operations.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
       <div class="flex items-center space-x-2">
         <s-radio-group-item id="formatted" value="formatted" />
         <s-label for="formatted">
@@ -20,7 +20,7 @@
         </s-label>
       </div>
     </s-radio-group>
-    <s-skeleton v-if="store.$state.isLoading" class="w-full h-[100px] skeleton" />
+    <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>
         <s-table-row>
@@ -32,9 +32,9 @@
         </s-table-row>
       </s-table-header>
       <s-table-body v-show="radioState === 'formatted'">
-        <s-table-row v-for="(item, index) in store.$state.formattedOperations" :key="index">
+        <s-table-row v-for="(item, index) in store.formattedOperations.value" :key="index">
           <s-table-cell>
-            <span>{{ store.$state.operations[index].type }}</span>
+            <span>{{ store.processedTransaction.value.operations[index].type }}</span>
           </s-table-cell>
           <s-table-cell class="max-w-[30vw]">
             <component :is="item.value" />
@@ -57,7 +57,7 @@
         </s-table-row>
       </s-table-body>
       <s-table-body v-show="radioState === 'json'">
-        <s-table-row v-for="(item, index) in store.$state.operations" :key="index">
+        <s-table-row v-for="(item, index) in store.processedTransaction.value.operations" :key="index">
           <s-table-cell>
             <span>{{ item.type }}</span>
           </s-table-cell>
@@ -94,12 +94,13 @@ import type { authority } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import { EAuthorityLevel } from '~/types/wax';
 
-const store = useWaxStore();
+const wax = useWaxStore();
+const store = storeToRefs(wax);
 
 const radioState = ref('formatted');
 
 const checkSatisfied = (index: number): boolean => {
-  const requiredAuthority = getRequiredAuthorityTypeForOperation(store.$state.operations[index].type);
+  const requiredAuthority = getRequiredAuthorityTypeForOperation(store.processedTransaction.value.operations[index].type);
   const authForCurrentOperation = getAuthorityForOperation(index);
 
   if (authForCurrentOperation === undefined) {
@@ -116,7 +117,7 @@ const checkSatisfied = (index: number): boolean => {
 };
 
 const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | string, auths: Array<string | authority> } | undefined => {
-  const auths = store.$state.requiredAuthoritiesForOperation[index];
+  const auths = store.requiredAuthoritiesForOperation.value[index];
 
   if (auths === undefined) {
     toast.error('Error', {

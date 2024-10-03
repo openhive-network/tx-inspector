@@ -56,7 +56,7 @@ import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
 
-const { $wax } = useNuxtApp();
+const { $wax, $txInspector } = useNuxtApp();
 
 const radioState = ref('json');
 
@@ -79,40 +79,28 @@ const submitTransaction = async () => {
       if (hash.value === undefined)
         throw new Error('Hash is required');
 
-      (trx.value as unknown as ApiTransaction) = await $wax.getTransactionFromId(hash.value!);
+      (trx.value as unknown as ApiTransaction) = await $wax.getTransactionFromId(hash.value);
+      store.$state.processedTransaction = await $txInspector.processTransactionId(hash.value);
     } else if (radioState.value === 'json') {
       if (trx.value === undefined)
         throw new Error('Transaction is required');
 
       trx.value = JSON.parse(String(trx.value!.trim()));
+      store.$state.processedTransaction = await $txInspector.processTransaction(trx.value as unknown as ApiTransaction);
     } else
       throw new Error('Provide transaction in choosen format');
 
-    const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
-
-    if (hash.value)
-      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction, hash.value);
-    else
-      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
-
-    store.$state.signatures = $wax.getSignatures(trx.value as unknown as ApiTransaction);
-    store.$state.publicKeys = await $wax.getSignatureKeys(trx.value as unknown as ApiTransaction);
-    store.$state.id = await $wax.getTransactionId(trx.value as unknown as ApiTransaction);
-    store.$state.sigDigest = await $wax.getSigDigest(trx.value as unknown as ApiTransaction);
-    store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
-    store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
-    store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
-    store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-    store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
-
     const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
-    for (let i = 0; i < store.$state.operations.length; ++i) {
+    for (let i = 0; i < store.$state.processedTransaction.operations.length; ++i) {
       const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);
 
       authoritiesForOperation.push(requiredAuthorityForOperation);
     }
 
     store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
+    store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
+
+    const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
 
     if (authorityPath) {
       authorityPath.push(authorityPath.shift()!);
