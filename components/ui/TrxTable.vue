@@ -10,7 +10,7 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-if="store.processedTransaction.value.transactionId.length > 0">
+        <s-table-row v-if="store.processedTransaction.value.transactionId !== ''">
           <s-table-cell>
             <s-tooltip-provider>
               <s-tooltip>
@@ -31,10 +31,10 @@
                       <s-tooltip-trigger as-child>
                         <span
                           class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                          @click="waxStore.copy(store.processedTransaction.value.transactionId[0])"
+                          @click="waxStore.copy(store.processedTransaction.value.transactionId.hf26)"
                         >
                           <span>
-                            HF26: {{ `${store.processedTransaction.value.transactionId[0].slice(0, 5)}...${store.processedTransaction.value.transactionId[0].slice(-5)}` }}
+                            HF26: {{ `${store.processedTransaction.value.transactionId.hf26.slice(0, 5)}...${store.processedTransaction.value.transactionId.hf26.slice(-5)}` }}
                           </span>
                           <v-icon size="md">mdi-content-copy</v-icon>
                         </span>
@@ -43,7 +43,7 @@
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 ID</span>
                           <hr class="my-2">
-                          <span>{{ store.processedTransaction.value.transactionId[0] }}</span>
+                          <span>{{ store.processedTransaction.value.transactionId.legacy }}</span>
                         </div>
                       </s-tooltip-content>
                     </s-tooltip>
@@ -51,10 +51,10 @@
                   <s-tooltip-trigger as-child>
                     <span
                       class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                      @click="waxStore.copy(store.processedTransaction.value.transactionId[1])"
+                      @click="waxStore.copy(store.processedTransaction.value.transactionId.legacy)"
                     >
                       <span>
-                        Legacy: {{ `${store.processedTransaction.value.transactionId[1].slice(0, 5)}...${store.processedTransaction.value.transactionId[1].slice(-5)}` }}
+                        Legacy: {{ `${store.processedTransaction.value.transactionId.legacy.slice(0, 5)}...${store.processedTransaction.value.transactionId.legacy.slice(-5)}` }}
                       </span>
                       <v-icon size="md">mdi-content-copy</v-icon>
                     </span>
@@ -63,7 +63,7 @@
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy ID</span>
                       <hr class="my-2">
-                      <span>{{ store.processedTransaction.value.transactionId[1] }}</span>
+                      <span>{{ store.processedTransaction.value.transactionId.legacy }}</span>
                     </div>
                   </s-tooltip-content>
                 </div>
@@ -97,10 +97,10 @@
                       <s-tooltip-trigger as-child>
                         <span
                           class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                          @click="waxStore.copy(store.processedTransaction.value.sigDigest[0])"
+                          @click="waxStore.copy(store.processedTransaction.value.sigDigest.hf26)"
                         >
                           <span>
-                            HF26: {{ `${store.processedTransaction.value.sigDigest[0].slice(0, 5)}...${store.processedTransaction.value.sigDigest[0].slice(-5)}` }}
+                            HF26: {{ `${store.processedTransaction.value.sigDigest.hf26.slice(0, 5)}...${store.processedTransaction.value.sigDigest.hf26.slice(-5)}` }}
                           </span>
                           <v-icon size="md">mdi-content-copy</v-icon>
                         </span>
@@ -109,7 +109,7 @@
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 Sig Digest</span>
                           <hr class="my-2">
-                          <span>{{ store.processedTransaction.value.sigDigest[0] }}</span>
+                          <span>{{ store.processedTransaction.value.sigDigest.hf26 }}</span>
                         </div>
                       </s-tooltip-content>
                     </s-tooltip>
@@ -117,10 +117,10 @@
                   <s-tooltip-trigger as-child>
                     <span
                       class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                      @click="waxStore.copy(store.processedTransaction.value.sigDigest[1])"
+                      @click="waxStore.copy(store.processedTransaction.value.sigDigest.legacy)"
                     >
                       <span>
-                        Legacy: {{ `${store.processedTransaction.value.sigDigest[1].slice(0, 5)}...${store.processedTransaction.value.sigDigest[1].slice(-5)}` }}
+                        Legacy: {{ `${store.processedTransaction.value.sigDigest.legacy.slice(0, 5)}...${store.processedTransaction.value.sigDigest.legacy.slice(-5)}` }}
                       </span>
                       <v-icon size="md">mdi-content-copy</v-icon>
                     </span>
@@ -129,7 +129,7 @@
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy Sig Digest</span>
                       <hr class="my-2">
-                      <span>{{ store.processedTransaction.value.sigDigest[1] }}</span>
+                      <span>{{ store.processedTransaction.value.sigDigest.legacy }}</span>
                     </div>
                   </s-tooltip-content>
                 </div>

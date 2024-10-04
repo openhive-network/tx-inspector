@@ -117,7 +117,7 @@ const checkSatisfied = (index: number): boolean => {
 };
 
 const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | string, auths: Array<string | authority> } | undefined => {
-  const auths = store.requiredAuthoritiesForOperation.value[index];
+  const auths = store.authoritiesForOperation.value[index];
 
   if (auths === undefined) {
     toast.error('Error', {

@@ -51,7 +51,7 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/vuetify.ts',
-    '~/plugins/wax.ts',
+    '~/plugins/txInspector.ts',
     '~/plugins/formatter.ts'
   ],
 
@@ -72,5 +72,7 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+
+  compatibilityDate: '2024-10-08'
 });

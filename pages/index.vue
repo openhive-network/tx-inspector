@@ -12,12 +12,12 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.processedTransaction.value.transactionId.length !== 0">
+      <div v-if="store.processedTransaction.value.transactionId !== ''">
         <s-skeleton v-if="store.isLoading.value" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
           <v-chip
             v-if="store.processedTransaction.value.isValid"
-            class="text-green rounded-xl"
+            class="text-green custom-rounded-chip"
             variant="outlined"
             size="large"
             append-icon="mdi-check"
@@ -26,7 +26,7 @@
           </v-chip>
           <v-chip
             v-else
-            class="text-red rounded-xl"
+            class="text-red custom-rounded-chip"
             variant="outlined"
             size="large"
             append-icon="mdi-close"
@@ -77,5 +77,9 @@ const store = storeToRefs(wax);
 
 .skeleton {
   background: rgb(63 63 70);
+}
+
+.custom-rounded-chip {
+  border-radius: 8px !important;
 }
 </style>

@@ -12,12 +12,12 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.$state.processedTransaction.transactionId.length !== 0">
+      <div v-if="store.$state.processedTransaction.transactionId !== ''">
         <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
           <v-chip
             v-if="store.$state.processedTransaction.isValid"
-            class="text-green rounded-xl"
+            class="text-green custom-rounded-chip"
             variant="outlined"
             size="large"
             append-icon="mdi-check"
@@ -26,7 +26,7 @@
           </v-chip>
           <v-chip
             v-else
-            class="text-red rounded-xl"
+            class="text-red custom-rounded-chip"
             variant="outlined"
             size="large"
             append-icon="mdi-close"
@@ -64,11 +64,12 @@ import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
 import ChainId from '~/components/ui/ChainId.vue';
+import type { TProcessedTransaction } from '~/types/wax';
 
 const store = useWaxStore();
 
 const route = useRoute();
-const { $wax, $txInspector } = useNuxtApp();
+const { $chain, $txInspector } = useNuxtApp();
 
 const useOperationsFormatter = (operations: any) => {
   const { $formatter } = useNuxtApp();
@@ -85,29 +86,31 @@ onMounted(async () => {
     try {
       store.$state.isLoading = true;
 
-      let trx!: ApiTransaction;
+      let apiTrx!: ApiTransaction;
+      let tx!: TProcessedTransaction;
 
       try {
-        trx = await $wax.getTransactionFromId(id as string);
+        tx = await $txInspector.processTransactionId(id as string);
+        apiTrx = tx.transaction.toApiJson();
       } catch {
         toast.error('Error', {
           description: 'Transaction not found'
         });
       }
 
-      store.$state.processedTransaction = await $txInspector.processTransactionId(id as string);
+      store.$state.processedTransaction = tx;
 
       const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
       for (let i = 0; i < store.$state.processedTransaction.operations.length; ++i) {
-        const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx, i);
+        const requiredAuthorityForOperation = await tx.requiredAuthoritiesForOperations(i);
 
         authoritiesForOperation.push(requiredAuthorityForOperation);
       }
 
-      store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
-      store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx)).operations;
+      store.$state.authoritiesForOperation = authoritiesForOperation;
+      store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
 
-      const authorityPath = await getAuthorityPath($wax, trx);
+      const authorityPath = await getAuthorityPath($chain, apiTrx);
 
       if (authorityPath) {
         authorityPath.push(authorityPath.shift()!);
@@ -148,5 +151,9 @@ onMounted(async () => {
 
 .skeleton {
   background: rgb(63 63 70);
+}
+
+.custom-rounded-chip {
+  border-radius: 8px !important;
 }
 </style>

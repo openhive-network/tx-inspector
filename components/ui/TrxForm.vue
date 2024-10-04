@@ -56,7 +56,7 @@ import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
 
-const { $wax, $txInspector } = useNuxtApp();
+const { $chain, $txInspector } = useNuxtApp();
 
 const radioState = ref('json');
 
@@ -79,28 +79,31 @@ const submitTransaction = async () => {
       if (hash.value === undefined)
         throw new Error('Hash is required');
 
-      (trx.value as unknown as ApiTransaction) = await $wax.getTransactionFromId(hash.value);
-      store.$state.processedTransaction = await $txInspector.processTransactionId(hash.value);
+      const tx = await $txInspector.processTransactionId(hash.value);
+      store.$state.processedTransaction = tx;
+      store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
+      (trx.value as unknown as ApiTransaction) = tx.transaction.toApiJson();
     } else if (radioState.value === 'json') {
       if (trx.value === undefined)
         throw new Error('Transaction is required');
 
       trx.value = JSON.parse(String(trx.value!.trim()));
-      store.$state.processedTransaction = await $txInspector.processTransaction(trx.value as unknown as ApiTransaction);
+      const tx = await $txInspector.processTransaction(trx.value as unknown as ApiTransaction);
+      store.$state.processedTransaction = tx;
+      store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
     } else
       throw new Error('Provide transaction in choosen format');
 
     const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
     for (let i = 0; i < store.$state.processedTransaction.operations.length; ++i) {
-      const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);
+      const requiredAuthorityForOperation = await store.$state.processedTransaction.requiredAuthoritiesForOperations(i);
 
       authoritiesForOperation.push(requiredAuthorityForOperation);
     }
 
-    store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
-    store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
+    store.$state.authoritiesForOperation = authoritiesForOperation;
 
-    const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
+    const authorityPath = await getAuthorityPath($chain, trx.value as unknown as ApiTransaction);
 
     if (authorityPath) {
       authorityPath.push(authorityPath.shift()!);
