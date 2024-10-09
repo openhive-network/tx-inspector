@@ -7,7 +7,10 @@ import builtins from 'rollup-plugin-node-builtins';
 
 const commonConfiguration = () => ([
   {
-    input: 'dist/tests/utils/waxAccountInformation.js',
+    input: [
+      'dist/tests/utils/txInspector.js',
+      'dist/tests/__tests__/assets/globals.js'
+    ],
     output: {
       format: 'es',
       name: 'wax',

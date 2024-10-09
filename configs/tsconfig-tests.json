@@ -7,9 +7,8 @@
     "incremental": false,
     "noEmit": false,
 
-    "declaration": true,
     "declarationMap": false,
-    "sourceMap": false,
+    "sourceMap": true,
 
     "noImplicitAny": false,
     "noLib": false,

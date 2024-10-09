@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ApiTransaction, authority, TAccountName, TWaxExtended } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
-import { TransactionAnalyzer } from '~/plugins/txInspector';
-import type { IProcessedTransaction, TChainExtendedApiData } from '~/types/wax';
+import { TransactionAnalyzer } from '../utils/txInspector';
+import type { TProcessedTransaction, TChainExtendedApiData } from '../types/wax';
 
 export interface IAuthorityNode {
   name: TAccountName;
@@ -278,7 +278,7 @@ const getAuthority = async (analyzer: TransactionAnalyzer, type: 'active' | 'own
 
 const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction): Promise<void> => {
   const analyzer = new TransactionAnalyzer(chain);
-  const processedTransaction: IProcessedTransaction = await analyzer.analyzeTransaction(transaction);
+  const processedTransaction: TProcessedTransaction = await analyzer.analyzeTransaction(transaction);
   const auths = processedTransaction.requiredAuthorities;
 
   await verifyAuthorityImpl({

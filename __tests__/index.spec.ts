@@ -1,1 +1,1 @@
-import './detailed/wax-base';
+import './detailed/txInspector-base';

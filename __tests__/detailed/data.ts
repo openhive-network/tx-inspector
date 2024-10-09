@@ -1,4 +1,4 @@
-export const jsonTransferOperationTransaction = {
+export const singleOperationSingleSignatureTransaction = {
   "ref_block_num": 33561,
   "ref_block_prefix": 2922397352,
   "extensions": [],
@@ -23,9 +23,34 @@ export const jsonTransferOperationTransaction = {
   ]
 };
 
-export const jsonTransferOperationTransactionId = 'da9602787693edccdafa1e7325502e0bb14453d1';
+export const incorrectSingleOperationSingleSignatureTransaction = {
+  "ref_block_num": 33561,
+  "ref_block_prefix": 2922397352,
+  "extensions": [],
+  "expiration": "2024-09-20T12:16:45",
+  "operations": [
+    {
+      "type": "transfer_operation",
+      "value": {
+        "to": "bluehy20",
+        "from": "splinterboost",
+        "memo": "Thank you for delegating to Splinterboost here is your daily HIVE payout!",
+        "amount": {
+          "nai": "@@000000021",
+          "amount": "14",
+          "precision": 3
+        }
+      }
+    }
+  ],
+  "signatures": [
+    "203eed491a1e032bc889b030861a80bf3f0bc8ba7fa30843041825c4f542411fb3678fd527c598dcc6646a5dabf2110691a4d6355c72d7638ff"
+  ]
+};
 
-export const multiSignaturesTransaction = {
+export const singleOperationSingleSignatureTransactionId = 'da9602787693edccdafa1e7325502e0bb14453d1';
+
+export const multipleOperationMultipleSignatureTransaction = {
   "ref_block_num": 808,
   "ref_block_prefix": 1359279161,
   "extensions": [],
@@ -85,3 +110,5 @@ export const multiSignaturesTransaction = {
     "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5"
   ]
 };
+
+export const multipleOperationMultipleSignatureTransactionId = 'a7efc7be69861fdcdc39712e532beb8ddc701f03';
