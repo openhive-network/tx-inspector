@@ -29,30 +29,35 @@
 </template>
 
 <script lang="ts" setup>
+import type { ApiTransaction } from '@hiveio/wax';
 import { useLocalStorage } from '@vueuse/core';
+import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const open = ref(false);
 
-const { $wax } = useNuxtApp();
+const { $txInspector } = useNuxtApp();
 
 const localStorage = useLocalStorage('chainId', 'beeab0de00000000000000000000000000000000000000000000000000000000');
 
 const chainId = ref(localStorage.value);
 
+const waxStore = useWaxStore();
+const store = storeToRefs(waxStore);
+
 const changeChainId = async (): Promise<void> => {
   try {
     localStorage.value = chainId.value;
-    await $wax.changeChainId(chainId.value);
+    await $txInspector.changeConfig(chainId.value, 'https://api.hive.blog', store.id.value, store.json.value as unknown as ApiTransaction);
   } catch (error) {
-    console.error(error);
+    toast.error('Error changing chain ID or cannot process the transaction with the new chain ID');
   }
 };
 
 const backToDefault = async (): Promise<void> => {
   localStorage.value = 'beeab0de00000000000000000000000000000000000000000000000000000000';
   chainId.value = localStorage.value;
-  await $wax.changeChainId(chainId.value);
+  await $txInspector.changeConfig(chainId.value, 'https://api.hive.blog', store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
 const handleKeydown = (event: KeyboardEvent): void => {

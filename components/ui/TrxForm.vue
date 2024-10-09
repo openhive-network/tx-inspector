@@ -79,6 +79,8 @@ const submitTransaction = async () => {
       if (hash.value === undefined)
         throw new Error('Hash is required');
 
+      store.$state.id = hash.value;
+
       const tx = await $txInspector.processTransactionId(hash.value);
       store.$state.processedTransaction = tx;
       store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
@@ -88,6 +90,9 @@ const submitTransaction = async () => {
         throw new Error('Transaction is required');
 
       trx.value = JSON.parse(String(trx.value!.trim()));
+
+      store.$state.json = trx.value!;
+
       const tx = await $txInspector.processTransaction(trx.value as unknown as ApiTransaction);
       store.$state.processedTransaction = tx;
       store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;

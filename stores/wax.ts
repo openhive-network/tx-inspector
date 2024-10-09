@@ -1,26 +1,19 @@
-import { ApiOperation, authority, type TTransactionRequiredAuthorities } from '@hiveio/wax';
+import { type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { EAuthorityLevel, EPackType, type TProcessedTransaction } from '~/types/wax';
+import { EPackType, type TProcessedTransaction } from '~/types/wax';
 import type { IAuthorityPaths } from '~/utils/getAuthorityPath';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
-    signatures: [] as string[],
-    pack: EPackType.HF26,
-    publicKeys: [] as string [],
     authorityPath: [] as IAuthorityPaths[],
-    id: '' as string | { hf26: string, legacy: string },
-    sigDigest: '' as string | { hf26: string, legacy: string },
-    isValid: false,
-    authorityType: [] as { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[],
-    operations: [] as ApiOperation[],
     formattedOperations: [] as any[],
-    signeesByKeys: [] as string[][],
     isSatisfied: false,
     isLoading: false,
     trxDialogOpen: false,
     authoritiesForOperation: [] as unknown as TTransactionRequiredAuthorities[],
+    id: undefined as string | undefined,
+    json: undefined as string | undefined,
     processedTransaction: {
       packType: EPackType.UNKNOWN,
       signatures: [],

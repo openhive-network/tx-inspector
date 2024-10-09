@@ -29,30 +29,35 @@
 </template>
 
 <script lang="ts" setup>
+import type { ApiTransaction } from '@hiveio/wax';
 import { useLocalStorage } from '@vueuse/core';
+import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const open = ref(false);
 
-const { $wax } = useNuxtApp();
+const { $txInspector } = useNuxtApp();
 
 const localStorage = useLocalStorage('endpointUrl', 'https://api.hive.blog');
 
 const endpointUrl = ref(localStorage.value);
 
+const waxStore = useWaxStore();
+const store = storeToRefs(waxStore);
+
 const changeEndpointUrl = async (): Promise<void> => {
   try {
     localStorage.value = endpointUrl.value;
-    await $wax.changeEndpointUrl(endpointUrl.value);
+    await $txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
   } catch (error) {
-    console.error(error);
+    toast.error('Error changing endpoint URL or cannot process the transaction with the new endpoint URL');
   }
 };
 
 const backToDefault = async (): Promise<void> => {
   localStorage.value = 'https://api.hive.blog';
   endpointUrl.value = localStorage.value;
-  await $wax.changeEndpointUrl(endpointUrl.value);
+  await $txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
 const handleKeydown = (event: KeyboardEvent): void => {

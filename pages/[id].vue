@@ -80,6 +80,8 @@ const useOperationsFormatter = (operations: any) => {
 onMounted(async () => {
   const id = route.params.id;
 
+  store.$state.id = id as string;
+
   if (id) {
     store.$state.isLoading = false;
 
