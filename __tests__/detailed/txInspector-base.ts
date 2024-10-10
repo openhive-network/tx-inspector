@@ -307,6 +307,26 @@ test.describe('transaction inspector tests based on wax library', () => {
     });
   });
 
+  test('Should be able to change the chain id', async ({ txInspectorTest }) => {
+    const retVal = await txInspectorTest(async ({ txInspector }) => {
+      await txInspector.changeConfig('customChainId', 'https://api.hive.blog/');
+
+      return txInspector.config.chainId;
+    });
+
+    expect(retVal).toEqual('customChainId');
+  });
+
+  test('Should be able to change the api endpoint', async ({ txInspectorTest }) => {
+    const retVal = await txInspectorTest(async ({ txInspector }) => {
+      await txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', 'https://api.test.com');
+
+      return txInspector.config.apiEndpoint;
+    });
+
+    expect(retVal).toEqual('https://api.test.com');
+  });
+
   test.afterAll(async () => {
     await browser.close();
   });

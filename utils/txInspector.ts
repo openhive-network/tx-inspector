@@ -268,4 +268,8 @@ export class TxInspectorEngine {
   public get extendedChain (): TWaxExtended<TChainExtendedApiData> {
     return this.chain;
   }
+
+  public get config (): { chainId: string, apiEndpoint: string } {
+    return { chainId: this.chainId, apiEndpoint: this.apiEndpoint };
+  }
 }

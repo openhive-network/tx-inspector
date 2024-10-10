@@ -50,8 +50,7 @@ const txInspectorTest = (
 export const test = base.extend<ITxInspectorTest>({
   customChainId: { chainId: 'beeab0de00000000000000000000000000000000000000000000000000000000' },
 
-  txInspectorTest: ({ page, customChainId }, use) => {
-    globalThis.customChainId = customChainId;
+  txInspectorTest: ({ page }, use) => {
     use(txInspectorTest(page));
   }
 });
