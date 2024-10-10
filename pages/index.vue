@@ -1,9 +1,9 @@
 <template>
-  <s-card class="w-4/5 card">
-    <s-card-header class="flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center mb-4 md:mb-0">
+  <s-card class="w-full md:w-4/5 card">
+    <s-card-header class="flex flex-col xl:flex-row justify-between items-center">
+      <div class="flex flex-col xl:flex-row items-center mb-4 md:mb-0">
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
-        <div class="ml-3">
+        <div class="ml-3 mt-3 xl:mt-0 text-center">
           <s-card-title>
             Transaction Inspector
           </s-card-title>
@@ -42,9 +42,10 @@
     <s-card-content>
       <AuthorityPathTable />
       <hr class="my-8">
-      <div class="flex gap-4">
-        <TrxTable class="w-1/2" />
-        <AuthTable class="w-1/2" />
+      <div class="flex flex-col lg:flex-row gap-4">
+        <TrxTable class="w-full lg:w-1/2" />
+        <hr class="my-3 lg:hidden">
+        <AuthTable class="w-full lg:w-1/2" />
       </div>
       <hr class="my-8">
       <div class="mb-16">
