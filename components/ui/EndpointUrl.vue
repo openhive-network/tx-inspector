@@ -38,7 +38,7 @@ const open = ref(false);
 
 const { $txInspector } = useNuxtApp();
 
-const localStorage = useLocalStorage('endpointUrl', 'https://api.hive.blog');
+const localStorage = useLocalStorage('endpointUrl', $txInspector.config.apiEndpoint);
 
 const endpointUrl = ref(localStorage.value);
 
@@ -48,7 +48,7 @@ const store = storeToRefs(waxStore);
 const changeEndpointUrl = async (): Promise<void> => {
   try {
     localStorage.value = endpointUrl.value;
-    await $txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
+    await $txInspector.changeConfig($txInspector.config.chainId, endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
   } catch (error) {
     toast.error('Error changing endpoint URL or cannot process the transaction with the new endpoint URL');
   }
@@ -57,7 +57,7 @@ const changeEndpointUrl = async (): Promise<void> => {
 const backToDefault = async (): Promise<void> => {
   localStorage.value = 'https://api.hive.blog';
   endpointUrl.value = localStorage.value;
-  await $txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
+  await $txInspector.changeConfig($txInspector.config.chainId, endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
 const handleKeydown = (event: KeyboardEvent): void => {

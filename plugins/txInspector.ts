@@ -4,8 +4,7 @@ export default defineNuxtPlugin(async () => {
   return {
     provide: {
       txInspector: await txInspector,
-      chain: (await txInspector).extendedChain,
-      config: (await txInspector).config
+      chain: (await txInspector).extendedChain
     }
   };
 });

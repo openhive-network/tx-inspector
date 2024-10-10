@@ -38,7 +38,7 @@ const open = ref(false);
 
 const { $txInspector } = useNuxtApp();
 
-const localStorage = useLocalStorage('chainId', 'beeab0de00000000000000000000000000000000000000000000000000000000');
+const localStorage = useLocalStorage('chainId', $txInspector.config.chainId);
 
 const chainId = ref(localStorage.value);
 
@@ -48,7 +48,7 @@ const store = storeToRefs(waxStore);
 const changeChainId = async (): Promise<void> => {
   try {
     localStorage.value = chainId.value;
-    await $txInspector.changeConfig(chainId.value, 'https://api.hive.blog', store.id.value, store.json.value as unknown as ApiTransaction);
+    await $txInspector.changeConfig(chainId.value, $txInspector.config.apiEndpoint, store.id.value, store.json.value as unknown as ApiTransaction);
   } catch (error) {
     toast.error('Error changing chain ID or cannot process the transaction with the new chain ID');
   }
@@ -57,7 +57,7 @@ const changeChainId = async (): Promise<void> => {
 const backToDefault = async (): Promise<void> => {
   localStorage.value = 'beeab0de00000000000000000000000000000000000000000000000000000000';
   chainId.value = localStorage.value;
-  await $txInspector.changeConfig(chainId.value, 'https://api.hive.blog', store.id.value, store.json.value as unknown as ApiTransaction);
+  await $txInspector.changeConfig(chainId.value, $txInspector.config.apiEndpoint, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
 const handleKeydown = (event: KeyboardEvent): void => {
