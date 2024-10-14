@@ -112,3 +112,31 @@ export const multipleOperationMultipleSignatureTransaction = {
 };
 
 export const multipleOperationMultipleSignatureTransactionId = 'a7efc7be69861fdcdc39712e532beb8ddc701f03';
+
+export const mockData = {
+  trx: {
+    "ref_block_num": 33561,
+    "ref_block_prefix": 2922397352,
+    "extensions": [],
+    "expiration": "2024-09-20T12:16:45",
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "to": "bluehy20",
+          "from": "splinterboost",
+          "memo": "Thank you for delegating to Splinterboost here is your daily HIVE payout!",
+          "amount": {
+            "nai": "@@000000021",
+            "amount": "14",
+            "precision": 3
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "203eed491a1e032bc889b030861a80bf3f0bc8ba7fa30843041825c4f542411fb3678fd527c598dcc6646a5dabf2110691a4d6355c72d7638ffdaa11ac10451d07"
+    ]
+  },
+  valid: true
+};

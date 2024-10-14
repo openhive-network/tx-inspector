@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiOperation, ApiTransaction, authority, ITransaction, TTransactionRequiredAuthorities, TWaxApiRequest } from '@hiveio/wax';
+import type { ApiAccount, ApiOperation, ApiTransaction, authority, ITransaction, TTransactionRequiredAuthorities, TWaxApiRequest } from '@hiveio/wax';
 
 export enum EPackType {
   LEGACY = 'legacy',
@@ -55,7 +55,7 @@ type TProcessedTransactionBase = {
   signatures: string[];
   signatureKeys: string[];
   requiredAuthorities: TTransactionRequiredAuthorities;
-  requiredAuthoritiesForOperations(index: number): Promise<TTransactionRequiredAuthorities>;
+  requiredAuthoritiesForOperations: TTransactionRequiredAuthorities | TTransactionRequiredAuthorities[];
   authorityType: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[];
   operations: ApiOperation[];
   signeesByKeys: string[][];
@@ -76,3 +76,11 @@ type TProcessedTransactionPackTypeUnknown = TProcessedTransactionBase & {
 }
 
 export type TProcessedTransaction = TProcessedTransactionPackTypeKnown | TProcessedTransactionPackTypeUnknown;
+
+export interface ITransactionAnalyzerApi {
+  verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }>;
+
+  getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }>;
+
+  findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }>;
+}

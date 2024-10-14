@@ -14,8 +14,8 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should analyze a correct single operation single signature transaction by its id', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }, singleOperationSingleSignatureTransactionId) => {
-      const tx = await txInspector.processTransactionId(singleOperationSingleSignatureTransactionId);
+    const retVal = await txInspectorTest(async ({ inspectorEngine }, singleOperationSingleSignatureTransactionId) => {
+      const tx = await inspectorEngine.processTransactionId(singleOperationSingleSignatureTransactionId);
 
       return {
         authorityType: tx.authorityType[0],
@@ -58,8 +58,8 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should analyze a correct single operation single signature transaction by its json', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }, singleOperationSingleSignatureTransaction) => {
-      const tx = await txInspector.processTransaction(singleOperationSingleSignatureTransaction);
+    const retVal = await txInspectorTest(async ({ inspectorEngine }, singleOperationSingleSignatureTransaction) => {
+      const tx = await inspectorEngine.processTransaction(singleOperationSingleSignatureTransaction);
 
       return {
         authorityType: tx.authorityType[0],
@@ -102,8 +102,8 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should analyze a correct multiple operation multiple signature transaction by its json', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }, multipleOperationMultipleSignatureTransaction) => {
-      const tx = await txInspector.processTransaction(multipleOperationMultipleSignatureTransaction);
+    const retVal = await txInspectorTest(async ({ inspectorEngine }, multipleOperationMultipleSignatureTransaction) => {
+      const tx = await inspectorEngine.processTransaction(multipleOperationMultipleSignatureTransaction);
 
       return {
         signatures: tx.signatures,
@@ -180,8 +180,8 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should analyze a correct multiple operation multiple signature transaction by its id', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }, multipleOperationMultipleSignatureTransactionId) => {
-      const tx = await txInspector.processTransactionId(multipleOperationMultipleSignatureTransactionId);
+    const retVal = await txInspectorTest(async ({ inspectorEngine }, multipleOperationMultipleSignatureTransactionId) => {
+      const tx = await inspectorEngine.processTransactionId(multipleOperationMultipleSignatureTransactionId);
 
       return {
         signatures: tx.signatures,
@@ -258,8 +258,8 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should analyze a incorrect single operation single signature transaction by its json', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }, incorrectSingleOperationSingleSignatureTransaction) => {
-      const tx = await txInspector.processTransaction(incorrectSingleOperationSingleSignatureTransaction);
+    const retVal = await txInspectorTest(async ({ inspectorEngine }, incorrectSingleOperationSingleSignatureTransaction) => {
+      const tx = await inspectorEngine.processTransaction(incorrectSingleOperationSingleSignatureTransaction);
 
       return {
         authorityType: tx.authorityType[0],
@@ -308,20 +308,20 @@ test.describe('transaction inspector tests based on wax library', () => {
   });
 
   test('Should be able to change the chain id', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }) => {
-      await txInspector.changeConfig('customChainId', 'https://api.hive.blog/');
+    const retVal = await txInspectorTest(async ({ inspectorEngine }) => {
+      await inspectorEngine.changeConfig('customChainId', 'https://api.hive.blog/');
 
-      return txInspector.config.chainId;
+      return inspectorEngine.config.chainId;
     });
 
     expect(retVal).toEqual('customChainId');
   });
 
   test('Should be able to change the api endpoint', async ({ txInspectorTest }) => {
-    const retVal = await txInspectorTest(async ({ txInspector }) => {
-      await txInspector.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', 'https://api.test.com');
+    const retVal = await txInspectorTest(async ({ inspectorEngine }) => {
+      await inspectorEngine.changeConfig('beeab0de00000000000000000000000000000000000000000000000000000000', 'https://api.test.com');
 
-      return txInspector.config.apiEndpoint;
+      return inspectorEngine.config.apiEndpoint;
     });
 
     expect(retVal).toEqual('https://api.test.com');

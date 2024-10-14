@@ -90,7 +90,7 @@
 <script lang="ts" setup>
 /* eslint-disable array-callback-return */
 
-import type { authority } from '@hiveio/wax';
+import type { authority, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import { EAuthorityLevel } from '~/types/wax';
 
@@ -117,7 +117,12 @@ const checkSatisfied = (index: number): boolean => {
 };
 
 const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | string, auths: Array<string | authority> } | undefined => {
-  const auths = store.authoritiesForOperation.value[index];
+  let auths: TTransactionRequiredAuthorities;
+
+  if (Array.isArray(store.processedTransaction.value.requiredAuthoritiesForOperations))
+    auths = store.processedTransaction.value.requiredAuthoritiesForOperations[index];
+  else
+    auths = store.processedTransaction.value.requiredAuthoritiesForOperations;
 
   if (auths === undefined) {
     toast.error('Error', {

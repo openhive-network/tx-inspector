@@ -1,4 +1,3 @@
-import { type TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 import { EPackType, type TProcessedTransaction } from '~/types/wax';
@@ -11,7 +10,6 @@ export const useWaxStore = defineStore('wax', {
     isSatisfied: false,
     isLoading: false,
     trxDialogOpen: false,
-    authoritiesForOperation: [] as unknown as TTransactionRequiredAuthorities[],
     id: undefined as string | undefined,
     json: undefined as string | undefined,
     processedTransaction: {

@@ -1,5 +1,25 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, authority, createHiveChain, type ITransaction, type TTransactionRequiredAuthorities, type TWaxExtended } from '@hiveio/wax';
-import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExtendedApiData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExtendedApiData, type ITransactionAnalyzerApi } from '../types/wax';
+
+export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
+  private readonly chain: TWaxExtended<TChainExtendedApiData>;
+
+  public constructor (chain: TWaxExtended<TChainExtendedApiData>) {
+    this.chain = chain;
+  }
+
+  public async verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }> {
+    return (await this.chain.api.database_api.verify_authority(params));
+  }
+
+  public async getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }> {
+    return (await this.chain.api.account_by_key_api.get_key_references(params));
+  }
+
+  public async findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> {
+    return (await this.chain.api.database_api.find_accounts(params));
+  }
+}
 
 /**
  * The `TransactionAnalyzer` class is responsible for analyzing a transaction and extracting all the necessary information from it.
@@ -10,10 +30,12 @@ import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExte
  */
 export class TransactionAnalyzer {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
+  private readonly api: ITransactionAnalyzerApi;
   private transaction!: ITransaction;
 
-  public constructor (chain: TWaxExtended<TChainExtendedApiData>) {
+  public constructor (chain: TWaxExtended<TChainExtendedApiData>, api: ITransactionAnalyzerApi) {
     this.chain = chain;
+    this.api = api;
   }
 
   /**
@@ -37,6 +59,7 @@ export class TransactionAnalyzer {
     const transactionId = this.getTransactionId(packType);
     const sigDigest = this.getSigDigest(packType);
     const requiredAuthorities = this.getRequiredAuthorities();
+    const requiredAuthoritiesForOperations = this.getRequiredAuthoritiesForOperation();
     const authorityType = this.getAuthorityType(requiredAuthorities);
     const operations = this.getOperationsFromTransaction();
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
@@ -49,9 +72,7 @@ export class TransactionAnalyzer {
       transactionId,
       sigDigest,
       requiredAuthorities,
-      requiredAuthoritiesForOperations: (index: number) => {
-        return this.getRequiredAuthoritiesForOperation(index);
-      },
+      requiredAuthoritiesForOperations,
       authorityType,
       operations,
       signeesByKeys,
@@ -73,14 +94,14 @@ export class TransactionAnalyzer {
     }
 
     try {
-      await this.chain.api.database_api.verify_authority({
+      await this.api.verifyAuthority({
         trx: this.transaction.toApiJson(),
         pack: EPackType.HF26
       });
       return EPackType.HF26;
     } catch {
       try {
-        await this.chain.api.database_api.verify_authority({
+        await this.api.verifyAuthority({
           trx: this.transaction.toApiJson(),
           pack: EPackType.LEGACY
         });
@@ -134,16 +155,21 @@ export class TransactionAnalyzer {
     return requiredAuthorities;
   }
 
-  private async getRequiredAuthoritiesForOperation (operationIndex: number): Promise<TTransactionRequiredAuthorities> {
+  private getRequiredAuthoritiesForOperation (): TTransactionRequiredAuthorities | TTransactionRequiredAuthorities[] {
     if (this.transaction.transaction.operations.length === 1)
       return this.transaction.requiredAuthorities;
 
-    // Ignore TaPoS as we do not check transaction validity, just extract the required authorities
-    const tx = await this.chain.createTransaction(this.transaction.transaction.expiration);
+    const requiredAuthoritiesArray: TTransactionRequiredAuthorities[] = [];
 
-    tx.pushOperation(this.transaction.transaction.operations[operationIndex]);
+    for (let i = 0; i < this.transaction.transaction.operations.length; ++i) {
+      const tx = this.chain.createTransactionFromProto(this.transaction.transaction);
 
-    return tx.requiredAuthorities;
+      tx.pushOperation(this.transaction.transaction.operations[i]);
+
+      requiredAuthoritiesArray.push(tx.requiredAuthorities);
+    }
+
+    return requiredAuthoritiesArray;
   }
 
   private getAuthorityType (requiredAuthorities: TTransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: Set<string> | authority[] }[] {
@@ -171,7 +197,7 @@ export class TransactionAnalyzer {
   }
 
   private async findSigneesForKeys (keys: string[]): Promise<string[][]> {
-    const { accounts } = await this.chain.api.account_by_key_api.get_key_references({ keys });
+    const { accounts } = await this.api.getKeyReferences({ keys });
 
     if (typeof accounts === 'undefined')
       throw new Error('Signees not found');
@@ -182,7 +208,7 @@ export class TransactionAnalyzer {
   private async checkVerifyAuthority (packType: EPackType): Promise<boolean> {
     try {
       return (
-        await this.chain.api.database_api.verify_authority({
+        await this.api.verifyAuthority({
           trx: this.transaction.toApiJson(),
           pack: packType
         })
@@ -194,7 +220,7 @@ export class TransactionAnalyzer {
 
   // Method required for the authority path algorithm
   public async getAccountsFromId (id: string): Promise<{ accounts: ApiAccount[] }> {
-    return (await this.chain.api.database_api.find_accounts({ accounts: [id] }));
+    return (await this.api.findAccounts({ accounts: [id] }));
   }
 }
 
@@ -253,7 +279,7 @@ export class TxInspectorEngine {
   }
 
   public async processTransaction (transaction: ApiTransaction): Promise<TProcessedTransaction> {
-    const analyzer = new TransactionAnalyzer(this.chain);
+    const analyzer = new TransactionAnalyzer(this.chain, new TransactionAnalyzerApiProvider(this.chain));
     return await analyzer.analyzeTransaction(transaction);
   }
 
@@ -261,7 +287,7 @@ export class TxInspectorEngine {
     const transaction = await this.chain.api.account_history_api.get_transaction({ id });
     if (typeof transaction === 'undefined') throw new Error('Transaction not found');
 
-    const analyzer = new TransactionAnalyzer(this.chain);
+    const analyzer = new TransactionAnalyzer(this.chain, new TransactionAnalyzerApiProvider(this.chain));
     return await analyzer.analyzeTransaction(transaction, id);
   }
 
