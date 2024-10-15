@@ -1,22 +1,31 @@
 import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
 import type { EPackType, ITransactionAnalyzerApi } from '../../types/wax.js';
 
-export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
-  private readonly mockData: any; // TODO: Replace any with the actual type
+export interface IMockData {
+  validTxAuthority: boolean,
+  keyReferences: string[]
+};
 
-  public constructor (mockData: any) {
-    this.mockData = JSON.parse(mockData);
+export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
+  private mockData!: IMockData; // TODO: Replace any with the actual type
+
+  public constructor() {
+  }
+
+  public load(inputData: IMockData): void {
+    console.log(`Loading mocked data: ${JSON.stringify(inputData)}`);
+    this.mockData = inputData;
   }
 
   public async verifyAuthority (_params: { trx: ApiTransaction; pack: EPackType; }): Promise<{ valid: boolean; }> {
-    return await this.mockData.valid;
+    return { valid: this.mockData.validTxAuthority };
   }
 
   public async getKeyReferences (_params: { keys: string[]; }): Promise<{ accounts: string[][]; }> {
-    return await this.mockData.keyReferences;
+    return { accounts: Array<string[]>(this.mockData.keyReferences) }; ///TODO
   }
 
   public async findAccounts (_params: { accounts: string[]; }): Promise<{ accounts: ApiAccount[]; }> {
-    return await this.mockData.accounts;
+    return { accounts: [] }; /// TODO
   }
 }
