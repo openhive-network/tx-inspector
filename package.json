@@ -12,9 +12,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && husky",
     "lint": "eslint . --fix",
-    "prepare": "husky",
     "pretest": "playwright install chromium",
     "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_testsuite"
   },
