@@ -1,31 +1,29 @@
+/* eslint-disable no-console */
 import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
 import type { EPackType, ITransactionAnalyzerApi } from '../../types/wax.js';
 
 export interface IMockData {
   validTxAuthority: boolean,
   keyReferences: string[]
-};
+}
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData; // TODO: Replace any with the actual type
 
-  public constructor() {
-  }
-
-  public load(inputData: IMockData): void {
+  public load (inputData: IMockData): void {
     console.log(`Loading mocked data: ${JSON.stringify(inputData)}`);
     this.mockData = inputData;
   }
 
-  public async verifyAuthority (_params: { trx: ApiTransaction; pack: EPackType; }): Promise<{ valid: boolean; }> {
+  public verifyAuthority (_params: { trx: ApiTransaction; pack: EPackType; }): { valid: boolean; } {
     return { valid: this.mockData.validTxAuthority };
   }
 
-  public async getKeyReferences (_params: { keys: string[]; }): Promise<{ accounts: string[][]; }> {
-    return { accounts: Array<string[]>(this.mockData.keyReferences) }; ///TODO
+  public getKeyReferences (_params: { keys: string[]; }): { accounts: string[][]; } {
+    return { accounts: [this.mockData.keyReferences] }; /// TODO
   }
 
-  public async findAccounts (_params: { accounts: string[]; }): Promise<{ accounts: ApiAccount[]; }> {
+  public findAccounts (_params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
     return { accounts: [] }; /// TODO
   }
 }

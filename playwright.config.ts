@@ -2,7 +2,7 @@
 import { defineConfig } from '@playwright/test';
 import { type ITxInspectorTest } from './__tests__/assets/jest-helper.js';
 
-export default defineConfig < ITxInspectorTest> ({
+export default defineConfig < ITxInspectorTest>({
   reporter: [
     ['junit', { outputFile: 'results.xml' }],
     ['json', { outputFile: 'results.json' }]

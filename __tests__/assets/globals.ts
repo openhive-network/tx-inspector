@@ -1,17 +1,18 @@
+/* eslint-disable no-console */
 /* eslint-disable no-var */
 import { createHiveChain } from '@hiveio/wax';
 import { TransactionAnalyzerApiProvider, TransactionAnalyzer, TxInspectorEngine } from '../../utils/txInspector.js';
-import type { TChainExtendedApiData, TProcessedTransaction, ITransactionAnalyzerApi } from '../../types/wax.js';
+import type { TChainExtendedApiData, ITransactionAnalyzerApi } from '../../types/wax.js';
 import { TransactionAnalyzerApiMock } from './api-mock.js';
 
 export interface ITxInspectorGlobals {
   inspectorEngine: TxInspectorEngine;
-};
+}
 
 export interface ITxAnalyzerGlobals {
   analyzer: TransactionAnalyzer;
   mockedApiProvider: TransactionAnalyzerApiMock;
-};
+}
 
 export interface ITxInspectorMockGlobals {
   analyzer: TransactionAnalyzer;
@@ -34,19 +35,18 @@ globalThis.createTxInspectorTestFor = async function createTxInspectorTestFor ()
   return { inspectorEngine };
 };
 
-globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor(mockDataFile: string): Promise<ITxAnalyzerGlobals> {
+globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor (mockDataFile: string): Promise<ITxAnalyzerGlobals> {
   const chain = await createHiveChain();
   const extendedChain = chain.extend<TChainExtendedApiData>();
 
   let apiProvider: ITransactionAnalyzerApi;
-  let mockedApiProvider: TransactionAnalyzerApiMock = new TransactionAnalyzerApiMock();
+  const mockedApiProvider: TransactionAnalyzerApiMock = new TransactionAnalyzerApiMock();
   if (mockDataFile !== '') {
     console.log(`Loading fixture-level mock data specified in file: ${mockDataFile}`);
-    //mockedApiProvider.load(mockData); TODO
+    // mockedApiProvider.load(mockData); TODO
     apiProvider = mockedApiProvider;
-  }
-  else {
-    console.log(`Missing mock data file at fixture level. Instantiated mocked API data provider will be supplied at each testcase level`);
+  } else {
+    console.log('Missing mock data file at fixture level. Instantiated mocked API data provider will be supplied at each testcase level');
     apiProvider = new TransactionAnalyzerApiProvider(extendedChain);
   }
 
@@ -56,14 +56,14 @@ globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor(mock
     analyzer,
     mockedApiProvider
   };
-}
+};
 
 globalThis.createTxInspectorMockTestFor = async function createTxInspectorMockTestFor (mockData: any) {
   const chain = await createHiveChain();
 
   const extendedChain = chain.extend<TChainExtendedApiData>();
   const mock = new TransactionAnalyzerApiMock();
-  if (mockData !== undefined)
+  if (mockData)
     mock.load(mockData);
 
   const analyzer = new TransactionAnalyzer(extendedChain, mock);

@@ -78,9 +78,9 @@ type TProcessedTransactionPackTypeUnknown = TProcessedTransactionBase & {
 export type TProcessedTransaction = TProcessedTransactionPackTypeKnown | TProcessedTransactionPackTypeUnknown;
 
 export interface ITransactionAnalyzerApi {
-  verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }>;
+  verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }> | { valid: boolean };
 
-  getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }>;
+  getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }> | { accounts: string[][] };
 
-  findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }>;
+  findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> | { accounts: ApiAccount[] };
 }
