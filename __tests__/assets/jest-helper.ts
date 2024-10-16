@@ -39,11 +39,10 @@ export interface ITxInspectorTest {
 
 const alreadyConsoleLogInitialized = new WeakSet<Page>();
 
-const txInspectorTest = <GlobalType extends ITxInspectorGlobals | ITxInspectorMockGlobals> (
-  page: Page,
-  globalFunction: (mockData: any) => Promise<GlobalType>
-): ITxInspectorTest[GlobalType extends ITxInspectorGlobals ? 'txInspectorTest' : 'txInspectorMockTest'] => {
-  const runner = async<R, Args extends any[]> (mockData: GlobalType extends ITxInspectorGlobals ? undefined : any, fn: GlobalType extends ITxInspectorGlobals ? TTxInspectorTestCallable<R, Args> : TTxInspectorTestMockCallable<R, Args>, ...args: Args): Promise<R> => {
+const txInspectorTest = (
+  page: Page
+): ITxInspectorTest['txInspectorTest'] => {
+  const runner = async<R, Args extends any[]> (fn: TTxInspectorTestCallable<R, Args>, ...args: Args): Promise<R> => {
     if (!alreadyConsoleLogInitialized.has(page)) {
       page.on('console', (msg: ConsoleMessage) => {
         console.log('>>', msg.type(), msg.text());
@@ -53,21 +52,16 @@ const txInspectorTest = <GlobalType extends ITxInspectorGlobals | ITxInspectorMo
     }
     await page.goto('http://localhost:8080/__tests__/assets/test.html', { waitUntil: 'load' });
 
-    const webData = await page.evaluate(async ({ args, globalFunction, webFn, customChainId, mockData }) => {
+    const webData = await page.evaluate(async ({ args, webFn, customChainId }) => {
       eval(`window.webEvalFn = ${webFn};`);
       globalThis.customChainId = customChainId;
-
-      return (window as Window & typeof globalThis & { webEvalFn: Function }).webEvalFn(await globalThis[globalFunction](mockData), ...args);
-    }, { args, globalFunction: globalFunction.name, webFn: fn.toString(), customChainId: globalThis.customChainId, mockData });
+      return (window as Window & typeof globalThis & { webEvalFn: Function }).webEvalFn(await globalThis.createTxInspectorTestFor(), ...args);
+    }, { args, webFn: fn.toString(), customChainId: globalThis.customChainId });
 
     return webData;
   };
 
-  const using = function<R, Args extends any[]> (mockData: GlobalType extends ITxInspectorGlobals ? undefined : any, fn: TTxInspectorTestCallable<R, Args>, ...args: Args) {
-    return runner.bind(undefined, mockData)(fn as any, ...args);
-  };
-
-  return using as ITxInspectorTest[GlobalType extends ITxInspectorGlobals ? 'txInspectorTest' : 'txInspectorMockTest'];
+  return runner;
 };
 
 const txAnalyzerMockedTestEnvironment = (
@@ -104,7 +98,7 @@ export const test = base.extend<ITxInspectorTest>({
   fixtureLevelMockFile: ['', { option: true }],
 
   txInspectorTest: ({ page }, use) => {
-    use(txInspectorTest(page, createTxInspectorTestFor));
+    use(txInspectorTest(page));
   },
 
   txAnalyzerMockedTest: ({ page, fixtureLevelMockFile }, use) => {
