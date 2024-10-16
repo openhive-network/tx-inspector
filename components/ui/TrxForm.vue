@@ -50,75 +50,56 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
 
-const { $chain, $txInspector } = useNuxtApp();
+const { $chain, $txInspector, $formatter } = useNuxtApp();
 
 const radioState = ref('json');
 
-const trx = defineModel<string>('transaction');
-const hash = defineModel<string>('hash');
+const trx = ref<string>();
+const hash = ref<string>();
 
-const useOperationsFormatter = (operations: any) => {
-  const { $formatter } = useNuxtApp();
+onMounted(() => {
+  store.$state.qs = new URLSearchParams(location.search);
 
-  return $formatter.format(operations);
-};
+  if (store.$state.qs.has('transaction')) {
+    const transaction = store.$state.qs.get('transaction');
+    if (transaction)
+      if (transaction.length > 64)
+        trx.value = atob(transaction);
+      else
+        hash.value = transaction;
+  }
+});
+
+const qs = store.$state.qs;
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   store.$state.authorityPath.length = 0;
+  qs.delete('transaction');
   try {
     store.$state.isLoading = true;
 
     if (radioState.value === 'hash') {
-      if (hash.value === undefined)
-        throw new Error('Hash is required');
-
-      store.$state.id = hash.value;
-
-      const tx = await $txInspector.processTransactionId(hash.value);
-      store.$state.processedTransaction = tx;
-      store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
-      (trx.value as unknown as ApiTransaction) = tx.transaction.toApiJson();
+      if (hash.value) {
+        store.$state.qs.set('transaction', hash.value);
+        await store.handleTransactionFromHash($txInspector, $formatter, hash.value);
+      }
     } else if (radioState.value === 'json') {
-      if (trx.value === undefined)
-        throw new Error('Transaction is required');
-
-      trx.value = JSON.parse(String(trx.value!.trim()));
-
-      store.$state.json = trx.value!;
-
-      const tx = await $txInspector.processTransaction(trx.value as unknown as ApiTransaction);
-      store.$state.processedTransaction = tx;
-      store.$state.formattedOperations = useOperationsFormatter(tx.transaction.transaction).operations;
+      if (trx.value) {
+        store.$state.qs.set('transaction', btoa(trx.value));
+        await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
+      }
     } else
       throw new Error('Provide transaction in choosen format');
 
-    const authorityPath = await getAuthorityPath($chain, trx.value as unknown as ApiTransaction);
+    await store.handleAuthorityPath($chain);
 
-    if (authorityPath) {
-      authorityPath.push(authorityPath.shift()!);
-      store.$state.authorityPath = authorityPath;
-
-      let totalWeight = 0;
-      let totalThreshold = 0;
-
-      for (let i = 0; i < authorityPath.length; ++i)
-        if (authorityPath[i].authWeight) {
-          totalWeight += authorityPath[i].authWeight!.auth;
-          totalThreshold += authorityPath[i].authWeight!.weight;
-        }
-
-      if (totalWeight >= totalThreshold)
-        store.$state.isSatisfied = true;
-      else
-        store.$state.isSatisfied = false;
-    }
+    window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
   } catch (error) {
     toast.error('Error', {
       description: error instanceof Error ? error.message : 'Unknown error occured'
