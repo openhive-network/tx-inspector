@@ -3,7 +3,7 @@
 import { createHiveChain } from '@hiveio/wax';
 import { TransactionAnalyzerApiProvider, TransactionAnalyzer, TxInspectorEngine } from '../../utils/txInspector.js';
 import type { TChainExtendedApiData, ITransactionAnalyzerApi } from '../../types/wax.js';
-import { TransactionAnalyzerApiMock } from './api-mock.js';
+import { TransactionAnalyzerApiMock, type IMockData } from './api-mock.js';
 
 export interface ITxInspectorGlobals {
   inspectorEngine: TxInspectorEngine;
@@ -24,8 +24,7 @@ declare global {
   function createTxInspectorMockTestFor (mockData: any): Promise<ITxInspectorMockGlobals>;
   var customChainId: string | undefined;
   var customApiEndpoint: string | undefined;
-  var fixtureLevelMockFile: string | undefined;
-  var mock: any | undefined;
+  var mock: IMockData | undefined;
 }
 
 // Use function as we later extract the function name in the jest-helpers
@@ -35,15 +34,15 @@ globalThis.createTxInspectorTestFor = async function createTxInspectorTestFor ()
   return { inspectorEngine };
 };
 
-globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor (mockDataFile: string): Promise<ITxAnalyzerGlobals> {
+globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor (mockDataFile: IMockData): Promise<ITxAnalyzerGlobals> {
   const chain = await createHiveChain();
   const extendedChain = chain.extend<TChainExtendedApiData>();
 
   let apiProvider: ITransactionAnalyzerApi;
   const mockedApiProvider: TransactionAnalyzerApiMock = new TransactionAnalyzerApiMock();
-  if (mockDataFile !== '') {
+  if (mockDataFile) {
     console.log(`Loading fixture-level mock data specified in file: ${mockDataFile}`);
-    // mockedApiProvider.load(mockData); TODO
+    mockedApiProvider.load(mockDataFile);
     apiProvider = mockedApiProvider;
   } else {
     console.log('Missing mock data file at fixture level. Instantiated mocked API data provider will be supplied at each testcase level');

@@ -1,7 +1,7 @@
 import { chromium, type ChromiumBrowser } from "playwright";
 import { expect } from '@playwright/test';
 
-import { test1_mocked_data, claimAccountOperationTransaction } from "./data";
+import { claimAccountOperationTransaction } from "./data";
 
 import { test } from '../assets/jest-helper';
 
@@ -15,8 +15,7 @@ mockTest.describe('transaction inspector tests based on mock data', () => {
   });
 
   test('Should be able to use mocked tests for TxAnalyzer class', async ({ txAnalyzerMockedTest }) => {
-    const retVal = await txAnalyzerMockedTest(async ({ analyzer, mockedApiProvider }, mocked_data_to_load, inputTx) => {
-      mockedApiProvider.load(mocked_data_to_load);
+    const retVal = await txAnalyzerMockedTest(async ({ analyzer }, inputTx) => {
       const processingResults = await analyzer.analyzeTransaction(inputTx);
       return {
         signatures: processingResults.signatures,
@@ -29,7 +28,7 @@ mockTest.describe('transaction inspector tests based on mock data', () => {
         isValid: processingResults.isValid,
         packType: processingResults.packType
       };
-    }, test1_mocked_data, claimAccountOperationTransaction);
+    }, claimAccountOperationTransaction);
 
     expect(retVal).toEqual({
       authorityType: [

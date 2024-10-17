@@ -13,7 +13,7 @@ export default defineConfig < ITxInspectorTest>({
       testDir: './__tests__/',
       use:
       {
-        fixtureLevelMockFile: 'Ala ma kota.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/test1_mocked_data.json'
       }
 
     }
