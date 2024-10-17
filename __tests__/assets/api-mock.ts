@@ -4,7 +4,8 @@ import type { EPackType, ITransactionAnalyzerApi } from '../../types/wax.js';
 
 export interface IMockData {
   validTxAuthority: boolean,
-  keyReferences: string[]
+  keyReferences: string[],
+  accounts: ApiAccount[]
 }
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
@@ -24,6 +25,6 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   }
 
   public findAccounts (_params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
-    return { accounts: [] }; /// TODO
+    return { accounts: this.mockData.accounts }; /// TODO
   }
 }
