@@ -114,7 +114,7 @@ const handleKeydown = (event: KeyboardEvent): void => {
     event.preventDefault();
     submitTransaction();
 
-    if (trx.value !== undefined)
+    if (trx.value !== undefined || hash.value !== undefined)
       store.$state.trxDialogOpen = false;
   }
 };
