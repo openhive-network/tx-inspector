@@ -12,7 +12,7 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.processedTransaction.value.transactionId !== ''">
+      <div v-if="store.processedTransaction.value.transactionId !== ''" class="mx-auto">
         <s-skeleton v-if="store.isLoading.value" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
           <v-chip
