@@ -57,12 +57,10 @@
 
 <script lang="ts" setup>
 import TrxDialog from '~/components/ui/TrxDialog.vue';
-import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
-import ChainId from '~/components/ui/ChainId.vue';
 
 const wax = useWaxStore();
 const store = storeToRefs(wax);
