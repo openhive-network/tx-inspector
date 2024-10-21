@@ -67,7 +67,7 @@ export const useWaxStore = defineStore('wax', {
     },
 
     async handleAuthorityPath (chain: TWaxExtended<TChainExtendedApiData>) {
-      const authorityPath = await getAuthorityPath(chain, this.$state.tx as unknown as ApiTransaction);
+      const authorityPath = await getAuthorityPath(chain, this.$state.tx as unknown as ApiTransaction, new TransactionAnalyzerApiProvider(chain));
 
       if (authorityPath) {
         authorityPath.push(authorityPath.shift()!);

@@ -19,6 +19,7 @@ const commonConfiguration = () => ([
     plugins: [
       replace({
         delimiters: ['', ''],
+        'process.env.NODE_ENV': JSON.stringify('production'),
         preventAssignment: true
       }),
       commonjs(),

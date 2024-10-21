@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ApiTransaction, authority, TAccountName, TWaxExtended } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
-import { TransactionAnalyzer, TransactionAnalyzerApiProvider } from '../utils/txInspector';
-import type { TProcessedTransaction, TChainExtendedApiData } from '../types/wax';
+import { TransactionAnalyzer } from '../utils/txInspector';
+import type { TProcessedTransaction, TChainExtendedApiData, ITransactionAnalyzerApi } from '../types/wax';
 
 export interface IAuthorityNode {
   name: TAccountName;
@@ -276,8 +276,8 @@ const getAuthority = async (analyzer: TransactionAnalyzer, type: 'active' | 'own
   };
 };
 
-const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction): Promise<void> => {
-  const analyzer = new TransactionAnalyzer(chain, new TransactionAnalyzerApiProvider(chain));
+const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<void> => {
+  const analyzer = new TransactionAnalyzer(chain, apiProvider);
   const processedTransaction: TProcessedTransaction = await analyzer.analyzeTransaction(transaction);
   const auths = processedTransaction.requiredAuthorities;
 
@@ -292,9 +292,9 @@ const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiD
   getAuthority.bind(undefined, analyzer, 'posting'));
 };
 
-export default async function (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction): Promise<IAuthorityPaths[] | undefined> {
+export default async function (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<IAuthorityPaths[] | undefined> {
   try {
-    await createModuleForTransaction(chain, transaction);
+    await createModuleForTransaction(chain, transaction, apiProvider);
     return paths;
   } catch (error) {
     toast.error('Error', {
