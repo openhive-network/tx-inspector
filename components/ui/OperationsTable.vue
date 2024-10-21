@@ -40,8 +40,8 @@
             <component :is="item.value" />
           </s-table-cell>
           <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths}`">
-              {{ `@${getAuthorityForOperation(index)?.auths}` }}
+            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
+              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
             </a>
           </s-table-cell>
           <s-table-cell>
@@ -67,8 +67,8 @@
             </code>
           </s-table-cell>
           <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths}`">
-              {{ `@${getAuthorityForOperation(index)?.auths}` }}
+            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
+              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
             </a>
           </s-table-cell>
           <s-table-cell>
