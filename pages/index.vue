@@ -74,8 +74,10 @@ onMounted(async () => {
     await wax.handleTransactionFromHash($txInspector, $formatter, qs.get('transaction')!);
     await wax.handleAuthorityPath($chain);
   } catch (_error) {
-    await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
-    await wax.handleAuthorityPath($chain);
+    try {
+      await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
+      await wax.handleAuthorityPath($chain);
+    } catch (_error) {}
   } finally {
     wax.$state.isLoading = false;
   }
