@@ -35,8 +35,6 @@
           </v-chip>
         </div>
       </div>
-      <EndpointUrl />
-      <ChainId />
       <TrxDialog />
     </s-card-header>
     <s-card-content>
