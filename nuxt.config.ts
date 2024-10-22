@@ -12,6 +12,7 @@ const getCommitHash = () => {
 };
 
 export default defineNuxtConfig({
+  ssr: false,
   app: {
     head: {
       title: 'Transaction inspector'
