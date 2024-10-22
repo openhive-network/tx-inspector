@@ -136,7 +136,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
     return h(
       NuxtLink,
       { to: `https://explore.openhive.network/@${account}`, class: 'text-blue' },
-      `@${account} `
+      () => `@${account} `
     );
   }
 
@@ -153,7 +153,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
     return h(
       NuxtLink,
       { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green' },
-      permlink
+      () => permlink
     );
   }
 
@@ -205,26 +205,25 @@ class OperationsFormatter implements IWaxCustomFormatter {
     }
   }
 
-  @WaxFormattable({ matchProperty: 'comment' })
+  @WaxFormattable({ matchProperty: 'comment', requireDefined: true })
   public formatComment ({ source: { comment: op }, target }: IFormatFunctionArguments<{ comment: comment }>) {
-    if (op) {
-      let message: string | VNode = '';
-      if (op.parent_author === '')
-        message = this.generateVueLink([
-          this.getAccountLink(op.author),
-          'created new comment: ',
-          this.getPermlink(op.author, op.permlink)
-        ]);
-      else
-        message = this.generateVueLink([
-          this.getAccountLink(op.author),
-          'wrote a comment ',
-          this.getPermlink(op.author, op.permlink),
-          ' for a post: ',
-          this.getPermlink(op.parent_author, op.parent_permlink)
-        ]);
-      return { ...target, value: message };
-    }
+    let message: VNode;
+
+    if (op.parent_author === '')
+      message = this.generateVueLink([
+        this.getAccountLink(op.author),
+        'created new comment: ',
+        this.getPermlink(op.author, op.permlink)
+      ]);
+    else
+      message = this.generateVueLink([
+        this.getAccountLink(op.author),
+        'wrote a comment ',
+        this.getPermlink(op.author, op.permlink),
+        ' for a post: ',
+        this.getPermlink(op.parent_author, op.parent_permlink)
+      ]);
+    return { ...target, value: message };
   }
 
   @WaxFormattable({ matchProperty: 'transfer' })

@@ -37,7 +37,7 @@
             <span>{{ store.processedTransaction.value.operations[index].type }}</span>
           </s-table-cell>
           <s-table-cell class="max-w-[30vw]">
-            <component :is="item.value" />
+            <component :is="item.value.message ?? item.value" />
           </s-table-cell>
           <s-table-cell>
             <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
