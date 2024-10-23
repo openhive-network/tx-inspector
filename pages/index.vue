@@ -4,7 +4,7 @@
       <div class="flex flex-col xl:flex-row items-center mb-4 md:mb-0">
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
         <div class="ml-8 mt-3 xl:mt-0 text-center">
-          <s-card-title>
+          <s-card-title class="text-xl">
             Transaction Inspector
           </s-card-title>
           <s-card-description class="mt-2">

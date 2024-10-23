@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col gap-3 w-full">
+    <Subtitle>Body:</Subtitle>
     <s-radio-group v-if="store.processedTransaction.value.operations.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
       <div class="flex items-center space-x-2">
         <s-radio-group-item id="formatted" value="formatted" />
@@ -92,6 +93,7 @@
 
 import type { authority, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
+import Subtitle from './Subtitle.vue';
 import { EAuthorityLevel } from '~/types/wax';
 
 const wax = useWaxStore();

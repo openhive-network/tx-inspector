@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Required Authorities:</h3>
+    <Subtitle>Required Authorities:</Subtitle>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>
@@ -70,6 +70,8 @@
 </template>
 
 <script lang="ts" setup>
+import Subtitle from './Subtitle.vue';
+
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
 </script>

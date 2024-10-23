@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Transaction:</h3>
+    <Subtitle>Transaction:</Subtitle>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>
@@ -150,6 +150,7 @@
 </template>
 
 <script lang="ts" setup>
+import Subtitle from './Subtitle.vue';
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
 </script>

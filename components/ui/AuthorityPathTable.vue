@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Subtitle>Signatures:</Subtitle>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>
@@ -115,6 +116,7 @@
 </template>
 
 <script lang="ts" setup>
+import Subtitle from './Subtitle.vue';
 import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
