@@ -7,6 +7,9 @@
       <span class="mx-2">
         Last commit hash: {{ commitHash }}
       </span>
+      <span>
+        Transaction processing time: {{ store.processingTime.value }} seconds
+      </span>
     </div>
     <div>
       <span>

@@ -16,6 +16,7 @@ export const useWaxStore = defineStore('wax', {
     json: undefined as string | undefined,
     qs: undefined as unknown as URLSearchParams,
     tx: undefined as string | undefined,
+    processingTime: '0',
     processedTransaction: {
       packType: EPackType.UNKNOWN,
       signatures: [],

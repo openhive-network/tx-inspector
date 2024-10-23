@@ -40,10 +40,10 @@
     <s-card-content>
       <AuthorityPathTable />
       <hr class="my-8">
-      <div class="flex flex-col lg:flex-row gap-4">
-        <TrxTable class="w-full lg:w-1/2" />
-        <hr class="my-3 lg:hidden">
-        <AuthTable class="w-full lg:w-1/2" />
+      <div class="flex flex-col gap-4">
+        <TrxTable class="w-full" />
+        <hr class="my-3">
+        <AuthTable class="w-full" />
       </div>
       <hr class="my-8">
       <div class="mb-16">
@@ -66,10 +66,15 @@ const store = storeToRefs(wax);
 const { $chain, $txInspector, $formatter } = useNuxtApp();
 
 onMounted(async () => {
+  let start!: number;
+  let end!: number;
+  let processingTime!: string;
   wax.$state.qs = new URLSearchParams(location.search);
   const qs = wax.$state.qs;
-  if (qs.has('transaction'))
+  if (qs.has('transaction')) {
     wax.$state.isLoading = true;
+    start = Date.now();
+  }
   try {
     await wax.handleTransactionFromHash($txInspector, $formatter, qs.get('transaction')!);
     await wax.handleAuthorityPath($chain);
@@ -80,6 +85,11 @@ onMounted(async () => {
     } catch (_error) {}
   } finally {
     wax.$state.isLoading = false;
+    end = Date.now();
+
+    processingTime = ((end - start) / 1000).toFixed(2);
+
+    store.processingTime.value = processingTime;
   }
 });
 </script>
