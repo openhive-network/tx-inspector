@@ -80,11 +80,11 @@ const qs = store.$state.qs;
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   store.$state.authorityPath.length = 0;
-  store.$state.processingTime = '0';
+  store.$state.processingTime = 0;
 
   let start!: number;
   let end!: number;
-  let processingTime!: string;
+  let processingTime!: number;
   qs.delete('transaction');
   try {
     store.$state.isLoading = true;
@@ -114,7 +114,7 @@ const submitTransaction = async () => {
     store.$state.isLoading = false;
     end = Date.now();
 
-    processingTime = ((end - start) / 1000).toFixed(2);
+    processingTime = Number(((end - start) / 1000).toFixed(2));
     store.$state.processingTime = processingTime;
   }
 };

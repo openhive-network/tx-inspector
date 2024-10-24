@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { type ApiTransaction, type IWaxExtendableFormatter, type TWaxExtended } from '@hiveio/wax';
+import { type ApiTransaction, type IBinaryViewOutputData, type IWaxExtendableFormatter, type TWaxExtended } from '@hiveio/wax';
 import { type TxInspectorEngine, getAuthorityPath } from '#imports';
 import { EPackType, type TChainExtendedApiData, type TProcessedTransaction } from '~/types/wax';
 import type { IAuthorityPaths } from '~/utils/getAuthorityPath';
@@ -14,9 +14,11 @@ export const useWaxStore = defineStore('wax', {
     trxDialogOpen: false,
     id: undefined as string | undefined,
     json: undefined as string | undefined,
+    binary: undefined as string | undefined,
     qs: undefined as unknown as URLSearchParams,
     tx: undefined as string | undefined,
-    processingTime: '0',
+    binaryVueOutputData: undefined as IBinaryViewOutputData | undefined,
+    processingTime: 0,
     processedTransaction: {
       packType: EPackType.UNKNOWN,
       signatures: [],
@@ -55,6 +57,7 @@ export const useWaxStore = defineStore('wax', {
       const tx = await inspector.processTransactionId(hash);
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
+      this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
       (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
     },
 
@@ -64,6 +67,7 @@ export const useWaxStore = defineStore('wax', {
       const tx = await inspector.processTransaction(JSON.parse(String(json!.trim())) as unknown as ApiTransaction);
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
+      this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
       (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
     },
 

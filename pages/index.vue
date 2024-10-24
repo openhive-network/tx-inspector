@@ -68,7 +68,7 @@ const { $chain, $txInspector, $formatter } = useNuxtApp();
 onMounted(async () => {
   let start!: number;
   let end!: number;
-  let processingTime!: string;
+  let processingTime!: number;
   wax.$state.qs = new URLSearchParams(location.search);
   const qs = wax.$state.qs;
   if (qs.has('transaction')) {
@@ -87,7 +87,7 @@ onMounted(async () => {
     wax.$state.isLoading = false;
     end = Date.now();
 
-    processingTime = ((end - start) / 1000).toFixed(2);
+    processingTime = Number(((end - start) / 1000).toFixed(2));
 
     store.processingTime.value = processingTime;
   }

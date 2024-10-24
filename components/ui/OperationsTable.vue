@@ -15,7 +15,7 @@
         </s-label>
       </div>
       <div class="flex items-center space-x-2">
-        <s-radio-group-item id="binary" value="binary" disabled />
+        <s-radio-group-item id="binary" value="binary" />
         <s-label for="binary">
           Binary
         </s-label>
@@ -81,6 +81,31 @@
             <code>
               {{ JSON.stringify(item.value, null, 2) }}
             </code>
+          </s-table-cell>
+        </s-table-row>
+      </s-table-body>
+      <s-table-body v-show="radioState === 'binary'">
+        <s-table-row v-for="(item, index) in store.processedTransaction.value.operations" :key="index">
+          <s-table-cell>
+            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
+              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
+            </a>
+          </s-table-cell>
+          <s-table-cell>
+            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
+              {{ getAuthorityForOperation(index)?.type }}
+            </span>
+          </s-table-cell>
+          <s-table-cell>
+            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
+              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
+            </v-icon>
+          </s-table-cell>
+          <s-table-cell>
+            <span>{{ item.type }}</span>
+          </s-table-cell>
+          <s-table-cell class="max-w-[30vw]">
+            <BinaryView :data="store.binaryVueOutputData.value" dark />
           </s-table-cell>
         </s-table-row>
       </s-table-body>

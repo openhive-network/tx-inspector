@@ -8,7 +8,7 @@
         Last commit hash: {{ commitHash }}
       </span>
       <span>
-        Transaction processing time: {{ store.processingTime.value }} seconds
+        Transaction processing time: {{ Number.isNaN(store.processingTime.value) ? 0 : store.processingTime.value }} seconds
       </span>
     </div>
     <div>
