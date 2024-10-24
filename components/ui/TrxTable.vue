@@ -9,6 +9,8 @@
         <s-table-row>
           <s-table-head>ID</s-table-head>
           <s-table-head>Sig Digest</s-table-head>
+          <s-table-head>TaPoS</s-table-head>
+          <s-table-head>Expiration time</s-table-head>
         </s-table-row>
       </s-table-header>
       <s-table-body>
@@ -145,6 +147,14 @@
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
+          <s-table-cell>
+            <span class="inline-flex flex-col">
+              <span>Block number: <b>{{ store.processedTransaction.value.tapos.refBlockNum }}</b></span>
+              <hr class="my-2">
+              <span>Block prefix: <b>{{ store.processedTransaction.value.tapos.refBlockPrefix }}</b></span>
+            </span>
+          </s-table-cell>
+          <s-table-cell>{{ store.processedTransaction.value.expiration }}</s-table-cell>
         </s-table-row>
       </s-table-body>
     </s-table>

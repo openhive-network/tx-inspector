@@ -64,6 +64,8 @@ export class TransactionAnalyzer {
     const operations = this.getOperationsFromTransaction();
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
     const isValid = await this.checkVerifyAuthority(packType);
+    const tapos = this.getTapos();
+    const expiration = this.getExpiration();
 
     return {
       packType,
@@ -77,6 +79,8 @@ export class TransactionAnalyzer {
       operations,
       signeesByKeys,
       isValid,
+      tapos,
+      expiration,
       transaction: this.transaction,
       protoTransaction: tx.transaction
     } as TProcessedTransaction;
@@ -216,6 +220,17 @@ export class TransactionAnalyzer {
     } catch {
       return false;
     }
+  }
+
+  private getTapos (): { refBlockNum: number, refBlockPrefix: number } {
+    return {
+      refBlockNum: this.transaction.transaction.ref_block_num,
+      refBlockPrefix: this.transaction.transaction.ref_block_prefix
+    };
+  }
+
+  private getExpiration (): string {
+    return this.transaction.transaction.expiration;
   }
 
   // Method required for the authority path algorithm

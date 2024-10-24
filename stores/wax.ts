@@ -29,7 +29,9 @@ export const useWaxStore = defineStore('wax', {
       authorityType: [],
       operations: [],
       signeesByKeys: [],
-      isValid: false
+      isValid: false,
+      tapos: { refBlockNum: 0, refBlockPrefix: 0 },
+      expiration: ''
     } as unknown as TProcessedTransaction
   }),
 

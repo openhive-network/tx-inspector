@@ -60,6 +60,8 @@ type TProcessedTransactionBase = {
   operations: ApiOperation[];
   signeesByKeys: string[][];
   isValid: boolean;
+  tapos: { refBlockNum: number, refBlockPrefix: number };
+  expiration: string;
   transaction: ITransaction;
 }
 
