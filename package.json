@@ -18,7 +18,7 @@
     "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_testsuite"
   },
   "dependencies": {
-    "@hiveio/component-binary-view": "^0.1.6",
+    "@hiveio/component-binary-view": "^0.1.8",
     "@hiveio/wax": "1.27.6-rc5-241021233034",
     "@pinia/nuxt": "^0.5.1",
     "@radix-icons/vue": "^1.0.0",

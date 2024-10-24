@@ -25,8 +25,14 @@
     </s-radio-group>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <div v-else>
-      <BinaryView v-if="store.binaryVueOutputData.value" v-show="radioState === 'binary'" :data="store.binaryVueOutputData.value" dark />
-      <s-table>
+      <BinaryView
+        v-if="store.binaryVueOutputData.value"
+        v-show="radioState === 'binary'"
+        :data="store.binaryVueOutputData.value"
+        dark
+        class="mb-16"
+      />
+      <s-table v-if="radioState !== 'binary'">
         <s-table-header>
           <s-table-row>
             <s-table-head>Authority account</s-table-head>
