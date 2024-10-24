@@ -24,94 +24,72 @@
       </div>
     </s-radio-group>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
-    <s-table v-else>
-      <s-table-header>
-        <s-table-row>
-          <s-table-head>Authority account</s-table-head>
-          <s-table-head>Authority type</s-table-head>
-          <s-table-head>Satisfied</s-table-head>
-          <s-table-head>Operation type</s-table-head>
-          <s-table-head>Operation content</s-table-head>
-        </s-table-row>
-      </s-table-header>
-      <s-table-body v-show="radioState === 'formatted'">
-        <s-table-row v-for="(item, index) in store.formattedOperations.value" :key="index">
-          <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
-              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
-            </a>
-          </s-table-cell>
-          <s-table-cell>
-            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
-              {{ getAuthorityForOperation(index)?.type }}
-            </span>
-          </s-table-cell>
-          <s-table-cell>
-            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
-              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
-            </v-icon>
-          </s-table-cell>
-          <s-table-cell>
-            <span>{{ store.processedTransaction.value.operations[index].type }}</span>
-          </s-table-cell>
-          <s-table-cell class="max-w-[30vw]">
-            <component :is="item.value.message ?? item.value" />
-          </s-table-cell>
-        </s-table-row>
-      </s-table-body>
-      <s-table-body v-show="radioState === 'json'">
-        <s-table-row v-for="(item, index) in store.processedTransaction.value.operations" :key="index">
-          <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
-              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
-            </a>
-          </s-table-cell>
-          <s-table-cell>
-            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
-              {{ getAuthorityForOperation(index)?.type }}
-            </span>
-          </s-table-cell>
-          <s-table-cell>
-            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
-              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
-            </v-icon>
-          </s-table-cell>
-          <s-table-cell>
-            <span>{{ item.type }}</span>
-          </s-table-cell>
-          <s-table-cell class="max-w-[30vw]">
-            <code>
-              {{ JSON.stringify(item.value, null, 2) }}
-            </code>
-          </s-table-cell>
-        </s-table-row>
-      </s-table-body>
-      <s-table-body v-show="radioState === 'binary'">
-        <s-table-row v-for="(item, index) in store.processedTransaction.value.operations" :key="index">
-          <s-table-cell>
-            <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
-              {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
-            </a>
-          </s-table-cell>
-          <s-table-cell>
-            <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
-              {{ getAuthorityForOperation(index)?.type }}
-            </span>
-          </s-table-cell>
-          <s-table-cell>
-            <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
-              {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
-            </v-icon>
-          </s-table-cell>
-          <s-table-cell>
-            <span>{{ item.type }}</span>
-          </s-table-cell>
-          <s-table-cell class="max-w-[30vw]">
-            <BinaryView :data="store.binaryVueOutputData.value" dark />
-          </s-table-cell>
-        </s-table-row>
-      </s-table-body>
-    </s-table>
+    <div v-else>
+      <BinaryView v-if="store.binaryVueOutputData.value" v-show="radioState === 'binary'" :data="store.binaryVueOutputData.value" dark />
+      <s-table>
+        <s-table-header>
+          <s-table-row>
+            <s-table-head>Authority account</s-table-head>
+            <s-table-head>Authority type</s-table-head>
+            <s-table-head>Satisfied</s-table-head>
+            <s-table-head>Operation type</s-table-head>
+            <s-table-head>Operation content</s-table-head>
+          </s-table-row>
+        </s-table-header>
+        <s-table-body v-show="radioState === 'formatted'">
+          <s-table-row v-for="(item, index) in store.formattedOperations.value" :key="index">
+            <s-table-cell>
+              <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
+                {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
+              </a>
+            </s-table-cell>
+            <s-table-cell>
+              <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
+                {{ getAuthorityForOperation(index)?.type }}
+              </span>
+            </s-table-cell>
+            <s-table-cell>
+              <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
+                {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
+              </v-icon>
+            </s-table-cell>
+            <s-table-cell>
+              <span>{{ store.processedTransaction.value.operations[index].type }}</span>
+            </s-table-cell>
+            <s-table-cell class="max-w-[30vw]">
+              <component :is="item.value.message ?? item.value" />
+            </s-table-cell>
+          </s-table-row>
+        </s-table-body>
+        <s-table-body v-show="radioState === 'json'">
+          <s-table-row v-for="(item, index) in store.processedTransaction.value.operations" :key="index">
+            <s-table-cell>
+              <a class="text-blue" :href="`https://explore.openhive.network/@${getAuthorityForOperation(index)?.auths[index]}`">
+                {{ `@${getAuthorityForOperation(index)?.auths[index]}` }}
+              </a>
+            </s-table-cell>
+            <s-table-cell>
+              <span :class="getColorForType(getAuthorityForOperation(index)?.type)">
+                {{ getAuthorityForOperation(index)?.type }}
+              </span>
+            </s-table-cell>
+            <s-table-cell>
+              <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
+                {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
+              </v-icon>
+            </s-table-cell>
+            <s-table-cell>
+              <span>{{ item.type }}</span>
+            </s-table-cell>
+            <s-table-cell class="max-w-[30vw]">
+              <code>
+                {{ JSON.stringify(item.value, null, 2) }}
+              </code>
+            </s-table-cell>
+          </s-table-row>
+        </s-table-body>
+      </s-table>
+    </div>
   </div>
 </template>
 
