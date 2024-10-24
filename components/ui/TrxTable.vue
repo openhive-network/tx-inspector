@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Subtitle>Transaction:</Subtitle>
+    <Subtitle class="mb-3">
+      Transaction:
+    </Subtitle>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>

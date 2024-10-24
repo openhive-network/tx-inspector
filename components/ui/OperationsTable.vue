@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col gap-3 w-full">
-    <Subtitle>Body:</Subtitle>
+    <Subtitle class="mb-3">
+      Body:
+    </Subtitle>
     <s-radio-group v-if="store.processedTransaction.value.operations.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
       <div class="flex items-center space-x-2">
         <s-radio-group-item id="formatted" value="formatted" />

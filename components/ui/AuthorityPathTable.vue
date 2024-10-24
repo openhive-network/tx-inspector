@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Subtitle>Signatures:</Subtitle>
+    <Subtitle class="mb-3">
+      Signatures:
+    </Subtitle>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <s-table v-else>
       <s-table-header>
