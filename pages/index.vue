@@ -82,7 +82,12 @@ onMounted(async () => {
     try {
       await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
       await wax.handleAuthorityPath($chain);
-    } catch (_error) {}
+    } catch (_error) {
+      try {
+        await wax.handleTransactionFromBinary($txInspector, $formatter, qs.get('transaction')!);
+        await wax.handleAuthorityPath($chain);
+      } catch (_error) {}
+    }
   } finally {
     wax.$state.isLoading = false;
     end = Date.now();

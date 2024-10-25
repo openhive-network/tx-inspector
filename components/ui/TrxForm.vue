@@ -15,7 +15,7 @@
           </s-label>
         </div>
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="binary" value="binary" disabled />
+          <s-radio-group-item id="binary" value="binary" />
           <s-label for="binary">
             Binary
           </s-label>
@@ -28,6 +28,13 @@
         v-if="radioState === 'hash'"
         v-model="hash"
         placeholder="Provide your transaction hash"
+        class="mt-3 mb-[14.5rem]"
+        required
+      />
+      <s-input
+        v-else-if="radioState === 'binary'"
+        v-model="binary"
+        placeholder="Provide your transaction hexstring"
         class="mt-3 mb-[14.5rem]"
         required
       />
@@ -61,6 +68,7 @@ const radioState = ref('json');
 
 const trx = ref<string>();
 const hash = ref<string>();
+const binary = ref<string>();
 
 onMounted(() => {
   store.$state.qs = new URLSearchParams(location.search);
@@ -68,10 +76,15 @@ onMounted(() => {
   if (store.$state.qs.has('transaction')) {
     const transaction = store.$state.qs.get('transaction');
     if (transaction)
-      if (transaction.length > 64)
+      try {
+        JSON.parse(atob(transaction));
         trx.value = atob(transaction);
-      else
-        hash.value = transaction;
+      } catch {
+        if (transaction.length === 40)
+          hash.value = transaction;
+        else
+          binary.value = transaction;
+      }
   }
 });
 
@@ -100,6 +113,11 @@ const submitTransaction = async () => {
         store.$state.qs.set('transaction', btoa(trx.value));
         await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
       }
+    } else if (radioState.value === 'binary') {
+      if (binary.value) {
+        store.$state.qs.set('transaction', binary.value);
+        await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
+      }
     } else
       throw new Error('Provide transaction in choosen format');
 
@@ -124,7 +142,7 @@ const handleKeydown = (event: KeyboardEvent): void => {
     event.preventDefault();
     submitTransaction();
 
-    if (trx.value !== undefined || hash.value !== undefined)
+    if (trx.value !== undefined || hash.value !== undefined || binary.value !== undefined)
       store.$state.trxDialogOpen = false;
   }
 };

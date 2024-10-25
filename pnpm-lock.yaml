@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.8
         version: 0.1.8(typescript@5.5.4)
       '@hiveio/wax':
-        specifier: 1.27.6-rc5-241021233034
-        version: 1.27.6-rc5-241021233034
+        specifier: 1.27.6-rc5-stable.241028191117
+        version: 1.27.6-rc5-stable.241028191117
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.4(magicast@0.3.5)(rollup@4.23.0)(typescript@5.5.4)(vue@3.5.12(typescript@5.5.4))
@@ -852,15 +852,15 @@ packages:
   '@floating-ui/vue@1.1.4':
     resolution: {integrity: sha512-ammH7T3vyCx7pmm9OF19Wc42zrGnUw0QvLoidgypWsCLJMtGXEwY7paYIHO+K+oLC3mbWpzIHzeTVienYenlNg==}
 
-  '@hiveio/beekeeper@1.27.6-rc3':
-    resolution: {integrity: sha1-+tV/0zANMNTgBA7WJAT5DKO9Bk0=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.6-rc3.tgz}
+  '@hiveio/beekeeper@1.27.6-rc4':
+    resolution: {integrity: sha1-mj3k3qAgTdIrc6IxzC5VOprhWZs=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.6-rc4.tgz}
     engines: {node: '>= 18'}
 
   '@hiveio/component-binary-view@0.1.8':
     resolution: {integrity: sha1-TVSXbYtXJb/n3xuo0N+Qy4beAHU=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.1.8.tgz}
 
-  '@hiveio/wax@1.27.6-rc5-241021233034':
-    resolution: {integrity: sha1-TsKWJ5ZVYKt0E2lIBnGFGhvPaN8=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc5-241021233034.tgz}
+  '@hiveio/wax@1.27.6-rc5-stable.241028191117':
+    resolution: {integrity: sha1-4MN9bcur4xCDaMMc3WwD+w2BypA=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc5-stable.241028191117.tgz}
     engines: {node: '>= 18'}
 
   '@humanwhocodes/config-array@0.11.14':
@@ -6088,7 +6088,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@hiveio/beekeeper@1.27.6-rc3': {}
+  '@hiveio/beekeeper@1.27.6-rc4': {}
 
   '@hiveio/component-binary-view@0.1.8(typescript@5.5.4)':
     dependencies:
@@ -6098,9 +6098,9 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@hiveio/wax@1.27.6-rc5-241021233034':
+  '@hiveio/wax@1.27.6-rc5-stable.241028191117':
     dependencies:
-      '@hiveio/beekeeper': 1.27.6-rc3
+      '@hiveio/beekeeper': 1.27.6-rc4
       class-transformer: 0.5.1
       class-validator: 0.14.1
       events: 3.3.0

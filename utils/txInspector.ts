@@ -306,6 +306,13 @@ export class TxInspectorEngine {
     return await analyzer.analyzeTransaction(transaction, id);
   }
 
+  public async processTransactionBinary (binary: string): Promise<TProcessedTransaction> {
+    const tx = this.chain.convertTransactionFromBinaryForm(binary);
+    const analyzer = new TransactionAnalyzer(this.chain, new TransactionAnalyzerApiProvider(this.chain));
+
+    return await analyzer.analyzeTransaction(tx);
+  }
+
   public get extendedChain (): TWaxExtended<TChainExtendedApiData> {
     return this.chain;
   }
