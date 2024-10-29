@@ -7,8 +7,8 @@ import { test } from '../assets/jest-helper';
 
 let browser!: ChromiumBrowser;
 
-mockTest.describe('transaction inspector tests based on mock data', () => {
-  mockTest.beforeAll(async () => {
+test.describe('transaction inspector tests based on mock data', () => {
+  test.beforeAll(async () => {
     browser = await chromium.launch({
       headless: true
     });
