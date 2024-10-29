@@ -1,29 +1,63 @@
-## TESTCASE 1
+1. Positive cases:
+Signature specific tests
 
-- **Title**: Should be able to retrieve authority path for directly signed transactions.
-- **Description**: The authority path should exclusively return the single account associated with the public key used to sign the transaction.
+1.1 Transaction without any signature (open authority) (example: temp account)
 
-## TESTCASE 2
+1.2 Transaction containing single signature:
+1.2.1 Transaction containing single operation
+1.2.2 Transaction containing multpile operations where reqiuired authorities are satisfied by given signature
 
-- **Title**: Should be able to retrieve authority path for delegated signing transactions.
-- **Description**: The algorithm should iterate through all accounts to identify nesting levels, ensuring each authority account satisfies transaction requirements by verifying weight and threshold.
+1.3 Transaction conatining multiple signatures
+1.3.1 Transaction containing single operation (there are some blockchain operations requiring multiple authorities, i.e recover_account)
+1.3.2 Transaction containing multiple operations (each operation requires separate authority)
 
-## TESTCASE 3
+2. Positive cases:
+Authority specific tests
 
-- **Title**: Should be able to get the authority path with more than 2 nestings.
-- **Description**: Currently, the blockchain only allows transaction sign delegation up to two levels deep. However, we can utilize mock data to test the algorithm's behavior when dealing with transactions that involve more than two levels of nesting.
+2.1 Transaction containing single signature:
+2.1.1 Direct authority (directly specified authority public key)
+2.1.2 Delegated authority (delegated authrotiy to someone else account)
 
-## TESTCASE 4
+2.1.3 Non default weights:
+2.1.3.1 Weight 3, threshold 2 (seperate testcases for direct and delegated authority)
 
-- **Title**: Should be able to get transaction processed transaction when the authority is invalid.
-- **Description**: It's essential to determine what information can be retrieved from a transaction when the authority is invalid.
+2.2 Transaction containing multiple signatures:
+2.2.1 Each signature uses public key specified as delegated authority.
 
-## TESTCASE 5
+2.2.2 Non default weights:
+2.2.2.1 Both signatures use same weights satisfying authority threshold (each of them can satisfy threshold alone)
+2.2.2.2 All signatures are required to satisfy authority threshold (the first one has weight 1, the other one has weight 2, threshold is 3)
 
-- **Title**: Should throw an error for unsatisfied transaction signatures.
-- **Description**: An error should be triggered if the total weight of the signatures is less than the required threshold.
+2.3 Longer authority paths:
+2.3.1 Single nest level
+2.3.2 Multiple nest level (max. 2 for positive case)
 
-## TESTCASE 6
+2.4 Signature is valid but decoded public key does not match any known account
 
-- **Title**: Should throw an error for one unsatisfied signature in multi-signature transaction.
-- **Description**: An error should be triggered if any authority account's weight is less than the required threshold, even if other authority accounts meet the transaction's requirements.
+3. Mixed authorities
+
+3.1 Using active authority to satisfy posting authority requirement
+3.2 Using owner authority to satisfy posting authority requirement
+3.3 Using owner authority to satisfy active authority requirement
+
+4. Negative cases:
+
+4.1 Empty transaction (no operations)
+4.1.1 No operations and no signatures
+4.1.2 No operations but signature and are present
+
+4.2 Invalid expiration time
+4.2.1 Expiration time from far future, i.e extending 1 hour expiration time limit and 24 hours signature validity limit (hf28)
+
+4.3 Invalid tapos (ref block id)
+
+4.4 Missing authority
+4.4.1 There is no matching signature to transaction sig digest
+4.4.2 There is no matching signature for some authority required by operation (Signature is valid but decoded public key does not match any required authority)
+4.4.3 Signature is valid but decoded public key points to authority having wrong authotiy level (posting authority used for transaction required active authority)
+4.4.4 Signature is valid but in decoded public key points to authority having too less weight according to threshold
+
+4.4.5 Invalid serialization type
+4.4.5.1 Transaction is serialized using hf26 mode but signed using legacy mode
+4.4.5.2 Transaction is serialized using legacy mode but isgned usign hf26 mode
+4.4.5.3 Different chain id used to calculate sig digestS
