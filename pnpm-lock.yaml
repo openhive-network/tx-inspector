@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@hiveio/component-binary-view':
-        specifier: ^0.1.8
-        version: 0.1.8(typescript@5.5.4)
+        specifier: ^0.2.0
+        version: 0.2.0(typescript@5.5.4)
       '@hiveio/wax':
         specifier: 1.27.6-rc5-stable.241028191117
         version: 1.27.6-rc5-stable.241028191117
@@ -856,8 +856,8 @@ packages:
     resolution: {integrity: sha1-mj3k3qAgTdIrc6IxzC5VOprhWZs=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.6-rc4.tgz}
     engines: {node: '>= 18'}
 
-  '@hiveio/component-binary-view@0.1.8':
-    resolution: {integrity: sha1-TVSXbYtXJb/n3xuo0N+Qy4beAHU=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.1.8.tgz}
+  '@hiveio/component-binary-view@0.2.0':
+    resolution: {integrity: sha1-11QcXI/WcTrSRyzCL+9oBy8RvGA=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.2.0.tgz}
 
   '@hiveio/wax@1.27.6-rc5-stable.241028191117':
     resolution: {integrity: sha1-4MN9bcur4xCDaMMc3WwD+w2BypA=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc5-stable.241028191117.tgz}
@@ -6090,7 +6090,7 @@ snapshots:
 
   '@hiveio/beekeeper@1.27.6-rc4': {}
 
-  '@hiveio/component-binary-view@0.1.8(typescript@5.5.4)':
+  '@hiveio/component-binary-view@0.2.0(typescript@5.5.4)':
     dependencies:
       pinia: 2.2.4(typescript@5.5.4)(vue@3.5.12(typescript@5.5.4))
       vue: 3.5.12(typescript@5.5.4)
