@@ -3,21 +3,50 @@ import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExte
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
+  private cache: Map<string, any>;
 
   public constructor (chain: TWaxExtended<TChainExtendedApiData>) {
     this.chain = chain;
+    this.cache = new Map();
   }
 
   public async verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }> {
-    return (await this.chain.api.database_api.verify_authority(params));
+    const key = `verifyAuthority-${JSON.stringify(params.trx)}-${params.pack}`;
+
+    if (this.cache.has(key))
+      return this.cache.get(key);
+
+    const response = await this.chain.api.database_api.verify_authority(params);
+
+    this.cache.set(key, response);
+
+    return response;
   }
 
   public async getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }> {
-    return (await this.chain.api.account_by_key_api.get_key_references(params));
+    const key = `getKeyReferences-${params.keys.join('-')}`;
+
+    if (this.cache.has(key))
+      return this.cache.get(key);
+
+    const response = await this.chain.api.account_by_key_api.get_key_references(params);
+
+    this.cache.set(key, response);
+
+    return response;
   }
 
   public async findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> {
-    return (await this.chain.api.database_api.find_accounts(params));
+    const key = `findAccounts-${params.accounts.join('-')}`;
+
+    if (this.cache.has(key))
+      return this.cache.get(key);
+
+    const response = await this.chain.api.database_api.find_accounts(params);
+
+    this.cache.set(key, response);
+
+    return response;
   }
 }
 
