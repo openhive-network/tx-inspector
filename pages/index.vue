@@ -1,10 +1,10 @@
 <template>
-  <s-card class="w-4/5 card">
-    <s-card-header class="flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center mb-4 md:mb-0">
+  <s-card class="w-full md:w-4/5 card">
+    <s-card-header class="flex flex-col xl:flex-row justify-between items-center">
+      <div class="flex flex-col xl:flex-row items-center mb-4 md:mb-0">
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
-        <div class="ml-3">
-          <s-card-title>
+        <div class="ml-8 mt-3 xl:mt-0 text-center">
+          <s-card-title class="text-xl">
             Transaction Inspector
           </s-card-title>
           <s-card-description class="mt-2">
@@ -12,33 +12,38 @@
           </s-card-description>
         </div>
       </div>
-      <div v-if="store.$state.id.length !== 0">
-        <s-skeleton v-if="store.$state.isLoading" class="w-[150px] h-[50px] skeleton" />
+      <div v-if="store.processedTransaction.value.transactionId !== ''" class="mx-auto">
+        <s-skeleton v-if="store.isLoading.value" class="w-[150px] h-[50px] skeleton" />
         <div v-else>
-          <span v-if="store.$state.isValid" class="text-green">
+          <v-chip
+            v-if="store.processedTransaction.value.isValid"
+            class="text-green custom-rounded-chip"
+            variant="outlined"
+            size="large"
+            append-icon="mdi-check"
+          >
             Transaction valid
-            <v-icon class="ml-2 mb-2">
-              mdi-check
-            </v-icon>
-          </span>
-          <span v-else class="text-red">
+          </v-chip>
+          <v-chip
+            v-else
+            class="text-red custom-rounded-chip"
+            variant="outlined"
+            size="large"
+            append-icon="mdi-close"
+          >
             Transaction invalid
-            <v-icon class="ml-2 mb-1">
-              mdi-close
-            </v-icon>
-          </span>
+          </v-chip>
         </div>
       </div>
-      <EndpointUrl />
-      <ChainId />
       <TrxDialog />
     </s-card-header>
     <s-card-content>
       <AuthorityPathTable />
       <hr class="my-8">
-      <div class="flex gap-4">
-        <TrxTable class="w-1/2" />
-        <AuthTable class="w-1/2" />
+      <div class="flex flex-col gap-4">
+        <TrxTable class="w-full" />
+        <hr class="my-3">
+        <AuthTable class="w-full" />
       </div>
       <hr class="my-8">
       <div class="mb-16">
@@ -50,14 +55,48 @@
 
 <script lang="ts" setup>
 import TrxDialog from '~/components/ui/TrxDialog.vue';
-import EndpointUrl from '~/components/ui/EndpointUrl.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
 import AuthTable from '~/components/ui/AuthTable.vue';
 import OperationsTable from '~/components/ui/OperationsTable.vue';
-import ChainId from '~/components/ui/ChainId.vue';
 
-const store = useWaxStore();
+const wax = useWaxStore();
+const store = storeToRefs(wax);
+
+const { $chain, $txInspector, $formatter } = useNuxtApp();
+
+onMounted(async () => {
+  let start!: number;
+  let end!: number;
+  let processingTime!: number;
+  wax.$state.qs = new URLSearchParams(location.search);
+  const qs = wax.$state.qs;
+  if (qs.has('transaction')) {
+    wax.$state.isLoading = true;
+    start = Date.now();
+  }
+  try {
+    await wax.handleTransactionFromHash($txInspector, $formatter, qs.get('transaction')!);
+    await wax.handleAuthorityPath($chain);
+  } catch (_error) {
+    try {
+      await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
+      await wax.handleAuthorityPath($chain);
+    } catch (_error) {
+      try {
+        await wax.handleTransactionFromBinary($txInspector, $formatter, qs.get('transaction')!);
+        await wax.handleAuthorityPath($chain);
+      } catch (_error) {}
+    }
+  } finally {
+    wax.$state.isLoading = false;
+    end = Date.now();
+
+    processingTime = Number(((end - start) / 1000).toFixed(2));
+
+    store.processingTime.value = processingTime;
+  }
+});
 </script>
 
 <style scoped>
@@ -70,5 +109,9 @@ const store = useWaxStore();
 
 .skeleton {
   background: rgb(63 63 70);
+}
+
+.custom-rounded-chip {
+  border-radius: 8px !important;
 }
 </style>

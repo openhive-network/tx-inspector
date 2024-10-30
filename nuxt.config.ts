@@ -12,6 +12,7 @@ const getCommitHash = () => {
 };
 
 export default defineNuxtConfig({
+  ssr: false,
   app: {
     head: {
       title: 'Transaction inspector'
@@ -51,8 +52,9 @@ export default defineNuxtConfig({
 
   plugins: [
     '~/plugins/vuetify.ts',
-    '~/plugins/wax.ts',
-    '~/plugins/formatter.ts'
+    '~/plugins/txInspector.ts',
+    '~/plugins/formatter.ts',
+    '~/plugins/binaryView.ts'
   ],
 
   components: {
@@ -72,5 +74,7 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+
+  compatibilityDate: '2024-10-08'
 });

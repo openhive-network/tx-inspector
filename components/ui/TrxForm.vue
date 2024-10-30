@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col" @keydown.enter="handleKeydown">
     <div class="my-2">
       <s-radio-group v-model="radioState" default-value="json" class="flex mb-3">
         <div class="flex items-center space-x-2">
@@ -15,7 +15,7 @@
           </s-label>
         </div>
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="binary" value="binary" disabled />
+          <s-radio-group-item id="binary" value="binary" />
           <s-label for="binary">
             Binary
           </s-label>
@@ -28,6 +28,13 @@
         v-if="radioState === 'hash'"
         v-model="hash"
         placeholder="Provide your transaction hash"
+        class="mt-3 mb-[14.5rem]"
+        required
+      />
+      <s-input
+        v-else-if="radioState === 'binary'"
+        v-model="binary"
+        placeholder="Provide your transaction hexstring"
         class="mt-3 mb-[14.5rem]"
         required
       />
@@ -50,94 +57,93 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
 
-const { $wax } = useNuxtApp();
+const { $chain, $txInspector, $formatter } = useNuxtApp();
 
 const radioState = ref('json');
 
-const trx = defineModel<string>('transaction');
-const hash = defineModel<string>('hash');
+const trx = ref<string>();
+const hash = ref<string>();
+const binary = ref<string>();
 
-const useOperationsFormatter = (operations: any) => {
-  const { $formatter } = useNuxtApp();
+onMounted(() => {
+  store.$state.qs = new URLSearchParams(location.search);
 
-  return $formatter.format(operations);
-};
+  if (store.$state.qs.has('transaction')) {
+    const transaction = store.$state.qs.get('transaction');
+    if (transaction)
+      try {
+        JSON.parse(atob(transaction));
+        trx.value = atob(transaction);
+      } catch {
+        if (transaction.length === 40)
+          hash.value = transaction;
+        else
+          binary.value = transaction;
+      }
+  }
+});
+
+const qs = store.$state.qs;
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   store.$state.authorityPath.length = 0;
+  store.$state.processingTime = 0;
+
+  let start!: number;
+  let end!: number;
+  let processingTime!: number;
+  qs.delete('transaction');
   try {
     store.$state.isLoading = true;
+    start = Date.now();
 
     if (radioState.value === 'hash') {
-      if (hash.value === undefined)
-        throw new Error('Hash is required');
-
-      (trx.value as unknown as ApiTransaction) = await $wax.getTransactionFromId(hash.value!);
+      if (hash.value) {
+        store.$state.qs.set('transaction', hash.value);
+        await store.handleTransactionFromHash($txInspector, $formatter, hash.value);
+      }
     } else if (radioState.value === 'json') {
-      if (trx.value === undefined)
-        throw new Error('Transaction is required');
-
-      trx.value = JSON.parse(String(trx.value!.trim()));
+      if (trx.value) {
+        store.$state.qs.set('transaction', btoa(trx.value));
+        await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
+      }
+    } else if (radioState.value === 'binary') {
+      if (binary.value) {
+        store.$state.qs.set('transaction', binary.value);
+        await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
+      }
     } else
       throw new Error('Provide transaction in choosen format');
 
-    const authorityPath = await getAuthorityPath($wax, trx.value as unknown as ApiTransaction);
+    await store.handleAuthorityPath($chain);
 
-    if (hash.value)
-      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction, hash.value);
-    else
-      store.$state.pack = await $wax.getPackType(trx.value as unknown as ApiTransaction);
-
-    store.$state.signatures = $wax.getSignatures(trx.value as unknown as ApiTransaction);
-    store.$state.publicKeys = await $wax.getSignatureKeys(trx.value as unknown as ApiTransaction);
-    store.$state.id = await $wax.getTransactionId(trx.value as unknown as ApiTransaction);
-    store.$state.sigDigest = await $wax.getSigDigest(trx.value as unknown as ApiTransaction);
-    store.$state.authorityType = await $wax.getAuthorityType(trx.value as unknown as ApiTransaction);
-    store.$state.isValid = await $wax.checkVerifyAuthority(trx.value as unknown as ApiTransaction);
-    store.$state.operations = await $wax.getOperationsFromTransaction(trx.value as unknown as ApiTransaction);
-    store.$state.signeesByKeys = await $wax.findSigneesForKeys(store.$state.publicKeys);
-    store.$state.formattedOperations = useOperationsFormatter(await $wax.getProtoTransaction(trx.value as unknown as ApiTransaction)).operations;
-
-    const authoritiesForOperation: TTransactionRequiredAuthorities[] = [];
-    for (let i = 0; i < store.$state.operations.length; ++i) {
-      const requiredAuthorityForOperation = await $wax.getRequiredAuthoritiesForOperation(trx.value as unknown as ApiTransaction, i);
-
-      authoritiesForOperation.push(requiredAuthorityForOperation);
-    }
-
-    store.$state.requiredAuthoritiesForOperation = authoritiesForOperation;
-
-    if (authorityPath) {
-      authorityPath.push(authorityPath.shift()!);
-      store.$state.authorityPath = authorityPath;
-
-      let totalWeight = 0;
-      let totalThreshold = 0;
-
-      for (let i = 0; i < authorityPath.length; ++i)
-        if (authorityPath[i].authWeight) {
-          totalWeight += authorityPath[i].authWeight!.auth;
-          totalThreshold += authorityPath[i].authWeight!.weight;
-        }
-
-      if (totalWeight >= totalThreshold)
-        store.$state.isSatisfied = true;
-      else
-        store.$state.isSatisfied = false;
-    }
+    window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
   } catch (error) {
     toast.error('Error', {
       description: error instanceof Error ? error.message : 'Unknown error occured'
     });
   } finally {
     store.$state.isLoading = false;
+    end = Date.now();
+
+    processingTime = Number(((end - start) / 1000).toFixed(2));
+    store.$state.processingTime = processingTime;
+  }
+};
+
+const handleKeydown = (event: KeyboardEvent): void => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    submitTransaction();
+
+    if (trx.value !== undefined || hash.value !== undefined || binary.value !== undefined)
+      store.$state.trxDialogOpen = false;
   }
 };
 </script>

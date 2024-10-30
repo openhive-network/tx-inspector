@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiTransaction, authority, TAccountName } from '@hiveio/wax';
+import type { ApiTransaction, authority, TAccountName, TWaxExtended } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
-import type { WaxAccountInformation } from '~/plugins/wax';
+import { TransactionAnalyzer } from '../utils/txInspector';
+import type { TProcessedTransaction, TChainExtendedApiData, ITransactionAnalyzerApi } from '../types/wax';
 
 export interface IAuthorityNode {
   name: TAccountName;
@@ -262,8 +263,8 @@ class CSignState implements ISignState {
   getActive!: (id: string) => authority;
 }
 
-const getAuthority = async (wax: WaxAccountInformation, type: 'active' | 'owner' | 'posting', id: string): Promise<authority> => {
-  const { accounts: [account] } = await wax.getAccountsFromId(id);
+const getAuthority = async (analyzer: TransactionAnalyzer, type: 'active' | 'owner' | 'posting', id: string): Promise<authority> => {
+  const { accounts: [account] } = await analyzer.getAccountsFromId(id);
 
   if (account === undefined)
     throw new Error(`No account on chain: "${id}"`);
@@ -275,23 +276,25 @@ const getAuthority = async (wax: WaxAccountInformation, type: 'active' | 'owner'
   };
 };
 
-const createModuleForTransaction = async (wax: WaxAccountInformation, transaction: ApiTransaction): Promise<void> => {
-  const auths = await wax.getRequiredAuthorities(transaction);
+const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<void> => {
+  const analyzer = new TransactionAnalyzer(chain, apiProvider);
+  const processedTransaction: TProcessedTransaction = await analyzer.analyzeTransaction(transaction);
+  const auths = processedTransaction.requiredAuthorities;
 
   await verifyAuthorityImpl({
     other: auths.other,
     required_active: [...auths.active],
     required_owner: [...auths.owner],
     required_posting: [...auths.posting]
-  }, new Set(await wax.getSignatureKeys(transaction)),
-  getAuthority.bind(undefined, wax, 'active'),
-  getAuthority.bind(undefined, wax, 'owner'),
-  getAuthority.bind(undefined, wax, 'posting'));
+  }, new Set(await processedTransaction.signatureKeys),
+  getAuthority.bind(undefined, analyzer, 'active'),
+  getAuthority.bind(undefined, analyzer, 'owner'),
+  getAuthority.bind(undefined, analyzer, 'posting'));
 };
 
-export default async function (wax: WaxAccountInformation, transaction: ApiTransaction): Promise<IAuthorityPaths[] | undefined> {
+export default async function (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<IAuthorityPaths[] | undefined> {
   try {
-    await createModuleForTransaction(wax, transaction);
+    await createModuleForTransaction(chain, transaction, apiProvider);
     return paths;
   } catch (error) {
     toast.error('Error', {

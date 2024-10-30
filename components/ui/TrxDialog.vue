@@ -1,5 +1,5 @@
 <template>
-  <s-dialog>
+  <s-dialog v-model:open="store.$state.trxDialogOpen">
     <s-dialog-trigger as-child>
       <Button class="button">
         Provide transaction
@@ -22,4 +22,6 @@
 <script lang="ts" setup>
 import Button from '~/components/ui/Button.vue';
 import TrxForm from '~/components/ui/TrxForm.vue';
+
+const store = useWaxStore();
 </script>
