@@ -85,4 +85,6 @@ export interface ITransactionAnalyzerApi {
   getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }> | { accounts: string[][] };
 
   findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> | { accounts: ApiAccount[] };
+
+  getPackType? (): EPackType;
 }

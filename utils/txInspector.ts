@@ -20,6 +20,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
+    console.log('verify authority', response);
+
     return response;
   }
 
@@ -33,6 +35,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
+    console.log('key references', response);
+
     return response;
   }
 
@@ -45,6 +49,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
     const response = await this.chain.api.database_api.find_accounts(params);
 
     this.cache.set(key, response);
+
+    console.log('find accounts', JSON.stringify(response.accounts[0], undefined, 2));
 
     return response;
   }
@@ -116,6 +122,9 @@ export class TransactionAnalyzer {
   }
 
   private async getPackType (id?: string): Promise<EPackType> {
+    if (this.api.getPackType)
+      return this.api.getPackType();
+
     if (id) {
       if (id === this.transaction.id)
         return EPackType.HF26;
