@@ -50,7 +50,7 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
-    console.log('find accounts', JSON.stringify(response.accounts[0], undefined, 2));
+    console.log('find accounts', response);
 
     return response;
   }

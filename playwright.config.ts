@@ -25,6 +25,15 @@ export default defineConfig < ITxInspectorTest>({
       {
         fixtureLevelMockFile: './__tests__/assets/mock/multiple_operation_single_signature_data.json'
       }
+    },
+    {
+      name: 'tx_inspector_delegated_authority',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-delegated-authority-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/delegated_authority_single_signature_data.json'
+      }
     }
   ],
   // Run your local dev server before starting the tests

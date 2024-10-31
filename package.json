@@ -15,7 +15,7 @@
     "postinstall": "nuxt prepare && husky",
     "lint": "eslint . --fix",
     "pretest": "playwright install chromium",
-    "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_testsuite --project=tx_inspector_multiple_signature"
+    "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_testsuite --project=tx_inspector_multiple_signature --project=tx_inspector_delegated_authority"
   },
   "dependencies": {
     "@hiveio/component-binary-view": "^0.2.0",

@@ -204,3 +204,24 @@ export const multipleOperationSingleSignatureTransaction = {
     "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
   ]
 };
+
+export const singleOperationSingleSignatureDelegatedAuthorityTransaction = {
+  "ref_block_num": 31682,
+  "ref_block_prefix": 1691585842,
+  "extensions": [],
+  "expiration": "2024-10-01T20:10:59",
+  "operations": [
+    {
+      "type": "vote_operation",
+      "value": {
+        "voter": "tattooworld",
+        "author": "mamaemigrante",
+        "weight": 10000,
+        "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen"
+      }
+    }
+  ],
+  "signatures": [
+    "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+  ]
+};
