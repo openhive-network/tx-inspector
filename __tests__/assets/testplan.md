@@ -7,15 +7,15 @@ Signature specific tests
 1.2.1 ~~Transaction containing single operation~~
 1.2.2 ~~Transaction containing multpile operations where reqiuired authorities are satisfied by given signature~~
 
-1.3 Transaction conatining multiple signatures
+1.3 Transaction containing multiple signatures
 1.3.1 Transaction containing single operation (there are some blockchain operations requiring multiple authorities, i.e recover_account)
-1.3.2 Transaction containing multiple operations (each operation requires separate authority)
+1.3.2 ~~Transaction containing multiple operations (each operation requires separate authority)~~
 
 2. Positive cases:
 Authority specific tests
 
 2.1 Transaction containing single signature:
-2.1.1 Direct authority (directly specified authority public key)
+2.1.1 ~~Direct authority (directly specified authority public key)~~
 2.1.2 Delegated authority (delegated authrotiy to someone else account)
 
 2.1.3 Non default weights:

@@ -13,9 +13,18 @@ export default defineConfig < ITxInspectorTest>({
       testDir: './__tests__/',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/test1_mocked_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/single_operation_single_signature_data.json'
       }
 
+    },
+    {
+      name: 'tx_inspector_multiple_signature',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-multiple-signature-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/multiple_operation_single_signature_data.json'
+      }
     }
   ],
   // Run your local dev server before starting the tests
