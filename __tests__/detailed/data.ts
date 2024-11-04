@@ -1,6 +1,3 @@
-import type { ApiDelayedVote } from '@hiveio/wax';
-import { type IMockData } from '../assets/api-mock';
-
 export const singleOperationSingleSignatureTransaction = {
   "ref_block_num": 33561,
   "ref_block_prefix": 2922397352,
