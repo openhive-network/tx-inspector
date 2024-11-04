@@ -9,11 +9,17 @@ export default defineConfig < ITxInspectorTest>({
   ],
   projects: [
     {
-      name: 'tx_inspector_testsuite',
+      name: 'tx_inspector_api_testsuite',
       testDir: './__tests__/',
+      testMatch: '**/txInspector-base.ts'
+    },
+    {
+      name: 'tx_inspector_single_signature',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-mock.ts',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/single_operation_single_signature_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_data.json'
       }
 
     },

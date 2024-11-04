@@ -8,10 +8,19 @@ import { type ConsoleMessage, type Page, test as base } from '@playwright/test';
 
 import './globals';
 
-import type { IWaxOptions } from '@hiveio/wax';
+import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
 
+import type { IAuthorityPaths } from '../../utils/getAuthorityPath';
+import type { TProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
 import type { IMockData } from './api-mock';
+
+export interface IExpectedResult {
+  inspectorResults: TProcessedTransaction;
+  path: IAuthorityPaths[];
+}
+
+type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult>;
 
 type TTxInspectorTestCallable<R, Args extends any[]> = (globals: ITxInspectorGlobals, ...args: Args) => (R | Promise<R>);
 type TTxAnalyzerTestCallable<R, Args extends any[]> = (globals: ITxAnalyzerGlobals, ...args: Args) => (R | Promise<R>);
@@ -27,7 +36,7 @@ export interface ITxInspectorTest {
   /**
    * Mock data loaded from the file.
    */
-  mockData: string;
+  mockData: TMockExtendedData;
 
   /**
    * Runs given function in the browser context and returns the result.
@@ -46,6 +55,8 @@ export interface ITxInspectorTest {
    * If you want to use the real wax API interface, please use {@link txInspectorTest} method instead.
    */
   txAnalyzerMockedTest: (<R, Args extends any[]>(fn: TTxAnalyzerTestCallable<R, Args>, ...args: Args) => Promise<R>);
+
+  analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: IExpectedResult) => Promise<boolean>;
 }
 
 const alreadyConsoleLogInitialized = new WeakSet<Page>();
@@ -76,7 +87,6 @@ const txInspectorTest = (page: Page): ITxInspectorTest['txInspectorTest'] => {
 
 const txAnalyzerMockedTestEnvironment = (
   page: Page,
-  globalFunction: (mockData: IMockData) => Promise<ITxAnalyzerGlobals>,
   mockData: IMockData
 ): ITxInspectorTest['txAnalyzerMockedTest'] => {
   const runner = async <R, Args extends any[]>(fn: TTxAnalyzerTestCallable<R, Args>, ...args: Args): Promise<R> => {
@@ -90,15 +100,42 @@ const txAnalyzerMockedTestEnvironment = (
 
     await page.goto('http://localhost:8080/__tests__/assets/test.html', { waitUntil: 'load' });
 
-    const webData = await page.evaluate(async ({ args, globalFunction, webFn, mockData }) => {
+    const webData = await page.evaluate(async ({ args, webFn, mockData }) => {
       eval(`window.webEvalFn = ${webFn};`);
-      return (window as Window & typeof globalThis & { webEvalFn: Function }).webEvalFn(await globalThis[globalFunction](mockData), ...args);
-    }, { args, globalFunction: globalFunction.name, webFn: fn.toString(), mockData });
+      return (window as Window & typeof globalThis & { webEvalFn: Function }).webEvalFn(await globalThis.createTxAnalyzerTestFor(mockData), ...args);
+    }, { args, webFn: fn.toString(), mockData });
 
     return webData;
   };
 
   return runner;
+};
+
+const analyzeAndCompareTransaction = async (
+  txAnalyzerMockedTest: ITxInspectorTest['txAnalyzerMockedTest'],
+  inputTransaction: ApiTransaction,
+  expectedResult: IExpectedResult
+): Promise<boolean> => {
+  const retVal = await txAnalyzerMockedTest(async ({ analyzer, authorityPath }, inputTx) => {
+    const processingResults = await analyzer.analyzeTransaction(inputTx);
+    return {
+      inspectorResults: {
+        signatures: processingResults.signatures,
+        signatureKeys: processingResults.signatureKeys,
+        requiredAuthorities: processingResults.requiredAuthorities,
+        requiredAuthoritiesForOperations: processingResults.requiredAuthoritiesForOperations,
+        authorityType: processingResults.authorityType,
+        operations: processingResults.operations,
+        signeesByKeys: processingResults.signeesByKeys,
+        isValid: processingResults.isValid,
+        packType: processingResults.packType
+      },
+      path: await authorityPath(inputTx)
+    };
+  }, inputTransaction);
+
+  console.log(JSON.stringify(retVal, null, 2));
+  return JSON.stringify(retVal) === JSON.stringify(expectedResult);
 };
 
 export const test = base.extend<ITxInspectorTest>({
@@ -107,7 +144,7 @@ export const test = base.extend<ITxInspectorTest>({
 
   mockData: async ({ fixtureLevelMockFile }, use) => {
     const mockDataFilePath = path.resolve(process.cwd(), fixtureLevelMockFile);
-    let mockData = {};
+    let mockData!: TMockExtendedData;
 
     if (fs.existsSync(mockDataFilePath))
       try {
@@ -119,7 +156,7 @@ export const test = base.extend<ITxInspectorTest>({
     else
       console.log(`Mock data file not found: ${mockDataFilePath}`);
 
-    await use(mockData as string);
+    await use(mockData);
   },
 
   txInspectorTest: ({ page }, use) => {
@@ -127,6 +164,10 @@ export const test = base.extend<ITxInspectorTest>({
   },
 
   txAnalyzerMockedTest: ({ page, mockData }, use) => {
-    use(txAnalyzerMockedTestEnvironment(page, createTxAnalyzerTestFor, mockData as unknown as IMockData));
+    use(txAnalyzerMockedTestEnvironment(page, mockData as unknown as IMockData));
+  },
+
+  analyzeAndCompareTransaction: ({ txAnalyzerMockedTest }, use) => {
+    use((inputTransaction, expectedResult) => analyzeAndCompareTransaction(txAnalyzerMockedTest, inputTransaction, expectedResult));
   }
 });
