@@ -1,7 +1,7 @@
 {
   "validTxAuthority": true,
   "keyReferences": [ "steemauto" ],
-  "accounts": [
+  "findAccounts-tattooworld": [
     {
       "active": {
         "account_auths": [],
@@ -21,7 +21,7 @@
       "can_vote": true,
       "comment_count": 0,
       "created": "2023-05-26T03:07:12",
-      "curation_rewards": 69639,
+      "curation_rewards": 72010,
       "delayed_votes": [
         {
           "time": "2024-10-09T23:28:45",
@@ -50,8 +50,8 @@
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 841182582047,
-        "last_update_time": 1730376855
+        "current_mana": 842487485158,
+        "last_update_time": 1730811981
       },
       "governance_vote_expiration_ts": "2025-10-05T02:07:33",
       "hbd_balance": {
@@ -68,10 +68,10 @@
       "last_account_recovery": "1970-01-01T00:00:00",
       "last_account_update": "2024-03-08T01:31:24",
       "last_owner_update": "2023-11-20T11:59:03",
-      "last_post": "2024-10-31T01:51:24",
-      "last_post_edit": "2024-10-31T01:51:24",
+      "last_post": "2024-11-05T09:36:03",
+      "last_post_edit": "2024-11-05T09:36:03",
       "last_root_post": "2024-10-29T14:59:36",
-      "last_vote_time": "2024-10-31T12:14:15",
+      "last_vote_time": "2024-11-05T13:06:21",
       "lifetime_vote_count": 0,
       "memo_key": "STM8m7a4dNtBDAUXZQdjpjYQosEQA4ep1caTRSrwUwH7jhH5TCpJU",
       "mined": false,
@@ -91,9 +91,9 @@
       "pending_claimed_accounts": 0,
       "pending_transfers": 0,
       "post_bandwidth": 0,
-      "post_count": 583,
+      "post_count": 589,
       "post_voting_power": {
-        "amount": "3364730328190",
+        "amount": "3369949940632",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -129,7 +129,7 @@
         "weight_threshold": 1
       },
       "posting_json_metadata": "{\"profile\":{\"name\":\"Tattoo World\",\"about\":\"Tattoo World Community\",\"cover_image\":\"https://files.peakd.com/file/peakd-hive/tattooworld/Portada.jpg\",\"profile_image\":\"https://files.peakd.com/file/peakd-hive/tattooworld/IMG-20230514-WA0266.jpg\",\"website\":\"\",\"location\":\"\",\"pinned\":\"\",\"version\":2}}",
-      "posting_rewards": 857523,
+      "posting_rewards": 857992,
       "previous_owner_update": "2023-11-18T22:53:42",
       "proxied_vsf_votes": [
         0,
@@ -156,12 +156,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "705974894",
+        "amount": "316265506",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "415",
+        "amount": "186",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -181,7 +181,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 0,
       "vesting_shares": {
-        "amount": "998938701164",
+        "amount": "1004158313606",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -191,13 +191,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 3021131435022,
-        "last_update_time": 1730376855
+        "current_mana": 3000664392861,
+        "last_update_time": 1730811981
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 7
-    },
+    }
+  ],
+  "findAccounts-ecency.app": [
     {
       "active": {
         "account_auths": [],
@@ -356,7 +358,9 @@
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-hivesigner": [
     {
       "active": {
         "account_auths": [],
@@ -510,7 +514,9 @@
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-leofinance": [
     {
       "active": {
         "account_auths": [],
@@ -523,14 +529,14 @@
         "weight_threshold": 1
       },
       "balance": {
-        "amount": "2617717",
+        "amount": "4347898",
         "nai": "@@000000021",
         "precision": 3
       },
       "can_vote": true,
       "comment_count": 0,
       "created": "2020-03-17T21:47:30",
-      "curation_rewards": 1768679,
+      "curation_rewards": 1772383,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "8623238866576",
@@ -538,12 +544,12 @@
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 7759195250587,
-        "last_update_time": 1730376921
+        "current_mana": 7984334944883,
+        "last_update_time": 1730811699
       },
       "governance_vote_expiration_ts": "2025-10-14T16:39:42",
       "hbd_balance": {
-        "amount": "978873",
+        "amount": "200634",
         "nai": "@@000000013",
         "precision": 3
       },
@@ -559,7 +565,7 @@
       "last_post": "2024-10-07T19:01:33",
       "last_post_edit": "2024-10-07T19:01:33",
       "last_root_post": "2024-10-07T19:01:33",
-      "last_vote_time": "2024-10-31T05:06:33",
+      "last_vote_time": "2024-11-05T01:43:42",
       "lifetime_vote_count": 0,
       "memo_key": "STM5Vz7MkUod4kzCoj5N4xW2FUyXUEgn5eqHx9m8EuupqXyej9aD3",
       "mined": false,
@@ -581,7 +587,7 @@
       "post_bandwidth": 0,
       "post_count": 838,
       "post_voting_power": {
-        "amount": "31036781002350",
+        "amount": "31937339779534",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -624,7 +630,7 @@
       "posting_rewards": 28330323,
       "previous_owner_update": "1970-01-01T00:00:00",
       "proxied_vsf_votes": [
-        12000783622063,
+        12014763776096,
         0,
         0,
         0
@@ -638,7 +644,7 @@
       "recovery_account": "khaleelkazi",
       "reset_account": "null",
       "reward_hbd_balance": {
-        "amount": "1333",
+        "amount": "0",
         "nai": "@@000000013",
         "precision": 3
       },
@@ -648,12 +654,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "13251562093",
+        "amount": "0",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "7790",
+        "amount": "0",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -673,7 +679,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 0,
       "vesting_shares": {
-        "amount": "37467304868049",
+        "amount": "38367863645233",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -683,13 +689,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 31036781002350,
-        "last_update_time": 1730376921
+        "current_mana": 31937339779534,
+        "last_update_time": 1730811699
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 23
-    },
+    }
+  ],
+  "findAccounts-peakd.app": [
     {
       "active": {
         "account_auths": [],
@@ -848,7 +856,9 @@
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-steem.leo": [
     {
       "active": {
         "account_auths": [
@@ -873,7 +883,7 @@
       "can_vote": true,
       "comment_count": 0,
       "created": "2019-06-29T20:00:42",
-      "curation_rewards": 18551200,
+      "curation_rewards": 18551232,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "23654603788075",
@@ -881,8 +891,8 @@
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 391293716867,
-        "last_update_time": 1730341848
+        "current_mana": 391307321087,
+        "last_update_time": 1730778030
       },
       "governance_vote_expiration_ts": "2025-04-11T17:12:09",
       "hbd_balance": {
@@ -902,7 +912,7 @@
       "last_post": "2020-09-05T17:16:27",
       "last_post_edit": "2020-09-05T17:16:27",
       "last_root_post": "2020-09-05T17:13:15",
-      "last_vote_time": "2024-10-28T21:26:00",
+      "last_vote_time": "2024-10-31T20:10:36",
       "lifetime_vote_count": 0,
       "memo_key": "STM8YT3aSHk6CikDuUdFHQrZK77gr4rkKuGJkKdspJ3vnsxLxeuBU",
       "mined": false,
@@ -924,7 +934,7 @@
       "post_bandwidth": 0,
       "post_count": 672,
       "post_voting_power": {
-        "amount": "1565174867471",
+        "amount": "1565229284353",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -967,7 +977,7 @@
       "posting_rewards": 6643456,
       "previous_owner_update": "1970-01-01T00:00:00",
       "proxied_vsf_votes": [
-        20859763033242,
+        19485424589091,
         0,
         0,
         0
@@ -1016,7 +1026,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 0,
       "vesting_shares": {
-        "amount": "25219778655546",
+        "amount": "25219833072428",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -1026,13 +1036,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 1565174867471,
-        "last_update_time": 1730341848
+        "current_mana": 1565229284353,
+        "last_update_time": 1730778030
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 29
-    },
+    }
+  ],
+  "findAccounts-steemauto": [
     {
       "active": {
         "account_auths": [],
@@ -1060,12 +1072,12 @@
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 103349697879,
-        "last_update_time": 1729889547
+        "current_mana": 103393064820,
+        "last_update_time": 1730634744
       },
       "governance_vote_expiration_ts": "1969-12-31T23:59:59",
       "hbd_balance": {
-        "amount": "94062",
+        "amount": "95080",
         "nai": "@@000000013",
         "precision": 3
       },
@@ -1103,7 +1115,7 @@
       "post_bandwidth": 0,
       "post_count": 540,
       "post_voting_power": {
-        "amount": "413398791517",
+        "amount": "413572259284",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -1175,7 +1187,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 0,
       "vesting_shares": {
-        "amount": "377422221162",
+        "amount": "377595688929",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -1185,13 +1197,100 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 413398791517,
-        "last_update_time": 1729889547
+        "current_mana": 413572259284,
+        "last_update_time": 1730634744
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
     }
   ],
-  "packType": "hf26"
+  "packType": "hf26",
+  "singleSignatureTransaction": {
+    "ref_block_num": 31682,
+    "ref_block_prefix": 1691585842,
+    "extensions": [],
+    "expiration": "2024-10-01T20:10:59",
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "tattooworld",
+          "author": "mamaemigrante",
+          "weight": 10000,
+          "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen"
+        }
+      }
+    ],
+    "signatures": [
+      "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+    ]
+  },
+  "singleSignatureExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+      ],
+      "signatureKeys": [
+        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Posting",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "tattooworld",
+            "author": "mamaemigrante",
+            "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
+            "weight": 10000
+          }
+        }
+      ],
+      "signeesByKeys": [
+        [
+          "steemauto"
+        ]
+      ],
+      "isValid": true,
+      "packType": "hf26"
+    },
+    "path": [
+      {
+        "account": [
+          "tattooworld"
+        ]
+      },
+      {
+        "account": "steemauto",
+        "authWeight": {
+          "weight": 1,
+          "auth": 1
+        }
+      },
+      {
+        "account": "leofinance",
+        "authWeight": {
+          "weight": 1,
+          "auth": 1
+        }
+      }
+    ]
+  }
 }

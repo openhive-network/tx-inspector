@@ -43,6 +43,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   public async findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> {
     const key = `findAccounts-${params.accounts.join('-')}`;
 
+    console.log('find accounts params', params.accounts);
+
     if (this.cache.has(key))
       return this.cache.get(key);
 
@@ -50,7 +52,7 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
-    console.log('find accounts', response);
+    console.log('find accounts', JSON.stringify(response, null, 2));
 
     return response;
   }

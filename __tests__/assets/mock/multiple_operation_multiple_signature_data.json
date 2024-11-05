@@ -1,7 +1,7 @@
 {
   "validTxAuthority": true,
   "keyReferences": [ ["esteemapp"], ["ecency.stats"], ["esteem.app"], ["good-karma"], ["ecency"] ],
-  "accounts": [
+  "findAccounts-ecency": [
     {
       "active": {
         "account_auths": [],
@@ -14,27 +14,27 @@
         "weight_threshold": 1
       },
       "balance": {
-        "amount": "1268968",
+        "amount": "1847517",
         "nai": "@@000000021",
         "precision": 3
       },
       "can_vote": true,
       "comment_count": 0,
       "created": "2020-05-13T07:50:03",
-      "curation_rewards": 459889982,
+      "curation_rewards": 461700195,
       "delayed_votes": [],
       "delegated_vesting_shares": {
-        "amount": "53906755843537",
+        "amount": "55453444843537",
         "nai": "@@000000037",
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 598284335508415,
-        "last_update_time": 1730373921
+        "current_mana": 600759276992346,
+        "last_update_time": 1730810595
       },
       "governance_vote_expiration_ts": "2025-10-29T17:41:51",
       "hbd_balance": {
-        "amount": "148591",
+        "amount": "148500",
         "nai": "@@000000013",
         "precision": 3
       },
@@ -47,15 +47,15 @@
       "last_account_recovery": "1970-01-01T00:00:00",
       "last_account_update": "2024-09-09T06:35:09",
       "last_owner_update": "1970-01-01T00:00:00",
-      "last_post": "2024-10-30T17:41:00",
-      "last_post_edit": "2024-10-30T17:41:00",
+      "last_post": "2024-11-04T16:30:15",
+      "last_post_edit": "2024-11-04T16:30:15",
       "last_root_post": "2024-10-30T17:41:00",
-      "last_vote_time": "2024-10-31T11:25:21",
+      "last_vote_time": "2024-11-05T12:43:15",
       "lifetime_vote_count": 0,
       "memo_key": "STM5vCxUjSAZAgKBornswBuzXgAZasbE3EkPHpLmDEVHmPVGMnnah",
       "mined": false,
       "name": "ecency",
-      "next_vesting_withdrawal": "2024-11-02T07:32:54",
+      "next_vesting_withdrawal": "2024-11-09T07:32:54",
       "open_recurrent_transfers": 0,
       "owner": {
         "account_auths": [],
@@ -67,12 +67,12 @@
         ],
         "weight_threshold": 1
       },
-      "pending_claimed_accounts": 81173,
+      "pending_claimed_accounts": 81755,
       "pending_transfers": 0,
       "post_bandwidth": 0,
-      "post_count": 260558,
+      "post_count": 260575,
       "post_voting_power": {
-        "amount": "2400384325072720",
+        "amount": "2410284091008442",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -92,17 +92,17 @@
         "weight_threshold": 1
       },
       "posting_json_metadata": "{\"profile\":{\"name\":\"Ecency\",\"about\":\"You love something set it free! Join immutable, uncensored, rewarding communities! https://ecency.com\",\"cover_image\":\"\",\"profile_image\":\"https://images.ecency.com/DQmWCcJcicyck5atZcgXt5rQstoQVSrumHdsmeQNKXHjgPa/ecenct_logo.png\",\"website\":\"https://ecency.com\",\"location\":\"Blockchain\",\"pinned\":\"ecency-development-and-maintenance-4\",\"version\":2,\"tokens\":[]}}",
-      "posting_rewards": 23784297,
+      "posting_rewards": 23860047,
       "previous_owner_update": "1970-01-01T00:00:00",
       "proxied_vsf_votes": [
-        0,
+        292053317639,
         0,
         0,
         0
       ],
       "proxy": "good-karma",
       "received_vesting_shares": {
-        "amount": "2316323539805380",
+        "amount": "2331865514733020",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -119,12 +119,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "93730460534",
+        "amount": "96819797881",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "55100",
+        "amount": "56941",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -144,7 +144,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 94210779507764,
       "vesting_shares": {
-        "amount": "137967541110877",
+        "amount": "133872021118959",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -154,13 +154,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 2082939463061384,
-        "last_update_time": 1730373921
+        "current_mana": 2067603517246841,
+        "last_update_time": 1730810595
       },
       "withdraw_routes": 0,
-      "withdrawn": 79716813429649,
+      "withdrawn": 86963796468708,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-ecency.stats": [
     {
       "active": {
         "account_auths": [],
@@ -180,7 +182,7 @@
       "can_vote": true,
       "comment_count": 0,
       "created": "2020-07-02T07:49:03",
-      "curation_rewards": 252851,
+      "curation_rewards": 254085,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "0",
@@ -189,7 +191,7 @@
       },
       "downvote_manabar": {
         "current_mana": 570220944073,
-        "last_update_time": 1730373921
+        "last_update_time": 1730810595
       },
       "governance_vote_expiration_ts": "1969-12-31T23:59:59",
       "hbd_balance": {
@@ -209,7 +211,7 @@
       "last_post": "2023-09-12T03:10:27",
       "last_post_edit": "2023-09-12T03:10:27",
       "last_root_post": "2023-09-12T03:10:27",
-      "last_vote_time": "2024-10-31T11:25:21",
+      "last_vote_time": "2024-11-05T12:43:15",
       "lifetime_vote_count": 0,
       "memo_key": "STM73YE8rEQoDh6Y6EvrX2tXmmzhEnoTTwrL5jh3Wet3iMxKBJJty",
       "mined": false,
@@ -282,12 +284,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "299304912352",
+        "amount": "301403611037",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "170459",
+        "amount": "171693",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -317,13 +319,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 2034949199476,
-        "last_update_time": 1730373921
+        "current_mana": 1985520451879,
+        "last_update_time": 1730810595
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-esteem.app": [
     {
       "active": {
         "account_auths": [],
@@ -343,7 +347,7 @@
       "can_vote": true,
       "comment_count": 0,
       "created": "2017-09-06T09:46:09",
-      "curation_rewards": 855807,
+      "curation_rewards": 856512,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "0",
@@ -352,7 +356,7 @@
       },
       "downvote_manabar": {
         "current_mana": 515074808112,
-        "last_update_time": 1730373921
+        "last_update_time": 1730810595
       },
       "governance_vote_expiration_ts": "1969-12-31T23:59:59",
       "hbd_balance": {
@@ -372,7 +376,7 @@
       "last_post": "1970-01-01T00:00:00",
       "last_post_edit": "1970-01-01T00:00:00",
       "last_root_post": "1970-01-01T00:00:00",
-      "last_vote_time": "2024-10-31T11:25:21",
+      "last_vote_time": "2024-11-05T12:43:15",
       "lifetime_vote_count": 0,
       "memo_key": "STM7rYhpTmVrhBmLcEaoxWvVk5M3FrN4xtapk1utikFD8hhrNmzAf",
       "mined": false,
@@ -441,12 +445,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "75381015348",
+        "amount": "76579997552",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "43828",
+        "amount": "44533",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -476,13 +480,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 1838149017849,
-        "last_update_time": 1730373921
+        "current_mana": 1793500530352,
+        "last_update_time": 1730810595
       },
       "withdraw_routes": 0,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-esteemapp": [
     {
       "active": {
         "account_auths": [],
@@ -495,14 +501,14 @@
         "weight_threshold": 1
       },
       "balance": {
-        "amount": "1936",
+        "amount": "1938",
         "nai": "@@000000021",
         "precision": 3
       },
       "can_vote": true,
       "comment_count": 0,
       "created": "2016-11-03T15:59:24",
-      "curation_rewards": 76384063,
+      "curation_rewards": 76394598,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "0",
@@ -511,7 +517,7 @@
       },
       "downvote_manabar": {
         "current_mana": 3838797147186,
-        "last_update_time": 1730373921
+        "last_update_time": 1730810595
       },
       "governance_vote_expiration_ts": "2024-12-05T03:21:36",
       "hbd_balance": {
@@ -531,7 +537,7 @@
       "last_post": "2024-09-16T14:47:39",
       "last_post_edit": "2024-09-16T14:47:39",
       "last_root_post": "2020-07-06T19:20:18",
-      "last_vote_time": "2024-10-31T11:25:21",
+      "last_vote_time": "2024-11-05T12:43:15",
       "lifetime_vote_count": 0,
       "memo_key": "STM6W6WwFy5P8putgwPppiyG1ySM65wvSQSPKErkDCNG9sTSevhjf",
       "mined": false,
@@ -612,12 +618,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "166713170404",
+        "amount": "184630366408",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "97812",
+        "amount": "108347",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -647,13 +653,15 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 13699527204344,
-        "last_update_time": 1730373921
+        "current_mana": 13366766647417,
+        "last_update_time": 1730810595
       },
       "withdraw_routes": 1,
       "withdrawn": 0,
       "witnesses_voted_for": 0
-    },
+    }
+  ],
+  "findAccounts-good-karma": [
     {
       "active": {
         "account_auths": [],
@@ -666,14 +674,14 @@
         "weight_threshold": 1
       },
       "balance": {
-        "amount": "289",
+        "amount": "303",
         "nai": "@@000000021",
         "precision": 3
       },
       "can_vote": true,
       "comment_count": 0,
       "created": "2016-07-07T08:15:00",
-      "curation_rewards": 40243302,
+      "curation_rewards": 40294253,
       "delayed_votes": [],
       "delegated_vesting_shares": {
         "amount": "108917239599",
@@ -681,8 +689,8 @@
         "precision": 6
       },
       "downvote_manabar": {
-        "current_mana": 15848796100945,
-        "last_update_time": 1730375583
+        "current_mana": 16780762347742,
+        "last_update_time": 1730811081
       },
       "governance_vote_expiration_ts": "2025-10-29T17:41:24",
       "hbd_balance": {
@@ -702,7 +710,7 @@
       "last_post": "2024-09-21T09:14:36",
       "last_post_edit": "2024-09-21T09:14:36",
       "last_root_post": "2024-01-18T05:30:57",
-      "last_vote_time": "2024-10-31T11:25:21",
+      "last_vote_time": "2024-11-05T12:43:15",
       "lifetime_vote_count": 0,
       "memo_key": "STM8mZcbokoRM8LvRk1CGibFyfuTXp77w72ktgJrZNsjKYmoF3gTx",
       "mined": false,
@@ -724,7 +732,7 @@
       "post_bandwidth": 10000,
       "post_count": 5605,
       "post_voting_power": {
-        "amount": "68556296713725",
+        "amount": "72284161700914",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -751,8 +759,8 @@
       "posting_rewards": 123649561,
       "previous_owner_update": "2017-08-09T16:20:06",
       "proxied_vsf_votes": [
-        329834063145501,
-        0,
+        325612842657918,
+        292053317639,
         0,
         0
       ],
@@ -775,12 +783,12 @@
         "precision": 3
       },
       "reward_vesting_balance": {
-        "amount": "40966434181",
+        "amount": "127620415947",
         "nai": "@@000000037",
         "precision": 6
       },
       "reward_vesting_hive": {
-        "amount": "24080",
+        "amount": "75031",
         "nai": "@@000000021",
         "precision": 3
       },
@@ -800,7 +808,7 @@
       "savings_withdraw_requests": 0,
       "to_withdraw": 67094460029235,
       "vesting_shares": {
-        "amount": "68636423118166",
+        "amount": "72364288105355",
         "nai": "@@000000037",
         "precision": 6
       },
@@ -810,13 +818,214 @@
         "precision": 6
       },
       "voting_manabar": {
-        "current_mana": 61791744534436,
-        "last_update_time": 1730375583
+        "current_mana": 60106243804116,
+        "last_update_time": 1730811081
       },
       "withdraw_routes": 1,
       "withdrawn": 41288898479536,
       "witnesses_voted_for": 30
     }
   ],
-  "packType": "hf26"
+  "packType": "hf26",
+  "multipleOperationMultipleSignatureTransaction": {
+    "ref_block_num": 808,
+    "ref_block_prefix": 1359279161,
+    "extensions": [],
+    "expiration": "2024-08-02T12:09:03",
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "ecency",
+          "author": "el-panal",
+          "weight": 100,
+          "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024"
+        }
+      },
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "ecency.stats",
+          "author": "el-panal",
+          "weight": 100,
+          "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024"
+        }
+      },
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "esteem.app",
+          "author": "el-panal",
+          "weight": 100,
+          "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024"
+        }
+      },
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "good-karma",
+          "author": "el-panal",
+          "weight": 100,
+          "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024"
+        }
+      },
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "esteemapp",
+          "author": "el-panal",
+          "weight": 100,
+          "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024"
+        }
+      }
+    ],
+    "signatures": [
+      "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
+      "20223edff229382e67031d993c13d26062ab4d33c45ede7aced7f1e432d6b6d57a4fd68eae708f562a9644ee08ea447fa354febe34aa8ba14a434c66adc753774f",
+      "20286bd3b0ad2ecb01488ce866361b4fcd53b1f3dac41962496986fdf89c89c20a0e86f8dd2669ed14b6dafc3e0bb0d24ec54a794ee6c0b563275a22a122992ac1",
+      "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
+      "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5"
+    ]
+  },
+  "multipleOperationMultipleSignatureExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
+        "20223edff229382e67031d993c13d26062ab4d33c45ede7aced7f1e432d6b6d57a4fd68eae708f562a9644ee08ea447fa354febe34aa8ba14a434c66adc753774f",
+        "20286bd3b0ad2ecb01488ce866361b4fcd53b1f3dac41962496986fdf89c89c20a0e86f8dd2669ed14b6dafc3e0bb0d24ec54a794ee6c0b563275a22a122992ac1",
+        "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
+        "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5"
+      ],
+      "signatureKeys": [
+        "STM7S3wsVtQotgKLN8wFLPNBALe6YHt8MPLEHuTH5CxfxdhpGPBUP",
+        "STM8jviUDRAefxmTQ9m8wNdiQV5dmCPSMDjSnztPYZpHf1yfaD6Rd",
+        "STM64Bb5TXsiEbjjLsgVrvVttEDsLNSot9p8zJd41D5zEr5opxcHK",
+        "STM5dhkPS223F9d3TCXKttuWpdWgqS2Fx8KNRQve6BMGmAvJ5GnJR",
+        "STM8AZuk2ja5vSFySFL2zpB9bNew8wJAg8r4QFtbnoamEX8Jvvq43"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": [
+        {
+          "posting": {},
+          "active": {},
+          "owner": {},
+          "other": []
+        },
+        {
+          "posting": {},
+          "active": {},
+          "owner": {},
+          "other": []
+        },
+        {
+          "posting": {},
+          "active": {},
+          "owner": {},
+          "other": []
+        },
+        {
+          "posting": {},
+          "active": {},
+          "owner": {},
+          "other": []
+        },
+        {
+          "posting": {},
+          "active": {},
+          "owner": {},
+          "other": []
+        }
+      ],
+      "authorityType": [
+        {
+          "level": "Posting",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "ecency",
+            "author": "el-panal",
+            "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024",
+            "weight": 100
+          }
+        },
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "ecency.stats",
+            "author": "el-panal",
+            "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024",
+            "weight": 100
+          }
+        },
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "esteem.app",
+            "author": "el-panal",
+            "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024",
+            "weight": 100
+          }
+        },
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "good-karma",
+            "author": "el-panal",
+            "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024",
+            "weight": 100
+          }
+        },
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "esteemapp",
+            "author": "el-panal",
+            "permlink": "el-panal-presentacion-de-autores-destacados-dia31072024",
+            "weight": 100
+          }
+        }
+      ],
+      "signeesByKeys": [
+        [
+          [
+            "esteemapp"
+          ],
+          [
+            "ecency.stats"
+          ],
+          [
+            "esteem.app"
+          ],
+          [
+            "good-karma"
+          ],
+          [
+            "ecency"
+          ]
+        ]
+      ],
+      "isValid": true,
+      "packType": "hf26"
+    },
+    "path": [
+      {
+        "account": [
+          "ecency",
+          "ecency.stats",
+          "esteem.app",
+          "esteemapp",
+          "good-karma"
+        ]
+      }
+    ]
+  }
 }

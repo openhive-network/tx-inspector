@@ -1,7 +1,7 @@
 {
   "validTxAuthority": true,
   "keyReferences": [ "andablackwidow" ],
-  "accounts": [
+  "findAccounts-andablackwidow": [
     {
       "active": {
         "account_auths": [],

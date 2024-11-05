@@ -29,7 +29,7 @@ export default defineConfig < ITxInspectorTest>({
       testMatch: '**/txInspector-multiple-signature-mock.ts',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/multiple_operation_single_signature_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/multiple_operation_multiple_signature_data.json'
       }
     },
     {
@@ -38,7 +38,7 @@ export default defineConfig < ITxInspectorTest>({
       testMatch: '**/txInspector-delegated-authority-mock.ts',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/delegated_authority_single_signature_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/delegated_authority_data.json'
       }
     },
     {

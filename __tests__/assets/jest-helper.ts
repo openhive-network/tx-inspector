@@ -13,14 +13,12 @@ import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
 import type { IAuthorityPaths } from '../../utils/getAuthorityPath';
 import type { TProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
-import type { IMockData } from './api-mock';
+import type { IMockData, TMockExtendedData } from './api-mock';
 
 export interface IExpectedResult {
   inspectorResults: TProcessedTransaction;
   path: IAuthorityPaths[];
 }
-
-type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult>;
 
 type TTxInspectorTestCallable<R, Args extends any[]> = (globals: ITxInspectorGlobals, ...args: Args) => (R | Promise<R>);
 type TTxAnalyzerTestCallable<R, Args extends any[]> = (globals: ITxAnalyzerGlobals, ...args: Args) => (R | Promise<R>);
@@ -134,7 +132,8 @@ const analyzeAndCompareTransaction = async (
     };
   }, inputTransaction);
 
-  console.log(JSON.stringify(retVal, null, 2));
+  console.log(retVal.path);
+  console.log('retVal', JSON.stringify(retVal, null, 2));
   return JSON.stringify(retVal) === JSON.stringify(expectedResult);
 };
 

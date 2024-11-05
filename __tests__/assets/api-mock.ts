@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
 import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
 import type { EPackType, ITransactionAnalyzerApi } from '../../types/wax.js';
+import type { IExpectedResult } from './jest-helper.js';
 
 export interface IMockData {
   validTxAuthority: boolean;
   keyReferences: string[];
-  accounts: ApiAccount[];
   packType: EPackType;
 }
+
+export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[]>;
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData;
@@ -25,8 +27,10 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
     return { accounts: [this.mockData.keyReferences] };
   }
 
-  public findAccounts (_params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
-    return { accounts: this.mockData.accounts };
+  public findAccounts (params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
+    const accountsArrToString = params.accounts.join('-');
+
+    return { accounts: this.mockData[`findAccounts-${accountsArrToString}`] };
   }
 
   public getPackType (): EPackType {
