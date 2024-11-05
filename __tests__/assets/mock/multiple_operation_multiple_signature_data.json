@@ -1,6 +1,8 @@
 {
   "validTxAuthority": true,
-  "keyReferences": [ ["esteemapp"], ["ecency.stats"], ["esteem.app"], ["good-karma"], ["ecency"] ],
+  "keyReferences-STM7S3wsVtQotgKLN8wFLPNBALe6YHt8MPLEHuTH5CxfxdhpGPBUP-STM8jviUDRAefxmTQ9m8wNdiQV5dmCPSMDjSnztPYZpHf1yfaD6Rd-STM64Bb5TXsiEbjjLsgVrvVttEDsLNSot9p8zJd41D5zEr5opxcHK-STM5dhkPS223F9d3TCXKttuWpdWgqS2Fx8KNRQve6BMGmAvJ5GnJR-STM8AZuk2ja5vSFySFL2zpB9bNew8wJAg8r4QFtbnoamEX8Jvvq43": [
+    ["esteemapp"], ["ecency.stats"], ["esteem.app"], ["good-karma"], ["ecency"]
+  ],
   "findAccounts-ecency": [
     {
       "active": {

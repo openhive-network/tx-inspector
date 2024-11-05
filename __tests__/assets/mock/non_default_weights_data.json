@@ -1,6 +1,196 @@
 {
   "validTxAuthority": true,
+  "keyReferences-STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t": [ "sketch.and.jam" ],
   "keyReferences-STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF": [ "steemauto" ],
+  "findAccounts-sketch.and.jam": [
+    {
+      "active": {
+        "account_auths": [],
+        "key_auths": [
+          [
+            "STM5eFDT8ebffCdwcAfYSgorB9zGTR35vS38CLCeM1C25YX8pX3mf",
+            1
+          ]
+        ],
+        "weight_threshold": 1
+      },
+      "balance": {
+        "amount": "586923",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "can_vote": true,
+      "comment_count": 0,
+      "created": "2018-03-16T22:57:27",
+      "curation_rewards": 3136906,
+      "delayed_votes": [],
+      "delegated_vesting_shares": {
+        "amount": "52936574836820",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "downvote_manabar": {
+        "current_mana": 2427627177350,
+        "last_update_time": 1730813991
+      },
+      "governance_vote_expiration_ts": "2025-08-14T15:41:24",
+      "hbd_balance": {
+        "amount": "2",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "hbd_last_interest_payment": "2021-06-11T18:43:36",
+      "hbd_seconds": "11071159713",
+      "hbd_seconds_last_update": "2021-06-30T12:20:57",
+      "id": 865715,
+      "is_smt": false,
+      "json_metadata": "{\"profile\":{\"name\":\"sketchandjam\",\"about\":\"I like to draw and play an assortment of stringed instruments.\",\"website\":\"https://www.minds.com/sketchandjam\",\"location\":\"Chicago\",\"cover_image\":\"https://cdn.steemitimages.com/DQmSyURPbjL3cGjhMRKbYBy6nUPhC5BgwE3gsH26v4j6AUb/lillypadsBig.jpg\",\"profile_image\":\"https://cdn.steemitimages.com/DQmcj8VDSK7qBWA7gPDs1nPH7GDWVSavenQvPaTYrCzhP41/pyramid44.jpg\",\"dtube_pub\":\"nKdUPEzoPbnFmqJfhgjZxuuwuMjJtWwQU2eyB8BP7vvT\"}}",
+      "last_account_recovery": "1970-01-01T00:00:00",
+      "last_account_update": "2021-11-21T21:38:57",
+      "last_owner_update": "1970-01-01T00:00:00",
+      "last_post": "2024-11-05T13:38:33",
+      "last_post_edit": "2024-11-05T13:38:33",
+      "last_root_post": "2024-11-05T11:32:33",
+      "last_vote_time": "2024-11-05T13:39:42",
+      "lifetime_vote_count": 0,
+      "memo_key": "STM7CLP2N7BU8LFGP8r5wXNtpDYbjHtzhDcKMyhBuLsKYBqXQqDKM",
+      "mined": false,
+      "name": "sketch.and.jam",
+      "next_vesting_withdrawal": "1969-12-31T23:59:59",
+      "open_recurrent_transfers": 0,
+      "owner": {
+        "account_auths": [],
+        "key_auths": [
+          [
+            "STM66sesjLPis52vsVc4AWpfuCoryfXKnC5iEWrHh5qD45BfMPk21",
+            1
+          ]
+        ],
+        "weight_threshold": 1
+      },
+      "pending_claimed_accounts": 0,
+      "pending_transfers": 0,
+      "post_bandwidth": 0,
+      "post_count": 20349,
+      "post_voting_power": {
+        "amount": "9710508709401",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "posting": {
+        "account_auths": [
+          [
+            "dpoll.xyz",
+            1
+          ],
+          [
+            "dtube.app",
+            1
+          ],
+          [
+            "ecency.app",
+            1
+          ],
+          [
+            "esteemapp",
+            1
+          ],
+          [
+            "hive.blog",
+            1
+          ],
+          [
+            "peakd.app",
+            1
+          ],
+          [
+            "threespeak",
+            1
+          ],
+          [
+            "vimm.app",
+            1
+          ]
+        ],
+        "key_auths": [
+          [
+            "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t",
+            3
+          ]
+        ],
+        "weight_threshold": 2
+      },
+      "posting_json_metadata": "{\"profile\":{\"name\":\"sketchandjam\",\"about\":\"I like to draw and play an assortment of stringed instruments and drums. Prepare for lots of mushrooms and nature photography on this channel as well.\",\"cover_image\":\"https://profile.cdn.3speakcontent.online/sketch.and.jam/GTubigqcIHAwleEqrsrVYodXXQGcTfFPUFUPZEcYUWJLKWnugaGPsOXKPZDnbQpN.jpg\",\"profile_image\":\"https://cdn.steemitimages.com/DQmcj8VDSK7qBWA7gPDs1nPH7GDWVSavenQvPaTYrCzhP41/pyramid44.jpg\",\"website\":\"https://odysee.com/@sketchandjam:1\",\"location\":\"Illinois\",\"version\":2}}",
+      "posting_rewards": 32956957,
+      "previous_owner_update": "1970-01-01T00:00:00",
+      "proxied_vsf_votes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "proxy": "",
+      "received_vesting_shares": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "recovery_account": "hive.recovery",
+      "reset_account": "null",
+      "reward_hbd_balance": {
+        "amount": "0",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "reward_hive_balance": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "reward_vesting_balance": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "reward_vesting_hive": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "savings_balance": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "savings_hbd_balance": {
+        "amount": "4000092",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "savings_hbd_last_interest_payment": "2024-11-01T16:15:21",
+      "savings_hbd_seconds": "1006717242888",
+      "savings_hbd_seconds_last_update": "2024-11-04T13:17:15",
+      "savings_withdraw_requests": 1,
+      "to_withdraw": 0,
+      "vesting_shares": {
+        "amount": "62647083546221",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "vesting_withdraw_rate": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "voting_manabar": {
+        "current_mana": 9457494935005,
+        "last_update_time": 1730813991
+      },
+      "withdraw_routes": 0,
+      "withdrawn": 0,
+      "witnesses_voted_for": 30
+    }
+  ],
   "findAccounts-tattooworld": [
     {
       "active": {
@@ -611,7 +801,7 @@
           ],
           [
             "steemauto",
-            1
+            3
           ],
           [
             "threespeak",
@@ -624,7 +814,7 @@
             1
           ]
         ],
-        "weight_threshold": 1
+        "weight_threshold": 2
       },
       "posting_json_metadata": "{\"name\":\"INLEO\",\"about\":\"INLEO is empowering small to medium-sized creators to earn crypto for putting their content and engagement onchain\",\"website\":\"https://inleo.io\",\"location\":\"\",\"birthday\":null,\"profile_image\":\"https://img.inleo.io/DQmWr82gviJiYJMvvphJ9K3j7vKkxkYsKMhVZmxYrExuzY8/Logomark.png\",\"profile\":{\"name\":\"INLEO\",\"about\":\"INLEO is empowering small to medium-sized creators to earn crypto for putting their content and engagement on-chain\",\"website\":\"https://inleo.io\",\"witness_description\":\"INLEO (formerly LeoFinance) operates the largest social project on the Hive Blockchain - https://inleo.io. We also operate major Hive-based tools like https://hivestats.io which is the #1 stats tool on Hive as well as the LEO Token which is one of the top second-layer assets on the Hive Blockchain.\",\"profile_image\":\"https://files.peakd.com/file/peakd-hive/leofinance/SYMBOL_INLEO2005.png\",\"version\":2}}",
       "posting_rewards": 28330323,
@@ -1207,6 +1397,79 @@
   ],
   "packType": "hf26",
   "singleSignatureTransaction": {
+    "ref_block_num": 46620,
+    "ref_block_prefix": 342049658,
+    "extensions": [],
+    "expiration": "2024-11-05T13:49:33",
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "sketch.and.jam",
+          "author": "yisusth",
+          "weight": 3300,
+          "permlink": "all-ive-got-to-do-the-beatles-cover-by-yisusth"
+        }
+      }
+    ],
+    "signatures": [
+      "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7"
+    ]
+  },
+  "singleSignatureExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7"
+      ],
+      "signatureKeys": [
+        "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Posting",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "sketch.and.jam",
+            "author": "yisusth",
+            "permlink": "all-ive-got-to-do-the-beatles-cover-by-yisusth",
+            "weight": 3300
+          }
+        }
+      ],
+      "signeesByKeys": [
+        [
+          "sketch.and.jam"
+        ]
+      ],
+      "isValid": true,
+      "packType": "hf26"
+    },
+    "path": [
+      {
+        "account": [
+          "sketch.and.jam"
+        ]
+      }
+    ]
+  },
+  "singleDelegatedSignatureTransaction": {
     "ref_block_num": 31682,
     "ref_block_prefix": 1691585842,
     "extensions": [],
@@ -1226,7 +1489,7 @@
       "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
     ]
   },
-  "singleSignatureExpectedResult": {
+  "singleDelegatedSignatureExpectedResult": {
     "inspectorResults": {
       "signatures": [
         "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
@@ -1280,8 +1543,8 @@
       {
         "account": "steemauto",
         "authWeight": {
-          "weight": 1,
-          "auth": 1
+          "weight": 3,
+          "auth": 2
         }
       },
       {

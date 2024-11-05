@@ -44,10 +44,10 @@ export default defineConfig < ITxInspectorTest>({
     {
       name: 'tx_inspector_non_default_weights',
       testDir: './__tests__/',
-      testMatch: '**/txInspector-single-signature-non-default-weights-mock.ts',
+      testMatch: '**/txInspector-non-default-weights-mock.ts',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/single_operation_single_signature_non_default_weights_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/non_default_weights_data.json'
       }
     },
     {

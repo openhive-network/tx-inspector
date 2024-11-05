@@ -35,6 +35,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
+    console.log('key references params', params.keys);
+
     console.log('key references', response);
 
     return response;

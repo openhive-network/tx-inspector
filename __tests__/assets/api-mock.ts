@@ -5,11 +5,10 @@ import type { IExpectedResult } from './jest-helper.js';
 
 export interface IMockData {
   validTxAuthority: boolean;
-  keyReferences: string[];
   packType: EPackType;
 }
 
-export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[]>;
+export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[] | string[]>;
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData;
@@ -23,8 +22,10 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
     return { valid: this.mockData.validTxAuthority };
   }
 
-  public getKeyReferences (_params: { keys: string[]; }): { accounts: string[][]; } {
-    return { accounts: [this.mockData.keyReferences] };
+  public getKeyReferences (params: { keys: string[]; }): { accounts: string[][]; } {
+    const keysArrToString = params.keys.join('-');
+
+    return { accounts: [this.mockData[`keyReferences-${keysArrToString}`]] };
   }
 
   public findAccounts (params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
