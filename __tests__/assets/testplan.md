@@ -26,8 +26,8 @@ Authority specific tests
 2.2.1 Each signature uses public key specified as delegated authority.
 
 2.2.2 Non default weights:
-2.2.2.1 Both signatures use same weights satisfying authority threshold (each of them can satisfy threshold alone)
-2.2.2.2 All signatures are required to satisfy authority threshold (the first one has weight 1, the other one has weight 2, threshold is 3)
+2.2.2.1 ~~Both signatures use same weights satisfying authority threshold (each of them can satisfy threshold alone)~~
+2.2.2.2 ~~All signatures are required to satisfy authority threshold (the first one has weight 1, the other one has weight 2, threshold is 3)~~
 
 2.3 Longer authority paths:
 2.3.1 Single nest level
