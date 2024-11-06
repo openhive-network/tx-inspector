@@ -1430,7 +1430,14 @@
         ]
       ],
       "isValid": true,
-      "packType": "hf26"
+      "packType": "hf26",
+      "id": "07e7d9ecaad2a11bc36db6d7046a55e231627574",
+      "sigDigest": "78fb17802bf8a01a5b95d3ce7eadc6cdf71bd98ace8c92b9c7cd00a3cf2f2ca9",
+      "expiration": "2024-10-01T20:10:59",
+      "tapos": {
+        "refBlockNum": 31682,
+        "refBlockPrefix": 1691585842
+      }
     },
     "path": [
       {
@@ -1517,7 +1524,14 @@
         ]
       ],
       "isValid": true,
-      "packType": "hf26"
+      "packType": "hf26",
+      "id": "63da2535c4d7239e6cb662e7c384d81424c6ac39",
+      "sigDigest": "0a699bd3befdfa80132eef8bf0782e3c29471edd5c0785c86b612530590ab4f3",
+      "expiration": "2024-11-06T09:53:50",
+      "tapos": {
+        "refBlockNum": 5283,
+        "refBlockPrefix": 1802775871
+      }
     },
     "path": [
       {

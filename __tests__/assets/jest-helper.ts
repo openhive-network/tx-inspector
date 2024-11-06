@@ -126,7 +126,11 @@ const analyzeAndCompareTransaction = async (
         operations: processingResults.operations,
         signeesByKeys: processingResults.signeesByKeys,
         isValid: processingResults.isValid,
-        packType: processingResults.packType
+        packType: processingResults.packType,
+        id: processingResults.transactionId,
+        sigDigest: processingResults.sigDigest,
+        expiration: processingResults.expiration,
+        tapos: processingResults.tapos
       },
       path: await authorityPath(inputTx)
     };

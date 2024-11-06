@@ -1016,7 +1016,14 @@
         ]
       ],
       "isValid": true,
-      "packType": "hf26"
+      "packType": "hf26",
+      "id": "a7efc7be69861fdcdc39712e532beb8ddc701f03",
+      "sigDigest": "acf004c792cd6196e0514f56d97bd8148b81872fbe12578386f4163971172f59",
+      "expiration": "2024-08-02T12:09:03",
+      "tapos": {
+        "refBlockNum": 808,
+        "refBlockPrefix": 1359279161
+      }
     },
     "path": [
       {

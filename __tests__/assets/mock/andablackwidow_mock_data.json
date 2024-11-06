@@ -235,7 +235,14 @@
         ]
       ],
       "isValid": true,
-      "packType": "legacy"
+      "packType": "legacy",
+      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+      "expiration": "2024-09-19T23:41:03",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      }
     },
     "path": [
       {
@@ -353,7 +360,14 @@
         ]
       ],
       "isValid": true,
-      "packType": "legacy"
+      "packType": "legacy",
+      "id": "bee1bb2dbea1bf30d8f72b8d4a251f464f3374ef",
+      "sigDigest": "2b951723875e3000b69881983076286971f3a30b000b427d6429a5918972c05a",
+      "expiration": "2024-07-29T13:47:57",
+      "tapos": {
+        "refBlockNum": 18925,
+        "refBlockPrefix": 2219782745
+      }
     },
     "path": [
       {
