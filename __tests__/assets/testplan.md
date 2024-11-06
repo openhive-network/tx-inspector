@@ -30,8 +30,8 @@ Authority specific tests
 2.2.2.2 ~~All signatures are required to satisfy authority threshold (the first one has weight 1, the other one has weight 2, threshold is 3)~~
 
 2.3 Longer authority paths:
-2.3.1 Single nest level
-2.3.2 Multiple nest level (max. 2 for positive case)
+2.3.1 ~~Single nest level~~
+2.3.2 ~~Multiple nest level (max. 2 for positive case)~~
 
 2.4 Signature is valid but decoded public key does not match any known account
 

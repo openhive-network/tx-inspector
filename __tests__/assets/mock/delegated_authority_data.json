@@ -1205,6 +1205,167 @@
       "witnesses_voted_for": 0
     }
   ],
+  "findAccounts-hivetoolsio": [
+    {
+      "active": {
+        "account_auths": [],
+        "key_auths": [
+          [
+            "STM5NqGfVA5apxssNZMmACD53vxGfeSZ6tn2Mu2qpp4YN8nBi33BM",
+            1
+          ]
+        ],
+        "weight_threshold": 1
+      },
+      "balance": {
+        "amount": "8",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "can_vote": true,
+      "comment_count": 0,
+      "created": "2023-04-07T01:39:12",
+      "curation_rewards": 3365,
+      "delayed_votes": [],
+      "delegated_vesting_shares": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "downvote_manabar": {
+        "current_mana": 13016617817,
+        "last_update_time": 1730886768
+      },
+      "governance_vote_expiration_ts": "1969-12-31T23:59:59",
+      "hbd_balance": {
+        "amount": "0",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "hbd_last_interest_payment": "1970-01-01T00:00:00",
+      "hbd_seconds": "0",
+      "hbd_seconds_last_update": "1970-01-01T00:00:00",
+      "id": 2445352,
+      "is_smt": false,
+      "json_metadata": "",
+      "last_account_recovery": "1970-01-01T00:00:00",
+      "last_account_update": "2023-05-05T00:56:03",
+      "last_owner_update": "1970-01-01T00:00:00",
+      "last_post": "2023-04-09T21:30:12",
+      "last_post_edit": "2023-04-09T21:30:12",
+      "last_root_post": "2023-04-07T03:15:24",
+      "last_vote_time": "2024-11-06T09:52:48",
+      "lifetime_vote_count": 0,
+      "memo_key": "STM89aJD1QFe2Nf8jWymfeeGdpMQ6wYPom19SG7gENwnxiZCKCiML",
+      "mined": false,
+      "name": "hivetoolsio",
+      "next_vesting_withdrawal": "1969-12-31T23:59:59",
+      "open_recurrent_transfers": 0,
+      "owner": {
+        "account_auths": [],
+        "key_auths": [
+          [
+            "STM8iKtuBBtEi8aoqH2nbG1FSkExDGFXkJSSW8Na6NVw3xz5nxd1g",
+            1
+          ]
+        ],
+        "weight_threshold": 1
+      },
+      "pending_claimed_accounts": 586,
+      "pending_transfers": 0,
+      "post_bandwidth": 0,
+      "post_count": 6,
+      "post_voting_power": {
+        "amount": "52066471269",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "posting": {
+        "account_auths": [
+          [
+            "steemauto",
+            1
+          ]
+        ],
+        "key_auths": [
+          [
+            "STM88rroHEMUhTHEsEvUPwmHJC4XT7iGZynZXgy9DL9FQBtWcUqP1",
+            1
+          ]
+        ],
+        "weight_threshold": 1
+      },
+      "posting_json_metadata": "{\"profile\":{\"name\":\"Hive-Tools.io\",\"location\":\"Blockchain\",\"website\":\"https://hive-tools.io\",\"profile_image\":\"https://files.peakd.com/file/peakd-hive/hivetoolsio/hivetools-vertical-final-1.png\",\"cover_image\":\"https://files.peakd.com/file/peakd-hive/hivetoolsio/background.png\",\"version\":2}}",
+      "posting_rewards": 11518,
+      "previous_owner_update": "1970-01-01T00:00:00",
+      "proxied_vsf_votes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "proxy": "",
+      "received_vesting_shares": {
+        "amount": "35662732336",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "recovery_account": "thezyppi",
+      "reset_account": "null",
+      "reward_hbd_balance": {
+        "amount": "0",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "reward_hive_balance": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "reward_vesting_balance": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "reward_vesting_hive": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "savings_balance": {
+        "amount": "0",
+        "nai": "@@000000021",
+        "precision": 3
+      },
+      "savings_hbd_balance": {
+        "amount": "0",
+        "nai": "@@000000013",
+        "precision": 3
+      },
+      "savings_hbd_last_interest_payment": "1970-01-01T00:00:00",
+      "savings_hbd_seconds": "0",
+      "savings_hbd_seconds_last_update": "1970-01-01T00:00:00",
+      "savings_withdraw_requests": 0,
+      "to_withdraw": 0,
+      "vesting_shares": {
+        "amount": "16403738933",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "vesting_withdraw_rate": {
+        "amount": "0",
+        "nai": "@@000000037",
+        "precision": 6
+      },
+      "voting_manabar": {
+        "current_mana": 51556219850,
+        "last_update_time": 1730886768
+      },
+      "withdraw_routes": 0,
+      "withdrawn": 0,
+      "witnesses_voted_for": 0
+    }
+  ],
   "packType": "hf26",
   "singleSignatureTransaction": {
     "ref_block_num": 31682,
@@ -1286,6 +1447,86 @@
       },
       {
         "account": "leofinance",
+        "authWeight": {
+          "weight": 1,
+          "auth": 1
+        }
+      }
+    ]
+  },
+  "singleNestLevelTransaction": {
+    "ref_block_num": 5283,
+    "ref_block_prefix": 1802775871,
+    "extensions": [],
+    "expiration": "2024-11-06T09:53:50",
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "hivetoolsio",
+          "author": "ervin-lemark",
+          "weight": 4900,
+          "permlink": "12821436584-6030263055"
+        }
+      }
+    ],
+    "signatures": [
+      "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7"
+    ]
+  },
+  "singleNestLevelExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7"
+      ],
+      "signatureKeys": [
+        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Posting",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "vote_operation",
+          "value": {
+            "voter": "hivetoolsio",
+            "author": "ervin-lemark",
+            "permlink": "12821436584-6030263055",
+            "weight": 4900
+          }
+        }
+      ],
+      "signeesByKeys": [
+        [
+          "steemauto"
+        ]
+      ],
+      "isValid": true,
+      "packType": "hf26"
+    },
+    "path": [
+      {
+        "account": [
+          "hivetoolsio"
+        ]
+      },
+      {
+        "account": "steemauto",
         "authWeight": {
           "weight": 1,
           "auth": 1
