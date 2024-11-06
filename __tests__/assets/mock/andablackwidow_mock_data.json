@@ -376,5 +376,109 @@
         ]
       }
     ]
+  },
+  "singleOperationNoAccountAttachedTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "to": "abw.pay",
+          "from": "andablackwidow",
+          "memo": "",
+          "amount": {
+            "nai": "@@000000013",
+            "amount": "20000",
+            "precision": 3
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c59eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
+    ]
+  },
+  "singleOperationNoAccountAttachedExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c59eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
+      ],
+      "signatureKeys": [
+        "STM5hG1x6F3ykEVPvNMFGk6FShbs1Z673hUtEC3nrTZacRLkXDijq"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Active",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "transfer_operation",
+          "value": {
+            "from": "andablackwidow",
+            "to": "abw.pay",
+            "amount": {
+              "amount": "20000",
+              "precision": 3,
+              "nai": "@@000000013"
+            },
+            "memo": ""
+          }
+        }
+      ],
+      "signeesByKeys": [
+        null
+      ],
+      "isValid": true,
+      "packType": "legacy",
+      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+      "expiration": "2024-09-19T23:41:03",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      }
+    },
+    "path": [
+      {
+        "account": [
+          ""
+        ]
+      }
+    ]
+  },
+  "noOperationsButSignatureTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [],
+    "signatures": [
+      "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
+    ]
+  },
+  "noOperationsNoSignaturesTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [],
+    "signatures": []
   }
 }

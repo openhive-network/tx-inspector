@@ -67,6 +67,14 @@ export default defineConfig < ITxInspectorTest>({
       {
         fixtureLevelMockFile: './__tests__/assets/mock/signatures_together_can_satisfy_non_default_weights_data.json'
       }
+    },
+    {
+      name: 'tx_inspector_base_negative_cases',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-base-negative-cases-mock.ts',
+      use: {
+        fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_data.json'
+      }
     }
   ],
   // Run your local dev server before starting the tests

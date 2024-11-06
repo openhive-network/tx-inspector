@@ -33,7 +33,7 @@ Authority specific tests
 2.3.1 ~~Single nest level~~
 2.3.2 ~~Multiple nest level (max. 2 for positive case)~~
 
-2.4 Signature is valid but decoded public key does not match any known account
+2.4 ~~Signature is valid but decoded public key does not match any known account~~
 
 3. Mixed authorities
 
@@ -44,8 +44,8 @@ Authority specific tests
 4. Negative cases:
 
 4.1 Empty transaction (no operations)
-4.1.1 No operations and no signatures
-4.1.2 No operations but signature and are present
+4.1.1 ~~No operations and no signatures~~
+4.1.2 ~~No operations but signature and are present~~
 
 4.2 Invalid expiration time
 4.2.1 Expiration time from far future, i.e extending 1 hour expiration time limit and 24 hours signature validity limit (hf28)

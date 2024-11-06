@@ -31,6 +31,12 @@ test.describe('transaction inspector tests based on mock data', () => {
     expect(isMatching).toBeTruthy();
   });
 
+  test('Testcase 2.4', async ({ analyzeAndCompareTransaction, mockData }) => {
+    const isMatching = await analyzeAndCompareTransaction(mockData.singleOperationNoAccountAttachedTransaction as ApiTransaction, mockData.singleOperationNoAccountAttachedExpectedResult as IExpectedResult);
+
+    expect(isMatching).toBeTruthy();
+  });
+
   test.afterAll(async () => {
     await browser.close();
   });
