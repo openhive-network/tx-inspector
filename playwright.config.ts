@@ -75,6 +75,14 @@ export default defineConfig < ITxInspectorTest>({
       use: {
         fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_data.json'
       }
+    },
+    {
+      name: 'tx_inspector_too_less_weight',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-too-less-weight.ts',
+      use: {
+        fixtureLevelMockFile: './__tests__/assets/mock/too_less_weight_data.json'
+      }
     }
   ],
   // Run your local dev server before starting the tests

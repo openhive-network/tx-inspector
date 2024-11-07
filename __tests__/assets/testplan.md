@@ -54,9 +54,9 @@ Authority specific tests
 
 4.4 Missing authority
 4.4.1 There is no matching signature to transaction sig digest
-4.4.2 There is no matching signature for some authority required by operation (Signature is valid but decoded public key does not match any required authority)
-4.4.3 Signature is valid but decoded public key points to authority having wrong authotiy level (posting authority used for transaction required active authority)
-4.4.4 Signature is valid but in decoded public key points to authority having too less weight according to threshold
+4.4.2 ~~There is no matching signature for some authority required by operation (Signature is valid but decoded public key does not match any required authority)~~
+4.4.3 ~~Signature is valid but decoded public key points to authority having wrong authotiy level (posting authority used for transaction required active authority)~~
+4.4.4 ~~Signature is valid but in decoded public key points to authority having too less weight according to threshold~~
 
 4.4.5 Invalid serialization type
 4.4.5.1 Transaction is serialized using hf26 mode but signed using legacy mode

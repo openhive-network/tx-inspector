@@ -480,5 +480,177 @@
     "expiration": "2024-09-19T23:41:03",
     "operations": [],
     "signatures": []
+  },
+  "singleOperationInvalidPublicKeyForRequiredAuthorityTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "to": "abw.pay",
+          "from": "andablackwidow",
+          "memo": "",
+          "amount": {
+            "nai": "@@000000013",
+            "amount": "20000",
+            "precision": 3
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+    ]
+  },
+  "singleOperationInvalidPublicKeyForRequiredAuthorityExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+      ],
+      "signatureKeys": [
+        "STM6iykkyRro963LKoh1VJVZDLZT1BJovZkyQakGTNL7HFMJhcXEe"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Active",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "transfer_operation",
+          "value": {
+            "from": "andablackwidow",
+            "to": "abw.pay",
+            "amount": {
+              "amount": "20000",
+              "precision": 3,
+              "nai": "@@000000013"
+            },
+            "memo": ""
+          }
+        }
+      ],
+      "signeesByKeys": [
+        null
+      ],
+      "isValid": true,
+      "packType": "legacy",
+      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+      "expiration": "2024-09-19T23:41:03",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      }
+    },
+    "path": [
+      {
+        "account": [
+          ""
+        ]
+      }
+    ]
+  },
+  "wrongPublicKeyAuthorityLevelTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "to": "abw.pay",
+          "from": "andablackwidow",
+          "memo": "",
+          "amount": {
+            "nai": "@@000000013",
+            "amount": "20000",
+            "precision": 3
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
+    ]
+  },
+  "wrongPublicKeyAuthorityLevelExpectedResult": {
+    "inspectorResults": {
+      "signatures": [
+        "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
+      ],
+      "signatureKeys": [
+        "STM5KpEytPQUbqdrgSsjvZ6hxdJR6SEMXba9YLYPfU4KbEr9GtKka"
+      ],
+      "requiredAuthorities": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "requiredAuthoritiesForOperations": {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
+      },
+      "authorityType": [
+        {
+          "level": "Active",
+          "accounts": {}
+        }
+      ],
+      "operations": [
+        {
+          "type": "transfer_operation",
+          "value": {
+            "from": "andablackwidow",
+            "to": "abw.pay",
+            "amount": {
+              "amount": "20000",
+              "precision": 3,
+              "nai": "@@000000013"
+            },
+            "memo": ""
+          }
+        }
+      ],
+      "signeesByKeys": [
+        null
+      ],
+      "isValid": true,
+      "packType": "legacy",
+      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+      "expiration": "2024-09-19T23:41:03",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      }
+    },
+    "path": [
+      {
+        "account": [
+          ""
+        ]
+      }
+    ]
   }
 }
