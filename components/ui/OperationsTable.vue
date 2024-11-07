@@ -31,6 +31,7 @@
         :data="store.binaryVueOutputData.value"
         dark
         class="mb-16"
+        @copy="toast.success('Copied selected range to clipboard')"
       />
       <s-table v-if="radioState !== 'binary'">
         <s-table-header>
