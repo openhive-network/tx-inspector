@@ -57,18 +57,12 @@ export interface ITxInspectorTest {
   analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: IExpectedResult) => Promise<boolean>;
 }
 
-const alreadyConsoleLogInitialized = new WeakSet<Page>();
-
 const txInspectorTest = (page: Page): ITxInspectorTest['txInspectorTest'] => {
+  page.on('console', (msg: ConsoleMessage) => {
+    console.log('>>', msg.type(), msg.text());
+  });
+
   const runner = async <R, Args extends any[]>(fn: TTxInspectorTestCallable<R, Args>, ...args: Args): Promise<R> => {
-    if (!alreadyConsoleLogInitialized.has(page)) {
-      page.on('console', (msg: ConsoleMessage) => {
-        console.log('>>', msg.type(), msg.text());
-      });
-
-      alreadyConsoleLogInitialized.add(page);
-    }
-
     await page.goto('http://localhost:8080/__tests__/assets/test.html', { waitUntil: 'load' });
 
     const webData = await page.evaluate(async ({ args, webFn, customChainId }) => {
@@ -87,15 +81,11 @@ const txAnalyzerMockedTestEnvironment = (
   page: Page,
   mockData: IMockData
 ): ITxInspectorTest['txAnalyzerMockedTest'] => {
+  page.on('console', (msg: ConsoleMessage) => {
+    console.log('>>', msg.type(), msg.text());
+  });
+
   const runner = async <R, Args extends any[]>(fn: TTxAnalyzerTestCallable<R, Args>, ...args: Args): Promise<R> => {
-    if (!alreadyConsoleLogInitialized.has(page)) {
-      page.on('console', (msg: ConsoleMessage) => {
-        console.log('>>', msg.type(), msg.text());
-      });
-
-      alreadyConsoleLogInitialized.add(page);
-    }
-
     await page.goto('http://localhost:8080/__tests__/assets/test.html', { waitUntil: 'load' });
 
     const webData = await page.evaluate(async ({ args, webFn, mockData }) => {
