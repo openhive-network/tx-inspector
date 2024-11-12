@@ -6,9 +6,11 @@ import type { IExpectedResult } from './jest-helper.js';
 export interface IMockData {
   validTxAuthority: boolean;
   packType: EPackType;
+  keyReferences: { keys: string[], accounts: string[] }[];
+  findAccounts: { paramsAccounts: string[], accounts: ApiAccount[] }[];
 }
 
-export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[] | string[]>;
+export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[]>;
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData;
@@ -23,15 +25,15 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   }
 
   public getKeyReferences (params: { keys: string[]; }): { accounts: string[][]; } {
-    const keysArrToString = params.keys.join('-');
+    const item = this.mockData.keyReferences.find(({ keys }) => keys.length === params.keys.length && keys.every((key, index) => key === params.keys[index]));
 
-    return { accounts: [this.mockData[`keyReferences-${keysArrToString}`]] };
+    return { accounts: [item ? item.accounts : null!] };
   }
 
   public findAccounts (params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
-    const accountsArrToString = params.accounts.join('-');
+    const item = this.mockData.findAccounts.find(({ paramsAccounts }) => paramsAccounts.length === params.accounts.length && paramsAccounts.every((account, index) => account === params.accounts[index]));
 
-    return { accounts: this.mockData[`findAccounts-${accountsArrToString}`] };
+    return { accounts: item ? item.accounts : [] };
   }
 
   public getPackType (): EPackType {
