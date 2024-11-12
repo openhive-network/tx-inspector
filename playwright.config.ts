@@ -83,6 +83,22 @@ export default defineConfig < ITxInspectorTest>({
       use: {
         fixtureLevelMockFile: './__tests__/assets/mock/too_less_weight_data.json'
       }
+    },
+    {
+      name: 'tx_inspector_hf26_serialization_legacy_signed',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-hf26-serialized-legacy-signed-mock.ts',
+      use: {
+        fixtureLevelMockFile: './__tests__/assets/mock/hf26_serialized_legacy_signed_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_legacy_serialization_hf26_signed',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-legacy-serialized-hf26-signed-mock.ts',
+      use: {
+        fixtureLevelMockFile: './__tests__/assets/mock/legacy_serialized_hf26_signed_data.json'
+      }
     }
   ],
   // Run your local dev server before starting the tests
