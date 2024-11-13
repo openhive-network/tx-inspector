@@ -1,5 +1,6 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, authority, createHiveChain, type ITransaction, type TTransactionRequiredAuthorities, type TWaxExtended } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExtendedApiData, type ITransactionAnalyzerApi } from '../types/wax';
+import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -105,6 +106,7 @@ export class TransactionAnalyzer {
     const isValid = await this.checkVerifyAuthority(packType);
     const tapos = this.getTapos();
     const expiration = this.getExpiration();
+    const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
 
     return {
       packType,
@@ -121,7 +123,9 @@ export class TransactionAnalyzer {
       tapos,
       expiration,
       transaction: this.transaction,
-      protoTransaction: tx.transaction
+      protoTransaction: tx.transaction,
+      authorityPath,
+      isSatisfied
     } as TProcessedTransaction;
   }
 
@@ -273,6 +277,34 @@ export class TransactionAnalyzer {
 
   private getExpiration (): string {
     return this.transaction.transaction.expiration;
+  }
+
+  private async getAuthorityPath (requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<{ authorityPath: IAuthorityPaths[], isSatisfied: boolean }> {
+    const authorityPath = await getAuthorityPath(this, requiredAuthorities, signatureKeys);
+
+    if (authorityPath) {
+      authorityPath.push(authorityPath.shift()!);
+
+      let totalWeight = 0;
+      let totalThreshold = 0;
+
+      let isSatisfied!: boolean;
+
+      for (let i = 0; i < authorityPath.length; ++i)
+        if (authorityPath[i].authWeight) {
+          totalWeight += authorityPath[i].authWeight!.auth;
+          totalThreshold += authorityPath[i].authWeight!.weight;
+        }
+
+      if (totalWeight >= totalThreshold)
+        isSatisfied = true;
+      else
+        isSatisfied = false;
+
+      return { authorityPath, isSatisfied };
+    }
+
+    return { authorityPath: [], isSatisfied: false };
   }
 
   // Method required for the authority path algorithm

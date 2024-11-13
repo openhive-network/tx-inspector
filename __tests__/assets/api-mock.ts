@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
-import type { EPackType, ITransactionAnalyzerApi } from '../../types/wax.js';
-import type { IExpectedResult } from './jest-helper.js';
+import type { EPackType, ITransactionAnalyzerApi, TProcessedTransaction } from '../../types/wax.js';
 
 export interface IMockData {
   validTxAuthority: boolean;
@@ -10,7 +9,7 @@ export interface IMockData {
   findAccounts: { paramsAccounts: string[], accounts: ApiAccount[] }[];
 }
 
-export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IExpectedResult | ApiAccount[]>;
+export type TMockExtendedData = IMockData & Record<string, ApiTransaction | TProcessedTransaction | ApiAccount[]>;
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData;

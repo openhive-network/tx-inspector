@@ -1419,63 +1419,56 @@
     ]
   },
   "singleSignatureExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
-      ],
-      "signatureKeys": [
-        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Posting",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "vote_operation",
-          "value": {
-            "voter": "tattooworld",
-            "author": "mamaemigrante",
-            "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
-            "weight": 10000
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "steemauto"
-        ]
-      ],
-      "isValid": true,
-      "packType": "hf26",
-      "id": "07e7d9ecaad2a11bc36db6d7046a55e231627574",
-      "sigDigest": "78fb17802bf8a01a5b95d3ce7eadc6cdf71bd98ace8c92b9c7cd00a3cf2f2ca9",
-      "expiration": "2024-10-01T20:10:59",
-      "tapos": {
-        "refBlockNum": 31682,
-        "refBlockPrefix": 1691585842
+    "signatures": [
+      "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+    ],
+    "signatureKeys": [
+      "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Posting",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "tattooworld",
+          "author": "mamaemigrante",
+          "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
+          "weight": 10000
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "steemauto"
+      ]
+    ],
+    "isValid": true,
+    "packType": "hf26",
+    "id": "07e7d9ecaad2a11bc36db6d7046a55e231627574",
+    "sigDigest": "78fb17802bf8a01a5b95d3ce7eadc6cdf71bd98ace8c92b9c7cd00a3cf2f2ca9",
+    "expiration": "2024-10-01T20:10:59",
+    "tapos": {
+      "refBlockNum": 31682,
+      "refBlockPrefix": 1691585842
     },
     "path": [
-      {
-        "account": [
-          "tattooworld"
-        ]
-      },
       {
         "account": "steemauto",
         "authWeight": {
@@ -1489,8 +1482,14 @@
           "weight": 1,
           "auth": 1
         }
+      },
+      {
+        "account": [
+          "tattooworld"
+        ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "singleNestLevelTransaction": {
     "ref_block_num": 5283,
@@ -1513,70 +1512,69 @@
     ]
   },
   "singleNestLevelExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7"
-      ],
-      "signatureKeys": [
-        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Posting",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "vote_operation",
-          "value": {
-            "voter": "hivetoolsio",
-            "author": "ervin-lemark",
-            "permlink": "12821436584-6030263055",
-            "weight": 4900
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "steemauto"
-        ]
-      ],
-      "isValid": true,
-      "packType": "hf26",
-      "id": "63da2535c4d7239e6cb662e7c384d81424c6ac39",
-      "sigDigest": "0a699bd3befdfa80132eef8bf0782e3c29471edd5c0785c86b612530590ab4f3",
-      "expiration": "2024-11-06T09:53:50",
-      "tapos": {
-        "refBlockNum": 5283,
-        "refBlockPrefix": 1802775871
+    "signatures": [
+      "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7"
+    ],
+    "signatureKeys": [
+      "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Posting",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "hivetoolsio",
+          "author": "ervin-lemark",
+          "permlink": "12821436584-6030263055",
+          "weight": 4900
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "steemauto"
+      ]
+    ],
+    "isValid": true,
+    "packType": "hf26",
+    "id": "63da2535c4d7239e6cb662e7c384d81424c6ac39",
+    "sigDigest": "0a699bd3befdfa80132eef8bf0782e3c29471edd5c0785c86b612530590ab4f3",
+    "expiration": "2024-11-06T09:53:50",
+    "tapos": {
+      "refBlockNum": 5283,
+      "refBlockPrefix": 1802775871
     },
     "path": [
-      {
-        "account": [
-          "hivetoolsio"
-        ]
-      },
       {
         "account": "steemauto",
         "authWeight": {
           "weight": 1,
           "auth": 1
         }
+      },
+      {
+        "account": [
+          "hivetoolsio"
+        ]
       }
-    ]
+    ],
+    "isSatisfied": true
   }
 }

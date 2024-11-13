@@ -10,15 +10,9 @@ import './globals';
 
 import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
 
-import type { IAuthorityPaths } from '../../utils/getAuthorityPath';
 import type { TProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
 import type { IMockData, TMockExtendedData } from './api-mock';
-
-export interface IExpectedResult {
-  inspectorResults: TProcessedTransaction;
-  path: IAuthorityPaths[];
-}
 
 type TTxInspectorTestCallable<R, Args extends any[]> = (globals: ITxInspectorGlobals, ...args: Args) => (R | Promise<R>);
 type TTxAnalyzerTestCallable<R, Args extends any[]> = (globals: ITxAnalyzerGlobals, ...args: Args) => (R | Promise<R>);
@@ -54,7 +48,7 @@ export interface ITxInspectorTest {
    */
   txAnalyzerMockedTest: (<R, Args extends any[]>(fn: TTxAnalyzerTestCallable<R, Args>, ...args: Args) => Promise<R>);
 
-  analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: IExpectedResult) => Promise<boolean>;
+  analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: TProcessedTransaction) => Promise<boolean>;
 }
 
 const txInspectorTest = (page: Page): ITxInspectorTest['txInspectorTest'] => {
@@ -102,31 +96,29 @@ const txAnalyzerMockedTestEnvironment = (
 const analyzeAndCompareTransaction = async (
   txAnalyzerMockedTest: ITxInspectorTest['txAnalyzerMockedTest'],
   inputTransaction: ApiTransaction,
-  expectedResult: IExpectedResult
+  expectedResult: TProcessedTransaction
 ): Promise<boolean> => {
-  const retVal = await txAnalyzerMockedTest(async ({ analyzer, authorityPath }, inputTx) => {
+  const retVal = await txAnalyzerMockedTest(async ({ analyzer }, inputTx) => {
     const processingResults = await analyzer.analyzeTransaction(inputTx);
     return {
-      inspectorResults: {
-        signatures: processingResults.signatures,
-        signatureKeys: processingResults.signatureKeys,
-        requiredAuthorities: processingResults.requiredAuthorities,
-        requiredAuthoritiesForOperations: processingResults.requiredAuthoritiesForOperations,
-        authorityType: processingResults.authorityType,
-        operations: processingResults.operations,
-        signeesByKeys: processingResults.signeesByKeys,
-        isValid: processingResults.isValid,
-        packType: processingResults.packType,
-        id: processingResults.transactionId,
-        sigDigest: processingResults.sigDigest,
-        expiration: processingResults.expiration,
-        tapos: processingResults.tapos
-      },
-      path: await authorityPath(inputTx)
+      signatures: processingResults.signatures,
+      signatureKeys: processingResults.signatureKeys,
+      requiredAuthorities: processingResults.requiredAuthorities,
+      requiredAuthoritiesForOperations: processingResults.requiredAuthoritiesForOperations,
+      authorityType: processingResults.authorityType,
+      operations: processingResults.operations,
+      signeesByKeys: processingResults.signeesByKeys,
+      isValid: processingResults.isValid,
+      packType: processingResults.packType,
+      id: processingResults.transactionId,
+      sigDigest: processingResults.sigDigest,
+      expiration: processingResults.expiration,
+      tapos: processingResults.tapos,
+      path: processingResults.authorityPath,
+      isSatisfied: processingResults.isSatisfied
     };
   }, inputTransaction);
 
-  console.log(retVal.path);
   console.log('retVal', JSON.stringify(retVal, null, 2));
   return JSON.stringify(retVal) === JSON.stringify(expectedResult);
 };

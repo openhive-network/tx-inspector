@@ -63,7 +63,7 @@ import OperationsTable from '~/components/ui/OperationsTable.vue';
 const wax = useWaxStore();
 const store = storeToRefs(wax);
 
-const { $chain, $txInspector, $formatter } = useNuxtApp();
+const { $txInspector, $formatter } = useNuxtApp();
 
 onMounted(async () => {
   let start!: number;
@@ -77,15 +77,12 @@ onMounted(async () => {
   }
   try {
     await wax.handleTransactionFromHash($txInspector, $formatter, qs.get('transaction')!);
-    await wax.handleAuthorityPath($chain);
   } catch (_error) {
     try {
       await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
-      await wax.handleAuthorityPath($chain);
     } catch (_error) {
       try {
         await wax.handleTransactionFromBinary($txInspector, $formatter, qs.get('transaction')!);
-        await wax.handleAuthorityPath($chain);
       } catch (_error) {}
     }
   } finally {

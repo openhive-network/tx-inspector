@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ApiAccount, ApiOperation, ApiTransaction, authority, ITransaction, TTransactionRequiredAuthorities, TWaxApiRequest } from '@hiveio/wax';
+import type { IAuthorityPaths } from '../utils/getAuthorityPath';
 
 export enum EPackType {
   LEGACY = 'legacy',
@@ -63,6 +64,8 @@ type TProcessedTransactionBase = {
   tapos: { refBlockNum: number, refBlockPrefix: number };
   expiration: string;
   transaction: ITransaction;
+  authorityPath: IAuthorityPaths[] | undefined;
+  isSatisfied: boolean;
 }
 
 type TProcessedTransactionPackTypeKnown = TProcessedTransactionBase & {

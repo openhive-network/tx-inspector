@@ -61,8 +61,8 @@
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
-            <v-icon :color="store.isSatisfied.value ? 'green' : 'red'">
-              {{ store.isSatisfied.value ? 'mdi-check' : 'mdi-close' }}
+            <v-icon :color="store.processedTransaction.value.isSatisfied ? 'green' : 'red'">
+              {{ store.processedTransaction.value.isSatisfied ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
           </s-table-cell>
         </s-table-row>

@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-var */
-import { ApiTransaction, createHiveChain } from '@hiveio/wax';
+import { createHiveChain } from '@hiveio/wax';
 import { TransactionAnalyzerApiProvider, TransactionAnalyzer, TxInspectorEngine } from '../../utils/txInspector.js';
 import type { TChainExtendedApiData, ITransactionAnalyzerApi } from '../../types/wax.js';
-import type { IAuthorityPaths } from '../../utils/getAuthorityPath.js';
-import getAuthorityPath from '../../utils/getAuthorityPath.js';
 import { TransactionAnalyzerApiMock, type IMockData } from './api-mock.js';
 
 export interface ITxInspectorGlobals {
@@ -14,7 +12,6 @@ export interface ITxInspectorGlobals {
 export interface ITxAnalyzerGlobals {
   analyzer: TransactionAnalyzer;
   mockedApiProvider: TransactionAnalyzerApiMock;
-  authorityPath: (tx: ApiTransaction) => Promise<IAuthorityPaths[] | undefined>;
 }
 
 export interface ITxInspectorMockGlobals {
@@ -54,16 +51,9 @@ globalThis.createTxAnalyzerTestFor = async function createTxAnalyzerTestFor (moc
 
   const analyzer = new TransactionAnalyzer(extendedChain, apiProvider);
 
-  const authorityPath = async (tx: ApiTransaction) => {
-    const path = await getAuthorityPath(extendedChain, tx, apiProvider);
-
-    return path;
-  };
-
   return {
     analyzer,
-    mockedApiProvider,
-    authorityPath
+    mockedApiProvider
   };
 };
 

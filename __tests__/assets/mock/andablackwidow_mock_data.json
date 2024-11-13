@@ -202,60 +202,58 @@
     ]
   },
   "singleOperationExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
-      ],
-      "signatureKeys": [
-        "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Active",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "transfer_operation",
-          "value": {
-            "from": "andablackwidow",
-            "to": "abw.pay",
-            "amount": {
-              "amount": "20000",
-              "precision": 3,
-              "nai": "@@000000013"
-            },
-            "memo": ""
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "andablackwidow"
-        ]
-      ],
-      "isValid": true,
-      "packType": "legacy",
-      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
-      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
-      "expiration": "2024-09-19T23:41:03",
-      "tapos": {
-        "refBlockNum": 18666,
-        "refBlockPrefix": 2298275031
+    "signatures": [
+      "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
+    ],
+    "signatureKeys": [
+      "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Active",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "from": "andablackwidow",
+          "to": "abw.pay",
+          "amount": {
+            "amount": "20000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "memo": ""
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "andablackwidow"
+      ]
+    ],
+    "isValid": true,
+    "packType": "legacy",
+    "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+    "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+    "expiration": "2024-09-19T23:41:03",
+    "tapos": {
+      "refBlockNum": 18666,
+      "refBlockPrefix": 2298275031
     },
     "path": [
       {
@@ -263,7 +261,8 @@
           "andablackwidow"
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "multipleOperationsSingleSignatureTransaction": {
     "ref_block_num": 18925,
@@ -305,82 +304,80 @@
     ]
   },
   "multipleOperationsSingleSignatureExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
-      ],
-      "signatureKeys": [
-        "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
-      ],
-      "requiredAuthorities": {
+    "signatures": [
+      "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
+    ],
+    "signatureKeys": [
+      "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": [
+      {
         "posting": {},
         "active": {},
         "owner": {},
         "other": []
       },
-      "requiredAuthoritiesForOperations": [
-        {
-          "posting": {},
-          "active": {},
-          "owner": {},
-          "other": []
-        },
-        {
-          "posting": {},
-          "active": {},
-          "owner": {},
-          "other": []
-        }
-      ],
-      "authorityType": [
-        {
-          "level": "Posting",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "comment_operation",
-          "value": {
-            "parent_author": "blocktrades",
-            "parent_permlink": "shayan",
-            "author": "andablackwidow",
-            "permlink": "she0jc",
-            "title": "",
-            "body": "It should be easy to test - just cut out two lines with `session` in `database::apply_block_extended` (I'm actually assuming that out of order blocks won't reach that routine during sync, but if they do, it would be a source of slowdown).\n\nI'd be surprised if undo sessions were the problem. They are relatively slow and [worthy of optimization](https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293), but in relation to simple transactions, mostly custom_jsons, so their performance is significant when there is many of them, like during block production, reapplication of pending or in extreme stress tests with `colony`+`queen`. During sync we only have one session per block.",
-            "json_metadata": "{\"links\":[\"https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293\"],\"app\":\"hiveblog/0.1\"}"
-          }
-        },
-        {
-          "type": "comment_options_operation",
-          "value": {
-            "author": "andablackwidow",
-            "permlink": "she0jc",
-            "max_accepted_payout": {
-              "amount": "1000000000",
-              "precision": 3,
-              "nai": "@@000000013"
-            },
-            "percent_hbd": 10000,
-            "allow_votes": true,
-            "allow_curation_rewards": true
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "andablackwidow"
-        ]
-      ],
-      "isValid": true,
-      "packType": "legacy",
-      "id": "bee1bb2dbea1bf30d8f72b8d4a251f464f3374ef",
-      "sigDigest": "2b951723875e3000b69881983076286971f3a30b000b427d6429a5918972c05a",
-      "expiration": "2024-07-29T13:47:57",
-      "tapos": {
-        "refBlockNum": 18925,
-        "refBlockPrefix": 2219782745
+      {
+        "posting": {},
+        "active": {},
+        "owner": {},
+        "other": []
       }
+    ],
+    "authorityType": [
+      {
+        "level": "Posting",
+        "accounts": {}
+      }
+    ],
+    "operations": [
+      {
+        "type": "comment_operation",
+        "value": {
+          "parent_author": "blocktrades",
+          "parent_permlink": "shayan",
+          "author": "andablackwidow",
+          "permlink": "she0jc",
+          "title": "",
+          "body": "It should be easy to test - just cut out two lines with `session` in `database::apply_block_extended` (I'm actually assuming that out of order blocks won't reach that routine during sync, but if they do, it would be a source of slowdown).\n\nI'd be surprised if undo sessions were the problem. They are relatively slow and [worthy of optimization](https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293), but in relation to simple transactions, mostly custom_jsons, so their performance is significant when there is many of them, like during block production, reapplication of pending or in extreme stress tests with `colony`+`queen`. During sync we only have one session per block.",
+          "json_metadata": "{\"links\":[\"https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293\"],\"app\":\"hiveblog/0.1\"}"
+        }
+      },
+      {
+        "type": "comment_options_operation",
+        "value": {
+          "author": "andablackwidow",
+          "permlink": "she0jc",
+          "max_accepted_payout": {
+            "amount": "1000000000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "percent_hbd": 10000,
+          "allow_votes": true,
+          "allow_curation_rewards": true
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "andablackwidow"
+      ]
+    ],
+    "isValid": true,
+    "packType": "legacy",
+    "id": "bee1bb2dbea1bf30d8f72b8d4a251f464f3374ef",
+    "sigDigest": "2b951723875e3000b69881983076286971f3a30b000b427d6429a5918972c05a",
+    "expiration": "2024-07-29T13:47:57",
+    "tapos": {
+      "refBlockNum": 18925,
+      "refBlockPrefix": 2219782745
     },
     "path": [
       {
@@ -388,7 +385,8 @@
           "andablackwidow"
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "singleOperationNoAccountAttachedTransaction": {
     "ref_block_num": 18666,
@@ -415,58 +413,56 @@
     ]
   },
   "singleOperationNoAccountAttachedExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c59eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
-      ],
-      "signatureKeys": [
-        "STM5hG1x6F3ykEVPvNMFGk6FShbs1Z673hUtEC3nrTZacRLkXDijq"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Active",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "transfer_operation",
-          "value": {
-            "from": "andablackwidow",
-            "to": "abw.pay",
-            "amount": {
-              "amount": "20000",
-              "precision": 3,
-              "nai": "@@000000013"
-            },
-            "memo": ""
-          }
-        }
-      ],
-      "signeesByKeys": [
-        null
-      ],
-      "isValid": true,
-      "packType": "legacy",
-      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
-      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
-      "expiration": "2024-09-19T23:41:03",
-      "tapos": {
-        "refBlockNum": 18666,
-        "refBlockPrefix": 2298275031
+    "signatures": [
+      "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c59eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
+    ],
+    "signatureKeys": [
+      "STM5hG1x6F3ykEVPvNMFGk6FShbs1Z673hUtEC3nrTZacRLkXDijq"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Active",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "from": "andablackwidow",
+          "to": "abw.pay",
+          "amount": {
+            "amount": "20000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "memo": ""
+        }
+      }
+    ],
+    "signeesByKeys": [
+      null
+    ],
+    "isValid": true,
+    "packType": "legacy",
+    "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+    "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+    "expiration": "2024-09-19T23:41:03",
+    "tapos": {
+      "refBlockNum": 18666,
+      "refBlockPrefix": 2298275031
     },
     "path": [
       {
@@ -474,7 +470,8 @@
           ""
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "noOperationsButSignatureTransaction": {
     "ref_block_num": 18666,
@@ -519,58 +516,56 @@
     ]
   },
   "singleOperationInvalidPublicKeyForRequiredAuthorityExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
-      ],
-      "signatureKeys": [
-        "STM6iykkyRro963LKoh1VJVZDLZT1BJovZkyQakGTNL7HFMJhcXEe"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Active",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "transfer_operation",
-          "value": {
-            "from": "andablackwidow",
-            "to": "abw.pay",
-            "amount": {
-              "amount": "20000",
-              "precision": 3,
-              "nai": "@@000000013"
-            },
-            "memo": ""
-          }
-        }
-      ],
-      "signeesByKeys": [
-        null
-      ],
-      "isValid": true,
-      "packType": "legacy",
-      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
-      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
-      "expiration": "2024-09-19T23:41:03",
-      "tapos": {
-        "refBlockNum": 18666,
-        "refBlockPrefix": 2298275031
+    "signatures": [
+      "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+    ],
+    "signatureKeys": [
+      "STM6iykkyRro963LKoh1VJVZDLZT1BJovZkyQakGTNL7HFMJhcXEe"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Active",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "from": "andablackwidow",
+          "to": "abw.pay",
+          "amount": {
+            "amount": "20000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "memo": ""
+        }
+      }
+    ],
+    "signeesByKeys": [
+      null
+    ],
+    "isValid": true,
+    "packType": "legacy",
+    "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+    "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+    "expiration": "2024-09-19T23:41:03",
+    "tapos": {
+      "refBlockNum": 18666,
+      "refBlockPrefix": 2298275031
     },
     "path": [
       {
@@ -578,7 +573,8 @@
           ""
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "wrongPublicKeyAuthorityLevelTransaction": {
     "ref_block_num": 18666,
@@ -605,58 +601,56 @@
     ]
   },
   "wrongPublicKeyAuthorityLevelExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
-      ],
-      "signatureKeys": [
-        "STM5KpEytPQUbqdrgSsjvZ6hxdJR6SEMXba9YLYPfU4KbEr9GtKka"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Active",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "transfer_operation",
-          "value": {
-            "from": "andablackwidow",
-            "to": "abw.pay",
-            "amount": {
-              "amount": "20000",
-              "precision": 3,
-              "nai": "@@000000013"
-            },
-            "memo": ""
-          }
-        }
-      ],
-      "signeesByKeys": [
-        null
-      ],
-      "isValid": true,
-      "packType": "legacy",
-      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
-      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
-      "expiration": "2024-09-19T23:41:03",
-      "tapos": {
-        "refBlockNum": 18666,
-        "refBlockPrefix": 2298275031
+    "signatures": [
+      "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200"
+    ],
+    "signatureKeys": [
+      "STM5KpEytPQUbqdrgSsjvZ6hxdJR6SEMXba9YLYPfU4KbEr9GtKka"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Active",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "from": "andablackwidow",
+          "to": "abw.pay",
+          "amount": {
+            "amount": "20000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "memo": ""
+        }
+      }
+    ],
+    "signeesByKeys": [
+      null
+    ],
+    "isValid": true,
+    "packType": "legacy",
+    "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+    "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+    "expiration": "2024-09-19T23:41:03",
+    "tapos": {
+      "refBlockNum": 18666,
+      "refBlockPrefix": 2298275031
     },
     "path": [
       {
@@ -664,6 +658,7 @@
           ""
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   }
 }

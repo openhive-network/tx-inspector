@@ -65,7 +65,7 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="store.authorityPath.value.length === 1 && store.authorityPath.value[0].account[0] === ''">
+            <s-tooltip-provider v-if="store.processedTransaction.value.authorityPath.length === 1 && store.processedTransaction.value.authorityPath![0].account[0] === ''">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -103,12 +103,12 @@
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
-            <span v-for="(item, key) in store.authorityPath.value" v-else :key="key">
+            <span v-for="(item, key) in store.processedTransaction.value.authorityPath" v-else :key="key">
               <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
                 {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
               </a>
               {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
-              <v-icon v-if="store.authorityPath.value[key + 1]">mdi-chevron-right</v-icon>
+              <v-icon v-if="store.processedTransaction.value.authorityPath![key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
         </s-table-row>

@@ -62,7 +62,7 @@ import Button from '~/components/ui/Button.vue';
 
 const store = useWaxStore();
 
-const { $chain, $txInspector, $formatter } = useNuxtApp();
+const { $txInspector, $formatter } = useNuxtApp();
 
 const radioState = ref('json');
 
@@ -92,7 +92,7 @@ const qs = store.$state.qs;
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
-  store.$state.authorityPath.length = 0;
+  store.$state.processedTransaction.authorityPath!.length = 0;
   store.$state.processingTime = 0;
 
   let start!: number;
@@ -120,8 +120,6 @@ const submitTransaction = async () => {
       }
     } else
       throw new Error('Provide transaction in choosen format');
-
-    await store.handleAuthorityPath($chain);
 
     window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
   } catch (error) {

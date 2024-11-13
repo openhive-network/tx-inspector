@@ -1451,56 +1451,54 @@
     ]
   },
   "singleSignatureExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7"
-      ],
-      "signatureKeys": [
-        "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Posting",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "vote_operation",
-          "value": {
-            "voter": "sketch.and.jam",
-            "author": "yisusth",
-            "permlink": "all-ive-got-to-do-the-beatles-cover-by-yisusth",
-            "weight": 3300
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "sketch.and.jam"
-        ]
-      ],
-      "isValid": true,
-      "packType": "hf26",
-      "id": "579df40b4b7c4ae3afa9192f28f9556af0001a0a",
-      "sigDigest": "58d071173805aa16436e1f9b90d8b67a85250d50779240cbebc6997cdc4d6c5b",
-      "expiration": "2024-11-05T13:49:33",
-      "tapos": {
-        "refBlockNum": 46620,
-        "refBlockPrefix": 342049658
+    "signatures": [
+      "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7"
+    ],
+    "signatureKeys": [
+      "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Posting",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "sketch.and.jam",
+          "author": "yisusth",
+          "permlink": "all-ive-got-to-do-the-beatles-cover-by-yisusth",
+          "weight": 3300
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "sketch.and.jam"
+      ]
+    ],
+    "isValid": true,
+    "packType": "hf26",
+    "id": "579df40b4b7c4ae3afa9192f28f9556af0001a0a",
+    "sigDigest": "58d071173805aa16436e1f9b90d8b67a85250d50779240cbebc6997cdc4d6c5b",
+    "expiration": "2024-11-05T13:49:33",
+    "tapos": {
+      "refBlockNum": 46620,
+      "refBlockPrefix": 342049658
     },
     "path": [
       {
@@ -1508,7 +1506,8 @@
           "sketch.and.jam"
         ]
       }
-    ]
+    ],
+    "isSatisfied": true
   },
   "singleDelegatedSignatureTransaction": {
     "ref_block_num": 31682,
@@ -1531,63 +1530,56 @@
     ]
   },
   "singleDelegatedSignatureExpectedResult": {
-    "inspectorResults": {
-      "signatures": [
-        "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
-      ],
-      "signatureKeys": [
-        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
-      ],
-      "requiredAuthorities": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "requiredAuthoritiesForOperations": {
-        "posting": {},
-        "active": {},
-        "owner": {},
-        "other": []
-      },
-      "authorityType": [
-        {
-          "level": "Posting",
-          "accounts": {}
-        }
-      ],
-      "operations": [
-        {
-          "type": "vote_operation",
-          "value": {
-            "voter": "tattooworld",
-            "author": "mamaemigrante",
-            "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
-            "weight": 10000
-          }
-        }
-      ],
-      "signeesByKeys": [
-        [
-          "steemauto"
-        ]
-      ],
-      "isValid": true,
-      "packType": "hf26",
-      "id": "07e7d9ecaad2a11bc36db6d7046a55e231627574",
-      "sigDigest": "78fb17802bf8a01a5b95d3ce7eadc6cdf71bd98ace8c92b9c7cd00a3cf2f2ca9",
-      "expiration": "2024-10-01T20:10:59",
-      "tapos": {
-        "refBlockNum": 31682,
-        "refBlockPrefix": 1691585842
+    "signatures": [
+      "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e"
+    ],
+    "signatureKeys": [
+      "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+    ],
+    "requiredAuthorities": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "requiredAuthoritiesForOperations": {
+      "posting": {},
+      "active": {},
+      "owner": {},
+      "other": []
+    },
+    "authorityType": [
+      {
+        "level": "Posting",
+        "accounts": {}
       }
+    ],
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "tattooworld",
+          "author": "mamaemigrante",
+          "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
+          "weight": 10000
+        }
+      }
+    ],
+    "signeesByKeys": [
+      [
+        "steemauto"
+      ]
+    ],
+    "isValid": true,
+    "packType": "hf26",
+    "id": "07e7d9ecaad2a11bc36db6d7046a55e231627574",
+    "sigDigest": "78fb17802bf8a01a5b95d3ce7eadc6cdf71bd98ace8c92b9c7cd00a3cf2f2ca9",
+    "expiration": "2024-10-01T20:10:59",
+    "tapos": {
+      "refBlockNum": 31682,
+      "refBlockPrefix": 1691585842
     },
     "path": [
-      {
-        "account": [
-          "tattooworld"
-        ]
-      },
       {
         "account": "steemauto",
         "authWeight": {
@@ -1601,7 +1593,13 @@
           "weight": 1,
           "auth": 1
         }
+      },
+      {
+        "account": [
+          "tattooworld"
+        ]
       }
-    ]
+    ],
+    "isSatisfied": false
   }
 }
