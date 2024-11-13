@@ -14,6 +14,11 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
+        <s-table-row v-if="store.processedTransaction.value.expiration !== '' && store.processedTransaction.value.signatures.length === 0">
+          <s-table-cell class="text-red text-center font-semibold" colspan="4">
+            No signatures found
+          </s-table-cell>
+        </s-table-row>
         <s-table-row v-for="(signature, index) in store.processedTransaction.value.signatures" :key="index">
           <s-table-cell>
             <s-tooltip-provider>
