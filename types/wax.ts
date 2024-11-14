@@ -12,6 +12,7 @@ export enum EAuthorityLevel {
   POSTING = 'Posting',
   ACTIVE = 'Active',
   OWNER = 'Owner',
+  OTHER = 'Other'
 }
 
 export interface IGetTransactionRequest {
@@ -66,6 +67,7 @@ type TProcessedTransactionBase = {
   transaction: ITransaction;
   authorityPath: IAuthorityPaths[] | undefined;
   isSatisfied: boolean;
+  isSatisfiedForOperation: boolean[];
 }
 
 type TProcessedTransactionPackTypeKnown = TProcessedTransactionBase & {

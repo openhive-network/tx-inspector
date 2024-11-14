@@ -56,8 +56,8 @@
               </span>
             </s-table-cell>
             <s-table-cell>
-              <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
-                {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
+              <v-icon :color="store.processedTransaction.value.isSatisfiedForOperation[index] ? 'green' : 'red'">
+                {{ store.processedTransaction.value.isSatisfiedForOperation[index] ? 'mdi-check' : 'mdi-close' }}
               </v-icon>
             </s-table-cell>
             <s-table-cell>
@@ -81,8 +81,8 @@
               </span>
             </s-table-cell>
             <s-table-cell>
-              <v-icon :color="checkSatisfied(index) ? 'green' : 'red'">
-                {{ checkSatisfied(index) ? 'mdi-check' : 'mdi-close' }}
+              <v-icon :color="store.processedTransaction.value.isSatisfiedForOperation[index] ? 'green' : 'red'">
+                {{ store.processedTransaction.value.isSatisfiedForOperation[index] ? 'mdi-check' : 'mdi-close' }}
               </v-icon>
             </s-table-cell>
             <s-table-cell>
@@ -101,8 +101,6 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable array-callback-return */
-
 import type { authority, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import Subtitle from './Subtitle.vue';
@@ -112,23 +110,6 @@ const wax = useWaxStore();
 const store = storeToRefs(wax);
 
 const radioState = ref('formatted');
-
-const checkSatisfied = (index: number): boolean => {
-  const requiredAuthority = getRequiredAuthorityTypeForOperation(store.processedTransaction.value.operations[index].type);
-  const authForCurrentOperation = getAuthorityForOperation(index);
-
-  if (authForCurrentOperation === undefined) {
-    toast.error('Error', {
-      description: 'Cannot find operations required authorities'
-    });
-    return false;
-  }
-
-  if (requiredAuthority.includes(authForCurrentOperation.type as EAuthorityLevel))
-    return true;
-
-  return false;
-};
 
 const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | string, auths: Array<string | authority> } | undefined => {
   let auths: TTransactionRequiredAuthorities;
@@ -156,47 +137,6 @@ const getAuthorityForOperation = (index: number): { type: EAuthorityLevel | stri
 
   if (auths.other.length !== 0)
     return { type: 'other', auths: auths.other };
-};
-
-const getRequiredAuthorityTypeForOperation = (operationType: string): EAuthorityLevel[] => {
-  const authorityTypes: EAuthorityLevel[] = [];
-
-  requiredPostingAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING);
-  });
-
-  requiredActiveAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.ACTIVE);
-  });
-
-  requiredOwnerAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.OWNER);
-  });
-
-  requiredPostingAndActiveAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE);
-  });
-
-  requiredPostingOrActiveAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE);
-  });
-
-  requiredActiveOrOwnerAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.ACTIVE, EAuthorityLevel.OWNER);
-  });
-
-  requiredEveryAuthority.some((operation) => {
-    if (operation === operationType)
-      authorityTypes.push(EAuthorityLevel.POSTING, EAuthorityLevel.ACTIVE, EAuthorityLevel.OWNER);
-  });
-
-  return authorityTypes;
 };
 
 const getColorForType = (type?: string): string => {

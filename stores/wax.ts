@@ -33,7 +33,8 @@ export const useWaxStore = defineStore('wax', {
       tapos: { refBlockNum: 0, refBlockPrefix: 0 },
       expiration: '',
       authorityPath: [] as IAuthorityPaths[],
-      isSatisfied: false
+      isSatisfied: false,
+      isSatisfiedForOperation: [] as boolean[]
     } as unknown as TProcessedTransaction
   }),
 
