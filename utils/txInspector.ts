@@ -21,8 +21,6 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
-    console.log('verify authority', response);
-
     return response;
   }
 
@@ -36,17 +34,11 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
-    console.log('key references params', params.keys);
-
-    console.log('key references', response);
-
     return response;
   }
 
   public async findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> {
     const key = `findAccounts-${params.accounts.join('-')}`;
-
-    console.log('find accounts params', params.accounts);
 
     if (this.cache.has(key))
       return this.cache.get(key);
@@ -54,8 +46,6 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
     const response = await this.chain.api.database_api.find_accounts(params);
 
     this.cache.set(key, response);
-
-    console.log('find accounts', JSON.stringify(response, null, 2));
 
     return response;
   }
