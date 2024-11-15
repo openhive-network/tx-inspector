@@ -3,11 +3,11 @@
   "keyReferences": [
     {
       "keys": ["STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"],
-      "accounts": ["sketch.and.jam"]
+      "accounts": [["sketch.and.jam"]]
     },
     {
       "keys": ["STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"],
-      "accounts": ["steemauto"]
+      "accounts": [["steemauto"]]
     }
   ],
   "findAccounts": [

@@ -3,11 +3,11 @@
   "keyReferences": [
     {
       "keys": ["STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"],
-      "accounts": ["andablackwidow"]
+      "accounts": [["andablackwidow"]]
     },
     {
       "keys": ["STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"],
-      "accounts": ["andablackwidow"]
+      "accounts": [["andablackwidow"]]
     }
   ],
   "findAccounts": [

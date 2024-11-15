@@ -229,9 +229,7 @@
         }
       }
     ],
-    "signeesByKeys": [
-      null
-    ],
+    "signeesByKeys": null,
     "isValid": true,
     "packType": "legacy",
     "id": "7b84c7620c95eaf341821d4bfb126a219b0d0150",
@@ -248,6 +246,6 @@
         ]
       }
     ],
-    "isSatisfied": true
+    "isSatisfied": false
   }
 }

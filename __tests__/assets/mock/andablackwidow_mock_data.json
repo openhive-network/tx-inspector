@@ -3,11 +3,11 @@
   "keyReferences": [
     {
       "keys": ["STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"],
-      "accounts": ["andablackwidow"]
+      "accounts": [["andablackwidow"]]
     },
     {
       "keys": ["STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"],
-      "accounts": ["andablackwidow"]
+      "accounts": [["andablackwidow"]]
     }
   ],
   "findAccounts": [
@@ -452,9 +452,7 @@
         }
       }
     ],
-    "signeesByKeys": [
-      null
-    ],
+    "signeesByKeys": null,
     "isValid": true,
     "packType": "legacy",
     "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
@@ -471,7 +469,7 @@
         ]
       }
     ],
-    "isSatisfied": true
+    "isSatisfied": false
   },
   "noOperationsButSignatureTransaction": {
     "ref_block_num": 18666,
@@ -555,9 +553,7 @@
         }
       }
     ],
-    "signeesByKeys": [
-      null
-    ],
+    "signeesByKeys": null,
     "isValid": true,
     "packType": "legacy",
     "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
@@ -574,7 +570,7 @@
         ]
       }
     ],
-    "isSatisfied": true
+    "isSatisfied": false
   },
   "wrongPublicKeyAuthorityLevelTransaction": {
     "ref_block_num": 18666,
@@ -640,9 +636,7 @@
         }
       }
     ],
-    "signeesByKeys": [
-      null
-    ],
+    "signeesByKeys": null,
     "isValid": true,
     "packType": "legacy",
     "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
@@ -659,6 +653,6 @@
         ]
       }
     ],
-    "isSatisfied": true
+    "isSatisfied": false
   }
 }

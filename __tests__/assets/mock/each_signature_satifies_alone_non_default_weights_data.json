@@ -1025,21 +1025,19 @@
     ],
     "signeesByKeys": [
       [
-        [
-          "esteemapp"
-        ],
-        [
-          "ecency.stats"
-        ],
-        [
-          "esteem.app"
-        ],
-        [
-          "good-karma"
-        ],
-        [
-          "ecency"
-        ]
+        "esteemapp"
+      ],
+      [
+        "ecency.stats"
+      ],
+      [
+        "esteem.app"
+      ],
+      [
+        "good-karma"
+      ],
+      [
+        "ecency"
       ]
     ],
     "isValid": true,

@@ -237,9 +237,7 @@
         }
       }
     ],
-    "signeesByKeys": [
-      null
-    ],
+    "signeesByKeys": null,
     "isValid": true,
     "packType": "hf26",
     "id": "b1aed909c1e2d02ac754914f71f662b1182e9910",
@@ -256,6 +254,6 @@
         ]
       }
     ],
-    "isSatisfied": true
+    "isSatisfied": false
   }
 }

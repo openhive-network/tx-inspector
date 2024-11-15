@@ -3,7 +3,7 @@
   "keyReferences": [
     {
       "keys": ["STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"],
-      "accounts": ["steemauto"]
+      "accounts": [["steemauto"]]
     }
   ],
   "findAccounts": [

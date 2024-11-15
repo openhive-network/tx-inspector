@@ -26,7 +26,7 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   public getKeyReferences (params: { keys: string[]; }): { accounts: string[][]; } {
     const item = this.mockData.keyReferences.find(({ keys }) => keys.length === params.keys.length && keys.every((key, index) => key === params.keys[index]));
 
-    return { accounts: [item ? item.accounts : null!] };
+    return { accounts: (item ? item.accounts : null!) as unknown as string[][] };
   }
 
   public findAccounts (params: { accounts: string[]; }): { accounts: ApiAccount[]; } {
