@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { type ApiTransaction, type IBinaryViewOutputData, type IWaxExtendableFormatter, type THexString, type TWaxExtended } from '@hiveio/wax';
-import { type TxInspectorEngine, getAuthorityPath } from '#imports';
-import { EPackType, type TChainExtendedApiData, type TProcessedTransaction } from '~/types/wax';
+import { type ApiTransaction, type IBinaryViewOutputData, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
+import { type TxInspectorEngine } from '#imports';
+import { EPackType, type TProcessedTransaction } from '~/types/wax';
 import type { IAuthorityPaths } from '~/utils/getAuthorityPath';
 
 export const useWaxStore = defineStore('wax', {
@@ -31,7 +31,10 @@ export const useWaxStore = defineStore('wax', {
       signeesByKeys: [],
       isValid: false,
       tapos: { refBlockNum: 0, refBlockPrefix: 0 },
-      expiration: ''
+      expiration: '',
+      authorityPath: [] as IAuthorityPaths[],
+      isSatisfied: false,
+      isSatisfiedForOperation: [] as boolean[]
     } as unknown as TProcessedTransaction
   }),
 
@@ -81,29 +84,6 @@ export const useWaxStore = defineStore('wax', {
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
       this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
       (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
-    },
-
-    async handleAuthorityPath (chain: TWaxExtended<TChainExtendedApiData>) {
-      const authorityPath = await getAuthorityPath(chain, this.$state.tx as unknown as ApiTransaction, new TransactionAnalyzerApiProvider(chain));
-
-      if (authorityPath) {
-        authorityPath.push(authorityPath.shift()!);
-        this.$state.authorityPath = authorityPath;
-
-        let totalWeight = 0;
-        let totalThreshold = 0;
-
-        for (let i = 0; i < authorityPath.length; ++i)
-          if (authorityPath[i].authWeight) {
-            totalWeight += authorityPath[i].authWeight!.auth;
-            totalThreshold += authorityPath[i].authWeight!.weight;
-          }
-
-        if (totalWeight >= totalThreshold)
-          this.$state.isSatisfied = true;
-        else
-          this.$state.isSatisfied = false;
-      }
     }
   }
 });

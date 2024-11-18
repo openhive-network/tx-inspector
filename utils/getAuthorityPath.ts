@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiTransaction, authority, TAccountName, TWaxExtended } from '@hiveio/wax';
+import type { authority, TAccountName, TTransactionRequiredAuthorities } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import { TransactionAnalyzer } from '../utils/txInspector';
-import type { TProcessedTransaction, TChainExtendedApiData, ITransactionAnalyzerApi } from '../types/wax';
 
 export interface IAuthorityNode {
   name: TAccountName;
@@ -276,25 +275,21 @@ const getAuthority = async (analyzer: TransactionAnalyzer, type: 'active' | 'own
   };
 };
 
-const createModuleForTransaction = async (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<void> => {
-  const analyzer = new TransactionAnalyzer(chain, apiProvider);
-  const processedTransaction: TProcessedTransaction = await analyzer.analyzeTransaction(transaction);
-  const auths = processedTransaction.requiredAuthorities;
-
+const createModuleForTransaction = async (analyzer: TransactionAnalyzer, requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<void> => {
   await verifyAuthorityImpl({
-    other: auths.other,
-    required_active: [...auths.active],
-    required_owner: [...auths.owner],
-    required_posting: [...auths.posting]
-  }, new Set(await processedTransaction.signatureKeys),
+    other: requiredAuthorities.other,
+    required_active: [...requiredAuthorities.active],
+    required_owner: [...requiredAuthorities.owner],
+    required_posting: [...requiredAuthorities.posting]
+  }, new Set(signatureKeys),
   getAuthority.bind(undefined, analyzer, 'active'),
   getAuthority.bind(undefined, analyzer, 'owner'),
   getAuthority.bind(undefined, analyzer, 'posting'));
 };
 
-export default async function (chain: TWaxExtended<TChainExtendedApiData>, transaction: ApiTransaction, apiProvider: ITransactionAnalyzerApi): Promise<IAuthorityPaths[] | undefined> {
+export async function getAuthorityPath (analyzer: TransactionAnalyzer, requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<IAuthorityPaths[] | undefined> {
   try {
-    await createModuleForTransaction(chain, transaction, apiProvider);
+    await createModuleForTransaction(analyzer, requiredAuthorities, signatureKeys);
     return paths;
   } catch (error) {
     toast.error('Error', {

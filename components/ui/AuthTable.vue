@@ -16,7 +16,7 @@
       <s-table-body>
         <s-table-row
           v-for="(signature, index) in store.processedTransaction.value.signatures"
-          v-if="store.processedTransaction.value.transactionId !== ''"
+          v-if="store.processedTransaction.value.transactionId !== '' && store.processedTransaction.value.signatures.length > 0"
           :key="index"
         >
           <s-table-cell>
@@ -61,8 +61,41 @@
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
-            <v-icon :color="store.isSatisfied.value ? 'green' : 'red'">
-              {{ store.isSatisfied.value ? 'mdi-check' : 'mdi-close' }}
+            <v-icon :color="store.processedTransaction.value.isSatisfied ? 'green' : 'red'">
+              {{ store.processedTransaction.value.isSatisfied ? 'mdi-check' : 'mdi-close' }}
+            </v-icon>
+          </s-table-cell>
+        </s-table-row>
+
+        <s-table-row
+          v-for="(authType, key) in store.processedTransaction.value.authorityType"
+          v-else
+          :key="key"
+        >
+          <s-table-cell>
+            <span v-if="store.processedTransaction.value.isValid" class="text-yellow">Open authority</span>
+            <span v-else class="text-red font-semibold">Missing signature!</span>
+          </s-table-cell>
+          <s-table-cell>
+            <span class="flex flex-col">
+              <a class="my-2 text-blue" :href="`https://explore.openhive.network/@${Array.isArray(authType.accounts) ? authType.accounts[key] : Array.from(authType.accounts)[key]}`">
+                {{ `@${Array.isArray(authType.accounts) ? authType.accounts[key] : Array.from(authType.accounts)[key]}` }}
+              </a>
+            </span>
+          </s-table-cell>
+          <s-table-cell class="p-5">
+            <span
+              :class="{
+                'text-green': store.processedTransaction.value.authorityType[0].level === 'Posting',
+                'text-blue': store.processedTransaction.value.authorityType[0].level === 'Active',
+                'text-orange': store.processedTransaction.value.authorityType[0].level === 'Owner' }"
+            >
+              {{ store.processedTransaction.value.authorityType[0].level }}
+            </span>
+          </s-table-cell>
+          <s-table-cell class="p-5">
+            <v-icon :color="store.processedTransaction.value.isSatisfied ? 'green' : 'red'">
+              {{ store.processedTransaction.value.isSatisfied ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
           </s-table-cell>
         </s-table-row>

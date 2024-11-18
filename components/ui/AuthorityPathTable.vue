@@ -14,6 +14,11 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
+        <s-table-row v-if="store.processedTransaction.value.expiration !== '' && store.processedTransaction.value.signatures.length === 0">
+          <s-table-cell class="text-red text-center font-semibold" colspan="4">
+            No signatures found
+          </s-table-cell>
+        </s-table-row>
         <s-table-row v-for="(signature, index) in store.processedTransaction.value.signatures" :key="index">
           <s-table-cell>
             <s-tooltip-provider>
@@ -65,7 +70,7 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="store.authorityPath.value.length === 1 && store.authorityPath.value[0].account[0] === ''">
+            <s-tooltip-provider v-if="store.processedTransaction.value.authorityPath.length === 1 && store.processedTransaction.value.authorityPath![0].account[0] === ''">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -103,12 +108,12 @@
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
-            <span v-for="(item, key) in store.authorityPath.value" v-else :key="key">
+            <span v-for="(item, key) in store.processedTransaction.value.authorityPath" v-else :key="key">
               <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
                 {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
               </a>
               {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
-              <v-icon v-if="store.authorityPath.value[key + 1]">mdi-chevron-right</v-icon>
+              <v-icon v-if="store.processedTransaction.value.authorityPath![key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
         </s-table-row>

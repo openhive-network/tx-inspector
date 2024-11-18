@@ -1,5 +1,6 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, authority, createHiveChain, type ITransaction, type TTransactionRequiredAuthorities, type TWaxExtended } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExtendedApiData, type ITransactionAnalyzerApi } from '../types/wax';
+import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -95,6 +96,9 @@ export class TransactionAnalyzer {
     const isValid = await this.checkVerifyAuthority(packType);
     const tapos = this.getTapos();
     const expiration = this.getExpiration();
+    const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
+    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied);
+    const isSatisfiedForOperation = await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, requiredAuthoritiesForOperations);
 
     return {
       packType,
@@ -111,11 +115,17 @@ export class TransactionAnalyzer {
       tapos,
       expiration,
       transaction: this.transaction,
-      protoTransaction: tx.transaction
+      protoTransaction: tx.transaction,
+      authorityPath,
+      isSatisfied: satisfied,
+      isSatisfiedForOperation
     } as TProcessedTransaction;
   }
 
   private async getPackType (id?: string): Promise<EPackType> {
+    if (this.api.getPackType)
+      return this.api.getPackType();
+
     if (id) {
       if (id === this.transaction.id)
         return EPackType.HF26;
@@ -260,6 +270,102 @@ export class TransactionAnalyzer {
 
   private getExpiration (): string {
     return this.transaction.transaction.expiration;
+  }
+
+  private async getAuthorityPath (requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<{ authorityPath: IAuthorityPaths[], isSatisfied: boolean }> {
+    const authorityPath = await getAuthorityPath(this, requiredAuthorities, signatureKeys);
+
+    if (authorityPath) {
+      authorityPath.push(authorityPath.shift()!);
+
+      let totalWeight = 0;
+      let totalThreshold = 0;
+
+      let isSatisfied!: boolean;
+
+      for (let i = 0; i < authorityPath.length; ++i)
+        if (authorityPath[i].authWeight) {
+          totalWeight += authorityPath[i].authWeight!.auth;
+          totalThreshold += authorityPath[i].authWeight!.weight;
+        }
+
+      if (totalWeight >= totalThreshold)
+        isSatisfied = true;
+      else
+        isSatisfied = false;
+
+      return { authorityPath, isSatisfied };
+    }
+
+    return { authorityPath: [], isSatisfied: false };
+  }
+
+  private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean): Promise<boolean> {
+    if (signatures.length === 0)
+      if (isValid)
+        return true;
+      else
+        return false;
+
+    const requiredAuthorities = this.transaction.requiredAuthorities;
+    const keyReferences = await this.api.getKeyReferences({ keys });
+
+    if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
+      return false;
+
+    const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
+
+    let requiredAuthLevel!: EAuthorityLevel;
+
+    if (requiredAuthorities.owner.size !== 0)
+      requiredAuthLevel = EAuthorityLevel.OWNER;
+    else if (requiredAuthorities.active.size !== 0)
+      requiredAuthLevel = EAuthorityLevel.ACTIVE;
+    else if (requiredAuthorities.posting.size !== 0)
+      requiredAuthLevel = EAuthorityLevel.POSTING;
+    else
+      requiredAuthLevel = EAuthorityLevel.OTHER;
+
+    for (let i = 0; i < keys.length; ++i)
+      if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][0] === keys[i])
+        return true;
+
+    return false;
+  }
+
+  private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthoritiesForOperations: TTransactionRequiredAuthorities | TTransactionRequiredAuthorities[]): Promise<boolean[]> {
+    if (Array.isArray(requiredAuthoritiesForOperations)) {
+      const isSatisfiedArray: boolean[] = [];
+
+      for (let i = 0; i < requiredAuthoritiesForOperations.length; ++i) {
+        const requiredAuthorities = requiredAuthoritiesForOperations[i];
+        const keyReferences = await this.api.getKeyReferences({ keys });
+
+        if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
+          isSatisfiedArray.push(false);
+
+        const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
+
+        let requiredAuthLevel!: EAuthorityLevel;
+
+        if (requiredAuthorities.owner.size !== 0)
+          requiredAuthLevel = EAuthorityLevel.OWNER;
+        else if (requiredAuthorities.active.size !== 0)
+          requiredAuthLevel = EAuthorityLevel.ACTIVE;
+        else if (requiredAuthorities.posting.size !== 0)
+          requiredAuthLevel = EAuthorityLevel.POSTING;
+        else
+          requiredAuthLevel = EAuthorityLevel.OTHER;
+
+        for (let j = 0; j < keys.length; ++j)
+          if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][j] === keys[j])
+            isSatisfiedArray.push(true);
+      }
+
+      return isSatisfiedArray;
+    }
+
+    return [await this.isSatisfied(signatures, isValid, keys, isSatisfiedFromPath)];
   }
 
   // Method required for the authority path algorithm
