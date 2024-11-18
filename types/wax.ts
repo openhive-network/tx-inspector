@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiAccount, ApiOperation, ApiTransaction, authority, ITransaction, TTransactionRequiredAuthorities, TWaxApiRequest } from '@hiveio/wax';
+import type { ApiAccount, ApiTransaction, authority, ITransaction, TWaxApiRequest } from '@hiveio/wax';
 import type { IAuthorityPaths } from '../utils/getAuthorityPath';
 
 export enum EPackType {
@@ -53,36 +53,54 @@ export type TChainExtendedApiData = {
   };
 };
 
-type TProcessedTransactionBase = {
-  signatures: string[];
-  signatureKeys: string[];
-  requiredAuthorities: TTransactionRequiredAuthorities;
-  requiredAuthoritiesForOperations: TTransactionRequiredAuthorities | TTransactionRequiredAuthorities[];
-  authorityType: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[];
-  operations: ApiOperation[];
-  signeesByKeys: string[][];
-  isValid: boolean;
-  tapos: { refBlockNum: number, refBlockPrefix: number };
-  expiration: string;
-  transaction: ITransaction;
+export enum ESatisfiedState {
+  TRUE = 'true',
+  FALSE = 'false',
+  BLOCKCHAIN_FORCED_TRUE = 'blockchain_forced_true'
+}
+
+export interface ISignatureData {
+  signature: string;
+  packType: EPackType;
+  publicKey: string;
   authorityPath: IAuthorityPaths[] | undefined;
-  isSatisfied: boolean;
-  isSatisfiedForOperation: boolean[];
 }
 
-type TProcessedTransactionPackTypeKnown = TProcessedTransactionBase & {
-  packType: EPackType.HF26 | EPackType.LEGACY;
-  transactionId: string;
-  sigDigest: string;
+export interface ITransactionData {
+  id: string | { hf26: string, legacy: string };
+  sigDigest: string | { hf26: string, legacy: string };
+  tapos: { refBlockNum: number, refBlockPrefix: number };
+  expirationTime: string;
 }
 
-type TProcessedTransactionPackTypeUnknown = TProcessedTransactionBase & {
-  packType: EPackType.UNKNOWN;
-  transactionId: { hf26: string, legacy: string };
-  sigDigest: { hf26: string, legacy: string };
+export interface IRequiredAuthoritiesData {
+  matchingSignature: string;
+  authorityAccount: string | authority;
+  authorityType: EAuthorityLevel;
+  isSatisfied: ESatisfiedState;
 }
 
-export type TProcessedTransaction = TProcessedTransactionPackTypeKnown | TProcessedTransactionPackTypeUnknown;
+export interface ITransactionBodyData {
+  authorityAccount: string | authority;
+  authorityType: EAuthorityLevel;
+  isSatisfied: ESatisfiedState;
+  operationType: string;
+  operationContent: object;
+}
+
+export interface ITransactionOtherData {
+  isValid: boolean;
+  transaction: ITransaction;
+  signeesByKeys: string[][];
+}
+
+export interface IProcessedTransaction {
+  signatureData: ISignatureData[];
+  transactionData: ITransactionData;
+  requiredAuthoritiesData: IRequiredAuthoritiesData[];
+  transactionBodyData: ITransactionBodyData[];
+  transactionOtherData: ITransactionOtherData;
+}
 
 export interface ITransactionAnalyzerApi {
   verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }> | { valid: boolean };

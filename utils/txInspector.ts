@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, authority, createHiveChain, type ITransaction, type TTransactionRequiredAuthorities, type TWaxExtended } from '@hiveio/wax';
-import { EAuthorityLevel, EPackType, type TProcessedTransaction, type TChainExtendedApiData, type ITransactionAnalyzerApi } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData } from '../types/wax';
 import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
@@ -70,56 +70,91 @@ export class TransactionAnalyzer {
 
   /**
    * Takes the transaction and analyzes it to get all the necessary information
-   * @see {@link TProcessedTransaction} for the return type
+   * @see {@link IProcessedTransaction} for the return type
    *
    * @param {ApiTransaction} transaction Transaction body i.e. received from Hive APIs. Should conform HF26 JSON format.
    * @param {?string} id Optional input transaction hash (id) used to query Hive blockchain for actual transaction body.
    *                     Once provided, allows to perform more strict checks specific to i.e. transaction pack type (legacy or HF26)
    *
-   * @returns {TProcessedTransaction} object with all information about the transaction.
+   * @returns {IProcessedTransaction} object with all information about the transaction.
    */
-  public async analyzeTransaction (transaction: ApiTransaction, id?: string): Promise<TProcessedTransaction> {
+  public async analyzeTransaction (transaction: ApiTransaction, id?: string): Promise<IProcessedTransaction> {
     const tx = this.chain.createTransactionFromJson(transaction);
 
     this.transaction = tx;
 
-    const packType = await this.getPackType(id);
+    const tapos = this.getTapos();
+    const expirationTime = this.getExpiration();
     const signatures = transaction.signatures;
+    const requiredAuthorities = this.getRequiredAuthorities();
+    const requiredAuthoritiesForOperations = this.getRequiredAuthoritiesForOperation();
+    const operations = this.getOperationsFromTransaction();
+    const packType = await this.getPackType(id);
+
     const signatureKeys = this.getSignatureKeys(packType);
     const transactionId = this.getTransactionId(packType);
     const sigDigest = this.getSigDigest(packType);
-    const requiredAuthorities = this.getRequiredAuthorities();
-    const requiredAuthoritiesForOperations = this.getRequiredAuthoritiesForOperation();
-    const authorityType = this.getAuthorityType(requiredAuthorities);
-    const operations = this.getOperationsFromTransaction();
-    const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
     const isValid = await this.checkVerifyAuthority(packType);
-    const tapos = this.getTapos();
-    const expiration = this.getExpiration();
+
+    const authorityType = this.getAuthorityType(requiredAuthorities);
+    const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
     const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
+
     const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied);
     const isSatisfiedForOperation = await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, requiredAuthoritiesForOperations);
 
-    return {
-      packType,
-      signatures,
-      signatureKeys,
-      transactionId,
+    const signatureData: ISignatureData[] = [];
+
+    for (let i = 0; i < signatures.length; ++i)
+      signatureData.push({
+        signature: signatures[i],
+        packType,
+        publicKey: signatureKeys[i],
+        authorityPath
+      });
+
+    const transactionData: ITransactionData = {
+      id: transactionId,
       sigDigest,
-      requiredAuthorities,
-      requiredAuthoritiesForOperations,
-      authorityType,
-      operations,
-      signeesByKeys,
-      isValid,
       tapos,
-      expiration,
+      expirationTime
+    };
+
+    const requiredAuthoritiesData: IRequiredAuthoritiesData[] = [];
+
+    for (const authority of authorityType)
+      for (let i = 0; i < authority.accounts.length; ++i)
+        requiredAuthoritiesData.push({
+          matchingSignature: (signatures[i] ? signatures[i] : (isValid ? 'Open authority' : 'Missing signature')),
+          authorityAccount: authority.accounts[i],
+          authorityType: authority.level,
+          isSatisfied: satisfied ? ESatisfiedState.TRUE : ESatisfiedState.FALSE
+        });
+
+    const transactionBodyData: ITransactionBodyData[] = [];
+
+    for (let i = 0; i < operations.length; ++i)
+      transactionBodyData.push({
+        authorityAccount: requiredAuthoritiesData[i].authorityAccount,
+        authorityType: requiredAuthoritiesData[i].authorityType,
+        isSatisfied: isSatisfiedForOperation[i] ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+        operationType: operations[i].type,
+        operationContent: operations[i].value
+      });
+
+    const transactionOtherData: ITransactionOtherData = {
+      isValid,
       transaction: this.transaction,
-      protoTransaction: tx.transaction,
-      authorityPath,
-      isSatisfied: satisfied,
-      isSatisfiedForOperation
-    } as TProcessedTransaction;
+      signeesByKeys
+    };
+
+    return {
+      signatureData,
+      transactionData,
+      requiredAuthoritiesData,
+      transactionBodyData,
+      transactionOtherData
+    };
   }
 
   private async getPackType (id?: string): Promise<EPackType> {
@@ -215,17 +250,20 @@ export class TransactionAnalyzer {
     return requiredAuthoritiesArray;
   }
 
-  private getAuthorityType (requiredAuthorities: TTransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: Set<string> | authority[] }[] {
-    const authLevels: { level: EAuthorityLevel, accounts: Set<string> | Array<authority> }[] = [];
+  private getAuthorityType (requiredAuthorities: TTransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: string[] | authority[] }[] {
+    const authLevels: { level: EAuthorityLevel, accounts: string[] | authority[] }[] = [];
 
     if (requiredAuthorities.owner.size !== 0)
-      authLevels.push({ level: EAuthorityLevel.OWNER, accounts: requiredAuthorities.owner });
+      authLevels.push({ level: EAuthorityLevel.OWNER, accounts: Array.from(requiredAuthorities.owner) });
 
     if (requiredAuthorities.active.size !== 0)
-      authLevels.push({ level: EAuthorityLevel.ACTIVE, accounts: requiredAuthorities.active });
+      authLevels.push({ level: EAuthorityLevel.ACTIVE, accounts: Array.from(requiredAuthorities.active) });
 
     if (requiredAuthorities.posting.size !== 0)
-      authLevels.push({ level: EAuthorityLevel.POSTING, accounts: requiredAuthorities.posting });
+      authLevels.push({ level: EAuthorityLevel.POSTING, accounts: Array.from(requiredAuthorities.posting) });
+
+    if (requiredAuthorities.other.length !== 0)
+      authLevels.push({ level: EAuthorityLevel.OTHER, accounts: requiredAuthorities.other });
 
     return authLevels;
   }
@@ -415,7 +453,7 @@ export class TxInspectorEngine {
     this.chain = base.extend<TChainExtendedApiData>();
   }
 
-  public async changeConfig (chainId: string, apiEndpoint: string, id?: string, json?: ApiTransaction): Promise<TProcessedTransaction | void> {
+  public async changeConfig (chainId: string, apiEndpoint: string, id?: string, json?: ApiTransaction): Promise<IProcessedTransaction | void> {
     this.chainId = chainId;
     this.apiEndpoint = apiEndpoint;
 
@@ -428,12 +466,12 @@ export class TxInspectorEngine {
       return this.processTransaction(json);
   }
 
-  public async processTransaction (transaction: ApiTransaction): Promise<TProcessedTransaction> {
+  public async processTransaction (transaction: ApiTransaction): Promise<IProcessedTransaction> {
     const analyzer = new TransactionAnalyzer(this.chain, new TransactionAnalyzerApiProvider(this.chain));
     return await analyzer.analyzeTransaction(transaction);
   }
 
-  public async processTransactionId (id: string): Promise<TProcessedTransaction> {
+  public async processTransactionId (id: string): Promise<IProcessedTransaction> {
     const transaction = await this.chain.api.account_history_api.get_transaction({ id });
     if (typeof transaction === 'undefined') throw new Error('Transaction not found');
 
@@ -441,7 +479,7 @@ export class TxInspectorEngine {
     return await analyzer.analyzeTransaction(transaction, id);
   }
 
-  public async processTransactionBinary (binary: string): Promise<TProcessedTransaction> {
+  public async processTransactionBinary (binary: string): Promise<IProcessedTransaction> {
     const tx = this.chain.convertTransactionFromBinaryForm(binary);
     const analyzer = new TransactionAnalyzer(this.chain, new TransactionAnalyzerApiProvider(this.chain));
 

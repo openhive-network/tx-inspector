@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-constructor */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import {
@@ -112,7 +111,13 @@ import { formatPercent } from '~/utils/formatters';
 class OperationsFormatter implements IWaxCustomFormatter {
   constructor (
     private readonly chain: IWaxBaseInterface
-  ) {}
+  ) {
+    const config = useRuntimeConfig();
+
+    this.blockExplorerUrl = config.public.blockExplorerUrl;
+  }
+
+  private blockExplorerUrl: string;
 
   private getFormattedAmount (supply: NaiAsset | undefined): string {
     return (this.chain.formatter.format(supply));
@@ -135,7 +140,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
   private getAccountLink (account: string): VNode {
     return h(
       NuxtLink,
-      { to: `https://explore.openhive.network/@${account}`, class: 'text-blue' },
+      { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue' },
       () => `@${account} `
     );
   }

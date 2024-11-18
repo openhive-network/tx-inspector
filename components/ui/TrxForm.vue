@@ -92,7 +92,7 @@ const qs = store.$state.qs;
 
 const submitTransaction = async () => {
   store.$state.isLoading = false;
-  store.$state.processedTransaction.authorityPath!.length = 0;
+  store.$state.processedTransaction.signatureData.forEach((item): void => { item.authorityPath!.length = 0; });
   store.$state.processingTime = 0;
 
   let start!: number;

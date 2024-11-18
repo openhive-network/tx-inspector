@@ -15,29 +15,33 @@
       </s-table-header>
       <s-table-body>
         <s-table-row
-          v-for="(signature, index) in store.processedTransaction.value.signatures"
-          v-if="store.processedTransaction.value.transactionId !== '' && store.processedTransaction.value.signatures.length > 0"
+          v-for="(item, index) in store.processedTransaction.value.requiredAuthoritiesData"
           :key="index"
         >
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :disabled="item.matchingSignature.length < 30">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(signature)"
+                    @click="waxStore.copy(item.matchingSignature)"
                   >
-                    <span>
-                      {{ `${signature.slice(0, 5)}...${signature.slice(-5)}` }}
+                    <span
+                      :class="{
+                        'text-yellow': item.matchingSignature === 'Open authority',
+                        'text-red font-semibold': item.matchingSignature === 'Missing signature',
+                      }"
+                    >
+                      {{ waxStore.shortenString(item.matchingSignature) }}
                     </span>
-                    <v-icon size="md">mdi-content-copy</v-icon>
+                    <v-icon v-if="item.matchingSignature.length > 30" size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
                 <s-tooltip-content>
                   <div class="flex flex-col">
                     <span class="text-lg">Signature:</span>
                     <hr class="my-2">
-                    <span>{{ signature }}</span>
+                    <span>{{ item.matchingSignature }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
@@ -45,57 +49,25 @@
           </s-table-cell>
           <s-table-cell>
             <span class="flex flex-col">
-              <a v-for="(item, key) in store.processedTransaction.value.authorityType" :key="key" class="my-2 text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.accounts) ? item.accounts[index] : Array.from(item.accounts)[index]}`">
-                {{ `@${Array.isArray(item.accounts) ? item.accounts[index] : Array.from(item.accounts)[index]}` }}
+              <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+                {{ `@${item.authorityAccount}` }}
               </a>
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
             <span
               :class="{
-                'text-green': store.processedTransaction.value.authorityType[0].level === 'Posting',
-                'text-blue': store.processedTransaction.value.authorityType[0].level === 'Active',
-                'text-orange': store.processedTransaction.value.authorityType[0].level === 'Owner' }"
+                'text-green': item.authorityType === 'Posting',
+                'text-blue': item.authorityType === 'Active',
+                'text-orange': item.authorityType === 'Owner',
+                'text-yellow': item.authorityType === 'Other' }"
             >
-              {{ store.processedTransaction.value.authorityType[0].level }}
+              {{ item.authorityType }}
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
-            <v-icon :color="store.processedTransaction.value.isSatisfied ? 'green' : 'red'">
-              {{ store.processedTransaction.value.isSatisfied ? 'mdi-check' : 'mdi-close' }}
-            </v-icon>
-          </s-table-cell>
-        </s-table-row>
-
-        <s-table-row
-          v-for="(authType, key) in store.processedTransaction.value.authorityType"
-          v-else
-          :key="key"
-        >
-          <s-table-cell>
-            <span v-if="store.processedTransaction.value.isValid" class="text-yellow">Open authority</span>
-            <span v-else class="text-red font-semibold">Missing signature!</span>
-          </s-table-cell>
-          <s-table-cell>
-            <span class="flex flex-col">
-              <a class="my-2 text-blue" :href="`https://explore.openhive.network/@${Array.isArray(authType.accounts) ? authType.accounts[key] : Array.from(authType.accounts)[key]}`">
-                {{ `@${Array.isArray(authType.accounts) ? authType.accounts[key] : Array.from(authType.accounts)[key]}` }}
-              </a>
-            </span>
-          </s-table-cell>
-          <s-table-cell class="p-5">
-            <span
-              :class="{
-                'text-green': store.processedTransaction.value.authorityType[0].level === 'Posting',
-                'text-blue': store.processedTransaction.value.authorityType[0].level === 'Active',
-                'text-orange': store.processedTransaction.value.authorityType[0].level === 'Owner' }"
-            >
-              {{ store.processedTransaction.value.authorityType[0].level }}
-            </span>
-          </s-table-cell>
-          <s-table-cell class="p-5">
-            <v-icon :color="store.processedTransaction.value.isSatisfied ? 'green' : 'red'">
-              {{ store.processedTransaction.value.isSatisfied ? 'mdi-check' : 'mdi-close' }}
+            <v-icon :color="item.isSatisfied ? 'green' : 'red'">
+              {{ item.isSatisfied ? 'mdi-check' : 'mdi-close' }}
             </v-icon>
           </s-table-cell>
         </s-table-row>
@@ -109,6 +81,8 @@ import Subtitle from './Subtitle.vue';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
+
+const config = useRuntimeConfig();
 </script>
 
 <style scoped>
