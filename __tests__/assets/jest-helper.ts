@@ -10,7 +10,7 @@ import './globals';
 
 import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
 
-import type { TProcessedTransaction } from '../../types/wax';
+import type { IProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
 import type { IMockData, TMockExtendedData } from './api-mock';
 
@@ -48,7 +48,7 @@ export interface ITxInspectorTest {
    */
   txAnalyzerMockedTest: (<R, Args extends any[]>(fn: TTxAnalyzerTestCallable<R, Args>, ...args: Args) => Promise<R>);
 
-  analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: TProcessedTransaction) => Promise<boolean>;
+  analyzeAndCompareTransaction: (inputTransaction: ApiTransaction, expectedResult: IProcessedTransaction) => Promise<boolean>;
 }
 
 const txInspectorTest = (page: Page): ITxInspectorTest['txInspectorTest'] => {
@@ -96,26 +96,17 @@ const txAnalyzerMockedTestEnvironment = (
 const analyzeAndCompareTransaction = async (
   txAnalyzerMockedTest: ITxInspectorTest['txAnalyzerMockedTest'],
   inputTransaction: ApiTransaction,
-  expectedResult: TProcessedTransaction
+  expectedResult: IProcessedTransaction
 ): Promise<boolean> => {
   const retVal = await txAnalyzerMockedTest(async ({ analyzer }, inputTx) => {
     const processingResults = await analyzer.analyzeTransaction(inputTx);
+
     return {
-      signatures: processingResults.signatures,
-      signatureKeys: processingResults.signatureKeys,
-      requiredAuthorities: processingResults.requiredAuthorities,
-      requiredAuthoritiesForOperations: processingResults.requiredAuthoritiesForOperations,
-      authorityType: processingResults.authorityType,
-      operations: processingResults.operations,
-      signeesByKeys: processingResults.signeesByKeys,
-      isValid: processingResults.isValid,
-      packType: processingResults.packType,
-      id: processingResults.transactionId,
-      sigDigest: processingResults.sigDigest,
-      expiration: processingResults.expiration,
-      tapos: processingResults.tapos,
-      path: processingResults.authorityPath,
-      isSatisfied: processingResults.isSatisfied
+      signatureData: processingResults.signatureData,
+      transactionData: processingResults.transactionData,
+      requiredAuthoritiesData: processingResults.requiredAuthoritiesData,
+      transactionBodyData: processingResults.transactionBodyData,
+      transactionOtherData: { isValid: processingResults.transactionOtherData.isValid, signeesByKeys: processingResults.transactionOtherData.signeesByKeys }
     };
   }, inputTransaction);
 

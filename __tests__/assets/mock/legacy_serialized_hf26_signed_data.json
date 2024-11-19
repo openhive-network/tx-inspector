@@ -194,34 +194,44 @@
     ]
   },
   "singleOperationExpectedResult": {
-    "signatures": [
-      "1f411808fe07ba78c8e0d1edc7e4bdf14b8af1b85a26437fd7e082054fc0fa5b503627072e4cc482d1a4e60ea5f318a85539282c5beb9747e83a429bcd369d1ece"
-    ],
-    "signatureKeys": [
-      "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
-    ],
-    "requiredAuthorities": {
-      "posting": {},
-      "active": {},
-      "owner": {},
-      "other": []
-    },
-    "requiredAuthoritiesForOperations": {
-      "posting": {},
-      "active": {},
-      "owner": {},
-      "other": []
-    },
-    "authorityType": [
+    "signatureData": [
       {
-        "level": "Posting",
-        "accounts": {}
+        "signature": "1f411808fe07ba78c8e0d1edc7e4bdf14b8af1b85a26437fd7e082054fc0fa5b503627072e4cc482d1a4e60ea5f318a85539282c5beb9747e83a429bcd369d1ece",
+        "packType": "legacy",
+        "publicKey": "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK",
+        "authorityPath": [
+          {
+            "account": [
+              "andablackwidow"
+            ]
+          }
+        ]
       }
     ],
-    "operations": [
+    "transactionData": {
+      "id": "7b84c7620c95eaf341821d4bfb126a219b0d0150",
+      "sigDigest": "d1e9c6238d7c8600d34f597088c4eafa4b71cf59c0181252dd3c73855194d745",
+      "tapos": {
+        "refBlockNum": 47527,
+        "refBlockPrefix": 1507238693
+      },
+      "expirationTime": "2024-11-12T10:34:48"
+    },
+    "requiredAuthoritiesData": [
       {
-        "type": "vote_operation",
-        "value": {
+        "matchingSignature": "1f411808fe07ba78c8e0d1edc7e4bdf14b8af1b85a26437fd7e082054fc0fa5b503627072e4cc482d1a4e60ea5f318a85539282c5beb9747e83a429bcd369d1ece",
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Posting",
+        "isSatisfied": "false"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Posting",
+        "isSatisfied": "false",
+        "operationType": "vote_operation",
+        "operationContent": {
           "voter": "andablackwidow",
           "author": "hbd.funder",
           "permlink": "re-upvote-this-post-to-fund-hbdstabilizer-20241112t045515z",
@@ -229,23 +239,9 @@
         }
       }
     ],
-    "signeesByKeys": null,
-    "isValid": true,
-    "packType": "legacy",
-    "id": "7b84c7620c95eaf341821d4bfb126a219b0d0150",
-    "sigDigest": "d1e9c6238d7c8600d34f597088c4eafa4b71cf59c0181252dd3c73855194d745",
-    "expiration": "2024-11-12T10:34:48",
-    "tapos": {
-      "refBlockNum": 47527,
-      "refBlockPrefix": 1507238693
-    },
-    "path": [
-      {
-        "account": [
-          "andablackwidow"
-        ]
-      }
-    ],
-    "isSatisfied": false
+    "transactionOtherData": {
+      "isValid": true,
+      "signeesByKeys": null
+    }
   }
 }
