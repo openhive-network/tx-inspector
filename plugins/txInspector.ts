@@ -1,6 +1,8 @@
-const txInspector = TxInspectorEngine.create('beeab0de00000000000000000000000000000000000000000000000000000000', 'https://api.hive.blog/');
-
 export default defineNuxtPlugin(async () => {
+  const config = useRuntimeConfig();
+
+  const txInspector = TxInspectorEngine.create(config.public.defaultChainId, config.public.defaultEndpointUrl);
+
   return {
     provide: {
       txInspector: await txInspector,

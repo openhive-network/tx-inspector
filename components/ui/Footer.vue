@@ -85,6 +85,8 @@ const commitHash = COMMIT_HASH.slice(0, 7);
 
 const { $txInspector } = useNuxtApp();
 
+const config = useRuntimeConfig();
+
 const endpointUrl = ref($txInspector.config.apiEndpoint);
 const chainId = ref($txInspector.config.chainId);
 
@@ -103,7 +105,7 @@ const changeEndpointUrl = async (): Promise<void> => {
 };
 
 const backEndpointUrlToDefault = async (): Promise<void> => {
-  endpointUrl.value = 'https://api.hive.blog';
+  endpointUrl.value = config.public.defaultEndpointUrl;
   await $txInspector.changeConfig($txInspector.config.chainId, endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
@@ -124,7 +126,7 @@ const changeChainId = async (): Promise<void> => {
 };
 
 const backChainIdToDefault = async (): Promise<void> => {
-  chainId.value = 'beeab0de00000000000000000000000000000000000000000000000000000000';
+  chainId.value = config.public.defaultChainId;
   await $txInspector.changeConfig(chainId.value, $txInspector.config.apiEndpoint, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 

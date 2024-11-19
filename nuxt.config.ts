@@ -80,7 +80,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      blockExplorerUrl: ''
+      blockExplorerUrl: '',
+      defaultChainId: '',
+      defaultEndpointUrl: ''
     }
   }
 });
