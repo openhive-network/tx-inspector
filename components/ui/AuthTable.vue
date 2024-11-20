@@ -29,7 +29,7 @@
                     <span
                       :class="{
                         'text-yellow': item.matchingSignature === 'Open authority',
-                        'text-red font-semibold': item.matchingSignature === 'Missing signature',
+                        'text-red font-semibold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
                       }"
                     >
                       {{ waxStore.shortenString(item.matchingSignature) }}
@@ -49,7 +49,10 @@
           </s-table-cell>
           <s-table-cell>
             <span class="flex flex-col">
-              <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+              <p v-if="item.authorityAccount === 'None'" class="my-2 text-red font-semibold">
+                {{ item.authorityAccount }}
+              </p>
+              <a v-else class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
                 {{ `@${item.authorityAccount}` }}
               </a>
             </span>
@@ -60,14 +63,17 @@
                 'text-green': item.authorityType === 'Posting',
                 'text-blue': item.authorityType === 'Active',
                 'text-orange': item.authorityType === 'Owner',
-                'text-yellow': item.authorityType === 'Other' }"
+                'opacity-80': item.authorityType === 'Other' }"
             >
               {{ item.authorityType }}
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
-            <v-icon :color="item.isSatisfied ? 'green' : 'red'">
-              {{ item.isSatisfied ? 'mdi-check' : 'mdi-close' }}
+            <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
+              mdi-check
+            </v-icon>
+            <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
+              mdi-close
             </v-icon>
           </s-table-cell>
         </s-table-row>
@@ -78,6 +84,7 @@
 
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
+import { ESatisfiedState } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);

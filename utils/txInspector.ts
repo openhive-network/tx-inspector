@@ -1,5 +1,5 @@
-import { ApiAccount, ApiOperation, type ApiTransaction, authority, createHiveChain, type ITransaction, type TTransactionRequiredAuthorities, type TWaxExtended } from '@hiveio/wax';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData } from '../types/wax';
+import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type ITransaction, type TWaxExtended } from '@hiveio/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities } from '../types/wax';
 import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
@@ -95,11 +95,11 @@ export class TransactionAnalyzer {
     const sigDigest = this.getSigDigest(packType);
     const isValid = await this.checkVerifyAuthority(packType);
 
-    const authorityType = this.getAuthorityType(requiredAuthorities);
+    const authorityType = this.getAuthorityType(await requiredAuthorities);
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
-    const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
+    const { authorityPath, isSatisfied } = await this.getAuthorityPath(await requiredAuthorities, signatureKeys);
 
-    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, requiredAuthorities);
+    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, await requiredAuthorities);
 
     const signatureData: ISignatureData[] = [];
 
@@ -123,21 +123,34 @@ export class TransactionAnalyzer {
     for (const authority of authorityType)
       for (let i = 0; i < authority.accounts.length; ++i)
         requiredAuthoritiesData.push({
-          matchingSignature: (signatures[i] ? signatures[i] : (isValid ? 'Open authority' : 'Missing signature')),
+          matchingSignature:
+            (
+              (signatures.length > authority.accounts.length && authority.accounts[0] === 'None')
+                ? 'None'
+                : (
+                    signatures[i]
+                      ? signatures[i]
+                      : (
+                          isValid
+                            ? 'Open authority'
+                            : 'Missing signature'
+                        )
+                  )
+            ),
           authorityAccount: authority.accounts[i],
           authorityType: authority.level,
-          isSatisfied: satisfied ? ESatisfiedState.TRUE : ESatisfiedState.FALSE
+          isSatisfied: satisfied === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE
         });
 
     const transactionBodyData: ITransactionBodyData[] = [];
 
     for (let i = 0; i < operations.length; ++i)
-      for (const authority of this.getAuthorityType(this.getRequiredAuthoritiesForOperation(i)))
+      for (const authority of this.getAuthorityType(await this.getRequiredAuthoritiesForOperation(i)))
         if (authority.accounts.length >= operations.length)
           transactionBodyData.push({
             authorityAccount: authority.accounts[i],
             authorityType: authority.level,
-            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
             operationType: operations[i].type,
             operationContent: operations[i].value
           });
@@ -146,7 +159,7 @@ export class TransactionAnalyzer {
             transactionBodyData.push({
               authorityAccount: authority.accounts[j],
               authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
               operationType: operations[i].type,
               operationContent: operations[i].value
             });
@@ -233,16 +246,41 @@ export class TransactionAnalyzer {
     return sigDigest;
   }
 
-  private getRequiredAuthorities (): TTransactionRequiredAuthorities {
+  private async getRequiredAuthorities (): Promise<ITransactionRequiredAuthorities> {
     const requiredAuthorities = this.transaction.requiredAuthorities;
 
     if (typeof requiredAuthorities === 'undefined')
       throw new Error('Required authorities not found');
 
-    return requiredAuthorities;
+    const result: ITransactionRequiredAuthorities = {
+      posting: requiredAuthorities.posting,
+      active: requiredAuthorities.active,
+      owner: requiredAuthorities.owner,
+      other: new Set<string>()
+    };
+
+    if (requiredAuthorities.other.length > 0) {
+      const requiredAuthoritiesSet = new Set<string>();
+
+      for (const { key_auths: keyAuths } of requiredAuthorities.other)
+        for (const key in keyAuths)
+          requiredAuthoritiesSet.add(key);
+
+      const { accounts: accountsPerKey } = await this.api.getKeyReferences({ keys: [...requiredAuthoritiesSet] });
+
+      for (const accounts of accountsPerKey)
+        for (const account of accounts)
+          result.other.add(account);
+
+      for (const { account_auths: accountAuths } of requiredAuthorities.other)
+        for (const account in accountAuths)
+          result.other.add(account);
+    }
+
+    return result;
   }
 
-  private getRequiredAuthoritiesForOperation (operationIndex: number): TTransactionRequiredAuthorities {
+  private async getRequiredAuthoritiesForOperation (operationIndex: number): Promise<ITransactionRequiredAuthorities> {
     if (this.transaction.transaction.operations.length < operationIndex)
       throw new Error('Cannot get required authorities for operation');
 
@@ -250,23 +288,56 @@ export class TransactionAnalyzer {
 
     tx.pushOperation(this.transaction.transaction.operations[operationIndex]);
 
-    return tx.requiredAuthorities;
+    const requiredAuthorities = tx.requiredAuthorities;
+
+    if (typeof requiredAuthorities === 'undefined')
+      throw new Error('Required authorities not found');
+
+    const result: ITransactionRequiredAuthorities = {
+      posting: requiredAuthorities.posting,
+      active: requiredAuthorities.active,
+      owner: requiredAuthorities.owner,
+      other: new Set<string>()
+    };
+
+    if (requiredAuthorities.other.length > 0) {
+      const requiredAuthoritiesSet = new Set<string>();
+
+      for (const { key_auths: keyAuths } of requiredAuthorities.other)
+        for (const key in keyAuths)
+          requiredAuthoritiesSet.add(key);
+
+      const { accounts: accountsPerKey } = await this.api.getKeyReferences({ keys: [...requiredAuthoritiesSet] });
+
+      for (const accounts of accountsPerKey)
+        for (const account of accounts)
+          result.other.add(account);
+
+      for (const { account_auths: accountAuths } of requiredAuthorities.other)
+        for (const account in accountAuths)
+          result.other.add(account);
+    }
+
+    return result;
   }
 
-  private getAuthorityType (requiredAuthorities: TTransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: string[] | authority[] }[] {
-    const authLevels: { level: EAuthorityLevel, accounts: string[] | authority[] }[] = [];
+  private getAuthorityType (requiredAuthorities: ITransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: string[] }[] {
+    const authLevels: { level: EAuthorityLevel, accounts: string[] }[] = [];
 
-    if (requiredAuthorities.owner.size !== 0)
+    if (requiredAuthorities.owner && requiredAuthorities.owner.size !== 0)
       authLevels.push({ level: EAuthorityLevel.OWNER, accounts: Array.from(requiredAuthorities.owner) });
 
-    if (requiredAuthorities.active.size !== 0)
+    if (requiredAuthorities.active && requiredAuthorities.active.size !== 0)
       authLevels.push({ level: EAuthorityLevel.ACTIVE, accounts: Array.from(requiredAuthorities.active) });
 
-    if (requiredAuthorities.posting.size !== 0)
+    if (requiredAuthorities.posting && requiredAuthorities.posting.size !== 0)
       authLevels.push({ level: EAuthorityLevel.POSTING, accounts: Array.from(requiredAuthorities.posting) });
 
-    if (requiredAuthorities.other.length !== 0)
-      authLevels.push({ level: EAuthorityLevel.OTHER, accounts: requiredAuthorities.other });
+    if (requiredAuthorities.other && requiredAuthorities.other.size !== 0)
+      authLevels.push({ level: EAuthorityLevel.OTHER, accounts: Array.from(requiredAuthorities.other) });
+
+    if (authLevels.length === 0)
+      authLevels.push({ level: EAuthorityLevel.OTHER, accounts: ['None'] });
 
     return authLevels;
   }
@@ -313,10 +384,10 @@ export class TransactionAnalyzer {
     return this.transaction.transaction.expiration;
   }
 
-  private async getAuthorityPath (requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<{ authorityPath: IAuthorityPaths[], isSatisfied: boolean }> {
+  private async getAuthorityPath (requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<{ authorityPath: IAuthorityPaths[], isSatisfied: boolean }> {
     const authorityPath = await getAuthorityPath(this, requiredAuthorities, signatureKeys);
 
-    if (authorityPath) {
+    if (authorityPath && authorityPath.length > 0) {
       authorityPath.push(authorityPath.shift()!);
 
       let totalWeight = 0;
@@ -341,17 +412,17 @@ export class TransactionAnalyzer {
     return { authorityPath: [], isSatisfied: false };
   }
 
-  private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: TTransactionRequiredAuthorities): Promise<boolean> {
+  private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return true;
+        return ESatisfiedState.TRUE;
       else
-        return false;
+        return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
-      return false;
+      return ESatisfiedState.FALSE;
 
     const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
 
@@ -368,26 +439,26 @@ export class TransactionAnalyzer {
 
     for (let i = 0; i < keys.length; ++i)
       if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][0] === keys[i])
-        return true;
+        return ESatisfiedState.TRUE;
 
-    return false;
+    return ESatisfiedState.FALSE;
   }
 
-  private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<boolean> {
+  private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return true;
+        return ESatisfiedState.TRUE;
       else
-        return false;
+        return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
-      return false;
+      return ESatisfiedState.FALSE;
 
     const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
 
-    const requiredAuthorities = this.getRequiredAuthoritiesForOperation(index);
+    const requiredAuthorities = await this.getRequiredAuthoritiesForOperation(index);
 
     let requiredAuthLevel!: EAuthorityLevel;
 
@@ -402,9 +473,9 @@ export class TransactionAnalyzer {
 
     for (let i = 0; i < keys.length; ++i)
       if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][0] === keys[i])
-        return true;
+        return ESatisfiedState.TRUE;
 
-    return false;
+    return ESatisfiedState.FALSE;
   }
 
   // Method required for the authority path algorithm

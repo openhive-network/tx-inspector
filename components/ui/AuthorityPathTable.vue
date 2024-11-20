@@ -70,7 +70,7 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="!item.authorityPath || item.authorityPath![0].account[0] === ''">
+            <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined'">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span

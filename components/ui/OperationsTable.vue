@@ -46,18 +46,30 @@
         <s-table-body v-show="radioState === 'formatted'">
           <s-table-row v-for="(item, index) in store.processedTransaction.value.transactionBodyData" :key="index">
             <s-table-cell>
-              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+              <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
+                {{ item.authorityAccount }}
+              </p>
+              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
                 {{ `@${item.authorityAccount}` }}
               </a>
             </s-table-cell>
             <s-table-cell>
-              <span :class="getColorForType(item.authorityType)">
+              <span
+                :class="{
+                  'text-green': item.authorityType === 'Posting',
+                  'text-blue': item.authorityType === 'Active',
+                  'text-orange': item.authorityType === 'Owner',
+                  'opacity-80': item.authorityType === 'Other' }"
+              >
                 {{ item.authorityType }}
               </span>
             </s-table-cell>
             <s-table-cell>
-              <v-icon :color="item.isSatisfied ? 'green' : 'red'">
-                {{ item.isSatisfied ? 'mdi-check' : 'mdi-close' }}
+              <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
+                mdi-check
+              </v-icon>
+              <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
+                mdi-close
               </v-icon>
             </s-table-cell>
             <s-table-cell>
@@ -71,18 +83,30 @@
         <s-table-body v-show="radioState === 'json'">
           <s-table-row v-for="(item, index) in store.processedTransaction.value.transactionBodyData" :key="index">
             <s-table-cell>
-              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+              <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
+                {{ item.authorityAccount }}
+              </p>
+              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
                 {{ `@${item.authorityAccount}` }}
               </a>
             </s-table-cell>
             <s-table-cell>
-              <span :class="getColorForType(item.authorityType)">
+              <span
+                :class="{
+                  'text-green': item.authorityType === 'Posting',
+                  'text-blue': item.authorityType === 'Active',
+                  'text-orange': item.authorityType === 'Owner',
+                  'opacity-80': item.authorityType === 'Other' }"
+              >
                 {{ item.authorityType }}
               </span>
             </s-table-cell>
             <s-table-cell>
-              <v-icon :color="item.isSatisfied ? 'green' : 'red'">
-                {{ item.isSatisfied ? 'mdi-check' : 'mdi-close' }}
+              <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
+                mdi-check
+              </v-icon>
+              <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
+                mdi-close
               </v-icon>
             </s-table-cell>
             <s-table-cell>
@@ -103,6 +127,7 @@
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
 import Subtitle from './Subtitle.vue';
+import { ESatisfiedState } from '~/types/wax';
 
 const wax = useWaxStore();
 const store = storeToRefs(wax);
@@ -110,26 +135,6 @@ const store = storeToRefs(wax);
 const config = useRuntimeConfig();
 
 const radioState = ref('formatted');
-
-const getColorForType = (type?: string): string => {
-  if (type === undefined)
-    return 'gray';
-
-  switch (type) {
-    case 'Posting':
-      return 'text-green';
-    case 'Active':
-      return 'text-blue';
-    case 'Owner':
-      return 'text-orange';
-    case 'Any':
-      return 'text-yellow';
-    case 'Every':
-      return 'text-purple';
-    default:
-      return 'gray';
-  }
-};
 </script>
 
 <style scoped>

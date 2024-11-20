@@ -59,6 +59,13 @@ export enum ESatisfiedState {
   BLOCKCHAIN_FORCED_TRUE = 'blockchain_forced_true'
 }
 
+export interface ITransactionRequiredAuthorities {
+  posting: Set<string>;
+  active: Set<string>;
+  owner: Set<string>;
+  other: Set<string>;
+}
+
 export interface ISignatureData {
   signature: string;
   packType: EPackType;

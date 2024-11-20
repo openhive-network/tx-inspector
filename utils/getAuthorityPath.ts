@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { authority, TAccountName, TTransactionRequiredAuthorities } from '@hiveio/wax';
+import type { authority, TAccountName } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import { TransactionAnalyzer } from '../utils/txInspector';
+import type { ITransactionRequiredAuthorities } from '../types/wax';
 
 export interface IAuthorityNode {
   name: TAccountName;
@@ -35,7 +36,7 @@ interface IVerifyAuthorityRequired {
   required_posting: string[];
   required_active: string[];
   required_owner: string[];
-  other: authority[];
+  required_other: string[];
 }
 
 interface IAuthorityGetter {
@@ -53,7 +54,8 @@ const verifyAuthorityImpl = async (
   sigs: Set<string>,
   get_active: IAuthorityGetter,
   get_owner: IAuthorityGetter,
-  get_posting: IAuthorityGetter
+  get_posting: IAuthorityGetter,
+  get_other: IAuthorityGetter
 ): Promise<void> => {
   const active_approvals = new Set<string>();
   const owner_approvals = new Set<string>();
@@ -76,16 +78,11 @@ const verifyAuthorityImpl = async (
     }
   };
 
-  const VERIFY_AUTHORITY_CHECK_OTHER_AUTH = (test: boolean, _auth: authority): void => {
-    if (!test)
-      throw new Error('Other authority error');
-  };
-
   if (required_authorities.required_posting.length > 0) {
     VERIFY_AUTHORITY_CHECK(
       required_authorities.required_active.length === 0 &&
       required_authorities.required_owner.length === 0 &&
-      required_authorities.other.length === 0,
+      required_authorities.required_other.length === 0,
       'mixed_with_posting',
       ''
     );
@@ -131,10 +128,11 @@ const verifyAuthorityImpl = async (
   active_approvals.forEach(id => s.approvedBy.add(id));
   owner_approvals.forEach(id => s.approvedBy.add(id));
 
-  for (const auth of required_authorities.other)
-    VERIFY_AUTHORITY_CHECK_OTHER_AUTH(
-      await s.checkAuthority(auth, 0, 0),
-      auth
+  for (const id of required_authorities.required_other)
+    VERIFY_AUTHORITY_CHECK(
+      await s.checkAuthority(id) || await s.checkAuthority(await get_other(id)),
+      'missing_other',
+      id
     );
 
   for (const id of required_authorities.required_active)
@@ -275,19 +273,20 @@ const getAuthority = async (analyzer: TransactionAnalyzer, type: 'active' | 'own
   };
 };
 
-const createModuleForTransaction = async (analyzer: TransactionAnalyzer, requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<void> => {
+const createModuleForTransaction = async (analyzer: TransactionAnalyzer, requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<void> => {
   await verifyAuthorityImpl({
-    other: requiredAuthorities.other,
+    required_other: [...requiredAuthorities.other],
     required_active: [...requiredAuthorities.active],
     required_owner: [...requiredAuthorities.owner],
     required_posting: [...requiredAuthorities.posting]
   }, new Set(signatureKeys),
   getAuthority.bind(undefined, analyzer, 'active'),
   getAuthority.bind(undefined, analyzer, 'owner'),
-  getAuthority.bind(undefined, analyzer, 'posting'));
+  getAuthority.bind(undefined, analyzer, 'posting'),
+  getAuthority.bind(undefined, analyzer, 'active')); // TODO: get other authority correctly. It is required to check which authority of the account satisfies the required_other
 };
 
-export async function getAuthorityPath (analyzer: TransactionAnalyzer, requiredAuthorities: TTransactionRequiredAuthorities, signatureKeys: string[]): Promise<IAuthorityPaths[] | undefined> {
+export async function getAuthorityPath (analyzer: TransactionAnalyzer, requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<IAuthorityPaths[] | undefined> {
   try {
     await createModuleForTransaction(analyzer, requiredAuthorities, signatureKeys);
     return paths;
