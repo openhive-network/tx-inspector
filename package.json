@@ -15,7 +15,7 @@
     "postinstall": "nuxt prepare && husky",
     "lint": "eslint . --fix",
     "pretest": "playwright install chromium",
-    "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_api_testsuite --project=tx_inspector_open_authority --project=tx_inspector_single_signature --project=tx_inspector_multiple_signature --project=tx_inspector_delegated_authority --project=tx_inspector_non_default_weights --project=tx_inspector_each_signature_satisfies_alone_non_default_weights --project=tx_inspector_signatures_together_can_satisfy_non_default_weights --project=tx_inspector_base_negative_cases --project=tx_inspector_too_less_weight --project=tx_inspector_hf26_serialization_legacy_signed --project=tx_inspector_legacy_serialization_hf26_signed"
+    "test": "playwright test --workers 1 --max-failures 1 --project=tx_inspector_api_testsuite --project=tx_inspector_open_authority --project=tx_inspector_single_signature --project=tx_inspector_recover_account --project=tx_inspector_multiple_signature --project=tx_inspector_delegated_authority --project=tx_inspector_non_default_weights --project=tx_inspector_each_signature_satisfies_alone_non_default_weights --project=tx_inspector_signatures_together_can_satisfy_non_default_weights --project=tx_inspector_base_negative_cases --project=tx_inspector_too_less_weight --project=tx_inspector_hf26_serialization_legacy_signed --project=tx_inspector_legacy_serialization_hf26_signed"
   },
   "dependencies": {
     "@hiveio/component-binary-view": "^0.2.0",

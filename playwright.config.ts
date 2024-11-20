@@ -33,6 +33,15 @@ export default defineConfig < ITxInspectorTest>({
 
     },
     {
+      name: 'tx_inspector_recover_account',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-recover-account-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/recover_account_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_multiple_signature',
       testDir: './__tests__/',
       testMatch: '**/txInspector-multiple-signature-mock.ts',
