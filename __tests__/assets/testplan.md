@@ -1,7 +1,7 @@
 1. Positive cases:
 Signature specific tests
 
-1.1 Transaction without any signature (open authority) (example: temp account)
+1.1 ~~Transaction without any signature (open authority) (example: temp account)~~
 
 1.2 Transaction containing single signature:
 1.2.1 ~~Transaction containing single operation~~

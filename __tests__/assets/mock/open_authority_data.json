@@ -1,0 +1,68 @@
+{
+  "validTxAuthority": true,
+  "keyReferences": [],
+  "findAccounts": [],
+  "packType": "hf26",
+  "openAuthorityTransaction": {
+    "ref_block_num": 35292,
+    "ref_block_prefix": 2546881088,
+    "extensions": [],
+    "expiration": "2024-07-27T20:43:36",
+    "operations": [
+      {
+        "type": "comment_operation",
+        "value": {
+          "body": "With no response, we have no recourse but to release the source code to exploit this will be publicly released on Sunday July 28, 2024.",
+          "title": "",
+          "author": "temp",
+          "permlink": "37",
+          "json_metadata": "",
+          "parent_author": "hive-engine",
+          "parent_permlink": "market-smart-contract-23"
+        }
+      }
+    ],
+    "signatures": []
+  },
+  "openAuthorityExpectedResult": {
+    "signatureData": [],
+    "transactionData": {
+      "id": "a94716f567611b9f930369c8f53df27d4efe5ad2",
+      "sigDigest": "01c0d7fc685296395b7b1766321eec60619261f1ce5e41c107ac16398366dd47",
+      "tapos": {
+        "refBlockNum": 35292,
+        "refBlockPrefix": 2546881088
+      },
+      "expirationTime": "2024-07-27T20:43:36"
+    },
+    "requiredAuthoritiesData": [
+      {
+        "matchingSignature": "Open authority",
+        "authorityAccount": "temp",
+        "authorityType": "Posting",
+        "isSatisfied": "true"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "temp",
+        "authorityType": "Posting",
+        "isSatisfied": "true",
+        "operationType": "comment_operation",
+        "operationContent": {
+          "parent_author": "hive-engine",
+          "parent_permlink": "market-smart-contract-23",
+          "author": "temp",
+          "permlink": "37",
+          "title": "",
+          "body": "With no response, we have no recourse but to release the source code to exploit this will be publicly released on Sunday July 28, 2024.",
+          "json_metadata": ""
+        }
+      }
+    ],
+    "transactionOtherData": {
+      "isValid": true,
+      "signeesByKeys": null
+    }
+  }
+}
