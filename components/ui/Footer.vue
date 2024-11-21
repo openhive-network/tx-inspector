@@ -16,8 +16,8 @@
         Endpoint URL:
         <s-dialog v-model:open="openEndpointUrl">
           <s-dialog-trigger as-child>
-            <span class="text-blue cursor-pointer hover:underline">
-              {{ endpointUrl }}
+            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
+              <span>{{ endpointUrl }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
@@ -34,9 +34,9 @@
                 </Button>
               </s-dialog-close>
               <s-dialog-close>
-                <Button @click="backEndpointUrlToDefault()">
+                <s-button variant="ghost" @click="backEndpointUrlToDefault()">
                   Back to default
-                </Button>
+                </s-button>
               </s-dialog-close>
             </s-dialog-footer>
           </s-dialog-content>
@@ -46,8 +46,8 @@
         Chain ID:
         <s-dialog v-model:open="openChainId">
           <s-dialog-trigger as-child>
-            <span class="text-blue cursor-pointer hover:underline">
-              {{ chainId }}
+            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
+              <span>{{ chainId }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
@@ -64,9 +64,9 @@
                 </Button>
               </s-dialog-close>
               <s-dialog-close>
-                <Button @click="backChainIdToDefault()">
+                <s-button variant="ghost" @click="backChainIdToDefault()">
                   Back to default
-                </Button>
+                </s-button>
               </s-dialog-close>
             </s-dialog-footer>
           </s-dialog-content>

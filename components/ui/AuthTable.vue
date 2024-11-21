@@ -19,7 +19,7 @@
           :key="index"
         >
           <s-table-cell>
-            <s-tooltip-provider :disabled="item.matchingSignature.length < 30">
+            <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -52,7 +52,7 @@
               <p v-if="item.authorityAccount === 'None'" class="my-2 text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+              <a v-else class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
                 {{ `@${item.authorityAccount}` }}
               </a>
             </span>

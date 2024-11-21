@@ -5,20 +5,20 @@
     </Subtitle>
     <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
       <div class="flex items-center space-x-2">
-        <s-radio-group-item id="formatted" value="formatted" />
-        <s-label for="formatted">
+        <s-radio-group-item id="formatted-body" value="formatted" />
+        <s-label for="formatted-body">
           Formatted
         </s-label>
       </div>
       <div class="flex items-center space-x-2">
-        <s-radio-group-item id="json" value="json" />
-        <s-label for="json">
+        <s-radio-group-item id="json-body" value="json" />
+        <s-label for="json-body">
           JSON
         </s-label>
       </div>
       <div class="flex items-center space-x-2">
-        <s-radio-group-item id="binary" value="binary" />
-        <s-label for="binary">
+        <s-radio-group-item id="binary-body" value="binary" />
+        <s-label for="binary-body">
           Binary
         </s-label>
       </div>
@@ -49,7 +49,7 @@
               <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
+              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
                 {{ `@${item.authorityAccount}` }}
               </a>
             </s-table-cell>

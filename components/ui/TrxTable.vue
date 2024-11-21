@@ -16,7 +16,7 @@
       <s-table-body>
         <s-table-row v-if="store.processedTransaction.value.transactionData.id !== ''">
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.id === 'string'" as-child>
                   <span
@@ -30,7 +30,7 @@
                   </span>
                 </s-tooltip-trigger>
                 <div v-else class="flex flex-col">
-                  <s-tooltip-provider>
+                  <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
                       <s-tooltip-trigger as-child>
                         <span
@@ -82,7 +82,7 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.sigDigest === 'string'" as-child>
                   <span
@@ -96,7 +96,7 @@
                   </span>
                 </s-tooltip-trigger>
                 <div v-else class="flex flex-col">
-                  <s-tooltip-provider>
+                  <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
                       <s-tooltip-trigger as-child>
                         <span
@@ -149,9 +149,9 @@
           </s-table-cell>
           <s-table-cell>
             <span class="inline-flex flex-col">
-              <span>Block number: <b>{{ store.processedTransaction.value.transactionData.tapos.refBlockNum }}</b></span>
+              <span>Reference block number: <span class="font-medium">{{ store.processedTransaction.value.transactionData.tapos.refBlockNum }}</span></span>
               <hr class="my-2">
-              <span>Block prefix: <b>{{ store.processedTransaction.value.transactionData.tapos.refBlockPrefix }}</b></span>
+              <span>Reference block prefix: <span class="font-medium">{{ store.processedTransaction.value.transactionData.tapos.refBlockPrefix }}</span></span>
             </span>
           </s-table-cell>
           <s-table-cell>{{ store.processedTransaction.value.transactionData.expirationTime }}</s-table-cell>

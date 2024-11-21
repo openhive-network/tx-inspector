@@ -3,20 +3,20 @@
     <div class="my-2">
       <s-radio-group v-model="radioState" default-value="json" class="flex mb-3">
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="json" value="json" />
-          <s-label for="json">
+          <s-radio-group-item id="json-form" value="json" />
+          <s-label for="json-form">
             JSON
           </s-label>
         </div>
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="hash" value="hash" />
-          <s-label for="hash">
+          <s-radio-group-item id="hash-form" value="hash" />
+          <s-label for="hash-form">
             Hash (ID)
           </s-label>
         </div>
         <div class="flex items-center space-x-2">
-          <s-radio-group-item id="binary" value="binary" />
-          <s-label for="binary">
+          <s-radio-group-item id="binary-form" value="binary" />
+          <s-label for="binary-form">
             Binary
           </s-label>
         </div>

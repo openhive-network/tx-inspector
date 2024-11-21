@@ -140,7 +140,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
   private getAccountLink (account: string): VNode {
     return h(
       NuxtLink,
-      { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue' },
+      { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue', target: '_blank' },
       () => `@${account} `
     );
   }

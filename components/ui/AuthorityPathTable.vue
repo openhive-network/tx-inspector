@@ -21,7 +21,7 @@
         </s-table-row>
         <s-table-row v-for="(item, index) in store.processedTransaction.value.signatureData" :key="index">
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -44,11 +44,17 @@
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
-          <s-table-cell :class="item.packType === EPackType.UNKNOWN ? 'text-red' : ''">
+          <s-table-cell
+            :class="{
+              'text-red capitalize font-semibold': item.packType === EPackType.UNKNOWN,
+              'capitalize': item.packType === EPackType.LEGACY,
+              'uppercase': item.packType === EPackType.HF26,
+            }"
+          >
             {{ item.packType }}
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -70,7 +76,7 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined'">
+            <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined' || item.authorityPath[0].account[0] === ''" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -109,7 +115,7 @@
               </s-tooltip>
             </s-tooltip-provider>
             <span v-for="(pathItem, key) in item.authorityPath" v-else :key="key">
-              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${Array.isArray(pathItem.account) ? pathItem.account[index] : pathItem.account}`">
+              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${Array.isArray(pathItem.account) ? pathItem.account[index] : pathItem.account}`" target="_blank">
                 {{ Array.isArray(pathItem.account) ? `@${pathItem.account[index]}` : `@${pathItem.account}` }}
               </a>
               {{ pathItem.authWeight ? `(${pathItem.authWeight.weight}/${pathItem.authWeight.auth}) ` : '' }}
