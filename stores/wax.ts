@@ -1,15 +1,12 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { type ApiTransaction, type IBinaryViewOutputData, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
+import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
 import { type TxInspectorEngine } from '#imports';
-import { EPackType, type TProcessedTransaction } from '~/types/wax';
-import type { IAuthorityPaths } from '~/utils/getAuthorityPath';
+import { type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
-    authorityPath: [] as IAuthorityPaths[],
     formattedOperations: [] as any[],
-    isSatisfied: false,
     isLoading: false,
     trxDialogOpen: false,
     id: undefined as string | undefined,
@@ -17,25 +14,24 @@ export const useWaxStore = defineStore('wax', {
     binary: undefined as THexString | undefined,
     qs: undefined as unknown as URLSearchParams,
     tx: undefined as string | undefined,
-    binaryVueOutputData: undefined as IBinaryViewOutputData | undefined,
+    binaryViewOutputData: undefined as IBinaryViewOutputData | undefined,
     processingTime: 0,
     processedTransaction: {
-      packType: EPackType.UNKNOWN,
-      signatures: [],
-      signatureKeys: [],
-      transactionId: '',
-      sigDigest: '',
-      requiredAuthorities: [],
-      authorityType: [],
-      operations: [],
-      signeesByKeys: [],
-      isValid: false,
-      tapos: { refBlockNum: 0, refBlockPrefix: 0 },
-      expiration: '',
-      authorityPath: [] as IAuthorityPaths[],
-      isSatisfied: false,
-      isSatisfiedForOperation: [] as boolean[]
-    } as unknown as TProcessedTransaction
+      signatureData: [] as ISignatureData[],
+      transactionData: {
+        id: '',
+        sigDigest: '',
+        tapos: { refBlockNum: 0, refBlockPrefix: 0 },
+        expirationTime: ''
+      } as ITransactionData,
+      requiredAuthoritiesData: [] as IRequiredAuthoritiesData[],
+      transactionBodyData: [] as ITransactionBodyData[],
+      transactionOtherData: {
+        isValid: false,
+        transaction: {} as ITransaction,
+        signeesByKeys: [[]] as string[][]
+      } as ITransactionOtherData
+    } as IProcessedTransaction
   }),
 
   actions: {
@@ -61,9 +57,9 @@ export const useWaxStore = defineStore('wax', {
 
       const tx = await inspector.processTransactionId(hash);
       this.$state.processedTransaction = tx;
-      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
-      this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
-      (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
+      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
+      this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
     },
 
     async handleTransactionFromJson (inspector: TxInspectorEngine, formatter: IWaxExtendableFormatter, json: string): Promise<void> {
@@ -71,9 +67,9 @@ export const useWaxStore = defineStore('wax', {
 
       const tx = await inspector.processTransaction(JSON.parse(String(json!.trim())) as unknown as ApiTransaction);
       this.$state.processedTransaction = tx;
-      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
-      this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
-      (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
+      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
+      this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
     },
 
     async handleTransactionFromBinary (inspector: TxInspectorEngine, formatter: IWaxExtendableFormatter, binary: string): Promise<void> {
@@ -81,9 +77,16 @@ export const useWaxStore = defineStore('wax', {
 
       const tx = await inspector.processTransactionBinary(binary);
       this.$state.processedTransaction = tx;
-      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transaction.transaction).operations;
-      this.$state.binaryVueOutputData = tx.transaction.binaryViewMetadata;
-      (this.$state.tx as unknown as ApiTransaction) = tx.transaction.toApiJson();
+      this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
+      this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
+    },
+
+    shortenString (string: string): string {
+      if (string.length > 30)
+        return `${string.slice(0, 5)}...${string.slice(-5)}`;
+
+      return string;
     }
   }
 });

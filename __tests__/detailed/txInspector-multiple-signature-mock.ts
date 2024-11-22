@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 
 import { test } from '../assets/jest-helper';
 import type { ApiTransaction } from "@hiveio/wax";
-import type { TProcessedTransaction } from "../../types/wax";
+import type { IProcessedTransaction } from "../../types/wax";
 
 let browser!: ChromiumBrowser;
 
@@ -15,7 +15,7 @@ test.describe('transaction inspector tests based on mock data with multiple sign
   });
 
   test('Testcase 1.3.2', async ({ analyzeAndCompareTransaction, mockData }) => {
-    const isMatching = await analyzeAndCompareTransaction(mockData.multipleOperationMultipleSignatureTransaction as ApiTransaction, mockData.multipleOperationMultipleSignatureExpectedResult as TProcessedTransaction);
+    const isMatching = await analyzeAndCompareTransaction(mockData.multipleOperationMultipleSignatureTransaction as ApiTransaction, mockData.multipleOperationMultipleSignatureExpectedResult as IProcessedTransaction);
 
     expect(isMatching).toBeTruthy();
   });

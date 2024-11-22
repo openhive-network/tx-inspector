@@ -14,6 +14,15 @@ export default defineConfig < ITxInspectorTest>({
       testMatch: '**/txInspector-base.ts'
     },
     {
+      name: 'tx_inspector_open_authority',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-open-authority-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/open_authority_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_single_signature',
       testDir: './__tests__/',
       testMatch: '**/txInspector-mock.ts',
@@ -22,6 +31,15 @@ export default defineConfig < ITxInspectorTest>({
         fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_data.json'
       }
 
+    },
+    {
+      name: 'tx_inspector_recover_account',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-recover-account-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/recover_account_data.json'
+      }
     },
     {
       name: 'tx_inspector_multiple_signature',

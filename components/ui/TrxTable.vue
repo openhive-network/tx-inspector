@@ -14,31 +14,31 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-if="store.processedTransaction.value.transactionId !== ''">
+        <s-table-row v-if="store.processedTransaction.value.transactionData.id !== ''">
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionId === 'string'" as-child>
+                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.id === 'string'" as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(store.processedTransaction.value.transactionId)"
+                    @click="waxStore.copy(store.processedTransaction.value.transactionData.id)"
                   >
                     <span>
-                      {{ `${store.processedTransaction.value.transactionId.slice(0, 5)}...${store.processedTransaction.value.transactionId.slice(-5)}` }}
+                      {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id) }}
                     </span>
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
                 <div v-else class="flex flex-col">
-                  <s-tooltip-provider>
+                  <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
                       <s-tooltip-trigger as-child>
                         <span
                           class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                          @click="waxStore.copy(store.processedTransaction.value.transactionId.hf26)"
+                          @click="waxStore.copy(store.processedTransaction.value.transactionData.id.hf26)"
                         >
                           <span>
-                            HF26: {{ `${store.processedTransaction.value.transactionId.hf26.slice(0, 5)}...${store.processedTransaction.value.transactionId.hf26.slice(-5)}` }}
+                            HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.hf26) }}
                           </span>
                           <v-icon size="md">mdi-content-copy</v-icon>
                         </span>
@@ -47,7 +47,7 @@
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 ID</span>
                           <hr class="my-2">
-                          <span>{{ store.processedTransaction.value.transactionId.legacy }}</span>
+                          <span>{{ store.processedTransaction.value.transactionData.id.hf26 }}</span>
                         </div>
                       </s-tooltip-content>
                     </s-tooltip>
@@ -55,10 +55,10 @@
                   <s-tooltip-trigger as-child>
                     <span
                       class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                      @click="waxStore.copy(store.processedTransaction.value.transactionId.legacy)"
+                      @click="waxStore.copy(store.processedTransaction.value.transactionData.id.legacy)"
                     >
                       <span>
-                        Legacy: {{ `${store.processedTransaction.value.transactionId.legacy.slice(0, 5)}...${store.processedTransaction.value.transactionId.legacy.slice(-5)}` }}
+                        Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.legacy) }}
                       </span>
                       <v-icon size="md">mdi-content-copy</v-icon>
                     </span>
@@ -67,44 +67,44 @@
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy ID</span>
                       <hr class="my-2">
-                      <span>{{ store.processedTransaction.value.transactionId.legacy }}</span>
+                      <span>{{ store.processedTransaction.value.transactionData.id.legacy }}</span>
                     </div>
                   </s-tooltip-content>
                 </div>
-                <s-tooltip-content v-if="typeof store.processedTransaction.value.transactionId === 'string'">
+                <s-tooltip-content v-if="typeof store.processedTransaction.value.transactionData.id === 'string'">
                   <div class="flex flex-col">
                     <span class="text-lg">ID</span>
                     <hr class="my-2">
-                    <span>{{ store.processedTransaction.value.transactionId }}</span>
+                    <span>{{ store.processedTransaction.value.transactionData.id }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.sigDigest === 'string'" as-child>
+                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.sigDigest === 'string'" as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(store.processedTransaction.value.sigDigest)"
+                    @click="waxStore.copy(store.processedTransaction.value.transactionData.sigDigest)"
                   >
                     <span>
-                      {{ `${store.processedTransaction.value.sigDigest.slice(0, 5)}...${store.processedTransaction.value.sigDigest.slice(-5)}` }}
+                      {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest) }}
                     </span>
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
                 <div v-else class="flex flex-col">
-                  <s-tooltip-provider>
+                  <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
                       <s-tooltip-trigger as-child>
                         <span
                           class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                          @click="waxStore.copy(store.processedTransaction.value.sigDigest.hf26)"
+                          @click="waxStore.copy(store.processedTransaction.value.transactionData.sigDigest.hf26)"
                         >
                           <span>
-                            HF26: {{ `${store.processedTransaction.value.sigDigest.hf26.slice(0, 5)}...${store.processedTransaction.value.sigDigest.hf26.slice(-5)}` }}
+                            HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.hf26) }}
                           </span>
                           <v-icon size="md">mdi-content-copy</v-icon>
                         </span>
@@ -113,7 +113,7 @@
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 Sig Digest</span>
                           <hr class="my-2">
-                          <span>{{ store.processedTransaction.value.sigDigest.hf26 }}</span>
+                          <span>{{ store.processedTransaction.value.transactionData.sigDigest.hf26 }}</span>
                         </div>
                       </s-tooltip-content>
                     </s-tooltip>
@@ -121,10 +121,10 @@
                   <s-tooltip-trigger as-child>
                     <span
                       class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer mb-3"
-                      @click="waxStore.copy(store.processedTransaction.value.sigDigest.legacy)"
+                      @click="waxStore.copy(store.processedTransaction.value.transactionData.sigDigest.legacy)"
                     >
                       <span>
-                        Legacy: {{ `${store.processedTransaction.value.sigDigest.legacy.slice(0, 5)}...${store.processedTransaction.value.sigDigest.legacy.slice(-5)}` }}
+                        Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.legacy) }}
                       </span>
                       <v-icon size="md">mdi-content-copy</v-icon>
                     </span>
@@ -133,15 +133,15 @@
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy Sig Digest</span>
                       <hr class="my-2">
-                      <span>{{ store.processedTransaction.value.sigDigest.legacy }}</span>
+                      <span>{{ store.processedTransaction.value.transactionData.sigDigest.legacy }}</span>
                     </div>
                   </s-tooltip-content>
                 </div>
-                <s-tooltip-content v-if="typeof store.processedTransaction.value.sigDigest === 'string'">
+                <s-tooltip-content v-if="typeof store.processedTransaction.value.transactionData.sigDigest === 'string'">
                   <div class="flex flex-col">
                     <span class="text-lg">Sig Digest</span>
                     <hr class="my-2">
-                    <span>{{ store.processedTransaction.value.sigDigest }}</span>
+                    <span>{{ store.processedTransaction.value.transactionData.sigDigest }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
@@ -149,12 +149,12 @@
           </s-table-cell>
           <s-table-cell>
             <span class="inline-flex flex-col">
-              <span>Block number: <b>{{ store.processedTransaction.value.tapos.refBlockNum }}</b></span>
+              <span>Reference block number: <span class="font-medium">{{ store.processedTransaction.value.transactionData.tapos.refBlockNum }}</span></span>
               <hr class="my-2">
-              <span>Block prefix: <b>{{ store.processedTransaction.value.tapos.refBlockPrefix }}</b></span>
+              <span>Reference block prefix: <span class="font-medium">{{ store.processedTransaction.value.transactionData.tapos.refBlockPrefix }}</span></span>
             </span>
           </s-table-cell>
-          <s-table-cell>{{ store.processedTransaction.value.expiration }}</s-table-cell>
+          <s-table-cell>{{ store.processedTransaction.value.transactionData.expirationTime }}</s-table-cell>
         </s-table-row>
       </s-table-body>
     </s-table>

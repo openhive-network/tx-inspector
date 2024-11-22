@@ -14,22 +14,22 @@
         </s-table-row>
       </s-table-header>
       <s-table-body>
-        <s-table-row v-if="store.processedTransaction.value.expiration !== '' && store.processedTransaction.value.signatures.length === 0">
+        <s-table-row v-if="store.processedTransaction.value.transactionData.expirationTime !== '' && store.processedTransaction.value.signatureData.length === 0">
           <s-table-cell class="text-red text-center font-semibold" colspan="4">
             No signatures found
           </s-table-cell>
         </s-table-row>
-        <s-table-row v-for="(signature, index) in store.processedTransaction.value.signatures" :key="index">
+        <s-table-row v-for="(item, index) in store.processedTransaction.value.signatureData" :key="index">
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(signature)"
+                    @click="waxStore.copy(item.signature)"
                   >
                     <span>
-                      {{ `${signature.slice(0, 5)}...${signature.slice(-5)}` }}
+                      {{ waxStore.shortenString(item.signature) }}
                     </span>
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
@@ -38,24 +38,30 @@
                   <div class="flex flex-col">
                     <span class="text-lg">Signature:</span>
                     <hr class="my-2">
-                    <span>{{ signature }}</span>
+                    <span>{{ item.signature }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
-          <s-table-cell :class="store.processedTransaction.value.packType === EPackType.UNKNOWN ? 'text-red' : ''">
-            {{ store.processedTransaction.value.packType }}
+          <s-table-cell
+            :class="{
+              'text-red capitalize font-semibold': item.packType === EPackType.UNKNOWN,
+              'capitalize': item.packType === EPackType.LEGACY,
+              'uppercase': item.packType === EPackType.HF26,
+            }"
+          >
+            {{ item.packType }}
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider>
+            <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
                     class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(store.processedTransaction.value.signatureKeys[index])"
+                    @click="waxStore.copy(item.publicKey)"
                   >
-                    <span>{{ `${store.processedTransaction.value.signatureKeys[index].slice(0, 5)}...${store.processedTransaction.value.signatureKeys[index].slice(-5)}` }}</span>
+                    <span>{{ waxStore.shortenString(item.publicKey) }}</span>
                     <v-icon size="md">mdi-content-copy</v-icon>
                   </span>
                 </s-tooltip-trigger>
@@ -63,14 +69,14 @@
                   <div class="flex flex-col">
                     <span class="text-lg">Public key:</span>
                     <hr class="my-2">
-                    <span>{{ store.processedTransaction.value.signatureKeys[index] }}</span>
+                    <span>{{ item.publicKey }}</span>
                   </div>
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="store.processedTransaction.value.authorityPath.length === 1 && store.processedTransaction.value.authorityPath![0].account[0] === ''">
+            <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined' || item.authorityPath[0].account[0] === ''" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -97,7 +103,7 @@
                         </v-icon>
                         The transaction has been signed with a incorrect public key.
                       </li>
-                      <li v-if="store.processedTransaction.value.packType === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
+                      <li v-if="item.packType === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
                         <v-icon class="mr-3">
                           mdi-lightbulb-question-outline
                         </v-icon>
@@ -108,12 +114,12 @@
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
-            <span v-for="(item, key) in store.processedTransaction.value.authorityPath" v-else :key="key">
-              <a class="text-blue" :href="`https://explore.openhive.network/@${Array.isArray(item.account) ? item.account[index] : item.account}`">
-                {{ Array.isArray(item.account) ? `@${item.account[index]}` : `@${item.account}` }}
+            <span v-for="(pathItem, key) in item.authorityPath" v-else :key="key">
+              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${Array.isArray(pathItem.account) ? pathItem.account[index] : pathItem.account}`" target="_blank">
+                {{ Array.isArray(pathItem.account) ? `@${pathItem.account[index]}` : `@${pathItem.account}` }}
               </a>
-              {{ item.authWeight ? `(${item.authWeight.weight}/${item.authWeight.auth}) ` : '' }}
-              <v-icon v-if="store.processedTransaction.value.authorityPath![key + 1]">mdi-chevron-right</v-icon>
+              {{ pathItem.authWeight ? `(${pathItem.authWeight.weight}/${pathItem.authWeight.auth}) ` : '' }}
+              <v-icon v-if="item.authorityPath[key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
         </s-table-row>
@@ -128,6 +134,8 @@ import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
+
+const config = useRuntimeConfig();
 </script>
 
 <style scoped>

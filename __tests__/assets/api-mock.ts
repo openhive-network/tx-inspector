@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
-import type { EPackType, ITransactionAnalyzerApi, TProcessedTransaction } from '../../types/wax.js';
+import type { EPackType, ITransactionAnalyzerApi, IProcessedTransaction } from '../../types/wax.js';
 
 export interface IMockData {
   validTxAuthority: boolean;
@@ -9,7 +9,7 @@ export interface IMockData {
   findAccounts: { paramsAccounts: string[], accounts: ApiAccount[] }[];
 }
 
-export type TMockExtendedData = IMockData & Record<string, ApiTransaction | TProcessedTransaction | ApiAccount[]>;
+export type TMockExtendedData = IMockData & Record<string, ApiTransaction | IProcessedTransaction | ApiAccount[]>;
 
 export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
   private mockData!: IMockData;

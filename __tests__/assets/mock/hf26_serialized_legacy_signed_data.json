@@ -198,34 +198,44 @@
     ]
   },
   "singleOperationExpectedResult": {
-    "signatures": [
-      "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295"
-    ],
-    "signatureKeys": [
-      "STM6wUsqNkFHQkmUnFgfERnmL9kiy9pw3NMDr3HppAuamdgghWYWE"
-    ],
-    "requiredAuthorities": {
-      "posting": {},
-      "active": {},
-      "owner": {},
-      "other": []
-    },
-    "requiredAuthoritiesForOperations": {
-      "posting": {},
-      "active": {},
-      "owner": {},
-      "other": []
-    },
-    "authorityType": [
+    "signatureData": [
       {
-        "level": "Active",
-        "accounts": {}
+        "signature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
+        "packType": "hf26",
+        "publicKey": "STM6wUsqNkFHQkmUnFgfERnmL9kiy9pw3NMDr3HppAuamdgghWYWE",
+        "authorityPath": [
+          {
+            "account": [
+              ""
+            ]
+          }
+        ]
       }
     ],
-    "operations": [
+    "transactionData": {
+      "id": "b1aed909c1e2d02ac754914f71f662b1182e9910",
+      "sigDigest": "c2339748854269b0ec71e729e56f3c2813a434531ca0dd6be4dffa406e8d27c9",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      },
+      "expirationTime": "2024-09-19T23:41:03"
+    },
+    "requiredAuthoritiesData": [
       {
-        "type": "transfer_operation",
-        "value": {
+        "matchingSignature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Active",
+        "isSatisfied": "false"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Active",
+        "isSatisfied": "false",
+        "operationType": "transfer_operation",
+        "operationContent": {
           "from": "andablackwidow",
           "to": "abw.pay",
           "amount": {
@@ -237,23 +247,9 @@
         }
       }
     ],
-    "signeesByKeys": null,
-    "isValid": true,
-    "packType": "hf26",
-    "id": "b1aed909c1e2d02ac754914f71f662b1182e9910",
-    "sigDigest": "c2339748854269b0ec71e729e56f3c2813a434531ca0dd6be4dffa406e8d27c9",
-    "expiration": "2024-09-19T23:41:03",
-    "tapos": {
-      "refBlockNum": 18666,
-      "refBlockPrefix": 2298275031
-    },
-    "path": [
-      {
-        "account": [
-          ""
-        ]
-      }
-    ],
-    "isSatisfied": false
+    "transactionOtherData": {
+      "isValid": true,
+      "signeesByKeys": null
+    }
   }
 }

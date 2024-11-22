@@ -1,14 +1,14 @@
 1. Positive cases:
 Signature specific tests
 
-1.1 Transaction without any signature (open authority) (example: temp account)
+1.1 ~~Transaction without any signature (open authority) (example: temp account)~~
 
 1.2 Transaction containing single signature:
 1.2.1 ~~Transaction containing single operation~~
 1.2.2 ~~Transaction containing multpile operations where reqiuired authorities are satisfied by given signature~~
 
 1.3 Transaction containing multiple signatures
-1.3.1 Transaction containing single operation (there are some blockchain operations requiring multiple authorities, i.e recover_account)
+1.3.1 ~~Transaction containing single operation (there are some blockchain operations requiring multiple authorities, i.e recover_account)~~
 1.3.2 ~~Transaction containing multiple operations (each operation requires separate authority)~~
 
 2. Positive cases:

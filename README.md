@@ -12,6 +12,10 @@ Make sure to install the dependencies:
 pnpm install
 ```
 
+## Configure
+
+Make sure to configure the project using `.env` file. Copy `.env.example` to `.env` and adjust your configuration for your needs.
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:

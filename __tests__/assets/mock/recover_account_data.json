@@ -1,0 +1,123 @@
+{
+  "validTxAuthority": true,
+  "keyReferences": [
+    {
+      "keys": ["STM5YBrnxRUtMURMRuuBjw5PSakYzNvn9NGyCR2tqVRTpEeY5CTnF", "STM6UMmS7E5w6jg9kziKZxYaQAKztKc8ke2gZijspDDPArW4fPQbG"],
+      "accounts": [[], []]
+    },
+    {
+      "keys": ["STM6UMmS7E5w6jg9kziKZxYaQAKztKc8ke2gZijspDDPArW4fPQbG", "STM5YBrnxRUtMURMRuuBjw5PSakYzNvn9NGyCR2tqVRTpEeY5CTnF"],
+      "accounts": [[], []]
+    }
+  ],
+  "findAccounts": [],
+  "packType": "hf26",
+  "recoverAccountTransaction": {
+    "ref_block_num": 50576,
+    "ref_block_prefix": 336252824,
+    "extensions": [],
+    "expiration": "2024-08-27T00:27:39",
+    "operations": [
+      {
+        "type": "recover_account_operation",
+        "value": {
+          "extensions": [],
+          "account_to_recover": "dlizara",
+          "new_owner_authority": {
+            "key_auths": [
+              [
+                "STM5YBrnxRUtMURMRuuBjw5PSakYzNvn9NGyCR2tqVRTpEeY5CTnF",
+                1
+              ]
+            ],
+            "account_auths": [],
+            "weight_threshold": 1
+          },
+          "recent_owner_authority": {
+            "key_auths": [
+              [
+                "STM6UMmS7E5w6jg9kziKZxYaQAKztKc8ke2gZijspDDPArW4fPQbG",
+                1
+              ]
+            ],
+            "account_auths": [],
+            "weight_threshold": 1
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "20199baa49d7668b21e482bb0c645c2334e2b8af50c17d29e8c11e0df31b4021dd0c0a6f39dce5d5c063d9ec2959ac0264fde6b71f48b55b42d9a1c9abfe11bcaf",
+      "1f3464f874057bf9417436efdb9464970bab9ac891dcc808420643b1da672812652eadef2562d1ac1ec1b10613d8f27ccc4b0d048d74e4e4c42a0189ebbb59c95b"
+    ]
+  },
+  "recoverAccountExpectedResult": {
+    "signatureData": [
+      {
+        "signature": "20199baa49d7668b21e482bb0c645c2334e2b8af50c17d29e8c11e0df31b4021dd0c0a6f39dce5d5c063d9ec2959ac0264fde6b71f48b55b42d9a1c9abfe11bcaf",
+        "packType": "hf26",
+        "publicKey": "STM6UMmS7E5w6jg9kziKZxYaQAKztKc8ke2gZijspDDPArW4fPQbG",
+        "authorityPath": []
+      },
+      {
+        "signature": "1f3464f874057bf9417436efdb9464970bab9ac891dcc808420643b1da672812652eadef2562d1ac1ec1b10613d8f27ccc4b0d048d74e4e4c42a0189ebbb59c95b",
+        "packType": "hf26",
+        "publicKey": "STM5YBrnxRUtMURMRuuBjw5PSakYzNvn9NGyCR2tqVRTpEeY5CTnF",
+        "authorityPath": []
+      }
+    ],
+    "transactionData": {
+      "id": "82b03d55e859bf45f38b90547a3bac4eab3e69f4",
+      "sigDigest": "e25900b2c2e54eafcd2a1157889e089050e0dab2e48eee996e1ddcb0d09b734f",
+      "tapos": {
+        "refBlockNum": 50576,
+        "refBlockPrefix": 336252824
+      },
+      "expirationTime": "2024-08-27T00:27:39"
+    },
+    "requiredAuthoritiesData": [
+      {
+        "matchingSignature": "None",
+        "authorityAccount": "None",
+        "authorityType": "Other",
+        "isSatisfied": "false"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "None",
+        "authorityType": "Other",
+        "isSatisfied": "false",
+        "operationType": "recover_account_operation",
+        "operationContent": {
+          "account_to_recover": "dlizara",
+          "new_owner_authority": {
+            "weight_threshold": 1,
+            "key_auths": [
+              [
+                "STM5YBrnxRUtMURMRuuBjw5PSakYzNvn9NGyCR2tqVRTpEeY5CTnF",
+                1
+              ]
+            ]
+          },
+          "recent_owner_authority": {
+            "weight_threshold": 1,
+            "key_auths": [
+              [
+                "STM6UMmS7E5w6jg9kziKZxYaQAKztKc8ke2gZijspDDPArW4fPQbG",
+                1
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "transactionOtherData": {
+      "isValid": true,
+      "signeesByKeys": [
+        [],
+        []
+      ]
+    }
+  }
+}

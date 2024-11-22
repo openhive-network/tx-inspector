@@ -16,8 +16,8 @@
         Endpoint URL:
         <s-dialog v-model:open="openEndpointUrl">
           <s-dialog-trigger as-child>
-            <span class="text-blue cursor-pointer hover:underline">
-              {{ endpointUrl }}
+            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
+              <span>{{ endpointUrl }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
@@ -34,9 +34,9 @@
                 </Button>
               </s-dialog-close>
               <s-dialog-close>
-                <Button @click="backEndpointUrlToDefault()">
+                <s-button variant="ghost" @click="backEndpointUrlToDefault()">
                   Back to default
-                </Button>
+                </s-button>
               </s-dialog-close>
             </s-dialog-footer>
           </s-dialog-content>
@@ -46,8 +46,8 @@
         Chain ID:
         <s-dialog v-model:open="openChainId">
           <s-dialog-trigger as-child>
-            <span class="text-blue cursor-pointer hover:underline">
-              {{ chainId }}
+            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
+              <span>{{ chainId }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
@@ -64,9 +64,9 @@
                 </Button>
               </s-dialog-close>
               <s-dialog-close>
-                <Button @click="backChainIdToDefault()">
+                <s-button variant="ghost" @click="backChainIdToDefault()">
                   Back to default
-                </Button>
+                </s-button>
               </s-dialog-close>
             </s-dialog-footer>
           </s-dialog-content>
@@ -84,6 +84,8 @@ import Button from '~/components/ui/Button.vue';
 const commitHash = COMMIT_HASH.slice(0, 7);
 
 const { $txInspector } = useNuxtApp();
+
+const config = useRuntimeConfig();
 
 const endpointUrl = ref($txInspector.config.apiEndpoint);
 const chainId = ref($txInspector.config.chainId);
@@ -103,7 +105,7 @@ const changeEndpointUrl = async (): Promise<void> => {
 };
 
 const backEndpointUrlToDefault = async (): Promise<void> => {
-  endpointUrl.value = 'https://api.hive.blog';
+  endpointUrl.value = config.public.defaultEndpointUrl;
   await $txInspector.changeConfig($txInspector.config.chainId, endpointUrl.value, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
@@ -124,7 +126,7 @@ const changeChainId = async (): Promise<void> => {
 };
 
 const backChainIdToDefault = async (): Promise<void> => {
-  chainId.value = 'beeab0de00000000000000000000000000000000000000000000000000000000';
+  chainId.value = config.public.defaultChainId;
   await $txInspector.changeConfig(chainId.value, $txInspector.config.apiEndpoint, store.id.value, store.json.value as unknown as ApiTransaction);
 };
 
