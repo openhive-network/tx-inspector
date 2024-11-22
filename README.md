@@ -112,9 +112,9 @@ Below is information about the individual fields in the tables. It explains what
     <th width="30%">Meaning</th>
   </tr>
   <tr>
-    <td rowspan="2">ID</td>
-    <td rowspan="2">ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
-    <td>ID in string format based on the pack type.</td>
+    <td>ID</td>
+    <td>ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
+    <td>ID in string format</td>
     <td> - </td>
   </tr>
   <tr>
@@ -152,62 +152,129 @@ Below is information about the individual fields in the tables. It explains what
 ### Required Authorities Section
 
 <table>
-<tr>
- <th width="20%">Field Name</th>
- <th width="30%">Description</th>
- <th width="20%">Potential Output</th>
- <th width="30%">Meaning</th>
-</tr>
-<tr>
- <td rowspan="3">Matching Signature</td>
- <td rowspan="3">Signature that corresponds to the authority accounts.</td>
- <td>Signature in string format</td>
- <td> - </td>
-</tr>
- <tr>
- <td>Open authority</td>
- <td>Open authority indicates that the transaction creator has no specified authorities in their account, allowing the transaction to be valid without any signature.</td>
- </tr>
- <tr>
- <td>Missing signature</td>
- <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid.</td>
- </tr>
-<tr>
- <td>Authority accounts</td>
- <td>Authority accounts specify which account's authority is required for the transaction.</td>
- <td>Authority accounts (link to more account information)</td>
- <td> - </td>
-</tr>
-<tr>
- <td rowspan="4">Authority Type</td>
- <td rowspan="4">Indicates one of the four possible authority types based on the account's authorities and public key.</td>
- <td>Posting</td>
- <td>The public key is within the posting authority of the required authority account.</td>
-</tr>
-<tr>
- <td>Owner</td>
- <td>The public key is within the owner authority of the required authority account.</td>
-</tr>
-<tr>
- <td>Active</td>
- <td>The public key is within the active authority of the required authority account.</td>
-</tr>
-<tr>
- <td>Other</td>
- <td>The public key can be within one of the authorities of the required authority account.</td>
-</tr>
-<tr>
- <td rowspan="3">Satisfied</td>
- <td rowspan="3">The Satisfied property indicates whether the required authorities are covered by the transaction signatures, also checking if the authority weight meets the required threshold.</td>
- <td>True</td>
- <td>This means that all the necessary conditions are met.</td>
-</tr>
-<tr>
- <td>False</td>
- <td>This means that the necessary conditions are not met.</td>
-</tr>
-<tr>
- <td>Blockchain Forced True</td>
- <td>This means that the application cannot confirm if the necessary conditions are met, but the transaction is valid, so assumed fulfillment is accepted.</td>
-</tr>
+  <tr>
+    <th width="20%">Field Name</th>
+    <th width="30%">Description</th>
+    <th width="20%">Potential Output</th>
+    <th width="30%">Meaning</th>
+  </tr>
+  <tr>
+    <td rowspan="3">Matching Signature</td>
+    <td rowspan="3">Signature that corresponds to the authority accounts.</td>
+    <td>Signature in string format</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td>Open authority</td>
+    <td>Open authority indicates that the transaction creator has no specified authorities in their account, allowing the transaction to be valid without any signature.</td>
+  </tr>
+  <tr>
+    <td>Missing signature</td>
+    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid.</td>
+  </tr>
+  <tr>
+    <td>Authority accounts</td>
+    <td>Authority accounts specify which account's authority is required for the transaction.</td>
+    <td>Authority accounts (link to more account information)</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td rowspan="4">Authority Type</td>
+    <td rowspan="4">Indicates one of the four possible authority types based on the account's authorities and public key.</td>
+    <td>Posting</td>
+    <td>The public key is within the posting authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Owner</td>
+    <td>The public key is within the owner authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Active</td>
+    <td>The public key is within the active authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Other</td>
+    <td>The public key can be within one of the authorities of the required authority account.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Satisfied</td>
+    <td rowspan="3">The Satisfied property indicates whether the required authorities are covered by the transaction signatures, also checking if the authority weight meets the required threshold.</td>
+    <td>True</td>
+    <td>This means that all the necessary conditions are met.</td>
+  </tr>
+  <tr>
+    <td>False</td>
+    <td>This means that the necessary conditions are not met.</td>
+  </tr>
+  <tr>
+    <td>Blockchain Forced True</td>
+    <td>This means that the application cannot confirm if the necessary conditions are met, but the transaction is valid, so assumed fulfillment is accepted.</td>
+  </tr>
+</table>
+
+### Body Section
+
+#### Formatted/JSON format
+
+<table>
+  <tr>
+    <th width="20%">Field Name</th>
+    <th width="30%">Description</th>
+    <th width="20%">Potential Output</th>
+    <th width="30%">Meaning</th>
+  </tr>
+  <tr>
+    <td>Authority Account</td>
+    <td>Specifies the account whose authority is required for the operation.</td>
+    <td>Authority account (link to more account information)</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td rowspan="4">Authority Type</td>
+    <td rowspan="4">Represents one of the four possible authority types for the operation, based on the account's authorities and public key.</td>
+    <td>Posting</td>
+    <td>The public key is part of the posting authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Owner</td>
+    <td>The public key is part of the owner authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Active</td>
+    <td>The public key is part of the active authority of the required authority account.</td>
+  </tr>
+  <tr>
+    <td>Other</td>
+    <td>The public key is included within one of the authorities of the required authority account.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Satisfied</td>
+    <td rowspan="3">Shows whether the required authorities for the operation are covered by the transaction signatures, checking if the authority weight meets the required threshold.</td>
+    <td>True</td>
+    <td>Indicates that all necessary conditions are met.</td>
+  </tr>
+  <tr>
+    <td>False</td>
+    <td>Indicates that the necessary conditions are not met.</td>
+  </tr>
+  <tr>
+    <td>Blockchain Forced True</td>
+    <td>Indicates that the application cannot verify if the necessary conditions are met, but the transaction is valid, assuming conditions are fulfilled.</td>
+  </tr>
+  <tr>
+    <td>Operation Type</td>
+    <td>The type of operation, such as a comment_operation.</td>
+    <td>Operation type in string format</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td rowspan="2">Operation Content</td>
+    <td rowspan="2">Contains the content of the operation in a chosen format.</td>
+    <td>Formatted operation</td>
+    <td>An operation in a formatted, easy-to-read format.</td>
+  </tr>
+  <tr>
+    <td>Operation JSON</td>
+    <td>An operation in raw JSON format.</td>
+  </tr>
 </table>
