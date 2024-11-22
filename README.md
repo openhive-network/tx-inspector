@@ -51,7 +51,7 @@ HOST=0.0.0.0 PORT=5005 node ./.output/server/index.mjs
 
 Below is information about the individual fields in the tables. It explains what they mean and how to read them correctly.
 
-**Signatures section**
+### Signatures section
 
 <table>
   <tr>
@@ -99,5 +99,52 @@ Below is information about the individual fields in the tables. It explains what
   <tr>
     <td>No authority path</td>
     <td>If the public key is incorrect or some of the accounts involved in the transaction have changed their authorities, then the algorithm cannot find any account linked to the public key. This means we cannot deduce the authority path. If some authorities have changed, the transaction is correct, but in other cases, it may indicate that the transaction is invalid.</td>
+  </tr>
+</table>
+
+### Transaction Section
+
+<table>
+  <tr>
+    <th width="20%">Field Name</th>
+    <th width="30%">Description</th>
+    <th width="20%">Potential Output</th>
+    <th width="30%">Meaning</th>
+  </tr>
+  <tr>
+    <td rowspan="2">ID</td>
+    <td rowspan="2">ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
+    <td>ID in string format based on the pack type.</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td>Both serialization variants ID.</td>
+    <td>If the pack type is unknown, the application is unable to determine which serialization ID to display, so it presents both variants.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Sig Digest</td>
+    <td rowspan="2">Sig Digest of the transaction, calculated based on chain ID.</td>
+    <td>Sig Digest in string format based on the pack type.</td>
+    <td> - </td>
+  </tr>
+    <tr>
+    <td>Both serialization variants Sig Digest.</td>
+    <td>If the pack type is unknown, the application is unable to determine which serialization Sig Digest to display, so it presents both variants.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">TaPoS</td>
+    <td rowspan="2">Transaction as Proof of Stake.</td>
+    <td>Reference Block Number.</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td>Reference Block Prefix.</td>
+    <td> - </td>
+  </tr>
+  <tr>
+    <td>Expiration Time</td>
+    <td>Expiration Time of the transaction.</td>
+    <td>Expiration Time in ISO 8601 format</td>
+    <td> - </td>
   </tr>
 </table>
