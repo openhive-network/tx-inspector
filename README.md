@@ -51,7 +51,7 @@ HOST=0.0.0.0 PORT=5005 node ./.output/server/index.mjs
 
 Below is information about the individual fields in the tables. It explains what they mean and how to read them correctly.
 
-### Signatures section
+### Signatures Section
 
 <table>
   <tr>
@@ -147,4 +147,67 @@ Below is information about the individual fields in the tables. It explains what
     <td>Expiration Time in ISO 8601 format</td>
     <td> - </td>
   </tr>
+</table>
+
+### Required Authorities Section
+
+<table>
+<tr>
+ <th width="20%">Field Name</th>
+ <th width="30%">Description</th>
+ <th width="20%">Potential Output</th>
+ <th width="30%">Meaning</th>
+</tr>
+<tr>
+ <td rowspan="3">Matching Signature</td>
+ <td rowspan="3">Signature that corresponds to the authority accounts.</td>
+ <td>Signature in string format</td>
+ <td> - </td>
+</tr>
+ <tr>
+ <td>Open authority</td>
+ <td>Open authority indicates that the transaction creator has no specified authorities in their account, allowing the transaction to be valid without any signature.</td>
+ </tr>
+ <tr>
+ <td>Missing signature</td>
+ <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid.</td>
+ </tr>
+<tr>
+ <td>Authority accounts</td>
+ <td>Authority accounts specify which account's authority is required for the transaction.</td>
+ <td>Authority accounts (link to more account information)</td>
+ <td> - </td>
+</tr>
+<tr>
+ <td rowspan="4">Authority Type</td>
+ <td rowspan="4">Indicates one of the four possible authority types based on the account's authorities and public key.</td>
+ <td>Posting</td>
+ <td>The public key is within the posting authority of the required authority account.</td>
+</tr>
+<tr>
+ <td>Owner</td>
+ <td>The public key is within the owner authority of the required authority account.</td>
+</tr>
+<tr>
+ <td>Active</td>
+ <td>The public key is within the active authority of the required authority account.</td>
+</tr>
+<tr>
+ <td>Other</td>
+ <td>The public key can be within one of the authorities of the required authority account.</td>
+</tr>
+<tr>
+ <td rowspan="3">Satisfied</td>
+ <td rowspan="3">The Satisfied property indicates whether the required authorities are covered by the transaction signatures, also checking if the authority weight meets the required threshold.</td>
+ <td>True</td>
+ <td>This means that all the necessary conditions are met.</td>
+</tr>
+<tr>
+ <td>False</td>
+ <td>This means that the necessary conditions are not met.</td>
+</tr>
+<tr>
+ <td>Blockchain Forced True</td>
+ <td>This means that the application cannot confirm if the necessary conditions are met, but the transaction is valid, so assumed fulfillment is accepted.</td>
+</tr>
 </table>
