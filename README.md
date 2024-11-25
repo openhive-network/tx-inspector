@@ -165,12 +165,12 @@ Below is information about the individual fields in the tables. It explains what
   <tr>
     <td rowspan="3">Matching Signature</td>
     <td rowspan="3">Signature that corresponds to the authority accounts.</td>
-    <td>Signature in string format</td>
+    <td>Signature in hex string format.</td>
     <td> - </td>
   </tr>
   <tr>
     <td>Open authority</td>
-    <td>Open authority indicates that the transaction creator has no specified authorities in their account, allowing the transaction to be valid without any signature.</td>
+    <td>Open authority indicates that the transaction creator has no specified authorities in their account. The transaction can still be considered valid and processed without requiring a signature.</td>
   </tr>
   <tr>
     <td>Missing signature</td>
@@ -202,17 +202,17 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="3">Satisfied</td>
-    <td rowspan="3">The Satisfied property indicates whether the required authorities are covered by the transaction signatures, also checking if the authority weight meets the required threshold.</td>
+    <td rowspan="3">The Satisfied property indicates whether the required authorities are covered by the transaction signatures (excluding open authority case). It also verifies that the authority weight meets or exceeds the required threshold.</td>
     <td>True</td>
-    <td>This means that all the necessary conditions are met.</td>
+    <td>This means that all the necessary conditions are fulfilled.</td>
   </tr>
   <tr>
     <td>False</td>
-    <td>This means that the necessary conditions are not met.</td>
+    <td>This means that not all the necessary conditions are fulfilled.</td>
   </tr>
   <tr>
     <td>Blockchain Forced True</td>
-    <td>This means that the application cannot confirm if the necessary conditions are met, but the transaction is valid, so assumed fulfillment is accepted.</td>
+    <td>This means that the application is unable to explicitly confirm if all the necessary conditions are met. However, the transaction is valid, so  we assume the fulfillment.</td>
   </tr>
 </table>
 
