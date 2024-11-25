@@ -117,8 +117,8 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="2">ID</td>
-    <td rowspan="2">ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
-    <td>The ID is presented in string format, which differs depending on the pack type.</td>
+    <td rowspan="2">ID of the transaction (transaction hash, which depends on the chosen pack type). Uniquely identifies the transaction within the blockchain network.</td>
+    <td>The ID is presented in hex string format.</td>
     <td> - </td>
   </tr>
   <tr>
@@ -127,8 +127,8 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="2">Sig Digest</td>
-    <td rowspan="2">Sig Digest of the transaction, calculated based on chain ID.</td>
-    <td>Sig Digest in string format based on the pack type.</td>
+    <td rowspan="2">The transaction digest calculated for signing purposes. It depends on transaction content (ID) and chosen chain ID.</td>
+    <td>Sig Digest in hex string format</td>
     <td> - </td>
   </tr>
     <tr>
@@ -137,7 +137,7 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="2">TaPoS</td>
-    <td rowspan="2">Transaction as Proof of Stake.</td>
+    <td rowspan="2">Part of transaction data, matching rules defined in Transaction as Proof of Stake to conform blockchain sanity. In HIVE TaPoS data are valid for 64k blocks. You can find more information <a href="https://hive.pages.syncad.com/wax-doc/typescript/transaction-and-operation/#transaction-as-proof-of-stake-tapos">here.</a> </td>
     <td>Reference Block Number.</td>
     <td>The Blockchain ref block num is a reference number that denotes the specific block within the blockchain that the transaction is linked to. This number helps in identifying the block's position within the chain, serving as a critical piece of data for transaction verification and tracking within the blockchain ecosystem.</td>
   </tr>
@@ -147,8 +147,8 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Expiration Time</td>
-    <td>The Expiration Time of the transaction indicates the time limit within which the transaction must be included in a block for it to be considered valid. The maximum of expiration time in HIVE blockchain is 1 hour.</td>
-    <td>The Expiration Time is presented in ISO 8601 format, which is a standardized way to represent date and time.</td>
+    <td>The Expiration Time of the transaction indicates the time limit within the transaction must be included in a block to be considered valid. The maximum of expiration time in HIVE blockchain is 1 hour.</td>
+    <td>The Expiration Time is presented in ISO 8601 format, which is a standardized way to represent date and time. It is an absolute value of date time.</td>
     <td> - </td>
   </tr>
 </table>
@@ -164,17 +164,17 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="3">Matching Signature</td>
-    <td rowspan="3">Signature that corresponds to the authority accounts.</td>
+    <td rowspan="3">Signature that corresponds to the transaction required authority.</td>
     <td>Signature in hex string format.</td>
     <td> - </td>
   </tr>
   <tr>
-    <td>Open authority</td>
+    <td>No signature present (open authority)</td>
     <td>Open authority indicates that the transaction creator has no specified authorities in their account. The transaction can still be considered valid and processed without requiring a signature.</td>
   </tr>
   <tr>
     <td>Missing signature</td>
-    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid.</td>
+    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid. It also can happen when the authority of creator account has been changed and public key decoded from signarture does not match any account anymore.</td>
   </tr>
   <tr>
     <td>Authority accounts</td>
