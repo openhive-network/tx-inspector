@@ -81,14 +81,10 @@ Below is information about the individual fields in the tables. It explains what
     <td>Unknown indicates that the application cannot correctly determine the pack type. It can happen for transactions not containing any assets (which are sensitive to chosen serialization mode).</td>
   </tr>
   <tr>
-    <td rowspan="2">Public key</td>
-    <td rowspan="2">The public key that was used to sign the transaction. The signature is generated based on this key.</td>
+    <td>Public key</td>
+    <td>The public key that was used to sign the transaction. The signature is generated based on this key.</td>
     <td>Public key in WIF format (with <code>STM</code> prefix).</td>
-    <td> - </td>
-  </tr>
-  <tr>
     <td>It can be unavailable in case of broken signature.</td>
-    <td> - </td>
   </tr>
   <tr>
     <td rowspan="3">Authority path</td>
@@ -139,7 +135,7 @@ Below is information about the individual fields in the tables. It explains what
     <td rowspan="2">TaPoS</td>
     <td rowspan="2">Part of transaction data, matching rules defined in Transaction as Proof of Stake to conform blockchain sanity. In HIVE TaPoS data are valid for 64k blocks. You can find more information <a href="https://hive.pages.syncad.com/wax-doc/typescript/transaction-and-operation/#transaction-as-proof-of-stake-tapos">here.</a> </td>
     <td>Reference Block Number.</td>
-    <td>The Blockchain ref block num is a reference number that denotes the specific block within the blockchain that the transaction is linked to. This number helps in identifying the block's position within the chain, serving as a critical piece of data for transaction verification and tracking within the blockchain ecosystem.</td>
+    <td>The Blockchain ref block num is a reference number that indicates one of the most recent remembered blocks within the blockchain. This number helps in identifying the block's position within the chain, serving as a critical piece of data for transaction verification and tracking within the blockchain ecosystem.</td>
   </tr>
   <tr>
     <td>Reference Block Prefix.</td>
@@ -154,6 +150,7 @@ Below is information about the individual fields in the tables. It explains what
 </table>
 
 ### Required Authorities Section
+
 
 <table>
   <tr>
@@ -174,17 +171,16 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Missing signature</td>
-    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid. It also can happen when the authority of creator account has been changed and public key decoded from signarture does not match any account anymore.</td>
+    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid. It also can happen when the authority of creator account has been changed and public key decoded from signature does not match any account anymore.</td>
   </tr>
   <tr>
-    <td>Authority accounts</td>
+    <td rowspan="5">Authority</td>
     <td>Authority accounts specify which account's authority is required for the transaction.</td>
     <td>Authority accounts (link to more account information)</td>
-    <td> - </td>
+    <td>Account name included in required authorities for the transaction. By clicking on the account name, users are seamlessly redirected to our block explorer application, providing access to detailed account information.</td>
   </tr>
   <tr>
-    <td rowspan="4">Authority Type</td>
-    <td rowspan="4">Indicates one of the four possible authority types based on the account's authorities and public key.</td>
+    <td rowspan="4">Authority type indicates one of the four possible authority types based on the account's authorities and public key.</td>
     <td>Posting</td>
     <td>The public key is within the posting authority of the required authority account.</td>
   </tr>
@@ -212,7 +208,7 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Blockchain Forced True</td>
-    <td>This means that the application is unable to explicitly confirm if all the necessary conditions are met. However, the transaction is valid, so  we assume the fulfillment.</td>
+    <td>This means that the application is unable to explicitly confirm if all the necessary conditions are met. However, the transaction is valid, so we assume the fulfillment.</td>
   </tr>
 </table>
 
