@@ -63,12 +63,12 @@ Below is information about the individual fields in the tables. It explains what
   <tr>
     <td>Signature</td>
     <td>The signature generated from the public key used to sign the transaction.</td>
-    <td>Signature in string format</td>
+    <td>Signature in hex string format.</td>
     <td> - </td>
   </tr>
   <tr>
     <td rowspan="3">Pack</td>
-    <td rowspan="3">Type of pack, based on how the transaction has been serialized.</td>
+    <td rowspan="3">Determines how the transaction has been serialized. There are allowed two serialization forms: Legacy (where assets have been serialized, using their token textual names i.e. "1.000000 VESTS"); HF26 (where assets have been serialized, using NAI form i.e. <code>{"amount":"1000000","precision":6,"nai":"@@000000037"}</code>).</td>
     <td>HF26</td>
     <td>HF26 serialization used for the transaction.</td>
   </tr>
@@ -78,27 +78,31 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Unknown</td>
-    <td>Unknown indicates that the application cannot correctly determine the pack type. The transaction is likely incorrect in this situation.</td>
+    <td>Unknown indicates that the application cannot correctly determine the pack type. It can happen for transactions not containing any assets (which are sensitive to chosen serialization mode).</td>
   </tr>
   <tr>
-    <td>Public key</td>
-    <td>The public key that was used to sign the transaction. The signature is generated based on this key.</td>
+    <td rowspan="2">Public key</td>
+    <td rowspan="2">The public key that was used to sign the transaction. The signature is generated based on this key.</td>
     <td>Public key in WIF format (with <code>STM</code> prefix).</td>
     <td> - </td>
   </tr>
   <tr>
+    <td>It can be unavailable in case of broken signature.</td>
+    <td> - </td>
+  </tr>
+  <tr>
     <td rowspan="3">Authority path</td>
-    <td rowspan="3">The authority path determination is based on the public key. The algorithm iterates through accounts on the blockchain that are involved in the transaction and checks their authority to find the correct public key, display all authority dependents, and finally identify the account that signed the transaction.</td>
+    <td rowspan="3">The authority path evaluation starts from matching blockchain accounts to the public key calculated from signature. Then the algorithm iterates through account list retrieved in previous step and checks their authority, to find matching public key. It visits also all account based authority entries defined in given account to finally find the account required to satisfy transaction authority.</td>
     <td>Direct signing</td>
-    <td>If the transaction was signed directly by the transaction creator, the authority path will include only a single account. This means that the public key is included in this account's authorities.</td>
+    <td>If the transaction was signed by the account directly responsible for its required authority, the authority path will include only this single account. This means that the public key is included in this account's authorities.</td>
   </tr>
   <tr>
     <td>Delegated authority</td>
-    <td>Delegated authority means that the transaction creator did not sign the transaction themselves. Instead, they delegated the signing to another account, referred to as a single nest level. The blockchain accepts a maximum of 2 nest levels (which means that the authority path in a correct transaction can have a maximum of 3 accounts). The authority path will then display from the account that signed the transaction to the account that created the transaction, showing all dependents, including authority weight and required threshold.</td>
+    <td>Delegated authority means that the account which signed the transaction is different than account required to satisfy its authority. The blockchain accepts a maximum of 2 levels of authority delegations (which means that the authority path in a correct transaction can have a maximum of 3 accounts). The authority path will contain entries, starting from the signer account, then showing delegated accounts up to required authority account. Each path entry contains information related to weight, threshold and authority level specified at given authority definition.</td>
   </tr>
   <tr>
     <td>No authority path</td>
-    <td>If the public key is incorrect or some of the accounts involved in the transaction have changed their authorities, then the algorithm cannot find any account linked to the public key. This means we cannot deduce the authority path. If some authorities have changed, the transaction is correct, but in other cases, it may indicate that the transaction is invalid.</td>
+    <td>Authority path can be not determined, when public key calculated from signature is invalid or does not match to any blockchain account. There can be no matching account for given public key because the account authority was changed over time and this key is not referenced anymore. That can happen for old valid blockchain transactions specific to accounts which changed their authority.</td>
   </tr>
 </table>
 
