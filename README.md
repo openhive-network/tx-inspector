@@ -112,9 +112,9 @@ Below is information about the individual fields in the tables. It explains what
     <th width="30%">Meaning</th>
   </tr>
   <tr>
-    <td>ID</td>
-    <td>ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
-    <td>ID in string format</td>
+    <td rowspan="2">ID</td>
+    <td rowspan="2">ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
+    <td>ID in string format based on the pack type.</td>
     <td> - </td>
   </tr>
   <tr>
