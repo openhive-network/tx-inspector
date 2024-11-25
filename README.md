@@ -285,7 +285,4 @@ Below is information about the individual fields in the tables. It explains what
 
 #### Binary View Format
 
-The binary view offers a hexadecimal (hex) representation of the transaction.
-The user can select a specific range and copy its binary or hex.
-The component highlights the selected hex range within the transaction's JSON representation.
-Additionally, as the user hovers over and follows the highlighted colors, they can see which hex parts correspond to the actual transaction JSON.
+The binary view provides users with a detailed hexadecimal (hex) representation of a transaction, offering a clear and precise insight into its raw data format. Users have the flexibility to select specific ranges of the hex data, allowing them to copy either the binary or hex values as needed. As they interact with the data, the component dynamically highlights the selected hex range within the transaction's JSON representation, creating an intuitive visual link between the hex data and its structured JSON format. This feature enhances user understanding by enabling them to hover over and observe highlighted colors that map the hex parts directly to the corresponding elements in the transaction JSON. This way, the tranasction analysis is very simple and fast.
