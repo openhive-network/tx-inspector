@@ -278,3 +278,10 @@ Below is information about the individual fields in the tables. It explains what
     <td>An operation in raw JSON format.</td>
   </tr>
 </table>
+
+#### Binary View Format
+
+The binary view offers a hexadecimal (hex) representation of the transaction.
+The user can select a specific range and copy its binary or hex.
+The component highlights the selected hex range within the transaction's JSON representation.
+Additionally, as the user hovers over and follows the highlighted colors, they can see which hex parts correspond to the actual transaction JSON.
