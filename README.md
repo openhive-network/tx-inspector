@@ -118,12 +118,12 @@ Below is information about the individual fields in the tables. It explains what
   <tr>
     <td rowspan="2">ID</td>
     <td rowspan="2">ID of the transaction. Uniquely identifies the transaction within the blockchain network.</td>
-    <td>ID in string format based on the pack type.</td>
+    <td>The ID is presented in string format, which differs depending on the pack type.</td>
     <td> - </td>
   </tr>
   <tr>
-    <td>Both serialization variants ID.</td>
-    <td>If the pack type is unknown, the application is unable to determine which serialization ID to display, so it presents both variants.</td>
+    <td>The application displays the ID for both pack type variants, allowing users to see the representation for each type when the specific pack type is unknown.</td>
+    <td>In situations where the pack type is unknown, the application faces uncertainty in selecting the appropriate serialization ID to display. To address this, it presents both serialization ID variants.</td>
   </tr>
   <tr>
     <td rowspan="2">Sig Digest</td>
@@ -132,23 +132,23 @@ Below is information about the individual fields in the tables. It explains what
     <td> - </td>
   </tr>
     <tr>
-    <td>Both serialization variants Sig Digest.</td>
-    <td>If the pack type is unknown, the application is unable to determine which serialization Sig Digest to display, so it presents both variants.</td>
+    <td>The application displays the Sig Digest for both pack type variants, allowing users to see the representation for each type when the specific pack type is unknown.</td>
+    <td>In situations where the pack type is unknown, the application faces uncertainty in selecting the appropriate serialization Sig Digest to display. To address this, it presents both serialization Sig Digest variants.</td>
   </tr>
   <tr>
     <td rowspan="2">TaPoS</td>
     <td rowspan="2">Transaction as Proof of Stake.</td>
     <td>Reference Block Number.</td>
-    <td> - </td>
+    <td>The Blockchain ref block num is a reference number that denotes the specific block within the blockchain that the transaction is linked to. This number helps in identifying the block's position within the chain, serving as a critical piece of data for transaction verification and tracking within the blockchain ecosystem.</td>
   </tr>
   <tr>
     <td>Reference Block Prefix.</td>
-    <td> - </td>
+    <td>The Blockchain ref block prefix is a unique value extracted from the reference block header, providing a concise point of reference for transactions. This prefix aids in verifying the transaction's placement and association with a specific block in the blockchain.</td>
   </tr>
   <tr>
     <td>Expiration Time</td>
-    <td>Expiration Time of the transaction.</td>
-    <td>Expiration Time in ISO 8601 format</td>
+    <td>The Expiration Time of the transaction indicates the time limit within which the transaction must be included in a block for it to be considered valid. The maximum of expiration time in HIVE blockchain is 1 hour.</td>
+    <td>The Expiration Time is presented in ISO 8601 format, which is a standardized way to represent date and time.</td>
     <td> - </td>
   </tr>
 </table>
