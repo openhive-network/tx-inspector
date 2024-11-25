@@ -253,33 +253,33 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="3">Satisfied</td>
-    <td rowspan="3">Shows whether the required authorities for the operation are covered by the transaction signatures, checking if the authority weight meets the required threshold.</td>
+    <td rowspan="3">The Satisfied property indicates whether the required authorities for given operation are covered by the transaction signatures (excluding open authority case). It also verifies that the authority weight meets or exceeds the required threshold.</td>
     <td>True</td>
-    <td>Indicates that all necessary conditions are met.</td>
+    <td>This means that all the necessary conditions are fulfilled.</td>
   </tr>
   <tr>
     <td>False</td>
-    <td>Indicates that the necessary conditions are not met.</td>
+    <td>This means that not all the necessary conditions are fulfilled.</td>
   </tr>
   <tr>
     <td>Blockchain Forced True</td>
-    <td>Indicates that the application cannot verify if the necessary conditions are met, but the transaction is valid, assuming conditions are fulfilled.</td>
+    <td>This means that the application is unable to explicitly confirm if all the necessary conditions are met. However, the transaction is valid, so  we assume the fulfillment.</td>
   </tr>
   <tr>
     <td>Operation Type</td>
     <td>The type of operation, such as a comment_operation.</td>
-    <td>Operation type in string format</td>
+    <td>Operation type in plain text string format</td>
     <td> - </td>
   </tr>
   <tr>
     <td rowspan="2">Operation Content</td>
-    <td rowspan="2">Contains the content of the operation in a chosen format.</td>
+    <td rowspan="2">It contains the content of the operation in a chosen format, allowing for customizable representation of the operation details.</td>
     <td>Formatted operation</td>
-    <td>An operation in a formatted, easy-to-read format.</td>
+    <td>A formatted operation refers to the presentation of operation details in a structured and organized way, making it simple to read the operation purpose.</td>
   </tr>
   <tr>
     <td>Operation JSON</td>
-    <td>An operation in raw JSON format.</td>
+    <td>An operation in raw JSON format is a representation of operation details using JSON without any modifications or enhancements.</td>
   </tr>
 </table>
 
