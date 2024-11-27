@@ -88,7 +88,7 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="3">Authority path</td>
-    <td rowspan="3">The authority path evaluation starts from matching blockchain accounts to the public key calculated from signature. Then the algorithm iterates through account list retrieved in previous step and checks their authority, to find matching public key. It visits also all account based authority entries defined in given account to finally find the account required to satisfy transaction authority.</td>
+    <td rowspan="3">The authority path evaluation starts from matching blockchain account to the public key calculated from signature. Then the algorithm iterates through account list retrieved in previous step and checks their authority, to find matching public key. It visits also all account based authority entries defined in given account to finally find the account required to satisfy transaction authority.</td>
     <td>Direct signing</td>
     <td>If the transaction was signed by the account directly responsible for its required authority, the authority path will include only this single account. This means that the public key is included in this account's authorities.</td>
   </tr>
@@ -177,7 +177,7 @@ Below is information about the individual fields in the tables. It explains what
     <td rowspan="5">Authority</td>
     <td>Authority accounts specify which account's authority is required for the transaction.</td>
     <td>Authority accounts (link to more account information)</td>
-    <td>Account name included in required authorities for the transaction. By clicking on the account name, users are seamlessly redirected to our block explorer application, providing access to detailed account information.</td>
+    <td>Account names included in required authorities for the transaction. By clicking on the account name, users are seamlessly redirected to our block explorer application, providing access to detailed account information.</td>
   </tr>
   <tr>
     <td rowspan="4">Authority type indicates one of the four possible authority types based on the account's authorities and public key.</td>
@@ -281,4 +281,4 @@ Below is information about the individual fields in the tables. It explains what
 
 #### Binary View Format
 
-The binary view provides users with a detailed hexadecimal (hex) representation of a transaction, offering a clear and precise insight into its raw data format. Users have the flexibility to select specific ranges of the hex data, allowing them to copy either the binary or hex values as needed. As they interact with the data, the component dynamically highlights the selected hex range within the transaction's JSON representation, creating an intuitive visual link between the hex data and its structured JSON format. This feature enhances user understanding by enabling them to hover over and observe highlighted colors that map the hex parts directly to the corresponding elements in the transaction JSON. This way, the tranasction analysis is very simple and fast.
+The binary (non-textual) view provides users with a detailed hexadecimal (hex) representation of a transaction, offering a clear and precise insight into its raw data format. Users have the flexibility to select specific ranges of the hex data, allowing them to copy either the binary or hex values as needed. As they interact with the data, the component dynamically highlights the selected hex range within the transaction's JSON representation, creating an intuitive visual link between the hex data and its structured JSON format. This feature enhances user understanding by enabling them to hover over and observe highlighted colors that map the hex parts directly to the corresponding elements in the transaction JSON. This way, the tranasction analysis is very simple and fast.
