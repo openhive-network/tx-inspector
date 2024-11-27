@@ -135,11 +135,11 @@ Below is information about the individual fields in the tables. It explains what
     <td rowspan="2">TaPoS</td>
     <td rowspan="2">Part of transaction data, matching rules defined in Transaction as Proof of Stake to conform blockchain sanity. In HIVE TaPoS data are valid for 64k blocks. You can find more information <a href="https://hive.pages.syncad.com/wax-doc/typescript/transaction-and-operation/#transaction-as-proof-of-stake-tapos">here.</a> </td>
     <td>Reference Block Number.</td>
-    <td>The Blockchain ref block num is a reference number that indicates one of the most recent remembered blocks within the blockchain. This number helps in identifying the block's position within the chain, serving as a critical piece of data for transaction verification and tracking within the blockchain ecosystem.</td>
+    <td>This is the least significant 16 bits of the block number. It uniquely points to one of the 65536 blocks preceding the block where the transaction is included.</td>
   </tr>
   <tr>
     <td>Reference Block Prefix.</td>
-    <td>The Blockchain ref block prefix is a unique value extracted from the reference block header, providing a concise point of reference for transactions. This prefix aids in verifying the transaction's placement and association with a specific block in the blockchain.</td>
+    <td>This is a single 32-bit word from the hash of the block indicated by the Ref Block Num.</td>
   </tr>
   <tr>
     <td>Expiration Time</td>
@@ -171,7 +171,7 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Missing signature</td>
-    <td>Missing signature signifies that there is no signature for the required authorities for the transaction, likely indicating that the transaction is invalid. It also can happen when the authority of creator account has been changed and public key decoded from signature does not match any account anymore.</td>
+    <td>Missing signature informs that there is no matching signature to the required authorities, likely indicating that the transaction is invalid. It also can happen when the authority of creator account has been changed and public key decoded from signature does not match any account anymore.</td>
   </tr>
   <tr>
     <td rowspan="5">Authority</td>
