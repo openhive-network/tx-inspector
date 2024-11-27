@@ -56,7 +56,7 @@
                 Change chain ID
               </s-dialog-title>
             </s-dialog-header>
-            <s-input v-model="chainId" placeholder="Endpoint url" @keydown.enter="handleChainIdKeydown" />
+            <s-input v-model="chainId" placeholder="Chain ID" @keydown.enter="handleChainIdKeydown" />
             <s-dialog-footer class="flex flex-row-reverse sm:justify-between">
               <s-dialog-close as-child>
                 <Button @click="changeChainId()">
