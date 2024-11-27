@@ -35,7 +35,7 @@ export class TransactionAnalyzerApiMock implements ITransactionAnalyzerApi {
     return { accounts: item ? item.accounts : [] };
   }
 
-  public getPackType (): EPackType {
+  public getPackType (): EPackType | EPackType[] {
     return this.mockData.packType;
   }
 }

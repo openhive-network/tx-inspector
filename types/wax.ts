@@ -68,7 +68,7 @@ export interface ITransactionRequiredAuthorities {
 
 export interface ISignatureData {
   signature: string;
-  packType: EPackType;
+  packType: string;
   publicKey: string;
   authorityPath: IAuthorityPaths[] | undefined;
 }
@@ -110,11 +110,11 @@ export interface IProcessedTransaction {
 }
 
 export interface ITransactionAnalyzerApi {
-  verifyAuthority (params: { trx: ApiTransaction, pack: EPackType }): Promise<{ valid: boolean }> | { valid: boolean };
+  verifyAuthority (params: { trx: ApiTransaction, pack: string }): Promise<{ valid: boolean }> | { valid: boolean };
 
   getKeyReferences (params: { keys: string[] }): Promise<{ accounts: string[][] }> | { accounts: string[][] };
 
   findAccounts (params: { accounts: string[] }): Promise<{ accounts: ApiAccount[] }> | { accounts: ApiAccount[] };
 
-  getPackType? (): EPackType;
+  getPackType? (): EPackType | EPackType[];
 }

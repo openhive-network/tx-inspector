@@ -16,8 +16,8 @@
         Endpoint URL:
         <s-dialog v-model:open="openEndpointUrl">
           <s-dialog-trigger as-child>
-            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
-              <span>{{ endpointUrl }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
+            <span class="text-blue cursor-pointer hover:underline">
+              <span>{{ endpointUrl }} <v-icon size="16px">mdi-note-edit-outline</v-icon></span>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
@@ -46,8 +46,8 @@
         Chain ID:
         <s-dialog v-model:open="openChainId">
           <s-dialog-trigger as-child>
-            <span class="inline-flex gap-1 text-blue cursor-pointer hover:underline">
-              <span>{{ chainId }}</span> <v-icon size="16px">mdi-note-edit-outline</v-icon>
+            <span class="text-blue cursor-pointer hover:underline">
+              <span>{{ chainId }} <v-icon size="16px">mdi-note-edit-outline</v-icon></span>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>
