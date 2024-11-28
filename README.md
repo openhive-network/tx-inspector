@@ -175,12 +175,12 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td rowspan="5">Authority</td>
-    <td>Authority accounts specify which account's authority is required for the transaction.</td>
+    <td>The Account field points name of the account retrieved from transaction required authority set.</td>
     <td>Authority accounts (link to more account information)</td>
     <td>Account names included in required authorities for the transaction. By clicking on the account name, users are seamlessly redirected to our block explorer application, providing access to detailed account information.</td>
   </tr>
   <tr>
-    <td rowspan="4">Authority type indicates one of the four possible authority types based on the account's authorities and public key.</td>
+    <td rowspan="4">The Type field points authority type retrieved from transaction required authority set.</td>
     <td>Posting</td>
     <td>The public key is within the posting authority of the required authority account.</td>
   </tr>
@@ -225,13 +225,13 @@ Below is information about the individual fields in the tables. It explains what
   </tr>
   <tr>
     <td>Authority Account</td>
-    <td>Specifies the account whose authority is required for the operation.</td>
+    <td>The Account field points name of the account retrieved from transaction required authority set for specific operation.</td>
     <td>Authority account (link to more account information)</td>
     <td> - </td>
   </tr>
   <tr>
     <td rowspan="4">Authority Type</td>
-    <td rowspan="4">Represents one of the four possible authority types for the operation, based on the account's authorities and public key.</td>
+    <td rowspan="4">The Type field points authority type retrieved from transaction required authority set for specific operation.</td>
     <td>Posting</td>
     <td>The public key is part of the posting authority of the required authority account.</td>
   </tr>
