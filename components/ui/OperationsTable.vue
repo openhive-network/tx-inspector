@@ -3,32 +3,92 @@
     <Subtitle class="mb-3">
       Body:
     </Subtitle>
-    <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="formatted-body" value="formatted" />
-        <s-label for="formatted-body">
-          Formatted
-        </s-label>
-      </div>
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="json-body" value="json" />
-        <s-label for="json-body">
-          JSON
-        </s-label>
-      </div>
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="binary-body" value="binary" />
-        <s-label for="binary-body">
-          Binary
-        </s-label>
-      </div>
-    </s-radio-group>
+    <div class="flex">
+      <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="formatted-body" value="formatted" />
+          <s-label for="formatted-body">
+            Formatted
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="json-body" value="json" />
+          <s-label for="json-body">
+            JSON
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="binary-body" value="binary" />
+          <s-tooltip-provider :delayDuration="350">
+            <s-tooltip>
+              <s-tooltip-trigger as-child>
+                <s-label for="binary-body" class="inline-flex items-center">
+                  <span>Binary</span>
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </s-label>
+              </s-tooltip-trigger>
+              <s-tooltip-content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Binary format</span>
+                  <hr class="my-2">
+                  <span class="leading-6">
+                    <b>The binary view displays transaction in hexadecimal format. You can:</b>
+                    <ul class="mt-2">
+                      <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
+                      <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
+                    </ul><br>
+                    <b>Some transactions (containing assets) are serialization sensitive:</b>
+                    <ul class="mt-2">
+                      <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
+                      <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
+                      <li v-if="store.processedTransaction.value.signatureData[0].packType === EPackType.UNKNOWN">
+                        <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
+                      </li>
+                      <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
+                    </ul>
+                  </span>
+                </div>
+              </s-tooltip-content>
+            </s-tooltip>
+          </s-tooltip-provider>
+        </div>
+      </s-radio-group>
+      <s-radio-group v-if="radioState === 'binary'" v-model="binaryRadioState" class="ml-4 pl-4 flex gap-6 border-l-2">
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="hf26-binary" value="hf26-binary" />
+          <s-label for="hf26-binary">
+            HF26
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="legacy-binary" value="legacy-binary" />
+          <s-label for="legacy-binary">
+            Legacy
+          </s-label>
+        </div>
+      </s-radio-group>
+    </div>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <div v-else>
+      <div v-if="radioState === 'binary'" class="text-gray-200 px-6 py-3 my-6 border-l-4">
+        <p class="text-sm">
+          You can see transaction binary form displayed as hex byte values. You can select whole fields or binary buffer ranges to copy contents from it.
+        </p>
+      </div>
       <BinaryView
         v-if="store.binaryViewOutputData.value"
-        v-show="radioState === 'binary'"
+        v-show="radioState === 'binary' && binaryRadioState === 'hf26-binary'"
         :data="store.binaryViewOutputData.value"
+        dark
+        class="mb-16"
+        @copy="toast.success('Copied selected range to clipboard')"
+      />
+      <BinaryView
+        v-if="store.binaryViewOutputData.value"
+        v-show="radioState === 'binary' && binaryRadioState === 'legacy-binary'"
+        :data="store.legacyBinaryViewOutputData.value"
         dark
         class="mb-16"
         @copy="toast.success('Copied selected range to clipboard')"
@@ -127,7 +187,7 @@
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
 import Subtitle from './Subtitle.vue';
-import { ESatisfiedState } from '~/types/wax';
+import { EPackType, ESatisfiedState } from '~/types/wax';
 
 const wax = useWaxStore();
 const store = storeToRefs(wax);
@@ -135,6 +195,12 @@ const store = storeToRefs(wax);
 const config = useRuntimeConfig();
 
 const radioState = ref('formatted');
+
+const binaryRadioState = ref('hf26-binary');
+
+watch(() => wax.$state.defaultBinaryRadioState, (newValue) => {
+  binaryRadioState.value = newValue;
+});
 </script>
 
 <style scoped>
