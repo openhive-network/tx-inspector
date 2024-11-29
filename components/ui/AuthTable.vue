@@ -75,6 +75,25 @@
             <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
               mdi-close
             </v-icon>
+            <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <v-icon color="yellow">
+                    mdi-alert-circle-check-outline
+                  </v-icon>
+                </s-tooltip-trigger>
+                <s-tooltip-content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Blockchain Forced True</span>
+                    <hr class="my-2">
+                    <span class="leading-6">
+                      The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
+                      but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                    </span>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
           </s-table-cell>
         </s-table-row>
       </s-table-body>

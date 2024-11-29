@@ -145,7 +145,7 @@ export class TransactionAnalyzer {
             ),
           authorityAccount: authority.accounts[i],
           authorityType: authority.level,
-          isSatisfied: satisfied === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE
+          isSatisfied: satisfied
         });
 
     const transactionBodyData: ITransactionBodyData[] = [];
@@ -156,7 +156,7 @@ export class TransactionAnalyzer {
           transactionBodyData.push({
             authorityAccount: authority.accounts[i],
             authorityType: authority.level,
-            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
             operationType: operations[i].type,
             operationContent: operations[i].value
           });
@@ -165,7 +165,7 @@ export class TransactionAnalyzer {
             transactionBodyData.push({
               authorityAccount: authority.accounts[j],
               authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
               operationType: operations[i].type,
               operationContent: operations[i].value
             });
@@ -470,11 +470,17 @@ export class TransactionAnalyzer {
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return ESatisfiedState.TRUE;
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
       else
         return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
+
+    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
+      if (isValid)
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
+      else
+        return ESatisfiedState.FALSE;
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
       return ESatisfiedState.FALSE;
@@ -502,11 +508,17 @@ export class TransactionAnalyzer {
   private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return ESatisfiedState.TRUE;
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
       else
         return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
+
+    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
+      if (isValid)
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
+      else
+        return ESatisfiedState.FALSE;
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
       return ESatisfiedState.FALSE;

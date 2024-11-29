@@ -40,14 +40,14 @@
         "matchingSignature": "Open authority",
         "authorityAccount": "temp",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": "blockchain_forced_true"
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "temp",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": "blockchain_forced_true",
         "operationType": "comment_operation",
         "operationContent": {
           "parent_author": "hive-engine",
