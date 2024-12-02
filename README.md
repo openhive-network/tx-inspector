@@ -282,3 +282,83 @@ Below is information about the individual fields in the tables. It explains what
 #### Binary View Format
 
 The binary view provides users with a detailed hexadecimal (hex) representation of a transaction, offering a clear and precise insight into its raw data format. Users have the flexibility to select specific ranges of the hex data, allowing them to copy either the binary (ANSI) or hex values as needed. As they interact with the data, the component dynamically highlights the selected hex range within the transaction's JSON representation, creating an intuitive visual link between the hex data and its structured JSON format. This feature enhances user understanding by enabling them to hover over and observe highlighted colors that map the hex parts directly to the corresponding elements in the transaction JSON. This way, the tranasction analysis is very simple and fast.
+
+### Examples:
+
+<table>
+  <tr>
+    <th colspan="4">
+      <p align="center">Examples</p>
+    </th>
+  </tr>
+  <tr>
+    <td width="20%">
+      <b>Title:</b> <br><br>
+      Broken signature.
+    </td>
+    <td width="20%">
+      <b>Invaid signature:</b> <br><br>
+      20543...e7f91
+    </td>
+    <td width="20%">
+      <b>Wrong public key:</b> <br><br>
+      STM7u...ZrQnw
+    </td>
+    <td width="40%">
+      <b>Description:</b> <br><br>
+      The signature in this case is invalid, so we cannot calculate the correct public key. The public key calculated from the broken signature is not associated with any blockchain account. This means that we cannot deduce the authority path, and the required authorities for the transaction are not satisfied. Therefore, the transaction is marked as invalid.
+    </td>
+  </tr>
+  <tr>
+    <td width="20%">
+      <b>Title:</b> <br><br>
+      Public key without any reference.
+    </td>
+    <td width="20%">
+      <b>Valid signature:</b> <br><br>
+      20543...dc22e
+    </td>
+    <td width="20%">
+      <b>Public key without reference:</b> <br><br>
+      STM8W...pFtCF
+    </td>
+    <td width="40%">
+      <b>Description:</b> <br><br>
+      The signature in this case is valid, but the calculated public key is not associated with any blockchain account. This can happen when the account changed its authority (a public key) after the transaction was signed, broadcasted, and accepted by the blockchain. So the transaction is valid, but because we cannot identify the signer account, further authority analysis is impossible, i.e., we cannot deduce the authority path nor associate the given signature to the authorities required by specific operations. Even though it is a positive case, unfortunately, most of the information shown by the application is unavailable.
+    </td>
+  </tr>
+  <tr>
+    <td width="20%">
+      <b>Title:</b> <br><br>
+      Broken authority.
+    </td>
+    <td width="20%">
+      <b>Valid signature:</b> <br><br>
+      20543...dc22e
+    </td>
+    <td width="20%">
+      <b>Public key with blockchain reference:</b> <br><br>
+      STM8W...pFtCF
+    </td>
+    <td width="40%">
+      <b>Description:</b> <br><br>
+      The signature and the calculated public key in this case are valid, and we can find the account associated with the public key, but the found account no longer satisfies the required authority. For example, consider the account "alice", who gave agency authorization to "bob" for posting authority. "Bob" signed and broadcasted a transaction with "alice" as the required posting authority. Subsequently, "alice" changed her posting authority by removing "bob" from her account authorities. Now, we can find the account associated with the key used to sign the transaction, which belongs to "bob", but none of the transaction's required authorities relate to the signing key (no connection between "alice" and "bob").
+    </td>
+  </tr>
+  <tr>
+    <td width="20%">
+      <b>Title:</b> <br><br>
+      Open authority.
+    </td>
+    <td width="20%">
+      <b>No signature.</b>
+    </td>
+    <td width="20%">
+      <b>No public key.</b>
+    </td>
+    <td width="40%">
+      <b>Description:</b> <br><br>
+      In this case, the transaction is valid even though there is no signature. This can happen in situations where the account, whose authority is required for the transaction, has no specified authorities. Even so, the required authorities in this case will be satisfied, and the matching signature will be marked as "open authority."
+    </td>
+  </tr>
+</table>
