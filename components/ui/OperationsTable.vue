@@ -209,10 +209,17 @@
             <s-table-cell>
               <span>{{ item.operationType }}</span>
             </s-table-cell>
-            <s-table-cell class="max-w-[30vw]">
+            <s-table-cell class="flex flex-col items-center gap-4 max-w-[30vw]">
               <code>
-                {{ JSON.stringify(item.operationContent, null, 2) }}
+                {{ (JSON.stringify(item.operationContent, null, 2).length > 600 && expanded === false) ? `${JSON.stringify(item.operationContent, null, 2).slice(0, 600)}...` : JSON.stringify(item.operationContent, null, 2) }}
               </code>
+              <s-separator
+                v-if="JSON.stringify(item.operationContent, null, 2).length > 600"
+                :label="expanded ? 'Collapse JSON' : 'Expand JSON'"
+                decorative
+                class="cursor-pointer mb-1 w-60"
+                @click="expanded = !expanded"
+              />
             </s-table-cell>
           </s-table-row>
         </s-table-body>
@@ -234,6 +241,8 @@ const config = useRuntimeConfig();
 const radioState = ref('formatted');
 
 const binaryRadioState = ref('hf26-binary');
+
+const expanded = ref(false);
 
 watch(() => wax.$state.defaultBinaryRadioState, (newValue) => {
   binaryRadioState.value = newValue;
