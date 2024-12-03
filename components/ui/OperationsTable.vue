@@ -82,7 +82,6 @@
         v-show="radioState === 'binary' && binaryRadioState === 'hf26-binary'"
         :data="store.binaryViewOutputData.value"
         dark
-        class="mb-16"
         @copy="toast.success('Copied selected range to clipboard')"
       />
       <BinaryView
