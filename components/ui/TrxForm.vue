@@ -24,26 +24,37 @@
       <s-label>
         Transaction ({{ radioState }} format)
       </s-label>
-      <s-input
+      <v-text-field
         v-if="radioState === 'hash'"
         v-model="hash"
         placeholder="Provide your transaction hash"
-        class="mt-3 mb-[14.5rem]"
+        class="mt-3 mb-[12.9rem]"
         required
+        autofocus
+        variant="outlined"
+        density="compact"
       />
-      <s-input
+      <v-text-field
         v-else-if="radioState === 'binary'"
         v-model="binary"
         placeholder="Provide your transaction hexstring"
-        class="mt-3 mb-[14.5rem]"
+        class="mt-3 mb-[12.9rem]"
         required
+        autofocus
+        variant="outlined"
+        density="compact"
       />
-      <s-textarea
+      <v-textarea
         v-else
         v-model="trx"
         :placeholder="`Provide your transaction ${radioState}`"
-        class="min-h-64 max-h-64 my-3"
+        class="min-h-64 max-h-64 my-3 text-small"
         required
+        autofocus
+        no-resize
+        variant="outlined"
+        density="compact"
+        rows="10"
       />
     </div>
     <s-dialog-footer>
