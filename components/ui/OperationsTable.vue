@@ -108,9 +108,11 @@
               <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </s-table-cell>
             <s-table-cell>
               <span
@@ -164,9 +166,11 @@
               <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </s-table-cell>
             <s-table-cell>
               <span
@@ -210,9 +214,11 @@
               <span>{{ item.operationType }}</span>
             </s-table-cell>
             <s-table-cell class="flex flex-col items-center gap-4 max-w-[30vw]">
-              <code>
-                {{ (JSON.stringify(item.operationContent, null, 2).length > 600 && expanded === false) ? `${JSON.stringify(item.operationContent, null, 2).slice(0, 600)}...` : JSON.stringify(item.operationContent, null, 2) }}
-              </code>
+              <CopyWrapper :toCopy="JSON.stringify(item.operationContent)">
+                <code>
+                  {{ (JSON.stringify(item.operationContent, null, 2).length > 600 && expanded === false) ? `${JSON.stringify(item.operationContent, null, 2).slice(0, 600)}...` : JSON.stringify(item.operationContent, null, 2) }}
+                </code>
+              </CopyWrapper>
               <s-separator
                 v-if="JSON.stringify(item.operationContent, null, 2).length > 600"
                 :label="expanded ? 'Collapse JSON' : 'Expand JSON'"
@@ -231,6 +237,7 @@
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
 import Subtitle from './Subtitle.vue';
+import CopyWrapper from './CopyWrapper.vue';
 import { EPackType, ESatisfiedState } from '~/types/wax';
 
 const wax = useWaxStore();

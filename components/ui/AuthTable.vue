@@ -22,20 +22,9 @@
             <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
-                  <span
-                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(item.matchingSignature)"
-                  >
-                    <span
-                      :class="{
-                        'text-yellow': item.matchingSignature === 'Open authority',
-                        'text-red font-semibold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
-                      }"
-                    >
-                      {{ waxStore.shortenString(item.matchingSignature) }}
-                    </span>
-                    <v-icon v-if="item.matchingSignature.length > 30" size="md">mdi-content-copy</v-icon>
-                  </span>
+                  <CopyWrapper :toCopy="item.matchingSignature">
+                    {{ waxStore.shortenString(item.matchingSignature) }}
+                  </CopyWrapper>
                 </s-tooltip-trigger>
                 <s-tooltip-content>
                   <div class="flex flex-col">
@@ -48,13 +37,15 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <span class="flex flex-col">
+            <span class="inline-flex flex-col">
               <p v-if="item.authorityAccount === 'None'" class="my-2 text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
@@ -103,6 +94,7 @@
 
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
+import CopyWrapper from './CopyWrapper.vue';
 import { ESatisfiedState } from '~/types/wax';
 
 const waxStore = useWaxStore();

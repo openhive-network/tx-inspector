@@ -106,6 +106,7 @@ import type {
   witness_update
 } from '@hiveio/wax';
 import { NuxtLink } from '#components';
+import CopyWrapper from '~/components/ui/CopyWrapper.vue';
 import { formatPercent } from '~/utils/formatters';
 
 class OperationsFormatter implements IWaxCustomFormatter {
@@ -139,9 +140,13 @@ class OperationsFormatter implements IWaxCustomFormatter {
 
   private getAccountLink (account: string): VNode {
     return h(
-      NuxtLink,
-      { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue', target: '_blank' },
-      () => `@${account} `
+      CopyWrapper,
+      { toCopy: account },
+      h(
+        NuxtLink,
+        { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue', target: '_blank' },
+        () => `@${account} `
+      )
     );
   }
 
@@ -156,9 +161,13 @@ class OperationsFormatter implements IWaxCustomFormatter {
 
   private getPermlink (author: string, permlink: string): VNode {
     return h(
-      NuxtLink,
-      { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green' },
-      () => permlink
+      CopyWrapper,
+      { toCopy: permlink },
+      h(
+        NuxtLink,
+        { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green' },
+        () => permlink
+      )
     );
   }
 

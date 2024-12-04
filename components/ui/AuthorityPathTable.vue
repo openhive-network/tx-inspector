@@ -24,15 +24,9 @@
             <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
-                  <span
-                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(item.signature)"
-                  >
-                    <span>
-                      {{ waxStore.shortenString(item.signature) }}
-                    </span>
-                    <v-icon size="md">mdi-content-copy</v-icon>
-                  </span>
+                  <CopyWrapper :toCopy="item.signature">
+                    {{ waxStore.shortenString(item.signature) }}
+                  </CopyWrapper>
                 </s-tooltip-trigger>
                 <s-tooltip-content>
                   <div class="flex flex-col">
@@ -57,13 +51,9 @@
             <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
-                  <span
-                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(item.publicKey)"
-                  >
-                    <span>{{ waxStore.shortenString(item.publicKey) }}</span>
-                    <v-icon size="md">mdi-content-copy</v-icon>
-                  </span>
+                  <CopyWrapper :toCopy="item.publicKey">
+                    {{ waxStore.shortenString(item.publicKey) }}
+                  </CopyWrapper>
                 </s-tooltip-trigger>
                 <s-tooltip-content>
                   <div class="flex flex-col">
@@ -130,6 +120,7 @@
 
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
+import CopyWrapper from './CopyWrapper.vue';
 import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
