@@ -18,19 +18,19 @@
           <s-table-cell>
             <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.id === 'string'" as-child>
-                  <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.id">
-                    {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id) }}
-                  </CopyWrapper>
-                </s-tooltip-trigger>
+                <CopyWrapper v-if="typeof store.processedTransaction.value.transactionData.id === 'string'" :toCopy="store.processedTransaction.value.transactionData.id">
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(store.processedTransaction.value.transactionData.id) }}</span>
+                  </s-tooltip-trigger>
+                </CopyWrapper>
                 <div v-else class="flex flex-col">
                   <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
-                      <s-tooltip-trigger as-child>
-                        <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.id.hf26">
-                          HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.hf26) }}
-                        </CopyWrapper>
-                      </s-tooltip-trigger>
+                      <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.id.hf26">
+                        <s-tooltip-trigger as-child>
+                          <span>HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.hf26) }}</span>
+                        </s-tooltip-trigger>
+                      </CopyWrapper>
                       <s-tooltip-content>
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 ID</span>
@@ -40,11 +40,11 @@
                       </s-tooltip-content>
                     </s-tooltip>
                   </s-tooltip-provider>
-                  <s-tooltip-trigger as-child>
-                    <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.id.legacy">
-                      Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.legacy) }}
-                    </CopyWrapper>
-                  </s-tooltip-trigger>
+                  <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.id.legacy">
+                    <s-tooltip-trigger as-child>
+                      <span>Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.legacy) }}</span>
+                    </s-tooltip-trigger>
+                  </CopyWrapper>
                   <s-tooltip-content>
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy ID</span>
@@ -66,19 +66,19 @@
           <s-table-cell>
             <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger v-if="typeof store.processedTransaction.value.transactionData.sigDigest === 'string'" as-child>
-                  <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.sigDigest">
-                    {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest) }}
-                  </CopyWrapper>
-                </s-tooltip-trigger>
+                <CopyWrapper v-if="typeof store.processedTransaction.value.transactionData.sigDigest === 'string'" :toCopy="store.processedTransaction.value.transactionData.sigDigest">
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest) }}</span>
+                  </s-tooltip-trigger>
+                </CopyWrapper>
                 <div v-else class="flex flex-col">
                   <s-tooltip-provider :delayDuration="350">
                     <s-tooltip>
-                      <s-tooltip-trigger as-child>
-                        <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.sigDigest.hf26">
-                          HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.hf26) }}
-                        </CopyWrapper>
-                      </s-tooltip-trigger>
+                      <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.sigDigest.hf26">
+                        <s-tooltip-trigger as-child>
+                          <span>HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.hf26) }}</span>
+                        </s-tooltip-trigger>
+                      </CopyWrapper>
                       <s-tooltip-content>
                         <div class="flex flex-col">
                           <span class="text-lg">HF26 Sig Digest</span>
@@ -88,11 +88,11 @@
                       </s-tooltip-content>
                     </s-tooltip>
                   </s-tooltip-provider>
-                  <s-tooltip-trigger as-child>
-                    <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.sigDigest.legacy">
-                      Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.legacy) }}
-                    </CopyWrapper>
-                  </s-tooltip-trigger>
+                  <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.sigDigest.legacy">
+                    <s-tooltip-trigger as-child>
+                      <span>Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.legacy) }}</span>
+                    </s-tooltip-trigger>
+                  </CopyWrapper>
                   <s-tooltip-content>
                     <div class="flex flex-col">
                       <span class="text-lg">Legacy Sig Digest</span>

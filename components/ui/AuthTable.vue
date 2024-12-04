@@ -21,11 +21,11 @@
           <s-table-cell>
             <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger as-child>
-                  <CopyWrapper :toCopy="item.matchingSignature">
-                    {{ waxStore.shortenString(item.matchingSignature) }}
-                  </CopyWrapper>
-                </s-tooltip-trigger>
+                <CopyWrapper :toCopy="item.matchingSignature">
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(item.matchingSignature) }}</span>
+                  </s-tooltip-trigger>
+                </CopyWrapper>
                 <s-tooltip-content>
                   <div class="flex flex-col">
                     <span class="text-lg">Signature:</span>

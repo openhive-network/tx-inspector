@@ -21,22 +21,22 @@
         </s-table-row>
         <s-table-row v-for="(item, index) in store.processedTransaction.value.signatureData" :key="index">
           <s-table-cell>
-            <s-tooltip-provider :delayDuration="350">
-              <s-tooltip>
-                <s-tooltip-trigger as-child>
-                  <CopyWrapper :toCopy="item.signature">
-                    {{ waxStore.shortenString(item.signature) }}
-                  </CopyWrapper>
-                </s-tooltip-trigger>
-                <s-tooltip-content>
-                  <div class="flex flex-col">
-                    <span class="text-lg">Signature:</span>
-                    <hr class="my-2">
-                    <span>{{ item.signature }}</span>
-                  </div>
-                </s-tooltip-content>
-              </s-tooltip>
-            </s-tooltip-provider>
+            <CopyWrapper :toCopy="item.signature">
+              <s-tooltip-provider :delayDuration="350">
+                <s-tooltip>
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(item.signature) }}</span>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Signature:</span>
+                      <hr class="my-2">
+                      <span>{{ item.signature }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
+            </CopyWrapper>
           </s-table-cell>
           <s-table-cell
             :class="{
@@ -48,22 +48,22 @@
             {{ item.packType }}
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider :delayDuration="350">
-              <s-tooltip>
-                <s-tooltip-trigger as-child>
-                  <CopyWrapper :toCopy="item.publicKey">
-                    {{ waxStore.shortenString(item.publicKey) }}
-                  </CopyWrapper>
-                </s-tooltip-trigger>
-                <s-tooltip-content>
-                  <div class="flex flex-col">
-                    <span class="text-lg">Public key:</span>
-                    <hr class="my-2">
-                    <span>{{ item.publicKey }}</span>
-                  </div>
-                </s-tooltip-content>
-              </s-tooltip>
-            </s-tooltip-provider>
+            <CopyWrapper :toCopy="item.publicKey">
+              <s-tooltip-provider :delayDuration="350">
+                <s-tooltip>
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(item.publicKey) }}</span>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Public key:</span>
+                      <hr class="my-2">
+                      <span>{{ item.publicKey }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
+            </CopyWrapper>
           </s-table-cell>
           <s-table-cell>
             <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined' || item.authorityPath[0].account[0] === ''" :delayDuration="350">

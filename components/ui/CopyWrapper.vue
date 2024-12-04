@@ -35,17 +35,23 @@ const changeIcon = async (): Promise<void> => {
     <span>
       <slot />
     </span>
-    <span class="cursor-pointer hover:opacity-70 transition-opacity p-3">
-      <v-icon
-        size="md"
-        :class="{
-          'text-green': icon === 'mdi-check',
-          'text-red': icon === 'mdi-close',
-        }"
-        @click="changeIcon()"
-      >
-        {{ icon }}
-      </v-icon>
-    </span>
+    <s-tooltip-provider :delay-duration="350">
+      <s-tooltip>
+        <s-tooltip-trigger as-child>
+          <span class="cursor-pointer hover:opacity-70 transition-opacity p-3" @click="changeIcon()">
+            <v-icon
+              size="md"
+              :class="{
+                'text-green': icon === 'mdi-check',
+                'text-red': icon === 'mdi-close',
+              }"
+            >
+              {{ icon }}
+            </v-icon>
+          </span>
+        </s-tooltip-trigger>
+        <s-tooltip-content>Copy</s-tooltip-content>
+      </s-tooltip>
+    </s-tooltip-provider>
   </span>
 </template>
