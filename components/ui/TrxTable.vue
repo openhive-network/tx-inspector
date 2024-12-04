@@ -118,9 +118,18 @@
               <span>Reference block prefix: <span class="font-medium">{{ store.processedTransaction.value.transactionData.tapos.refBlockPrefix }}</span></span>
             </span>
           </s-table-cell>
-          <s-table-cell>
-            <CopyWrapper :toCopy="store.processedTransaction.value.transactionData.expirationTime">
-              {{ store.processedTransaction.value.transactionData.expirationTime }}
+          <s-table-cell class="w-80">
+            <CopyWrapper :toCopy="formatted === true ? formatAndDelocalizeTime(store.processedTransaction.value.transactionData.expirationTime) : store.processedTransaction.value.transactionData.expirationTime">
+              <s-tooltip-provider :delay-duration="350">
+                <s-tooltip>
+                  <s-tooltip-trigger as-child>
+                    <span class="cursor-pointer" @click="formatted = !formatted">
+                      {{ formatted === true ? formatAndDelocalizeTime(store.processedTransaction.value.transactionData.expirationTime) : store.processedTransaction.value.transactionData.expirationTime }}
+                    </span>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>Change date format</s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
             </CopyWrapper>
           </s-table-cell>
         </s-table-row>
@@ -132,9 +141,12 @@
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
+import { formatAndDelocalizeTime } from '#imports';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
+
+const formatted = ref(true);
 </script>
 
 <style scoped>
