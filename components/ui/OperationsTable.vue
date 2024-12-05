@@ -89,7 +89,6 @@
         v-show="radioState === 'binary' && binaryRadioState === 'legacy-binary'"
         :data="store.legacyBinaryViewOutputData.value"
         dark
-        class="mb-16"
         @copy="toast.success('Copied selected range to clipboard')"
       />
       <s-table v-if="radioState !== 'binary'">
