@@ -23,7 +23,7 @@ Authority specific tests
 2.1.3.2 ~~Weight 3, threshold 2 for delegated authority~~
 
 2.2 Transaction containing multiple signatures:
-2.2.1 Each signature uses public key specified as delegated authority.
+2.2.1 ~~Each signature uses public key specified as delegated authority.~~
 
 2.2.2 Non default weights:
 2.2.2.1 ~~Both signatures use same weights satisfying authority threshold (each of them can satisfy threshold alone)~~

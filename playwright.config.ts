@@ -60,6 +60,15 @@ export default defineConfig < ITxInspectorTest>({
       }
     },
     {
+      name: 'tx_inspector_each_signature_as_delegated_authority',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-each-signature-as-delegated-authority-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/each_signature_as_delegated_authority_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_non_default_weights',
       testDir: './__tests__/',
       testMatch: '**/txInspector-non-default-weights-mock.ts',
