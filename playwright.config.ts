@@ -69,12 +69,12 @@ export default defineConfig < ITxInspectorTest>({
       }
     },
     {
-      name: 'tx_inspector_expiration_time_from_far_future',
+      name: 'tx_inspector_invalid_transaction_properties',
       testDir: './__tests__/',
-      testMatch: '**/txInspector-expiration-time-from-far-future-mock.ts',
+      testMatch: '**/txInspector-invalid-transaction-properties-mock.ts',
       use:
       {
-        fixtureLevelMockFile: './__tests__/assets/mock/expiration_time_from_far_future_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/alice_account_for_invalid_transactions_data.json'
       }
     },
     {

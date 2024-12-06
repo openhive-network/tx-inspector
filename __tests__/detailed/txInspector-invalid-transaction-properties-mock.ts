@@ -20,6 +20,12 @@ test.describe('transaction inspector tests based on mock data with expiration ti
     expect(isMatching).toBeTruthy();
   });
 
+  test('Testcase 4.3', async ({ analyzeAndCompareTransaction, mockData }) => {
+    const isMatching = await analyzeAndCompareTransaction(mockData.invalidTaposTransaction as ApiTransaction, mockData.invalidTaposExpectedResult as IProcessedTransaction)
+
+    expect(isMatching).toBeTruthy();
+  });
+
   test.afterAll(async () => {
     await browser.close();
   });

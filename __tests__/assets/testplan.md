@@ -50,7 +50,7 @@ Authority specific tests
 4.2 Invalid expiration time
 4.2.1 ~~Expiration time from far future, i.e extending 1 hour expiration time limit and 24 hours signature validity limit (hf28)~~
 
-4.3 Invalid tapos (ref block id)
+4.3 ~~Invalid tapos (ref block id)~~
 
 4.4 Missing authority
 4.4.1 There is no matching signature to transaction sig digest

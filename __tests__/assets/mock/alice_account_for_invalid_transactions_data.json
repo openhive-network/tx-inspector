@@ -267,5 +267,79 @@
         ]
       ]
     }
+  },
+  "invalidTaposTransaction": {
+    "ref_block_num": 39681,
+    "ref_block_prefix": 1280423466,
+    "expiration": "2024-12-06T10:13:36",
+    "operations": [
+      {
+        "type": "vote_operation",
+        "value": {
+          "voter": "alice",
+          "author": "bob",
+          "permlink": "example-post",
+          "weight": 10000
+        }
+      }
+    ],
+    "signatures": [
+      "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e"
+    ]
+  },
+  "invalidTaposExpectedResult": {
+    "signatureData": [
+      {
+        "signature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
+        "packType": "hf26",
+        "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh",
+        "authorityPath": [
+          {
+            "account": [
+              "alice"
+            ]
+          }
+        ]
+      }
+    ],
+    "transactionData": {
+      "id": "2ecd592789d545b051623ba6f60c7d73a731dd73",
+      "sigDigest": "e871236245270dcaaee7fb51b4c453ddb0925f42a3e1ea0a64deb39d18eff9c0",
+      "tapos": {
+        "refBlockNum": 39681,
+        "refBlockPrefix": 1280423466
+      },
+      "expirationTime": "2024-12-06T10:13:36"
+    },
+    "requiredAuthoritiesData": [
+      {
+        "matchingSignature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
+        "authorityAccount": "alice",
+        "authorityType": "Posting",
+        "isSatisfied": "true"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "alice",
+        "authorityType": "Posting",
+        "isSatisfied": "true",
+        "operationType": "vote_operation",
+        "operationContent": {
+          "voter": "alice",
+          "author": "bob",
+          "permlink": "example-post",
+          "weight": 10000
+        }
+      }
+    ],
+    "transactionOtherData": {
+      "isValid": false,
+      "signeesByKeys": [
+        [
+          "alice"
+        ]
+      ]
+    }
   }
 }
