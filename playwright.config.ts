@@ -69,6 +69,15 @@ export default defineConfig < ITxInspectorTest>({
       }
     },
     {
+      name: 'tx_inspector_expiration_time_from_far_future',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-expiration-time-from-far-future-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/expiration_time_from_far_future_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_non_default_weights',
       testDir: './__tests__/',
       testMatch: '**/txInspector-non-default-weights-mock.ts',
