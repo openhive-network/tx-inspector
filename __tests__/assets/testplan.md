@@ -37,9 +37,9 @@ Authority specific tests
 
 3. Mixed authorities
 
-3.1 Using active authority to satisfy posting authority requirement
-3.2 Using owner authority to satisfy posting authority requirement
-3.3 Using owner authority to satisfy active authority requirement
+3.1 ~~Using active authority to satisfy posting authority requirement~~
+3.2 ~~Using owner authority to satisfy posting authority requirement~~
+3.3 ~~Using owner authority to satisfy active authority requirement~~
 
 4. Negative cases:
 
