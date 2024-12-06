@@ -472,6 +472,85 @@
     "operations": [],
     "signatures": []
   },
+  "noMatchingSignatureForRequiredAuthorityTransaction": {
+    "ref_block_num": 18666,
+    "ref_block_prefix": 2298275031,
+    "extensions": [],
+    "expiration": "2024-09-19T23:41:03",
+    "operations": [
+      {
+        "type": "transfer_operation",
+        "value": {
+          "to": "abw.pay",
+          "from": "andablackwidow",
+          "memo": "",
+          "amount": {
+            "nai": "@@000000013",
+            "amount": "20000",
+            "precision": 3
+          }
+        }
+      }
+    ],
+    "signatures": [
+      "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577"
+    ]
+  },
+  "noMatchingSignatureForRequiredAuthorityExpectedResult": {
+    "signatureData": [
+      {
+        "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+        "packType": "legacy",
+        "publicKey": "STM8TPKNbienPaotYT5ggVdtdF76k6xqAfzBn65JitMZeooRvppHK",
+        "authorityPath": [
+          {
+            "account": [
+              ""
+            ]
+          }
+        ]
+      }
+    ],
+    "transactionData": {
+      "id": "459ae9acbbd2171e7b0a3ca332bbf2879692f2b6",
+      "sigDigest": "0c5b6815dda0dabde10d6e9552d064e4dd16bebe312041684ee06a0d52aca57f",
+      "tapos": {
+        "refBlockNum": 18666,
+        "refBlockPrefix": 2298275031
+      },
+      "expirationTime": "2024-09-19T23:41:03"
+    },
+    "requiredAuthoritiesData": [
+      {
+        "matchingSignature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Active",
+        "isSatisfied": "blockchain_forced_true"
+      }
+    ],
+    "transactionBodyData": [
+      {
+        "authorityAccount": "andablackwidow",
+        "authorityType": "Active",
+        "isSatisfied": "blockchain_forced_true",
+        "operationType": "transfer_operation",
+        "operationContent": {
+          "from": "andablackwidow",
+          "to": "abw.pay",
+          "amount": {
+            "amount": "20000",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "memo": ""
+        }
+      }
+    ],
+    "transactionOtherData": {
+      "isValid": true,
+      "signeesByKeys": null
+    }
+  },
   "singleOperationInvalidPublicKeyForRequiredAuthorityTransaction": {
     "ref_block_num": 18666,
     "ref_block_prefix": 2298275031,

@@ -26,6 +26,12 @@ test.describe('transaction inspector tests based on mock data', () => {
     ).rejects.toThrow();
   });
 
+  test('Testcase 4.4.1', async ({ analyzeAndCompareTransaction, mockData }) => {
+    const isMatching = await analyzeAndCompareTransaction(mockData.noMatchingSignatureForRequiredAuthorityTransaction as ApiTransaction, mockData.noMatchingSignatureForRequiredAuthorityExpectedResult as IProcessedTransaction);
+
+    expect(isMatching).toBeTruthy();
+  });
+
   test('Testcase 4.4.2', async ({ analyzeAndCompareTransaction, mockData }) => {
       const isMatching = await analyzeAndCompareTransaction(mockData.singleOperationInvalidPublicKeyForRequiredAuthorityTransaction as ApiTransaction, mockData.singleOperationInvalidPublicKeyForRequiredAuthorityExpectedResult as IProcessedTransaction)
 
