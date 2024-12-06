@@ -60,6 +60,51 @@ export default defineConfig < ITxInspectorTest>({
       }
     },
     {
+      name: 'tx_inspector_each_signature_as_delegated_authority',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-each-signature-as-delegated-authority-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/each_signature_as_delegated_authority_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_invalid_transaction_properties',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-invalid-transaction-properties-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/alice_account_for_invalid_transactions_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_mixed_authorities_active_posting',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-active-authority-to-satisfy-posting-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/active_authority_to_satisfy_posting_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_mixed_authorities_owner_posting',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-owner-authority-to-satisfy-posting-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/owner_authority_to_satisfy_posting_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_mixed_authorities_owner_active',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-owner-authority-to-satisfy-active-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/owner_authority_to_satisfy_active_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_non_default_weights',
       testDir: './__tests__/',
       testMatch: '**/txInspector-non-default-weights-mock.ts',

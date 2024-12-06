@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
 import { type TxInspectorEngine } from '#imports';
-import { type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
+import { EPackType, type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
@@ -15,6 +15,8 @@ export const useWaxStore = defineStore('wax', {
     qs: undefined as unknown as URLSearchParams,
     tx: undefined as string | undefined,
     binaryViewOutputData: undefined as IBinaryViewOutputData | undefined,
+    legacyBinaryViewOutputData: undefined as IBinaryViewOutputData | undefined,
+    defaultBinaryRadioState: '',
     processingTime: 0,
     processedTransaction: {
       signatureData: [] as ISignatureData[],
@@ -52,6 +54,29 @@ export const useWaxStore = defineStore('wax', {
       return formatter.format(operations);
     },
 
+    defaultBinaryRadioState (): string {
+      if (!this.$state.processedTransaction.signatureData[0])
+        return 'hf26-binary';
+
+      if (Array.isArray(this.$state.processedTransaction.signatureData[0].packType)) {
+        if (this.$state.processedTransaction.signatureData[0].packType[0] === EPackType.HF26)
+          return 'hf26-binary';
+
+        if (this.$state.processedTransaction.signatureData[0].packType[0] === EPackType.LEGACY)
+          return 'legacy-binary';
+
+        return 'hf26-binary';
+      }
+
+      if (this.$state.processedTransaction.signatureData[0].packType === EPackType.HF26)
+        return 'hf26-binary';
+
+      if (this.$state.processedTransaction.signatureData[0].packType === EPackType.LEGACY)
+        return 'legacy-binary';
+
+      return 'hf26-binary';
+    },
+
     async handleTransactionFromHash (inspector: TxInspectorEngine, formatter: IWaxExtendableFormatter, hash: string): Promise<void> {
       this.id = hash;
 
@@ -59,6 +84,8 @@ export const useWaxStore = defineStore('wax', {
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
       this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      this.$state.legacyBinaryViewOutputData = tx.transactionOtherData.transaction.legacy_binaryViewMetadata;
+      this.$state.defaultBinaryRadioState = this.defaultBinaryRadioState();
       (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
     },
 
@@ -69,6 +96,8 @@ export const useWaxStore = defineStore('wax', {
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
       this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      this.$state.legacyBinaryViewOutputData = tx.transactionOtherData.transaction.legacy_binaryViewMetadata;
+      this.$state.defaultBinaryRadioState = this.defaultBinaryRadioState();
       (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
     },
 
@@ -79,6 +108,8 @@ export const useWaxStore = defineStore('wax', {
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
       this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
+      this.$state.legacyBinaryViewOutputData = tx.transactionOtherData.transaction.legacy_binaryViewMetadata;
+      this.$state.defaultBinaryRadioState = this.defaultBinaryRadioState();
       (this.$state.tx as unknown as ApiTransaction) = tx.transactionOtherData.transaction.toApiJson();
     },
 

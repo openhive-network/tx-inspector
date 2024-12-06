@@ -23,7 +23,7 @@ Authority specific tests
 2.1.3.2 ~~Weight 3, threshold 2 for delegated authority~~
 
 2.2 Transaction containing multiple signatures:
-2.2.1 Each signature uses public key specified as delegated authority.
+2.2.1 ~~Each signature uses public key specified as delegated authority.~~
 
 2.2.2 Non default weights:
 2.2.2.1 ~~Both signatures use same weights satisfying authority threshold (each of them can satisfy threshold alone)~~
@@ -37,9 +37,9 @@ Authority specific tests
 
 3. Mixed authorities
 
-3.1 Using active authority to satisfy posting authority requirement
-3.2 Using owner authority to satisfy posting authority requirement
-3.3 Using owner authority to satisfy active authority requirement
+3.1 ~~Using active authority to satisfy posting authority requirement~~
+3.2 ~~Using owner authority to satisfy posting authority requirement~~
+3.3 ~~Using owner authority to satisfy active authority requirement~~
 
 4. Negative cases:
 
@@ -48,12 +48,12 @@ Authority specific tests
 4.1.2 ~~No operations but signature and are present~~
 
 4.2 Invalid expiration time
-4.2.1 Expiration time from far future, i.e extending 1 hour expiration time limit and 24 hours signature validity limit (hf28)
+4.2.1 ~~Expiration time from far future, i.e extending 1 hour expiration time limit and 24 hours signature validity limit (hf28)~~
 
-4.3 Invalid tapos (ref block id)
+4.3 ~~Invalid tapos (ref block id)~~
 
 4.4 Missing authority
-4.4.1 There is no matching signature to transaction sig digest
+4.4.1 ~~There is no matching signature to transaction sig digest~~
 4.4.2 ~~There is no matching signature for some authority required by operation (Signature is valid but decoded public key does not match any required authority)~~
 4.4.3 ~~Signature is valid but decoded public key points to authority having wrong authotiy level (posting authority used for transaction required active authority)~~
 4.4.4 ~~Signature is valid but in decoded public key points to authority having too less weight according to threshold~~

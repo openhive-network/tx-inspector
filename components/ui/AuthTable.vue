@@ -21,22 +21,11 @@
           <s-table-cell>
             <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
               <s-tooltip>
-                <s-tooltip-trigger as-child>
-                  <span
-                    class="inline-flex items-center transition-colors gap-2 p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-                    @click="waxStore.copy(item.matchingSignature)"
-                  >
-                    <span
-                      :class="{
-                        'text-yellow': item.matchingSignature === 'Open authority',
-                        'text-red font-semibold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
-                      }"
-                    >
-                      {{ waxStore.shortenString(item.matchingSignature) }}
-                    </span>
-                    <v-icon v-if="item.matchingSignature.length > 30" size="md">mdi-content-copy</v-icon>
-                  </span>
-                </s-tooltip-trigger>
+                <CopyWrapper :toCopy="item.matchingSignature">
+                  <s-tooltip-trigger as-child>
+                    <span>{{ waxStore.shortenString(item.matchingSignature) }}</span>
+                  </s-tooltip-trigger>
+                </CopyWrapper>
                 <s-tooltip-content>
                   <div class="flex flex-col">
                     <span class="text-lg">Signature:</span>
@@ -48,13 +37,15 @@
             </s-tooltip-provider>
           </s-table-cell>
           <s-table-cell>
-            <span class="flex flex-col">
+            <span class="inline-flex flex-col">
               <p v-if="item.authorityAccount === 'None'" class="my-2 text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </span>
           </s-table-cell>
           <s-table-cell class="p-5">
@@ -75,6 +66,25 @@
             <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
               mdi-close
             </v-icon>
+            <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <v-icon color="yellow">
+                    mdi-alert-circle-check-outline
+                  </v-icon>
+                </s-tooltip-trigger>
+                <s-tooltip-content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Blockchain Forced True</span>
+                    <hr class="my-2">
+                    <span class="leading-6">
+                      The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
+                      but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                    </span>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -84,6 +94,7 @@
 
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
+import CopyWrapper from './CopyWrapper.vue';
 import { ESatisfiedState } from '~/types/wax';
 
 const waxStore = useWaxStore();

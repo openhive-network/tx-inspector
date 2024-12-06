@@ -21,6 +21,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
+    console.log('verify authority', response);
+
     return response;
   }
 
@@ -34,6 +36,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
 
     this.cache.set(key, response);
 
+    console.log('key references', response);
+
     return response;
   }
 
@@ -46,6 +50,8 @@ export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
     const response = await this.chain.api.database_api.find_accounts(params);
 
     this.cache.set(key, response);
+
+    console.log('find accounts', JSON.stringify(response.accounts[0], undefined, 2));
 
     return response;
   }
@@ -86,28 +92,28 @@ export class TransactionAnalyzer {
     const tapos = this.getTapos();
     const expirationTime = this.getExpiration();
     const signatures = transaction.signatures;
-    const requiredAuthorities = this.getRequiredAuthorities();
+    const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
-    const packType = await this.getPackType(id);
+    const packType = await this.getPackType(requiredAuthorities, id);
 
-    const signatureKeys = this.getSignatureKeys(packType);
-    const transactionId = this.getTransactionId(packType);
-    const sigDigest = this.getSigDigest(packType);
-    const isValid = await this.checkVerifyAuthority(packType);
+    const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
+    const transactionId = this.getTransactionId(Array.isArray(packType) ? packType[0] : packType);
+    const sigDigest = this.getSigDigest(Array.isArray(packType) ? packType[0] : packType);
+    const isValid = await this.checkVerifyAuthority(Array.isArray(packType) ? packType[0] : packType);
 
-    const authorityType = this.getAuthorityType(await requiredAuthorities);
+    const authorityType = this.getAuthorityType(requiredAuthorities);
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
-    const { authorityPath, isSatisfied } = await this.getAuthorityPath(await requiredAuthorities, signatureKeys);
+    const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
 
-    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, await requiredAuthorities);
+    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, requiredAuthorities);
 
     const signatureData: ISignatureData[] = [];
 
     for (let i = 0; i < signatures.length; ++i)
       signatureData.push({
         signature: signatures[i],
-        packType,
-        publicKey: signatureKeys[i],
+        packType: Array.isArray(packType) ? packType[i] : packType,
+        publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
         authorityPath
       });
 
@@ -139,7 +145,7 @@ export class TransactionAnalyzer {
             ),
           authorityAccount: authority.accounts[i],
           authorityType: authority.level,
-          isSatisfied: satisfied === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE
+          isSatisfied: satisfied
         });
 
     const transactionBodyData: ITransactionBodyData[] = [];
@@ -150,7 +156,7 @@ export class TransactionAnalyzer {
           transactionBodyData.push({
             authorityAccount: authority.accounts[i],
             authorityType: authority.level,
-            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
             operationType: operations[i].type,
             operationContent: operations[i].value
           });
@@ -159,7 +165,7 @@ export class TransactionAnalyzer {
             transactionBodyData.push({
               authorityAccount: authority.accounts[j],
               authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i) === ESatisfiedState.TRUE ? ESatisfiedState.TRUE : ESatisfiedState.FALSE,
+              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
               operationType: operations[i].type,
               operationContent: operations[i].value
             });
@@ -179,16 +185,65 @@ export class TransactionAnalyzer {
     };
   }
 
-  private async getPackType (id?: string): Promise<EPackType> {
+  private async getPackType (requiredAuthorities: ITransactionRequiredAuthorities, id?: string): Promise<EPackType | EPackType[]> {
+    const packTypeArray: EPackType[] = [];
+
+    const requiredAuthoritiesArray = [...requiredAuthorities.active, ...requiredAuthorities.owner, ...requiredAuthorities.posting];
+
+    let signatureKeys!: string[];
+
     if (this.api.getPackType)
       return this.api.getPackType();
 
+    if (this.transaction.id === this.transaction.legacy_id)
+      try {
+        await this.api.verifyAuthority({
+          trx: this.transaction.toApiJson(),
+          pack: EPackType.HF26
+        });
+        return EPackType.HF26;
+      } catch {
+        try {
+          await this.api.verifyAuthority({
+            trx: this.transaction.toApiJson(),
+            pack: EPackType.LEGACY
+          });
+          return EPackType.LEGACY;
+        } catch {
+          return EPackType.UNKNOWN;
+        }
+      }
+
     if (id) {
-      if (id === this.transaction.id)
+      if (id === this.transaction.id && id !== this.transaction.legacy_id)
         return EPackType.HF26;
 
-      if (id === this.transaction.legacy_id)
+      if (id === this.transaction.legacy_id && id !== this.transaction.id)
         return EPackType.LEGACY;
+
+      if (id === this.transaction.id) {
+        signatureKeys = this.transaction.signatureKeys;
+
+        const { accounts } = await this.api.getKeyReferences({ keys: signatureKeys });
+
+        for (const account of accounts)
+          if (requiredAuthoritiesArray.includes(account[0]))
+            packTypeArray.push(EPackType.HF26);
+
+        return packTypeArray;
+      }
+
+      if (id === this.transaction.legacy_id) {
+        signatureKeys = this.transaction.legacy_signatureKeys;
+
+        const { accounts } = await this.api.getKeyReferences({ keys: signatureKeys });
+
+        for (const account of accounts)
+          if (requiredAuthoritiesArray.includes(account[0]))
+            packTypeArray.push(EPackType.LEGACY);
+
+        return packTypeArray;
+      }
 
       return EPackType.UNKNOWN;
     }
@@ -212,7 +267,7 @@ export class TransactionAnalyzer {
     }
   }
 
-  private getSignatureKeys (packType: EPackType): string[] {
+  private getSignatureKeys (packType: string): string[] {
     const signatureKeys =
       packType === EPackType.HF26 ? this.transaction.signatureKeys : this.transaction.legacy_signatureKeys;
 
@@ -222,7 +277,7 @@ export class TransactionAnalyzer {
     return signatureKeys;
   }
 
-  private getTransactionId (packType: EPackType): string | { hf26: string, legacy: string } {
+  private getTransactionId (packType: string): string | { hf26: string, legacy: string } {
     if (packType === EPackType.UNKNOWN)
       return { hf26: this.transaction.id, legacy: this.transaction.legacy_id };
 
@@ -234,7 +289,7 @@ export class TransactionAnalyzer {
     return id;
   }
 
-  private getSigDigest (packType: EPackType): string | { hf26: string, legacy: string } {
+  private getSigDigest (packType: string): string | { hf26: string, legacy: string } {
     if (packType === EPackType.UNKNOWN)
       return { hf26: this.transaction.sigDigest, legacy: this.transaction.legacy_sigDigest };
 
@@ -360,7 +415,7 @@ export class TransactionAnalyzer {
     return accounts;
   }
 
-  private async checkVerifyAuthority (packType: EPackType): Promise<boolean> {
+  private async checkVerifyAuthority (packType: string): Promise<boolean> {
     try {
       return (
         await this.api.verifyAuthority({
@@ -415,11 +470,17 @@ export class TransactionAnalyzer {
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return ESatisfiedState.TRUE;
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
       else
         return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
+
+    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
+      if (isValid)
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
+      else
+        return ESatisfiedState.FALSE;
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
       return ESatisfiedState.FALSE;
@@ -447,11 +508,17 @@ export class TransactionAnalyzer {
   private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<ESatisfiedState> {
     if (signatures.length === 0)
       if (isValid)
-        return ESatisfiedState.TRUE;
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
       else
         return ESatisfiedState.FALSE;
 
     const keyReferences = await this.api.getKeyReferences({ keys });
+
+    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
+      if (isValid)
+        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
+      else
+        return ESatisfiedState.FALSE;
 
     if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
       return ESatisfiedState.FALSE;

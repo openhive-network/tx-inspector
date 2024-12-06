@@ -3,34 +3,92 @@
     <Subtitle class="mb-3">
       Body:
     </Subtitle>
-    <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="formatted-body" value="formatted" />
-        <s-label for="formatted-body">
-          Formatted
-        </s-label>
-      </div>
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="json-body" value="json" />
-        <s-label for="json-body">
-          JSON
-        </s-label>
-      </div>
-      <div class="flex items-center space-x-2">
-        <s-radio-group-item id="binary-body" value="binary" />
-        <s-label for="binary-body">
-          Binary
-        </s-label>
-      </div>
-    </s-radio-group>
+    <div class="flex">
+      <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="formatted-body" value="formatted" />
+          <s-label for="formatted-body">
+            Formatted
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="json-body" value="json" />
+          <s-label for="json-body">
+            JSON
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="binary-body" value="binary" />
+          <s-tooltip-provider :delayDuration="350">
+            <s-tooltip>
+              <s-tooltip-trigger as-child>
+                <s-label for="binary-body" class="inline-flex items-center">
+                  <span>Binary</span>
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </s-label>
+              </s-tooltip-trigger>
+              <s-tooltip-content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Binary format</span>
+                  <hr class="my-2">
+                  <span class="leading-6">
+                    <b>The binary view displays transaction in hexadecimal format. You can:</b>
+                    <ul class="mt-2">
+                      <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
+                      <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
+                    </ul><br>
+                    <b>Some transactions (containing assets) are serialization sensitive:</b>
+                    <ul class="mt-2">
+                      <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
+                      <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
+                      <li v-if="store.processedTransaction.value.signatureData[0].packType === EPackType.UNKNOWN">
+                        <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
+                      </li>
+                      <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
+                    </ul>
+                  </span>
+                </div>
+              </s-tooltip-content>
+            </s-tooltip>
+          </s-tooltip-provider>
+        </div>
+      </s-radio-group>
+      <s-radio-group v-if="radioState === 'binary'" v-model="binaryRadioState" class="ml-4 pl-4 flex gap-6 border-l-2">
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="hf26-binary" value="hf26-binary" />
+          <s-label for="hf26-binary">
+            HF26
+          </s-label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="legacy-binary" value="legacy-binary" />
+          <s-label for="legacy-binary">
+            Legacy
+          </s-label>
+        </div>
+      </s-radio-group>
+    </div>
     <s-skeleton v-if="store.isLoading.value" class="w-full h-[100px] skeleton" />
     <div v-else>
+      <div v-if="radioState === 'binary'" class="text-gray-200 px-6 py-3 my-6 border-l-4">
+        <p class="text-sm">
+          You can see transaction binary form displayed as hex byte values. You can select whole fields or binary buffer ranges to copy contents from it.
+        </p>
+      </div>
       <BinaryView
         v-if="store.binaryViewOutputData.value"
-        v-show="radioState === 'binary'"
+        v-show="radioState === 'binary' && binaryRadioState === 'hf26-binary'"
         :data="store.binaryViewOutputData.value"
         dark
-        class="mb-16"
+        @copy="toast.success('Copied selected range to clipboard')"
+      />
+      <BinaryView
+        v-if="store.binaryViewOutputData.value"
+        v-show="radioState === 'binary' && binaryRadioState === 'legacy-binary'"
+        :data="store.legacyBinaryViewOutputData.value"
+        dark
         @copy="toast.success('Copied selected range to clipboard')"
       />
       <s-table v-if="radioState !== 'binary'">
@@ -49,9 +107,11 @@
               <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </s-table-cell>
             <s-table-cell>
               <span
@@ -64,13 +124,32 @@
                 {{ item.authorityType }}
               </span>
             </s-table-cell>
-            <s-table-cell>
+            <s-table-cell class="p-5">
               <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
                 mdi-check
               </v-icon>
               <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
+              <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+                <s-tooltip>
+                  <s-tooltip-trigger as-child>
+                    <v-icon color="yellow">
+                      mdi-alert-circle-check-outline
+                    </v-icon>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Blockchain Forced True</span>
+                      <hr class="my-2">
+                      <span class="leading-6">
+                        The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
+                        but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                      </span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
             </s-table-cell>
             <s-table-cell>
               <span>{{ item.operationType }}</span>
@@ -86,9 +165,11 @@
               <p v-if="item.authorityAccount === 'None'" class="text-red font-semibold">
                 {{ item.authorityAccount }}
               </p>
-              <a v-else class="text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`">
-                {{ `@${item.authorityAccount}` }}
-              </a>
+              <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
+                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                  {{ `@${item.authorityAccount}` }}
+                </a>
+              </CopyWrapper>
             </s-table-cell>
             <s-table-cell>
               <span
@@ -101,21 +182,49 @@
                 {{ item.authorityType }}
               </span>
             </s-table-cell>
-            <s-table-cell>
+            <s-table-cell class="p-5">
               <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
                 mdi-check
               </v-icon>
               <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
+              <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+                <s-tooltip>
+                  <s-tooltip-trigger as-child>
+                    <v-icon color="yellow">
+                      mdi-alert-circle-check-outline
+                    </v-icon>
+                  </s-tooltip-trigger>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Blockchain Forced True</span>
+                      <hr class="my-2">
+                      <span class="leading-6">
+                        The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
+                        but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                      </span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
             </s-table-cell>
             <s-table-cell>
               <span>{{ item.operationType }}</span>
             </s-table-cell>
-            <s-table-cell class="max-w-[30vw]">
-              <code>
-                {{ JSON.stringify(item.operationContent, null, 2) }}
-              </code>
+            <s-table-cell class="flex flex-col items-center gap-4 max-w-[30vw]">
+              <CopyWrapper :toCopy="JSON.stringify(item.operationContent)">
+                <code>
+                  {{ (JSON.stringify(item.operationContent, null, 2).length > 600 && expanded === false) ? `${JSON.stringify(item.operationContent, null, 2).slice(0, 600)}...` : JSON.stringify(item.operationContent, null, 2) }}
+                </code>
+              </CopyWrapper>
+              <s-separator
+                v-if="JSON.stringify(item.operationContent, null, 2).length > 600"
+                :label="expanded ? 'Collapse JSON' : 'Expand JSON'"
+                decorative
+                class="cursor-pointer mb-1 w-60"
+                @click="expanded = !expanded"
+              />
             </s-table-cell>
           </s-table-row>
         </s-table-body>
@@ -127,7 +236,8 @@
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
 import Subtitle from './Subtitle.vue';
-import { ESatisfiedState } from '~/types/wax';
+import CopyWrapper from './CopyWrapper.vue';
+import { EPackType, ESatisfiedState } from '~/types/wax';
 
 const wax = useWaxStore();
 const store = storeToRefs(wax);
@@ -135,6 +245,14 @@ const store = storeToRefs(wax);
 const config = useRuntimeConfig();
 
 const radioState = ref('formatted');
+
+const binaryRadioState = ref('hf26-binary');
+
+const expanded = ref(false);
+
+watch(() => wax.$state.defaultBinaryRadioState, (newValue) => {
+  binaryRadioState.value = newValue;
+});
 </script>
 
 <style scoped>

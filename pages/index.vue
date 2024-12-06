@@ -98,7 +98,7 @@ onMounted(async () => {
 
 <style scoped>
 .card {
-  height: 95%;
+  margin: 2rem 0;
   background-color: #000;
   border-color: #3f3f46 !important;
   padding: 2rem;
