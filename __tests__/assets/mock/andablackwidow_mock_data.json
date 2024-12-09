@@ -425,7 +425,7 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c59eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
+        "matchingSignature": "Open authority",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
         "isSatisfied": "blockchain_forced_true"
@@ -522,7 +522,7 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+        "matchingSignature": "Open authority",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
         "isSatisfied": "blockchain_forced_true"
@@ -601,7 +601,7 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
+        "matchingSignature": "Open authority",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
         "isSatisfied": "blockchain_forced_true"
@@ -680,7 +680,7 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
+        "matchingSignature": "Open authority",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
         "isSatisfied": "blockchain_forced_true"

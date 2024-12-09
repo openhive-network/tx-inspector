@@ -782,13 +782,13 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "1f5f7f6b997c8562a04fc8fd5d71c48116e41ec166c475b7a497c553a241eaa39617945ff450e9160ac5b9e108973696ca58e1e007fb6ba75022a880a0dddac33a",
+        "matchingSignature": "Open authority",
         "authorityAccount": "alice",
         "authorityType": "Posting",
         "isSatisfied": "blockchain_forced_true"
       },
       {
-        "matchingSignature": "1fb64f3762469b8cf25a2ddfef3bbe863ff62135f85abf59e5246361823e059c3254d8f16aaf4f08dce7a0f1573cb3915c78e349b943f0609bea2a7ac63c2a4f3e",
+        "matchingSignature": "Open authority",
         "authorityAccount": "bob",
         "authorityType": "Posting",
         "isSatisfied": "blockchain_forced_true"

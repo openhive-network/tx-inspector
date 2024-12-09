@@ -23,7 +23,14 @@
               <s-tooltip>
                 <CopyWrapper :toCopy="item.matchingSignature">
                   <s-tooltip-trigger as-child>
-                    <span>{{ waxStore.shortenString(item.matchingSignature) }}</span>
+                    <span
+                      :class="{
+                        'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
+                        'text-yellow': item.matchingSignature === 'Open authority',
+                      }"
+                    >
+                      {{ waxStore.shortenString(item.matchingSignature) }}
+                    </span>
                   </s-tooltip-trigger>
                 </CopyWrapper>
                 <s-tooltip-content>
