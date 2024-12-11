@@ -136,7 +136,7 @@ export default defineConfig < ITxInspectorTest>({
       testDir: './__tests__/',
       testMatch: '**/txInspector-base-negative-cases-mock.ts',
       use: {
-        fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_data.json'
+        fixtureLevelMockFile: './__tests__/assets/mock/andablackwidow_mock_for_invalid_tests_data.json'
       }
     },
     {
