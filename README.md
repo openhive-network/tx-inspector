@@ -362,3 +362,14 @@ The binary view provides users with a detailed hexadecimal (hex) representation 
     </td>
   </tr>
 </table>
+
+## Real examples
+
+Below we present some real transactions examples. Simply copy the id, and paste into the application input to see the results.
+
+1. Valid tranasction without any signature (open authority): `a94716f567611b9f930369c8f53df27d4efe5ad2`
+2. Transaction directly signed with legacy serialization mode by the required authority account: `da9602787693edccdafa1e7325502e0bb14453d1`
+3. Transaction directly signed with hf26 serialization mode by the required authority account: `7b84c7620c95eaf341821d4bfb126a219b0d0150`
+4. Transaction with multiple operations and multiple signatures. All of them are directly authorized: `a7efc7be69861fdcdc39712e532beb8ddc701f03`
+5. Transaction with single nest level for delegated authority: `897233fbcbe012e340478c8de7eb97755c542f09`
+6. Transaction with 2 (maximum for valid transactiona) nest levels for delegated authority: `07e7d9ecaad2a11bc36db6d7046a55e231627574`
