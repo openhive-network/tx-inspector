@@ -40,6 +40,8 @@ Authority specific tests
 3.1 ~~Using active authority to satisfy posting authority requirement~~
 3.2 ~~Using owner authority to satisfy posting authority requirement~~
 3.3 ~~Using owner authority to satisfy active authority requirement~~
+3.4 ~~Using both key and account with weights 1 to satisfy treshold 2~~
+3.5 ~~Using both key and account with weights 1 to satisfy treshold 2 for account with delegated authority~~
 
 4. Negative cases:
 

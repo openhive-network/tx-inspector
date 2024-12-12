@@ -123,6 +123,24 @@ export default defineConfig < ITxInspectorTest>({
       }
     },
     {
+      name: 'tx_inspector_satisfy_higher_treshold',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-satisfy-higher-treshold-mock.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/alice_account_for_valid_transactions_data.json'
+      }
+    },
+    {
+      name: 'tx_inspector_satisfy_higher_treshold_2',
+      testDir: './__tests__/',
+      testMatch: '**/txInspector-satisfy-higher-treshold-mock_2.ts',
+      use:
+      {
+        fixtureLevelMockFile: './__tests__/assets/mock/carl_account_with_delegation_to_two_accounts_data.json'
+      }
+    },
+    {
       name: 'tx_inspector_signatures_together_can_satisfy_non_default_weights',
       testDir: './__tests__/',
       testMatch: '**/txInspector-signatures-together-can-satisfy-non-default-weights-mock.ts',
