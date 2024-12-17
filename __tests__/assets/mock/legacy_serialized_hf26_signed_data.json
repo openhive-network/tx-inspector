@@ -1,5 +1,5 @@
 {
-  "validTxAuthority": true,
+  "validTxAuthority": false,
   "keyReferences": [
     {
       "keys": ["STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"],
@@ -219,17 +219,17 @@
     },
     "requiredAuthoritiesData": [
       {
-        "matchingSignature": "1f411808fe07ba78c8e0d1edc7e4bdf14b8af1b85a26437fd7e082054fc0fa5b503627072e4cc482d1a4e60ea5f318a85539282c5beb9747e83a429bcd369d1ece",
+        "matchingSignature": "Missing signature",
         "authorityAccount": "andablackwidow",
         "authorityType": "Posting",
-        "isSatisfied": "blockchain_forced_true"
+        "isSatisfied": "false"
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Posting",
-        "isSatisfied": "blockchain_forced_true",
+        "isSatisfied": "false",
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "andablackwidow",
@@ -240,7 +240,7 @@
       }
     ],
     "transactionOtherData": {
-      "isValid": true,
+      "isValid": false,
       "signeesByKeys": null
     }
   }

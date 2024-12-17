@@ -49,6 +49,15 @@ module.exports = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        posting: {
+          DEFAULT: '#0fbd86'
+        },
+        active: {
+          DEFAULT: '#0fbabd'
+        },
+        owner: {
+          DEFAULT: '#bd740f'
         }
       },
       borderRadius: {

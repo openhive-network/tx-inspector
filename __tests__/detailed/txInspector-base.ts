@@ -342,7 +342,7 @@ test.describe('transaction inspector tests based on wax library', () => {
       },
       "requiredAuthoritiesData": [
         {
-          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
+          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
           "authorityAccount": "ecency",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -360,13 +360,13 @@ test.describe('transaction inspector tests based on wax library', () => {
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
+          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
           "authorityAccount": "esteemapp",
           "authorityType": "Posting",
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
+          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
           "authorityAccount": "good-karma",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -564,7 +564,7 @@ test.describe('transaction inspector tests based on wax library', () => {
       },
       "requiredAuthoritiesData": [
         {
-          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
+          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
           "authorityAccount": "ecency",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -582,13 +582,13 @@ test.describe('transaction inspector tests based on wax library', () => {
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
+          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
           "authorityAccount": "esteemapp",
           "authorityType": "Posting",
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
+          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
           "authorityAccount": "good-karma",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -786,7 +786,7 @@ test.describe('transaction inspector tests based on wax library', () => {
       },
       "requiredAuthoritiesData": [
         {
-          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
+          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
           "authorityAccount": "ecency",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -804,13 +804,13 @@ test.describe('transaction inspector tests based on wax library', () => {
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
+          "matchingSignature": "1f4141e7645dd2bdcdb2001baea165e668a6f9c2a366f6fd2f3e9d878f071f5eb052509eb666b80c1e0daaa7fdec36e3de827087dcd3015c8672b536ddddbc5726",
           "authorityAccount": "esteemapp",
           "authorityType": "Posting",
           "isSatisfied": "true"
         },
         {
-          "matchingSignature": "205f0e25631bdbcd37669b2f6c36594d0153e468be8b2b6a57f8eae49538132efd0dde1ad6a707788d6a2024efd03a55dd0bb478a40eedce48f6e5db19d365bce5",
+          "matchingSignature": "2043b5ea9cbf76f1cd0fbb5f589350d9b8273d241c8bb704189bc9fd4444493c384594536e0387ff121bcdbfa4fa401917e30609ac86ea82f13132d26280e74f9a",
           "authorityAccount": "good-karma",
           "authorityType": "Posting",
           "isSatisfied": "true"
@@ -946,7 +946,7 @@ test.describe('transaction inspector tests based on wax library', () => {
       },
       "requiredAuthoritiesData": [
         {
-          "matchingSignature": "203eed491a1e032bc889b030861a80bf3f0bc8ba7fa30843041825c4f542411fb3678fd527c598dcc6646a5dabf2110691a4d6355c72d7638ff",
+          "matchingSignature": "Missing signature",
           "authorityAccount": "splinterboost",
           "authorityType": "Active",
           "isSatisfied": "false"

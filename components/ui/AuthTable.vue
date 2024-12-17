@@ -23,7 +23,14 @@
               <s-tooltip>
                 <CopyWrapper :toCopy="item.matchingSignature">
                   <s-tooltip-trigger as-child>
-                    <span>{{ waxStore.shortenString(item.matchingSignature) }}</span>
+                    <span
+                      :class="{
+                        'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
+                        'text-yellow': item.matchingSignature === 'Open authority',
+                      }"
+                    >
+                      {{ waxStore.shortenString(item.matchingSignature) }}
+                    </span>
                   </s-tooltip-trigger>
                 </CopyWrapper>
                 <s-tooltip-content>
@@ -51,9 +58,9 @@
           <s-table-cell class="p-5">
             <span
               :class="{
-                'text-green': item.authorityType === 'Posting',
-                'text-blue': item.authorityType === 'Active',
-                'text-orange': item.authorityType === 'Owner',
+                'text-posting': item.authorityType === 'Posting',
+                'text-active': item.authorityType === 'Active',
+                'text-owner': item.authorityType === 'Owner',
                 'opacity-80': item.authorityType === 'Other' }"
             >
               {{ item.authorityType }}

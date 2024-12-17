@@ -107,6 +107,8 @@ export class TransactionAnalyzer {
 
     const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, requiredAuthorities);
 
+    const matchingSignatures = await this.getMatchingSignature(signatures, signatureKeys, authorityType[0].accounts, isValid, authorityPath);
+
     const signatureData: ISignatureData[] = [];
 
     for (let i = 0; i < signatures.length; ++i)
@@ -129,20 +131,7 @@ export class TransactionAnalyzer {
     for (const authority of authorityType)
       for (let i = 0; i < authority.accounts.length; ++i)
         requiredAuthoritiesData.push({
-          matchingSignature:
-            (
-              (signatures.length > authority.accounts.length && authority.accounts[0] === 'None')
-                ? 'None'
-                : (
-                    signatures[i]
-                      ? signatures[i]
-                      : (
-                          isValid
-                            ? 'Open authority'
-                            : 'Missing signature'
-                        )
-                  )
-            ),
+          matchingSignature: matchingSignatures.length === 1 ? matchingSignatures[0] : matchingSignatures[i],
           authorityAccount: authority.accounts[i],
           authorityType: authority.level,
           isSatisfied: satisfied
@@ -404,6 +393,38 @@ export class TransactionAnalyzer {
       throw new Error('Operations not found');
 
     return operations;
+  }
+
+  private async getMatchingSignature (signatures: string[], keys: string[], authorityAccounts: string[], isValid: boolean, authorityPath: IAuthorityPaths[]): Promise<string[]> {
+    const matchingSignatures: string[] = [];
+
+    const { accounts } = await this.api.getKeyReferences({ keys });
+
+    if (authorityAccounts[0] === 'None')
+      return ['None'];
+
+    if (signatures.length === 0 || accounts === null || accounts[0].length === 0)
+      if (isValid)
+        return ['Open authority'];
+      else
+        return ['Missing signature'];
+
+    if (authorityPath.length > 1)
+      while (signatures.length !== matchingSignatures.length)
+        for (let i = 0; i < signatures.length; ++i)
+          accounts.forEach((account: string[], index: number) => {
+            if (account[0] === authorityPath[0].account)
+              matchingSignatures.push(signatures[index]);
+          });
+
+    while (signatures.length !== matchingSignatures.length)
+      for (let i = 0; i < signatures.length; ++i)
+        accounts.forEach((account: string[], index: number) => {
+          if (account[0] === authorityAccounts[i])
+            matchingSignatures.push(signatures[index]);
+        });
+
+    return matchingSignatures;
   }
 
   private async findSigneesForKeys (keys: string[]): Promise<string[][]> {

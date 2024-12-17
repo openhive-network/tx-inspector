@@ -11,6 +11,12 @@
 <script lang="ts" setup>
 import { Toaster } from '~/components/shadcn/sonner';
 import Footer from '~/components/ui/Footer.vue';
+
+useHead({
+  htmlAttrs: {
+    class: 'overflow-y-auto'
+  }
+});
 </script>
 
 <style scoped>

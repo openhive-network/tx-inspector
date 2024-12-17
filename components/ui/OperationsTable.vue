@@ -116,9 +116,9 @@
             <s-table-cell>
               <span
                 :class="{
-                  'text-green': item.authorityType === 'Posting',
-                  'text-blue': item.authorityType === 'Active',
-                  'text-orange': item.authorityType === 'Owner',
+                  'text-posting': item.authorityType === 'Posting',
+                  'text-active': item.authorityType === 'Active',
+                  'text-owner': item.authorityType === 'Owner',
                   'opacity-80': item.authorityType === 'Other' }"
               >
                 {{ item.authorityType }}
@@ -174,9 +174,9 @@
             <s-table-cell>
               <span
                 :class="{
-                  'text-green': item.authorityType === 'Posting',
-                  'text-blue': item.authorityType === 'Active',
-                  'text-orange': item.authorityType === 'Owner',
+                  'text-posting': item.authorityType === 'Posting',
+                  'text-active': item.authorityType === 'Active',
+                  'text-owner': item.authorityType === 'Owner',
                   'opacity-80': item.authorityType === 'Other' }"
               >
                 {{ item.authorityType }}

@@ -10,7 +10,37 @@
           <s-table-head>Signature</s-table-head>
           <s-table-head>Pack</s-table-head>
           <s-table-head>Public key</s-table-head>
-          <s-table-head>Authority path</s-table-head>
+          <s-table-head>
+            <s-tooltip-provider :delayDuration="350">
+              <s-tooltip>
+                <s-tooltip-trigger as-child>
+                  <span class="flex items-center">
+                    Authority path
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </s-tooltip-trigger>
+                <s-tooltip-content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Authority Path</span>
+                    <hr class="my-2">
+                    <span class="leading-6">
+                      <b>The authority path provides three details for each level within the authority nest:</b>
+                      <ul class="mt-2">
+                        <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Account name, which links to more detailed account information.</li>
+                        <li> <v-icon>mdi-hand-pointing-right</v-icon> (Weight/Threshold).</li>
+                        <li>
+                          <v-icon>mdi-hand-pointing-right</v-icon>
+                          The authority level, indicated by the text color of the account name - <span class="text-posting">Posting</span>, <span class="text-active">Active</span>, <span class="text-owner">Owner</span>.
+                        </li>
+                      </ul>
+                    </span>
+                  </div>
+                </s-tooltip-content>
+              </s-tooltip>
+            </s-tooltip-provider>
+          </s-table-head>
         </s-table-row>
       </s-table-header>
       <s-table-body>
