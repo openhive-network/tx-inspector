@@ -71,6 +71,7 @@ export interface ISignatureData {
   packType: string;
   publicKey: string;
   authorityPath: IAuthorityPaths[] | undefined;
+  authorityTrace: IVerifyAuthorityTrace;
 }
 
 export interface ITransactionData {

@@ -134,12 +134,26 @@
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
-            <span v-for="(pathItem, key) in item.authorityPath" v-else :key="key">
+            <!-- <span v-for="(pathItem, key) in item.authorityPath" v-else :key="key">
               <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${Array.isArray(pathItem.account) ? pathItem.account[index] : pathItem.account}`" target="_blank">
                 {{ Array.isArray(pathItem.account) ? `@${pathItem.account[index]}` : `@${pathItem.account}` }}
               </a>
               {{ pathItem.authWeight ? `(${pathItem.authWeight.weight}/${pathItem.authWeight.auth}) ` : '' }}
               <v-icon v-if="item.authorityPath[key + 1]">mdi-chevron-right</v-icon>
+            </span> -->
+            <span v-for="(pathItem, key) in item.authorityTrace.finalAuthorityPath.slice().reverse()" :key="key">
+              <a
+                :href="`${config.public.blockExplorerUrl}/@${pathItem.processedEntry}`"
+                :class="{
+                  'text-posting': pathItem.processedRole === 'posting',
+                  'text-active': pathItem.processedRole === 'active',
+                  'text-owner': pathItem.processedRole === 'owner',
+                }"
+              >
+                {{ `@${pathItem.processedEntry}` }}
+              </a>
+              <span v-if="item.authorityTrace.finalAuthorityPath[key + 1]">{{ `(${pathItem.weight}/${pathItem.threshold})` }}</span>
+              <v-icon v-if="item.authorityTrace.finalAuthorityPath[key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
         </s-table-row>

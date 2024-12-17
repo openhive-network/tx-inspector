@@ -116,7 +116,8 @@ export class TransactionAnalyzer {
         signature: signatures[i],
         packType: Array.isArray(packType) ? packType[i] : packType,
         publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
-        authorityPath
+        authorityPath,
+        authorityTrace: this.verifyAuthorityTrace()[i]
       });
 
     const transactionData: ITransactionData = {
@@ -486,6 +487,55 @@ export class TransactionAnalyzer {
     }
 
     return { authorityPath: [], isSatisfied: false };
+  }
+
+  private verifyAuthorityTrace (): IVerifyAuthorityTrace[] {
+    return [
+      {
+        rootEntry: {
+          processedEntry: 'sunnyvo',
+          processedRole: 'posting',
+          threshold: 1,
+          weight: 0,
+          recursionDepth: 0,
+          processingStatus: {
+            entryAccepted: true,
+            isOpenAuthority: false
+          },
+          visitedEntries: []
+        },
+        finalAuthorityPath: [
+          {
+            processedEntry: 'sunnyvo',
+            processedRole: 'posting',
+            threshold: 1,
+            weight: 0,
+            recursionDepth: 0,
+            processingStatus: {
+              entryAccepted: true,
+              isOpenAuthority: false
+            },
+            visitedEntries: []
+          },
+          {
+            processedEntry: 'steemauto',
+            processedRole: 'posting',
+            threshold: 1,
+            weight: 1,
+            recursionDepth: 1,
+            processingStatus: {
+              entryAccepted: true,
+              isOpenAuthority: false
+            },
+            visitedEntries: []
+          }
+        ],
+        verificationStatus: {
+          entryAccepted: true,
+          isOpenAuthority: false
+        }
+      }
+    ];
   }
 
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
