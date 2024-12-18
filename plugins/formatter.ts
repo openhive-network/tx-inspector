@@ -144,7 +144,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       { toCopy: account },
       h(
         NuxtLink,
-        { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue', target: '_blank' },
+        { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue hover:opacity-70 transition-opacity', target: '_blank' },
         () => `@${account} `
       )
     );
@@ -165,7 +165,7 @@ class OperationsFormatter implements IWaxCustomFormatter {
       { toCopy: permlink },
       h(
         NuxtLink,
-        { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green' },
+        { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green hover:opacity-70 transition-opacity' },
         () => permlink
       )
     );

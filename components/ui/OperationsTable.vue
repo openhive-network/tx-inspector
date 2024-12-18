@@ -108,7 +108,7 @@
                 {{ item.authorityAccount }}
               </p>
               <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
-                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                <a class="my-2 text-blue hover:opacity-70 transition-opacity" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
                   {{ `@${item.authorityAccount}` }}
                 </a>
               </CopyWrapper>
@@ -166,7 +166,7 @@
                 {{ item.authorityAccount }}
               </p>
               <CopyWrapper v-else :toCopy="(item.authorityAccount as string)">
-                <a class="my-2 text-blue" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
+                <a class="my-2 text-blue hover:opacity-70 transition-opacity" :href="`${config.public.blockExplorerUrl}/@${item.authorityAccount}`" target="_blank">
                   {{ `@${item.authorityAccount}` }}
                 </a>
               </CopyWrapper>

@@ -144,15 +144,18 @@
             <span v-for="(pathItem, key) in item.authorityTrace.finalAuthorityPath.slice().reverse()" :key="key">
               <a
                 :href="`${config.public.blockExplorerUrl}/@${pathItem.processedEntry}`"
-                :class="{
-                  'text-posting': pathItem.processedRole === 'posting',
-                  'text-active': pathItem.processedRole === 'active',
-                  'text-owner': pathItem.processedRole === 'owner',
-                }"
+                :class="[
+                  {
+                    'text-posting': pathItem.processedRole === 'posting',
+                    'text-active': pathItem.processedRole === 'active',
+                    'text-owner': pathItem.processedRole === 'owner',
+                  },
+                  'hover:opacity-70 transition-opacity'
+                ]"
               >
                 {{ `@${pathItem.processedEntry}` }}
               </a>
-              <span v-if="item.authorityTrace.finalAuthorityPath[key + 1]">{{ `(${pathItem.weight}/${pathItem.threshold})` }}</span>
+              <span v-if="item.authorityTrace.finalAuthorityPath[key + 1]" class="ml-1">{{ `(${pathItem.weight}/${pathItem.threshold})` }}</span>
               <v-icon v-if="item.authorityTrace.finalAuthorityPath[key + 1]">mdi-chevron-right</v-icon>
             </span>
           </s-table-cell>
