@@ -94,6 +94,7 @@ export class TransactionAnalyzer {
     const signatures = transaction.signatures;
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
+    const { authorityTrace, satisfiedFromTrace } = this.verifyAuthorityTrace();
     const packType = await this.getPackType(requiredAuthorities, id);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
@@ -105,7 +106,7 @@ export class TransactionAnalyzer {
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
     const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
 
-    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, isSatisfied, requiredAuthorities);
+    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, satisfiedFromTrace, requiredAuthorities);
 
     const matchingSignatures = await this.getMatchingSignature(signatures, signatureKeys, authorityType[0].accounts, isValid, authorityPath);
 
@@ -117,7 +118,7 @@ export class TransactionAnalyzer {
         packType: Array.isArray(packType) ? packType[i] : packType,
         publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
         authorityPath,
-        authorityTrace: this.verifyAuthorityTrace()[i]
+        authorityTrace: authorityTrace[i]
       });
 
     const transactionData: ITransactionData = {
@@ -489,23 +490,11 @@ export class TransactionAnalyzer {
     return { authorityPath: [], isSatisfied: false };
   }
 
-  private verifyAuthorityTrace (): IVerifyAuthorityTrace[] {
-    return [
-      {
-        rootEntry: {
-          processedEntry: 'sunnyvo',
-          processedRole: 'posting',
-          threshold: 1,
-          weight: 0,
-          recursionDepth: 0,
-          processingStatus: {
-            entryAccepted: true,
-            isOpenAuthority: false
-          },
-          visitedEntries: []
-        },
-        finalAuthorityPath: [
-          {
+  private verifyAuthorityTrace (): { authorityTrace: IVerifyAuthorityTrace[], satisfiedFromTrace: boolean } {
+    return {
+      authorityTrace: [
+        {
+          rootEntry: {
             processedEntry: 'sunnyvo',
             processedRole: 'posting',
             threshold: 1,
@@ -517,25 +506,40 @@ export class TransactionAnalyzer {
             },
             visitedEntries: []
           },
-          {
-            processedEntry: 'steemauto',
-            processedRole: 'posting',
-            threshold: 1,
-            weight: 1,
-            recursionDepth: 1,
-            processingStatus: {
-              entryAccepted: true,
-              isOpenAuthority: false
+          finalAuthorityPath: [
+            {
+              processedEntry: 'sunnyvo',
+              processedRole: 'posting',
+              threshold: 1,
+              weight: 0,
+              recursionDepth: 0,
+              processingStatus: {
+                entryAccepted: true,
+                isOpenAuthority: false
+              },
+              visitedEntries: []
             },
-            visitedEntries: []
+            {
+              processedEntry: 'steemauto',
+              processedRole: 'posting',
+              threshold: 1,
+              weight: 1,
+              recursionDepth: 1,
+              processingStatus: {
+                entryAccepted: true,
+                isOpenAuthority: false
+              },
+              visitedEntries: []
+            }
+          ],
+          verificationStatus: {
+            entryAccepted: true,
+            isOpenAuthority: false
           }
-        ],
-        verificationStatus: {
-          entryAccepted: true,
-          isOpenAuthority: false
         }
-      }
-    ];
+      ],
+      satisfiedFromTrace: true
+    };
   }
 
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
