@@ -26,7 +26,14 @@
                     <span class="text-lg">Authority Path</span>
                     <hr class="my-2">
                     <span class="leading-6">
-                      <b>The authority path provides three details for each level within the authority nest:</b>
+                      <p class="mb-2">
+                        The accounts in the authority path are displayed in a specific order,
+                        starting with the account owning the calculated public key <br>
+                        and ending with the account specified in the transaction's required authorities.
+                      </p>
+                      <p>
+                        <b>The authority path provides the following three details for each entry within the authority path:</b>
+                      </p>
                       <ul class="mt-2">
                         <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Account name, which links to more detailed account information.</li>
                         <li> <v-icon>mdi-hand-pointing-right</v-icon> (Weight/Threshold).</li>
