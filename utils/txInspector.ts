@@ -94,7 +94,7 @@ export class TransactionAnalyzer {
     const signatures = transaction.signatures;
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
-    const { authorityTrace, satisfiedFromTrace } = this.verifyAuthorityTrace();
+    const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace();
     const packType = await this.getPackType(requiredAuthorities, id);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
@@ -118,7 +118,7 @@ export class TransactionAnalyzer {
         packType: Array.isArray(packType) ? packType[i] : packType,
         publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
         authorityPath,
-        authorityTrace: authorityTrace[i]
+        authorityTrace
       });
 
     const transactionData: ITransactionData = {
@@ -490,56 +490,75 @@ export class TransactionAnalyzer {
     return { authorityPath: [], isSatisfied: false };
   }
 
-  private verifyAuthorityTrace (): { authorityTrace: IVerifyAuthorityTrace[], satisfiedFromTrace: boolean } {
-    return {
-      authorityTrace: [
-        {
-          rootEntry: {
-            processedEntry: 'sunnyvo',
-            processedRole: 'posting',
-            threshold: 1,
-            weight: 0,
-            recursionDepth: 0,
-            processingStatus: {
-              entryAccepted: true,
-              isOpenAuthority: false
-            },
-            visitedEntries: []
-          },
-          finalAuthorityPath: [
-            {
-              processedEntry: 'sunnyvo',
-              processedRole: 'posting',
-              threshold: 1,
-              weight: 0,
-              recursionDepth: 0,
-              processingStatus: {
-                entryAccepted: true,
-                isOpenAuthority: false
-              },
-              visitedEntries: []
-            },
-            {
-              processedEntry: 'steemauto',
-              processedRole: 'posting',
-              threshold: 1,
-              weight: 1,
-              recursionDepth: 1,
-              processingStatus: {
-                entryAccepted: true,
-                isOpenAuthority: false
-              },
-              visitedEntries: []
-            }
-          ],
-          verificationStatus: {
-            entryAccepted: true,
-            isOpenAuthority: false
-          }
-        }
-      ],
-      satisfiedFromTrace: true
-    };
+  private async verifyAuthorityTrace (): Promise<IAuthorityTraceData> {
+    const tx = await this.chain.createTransaction();
+
+    const trace = await tx.generateAuthorityVerificationTrace(this.transaction);
+
+    let totalWeight = 0;
+    let totalThreshold = 0;
+    let isSatisfied!: boolean;
+
+    for (const item of trace.finalAuthorityPath) {
+      totalWeight += item.weight;
+      totalThreshold += item.threshold;
+    }
+
+    if (totalWeight + 1 >= totalThreshold)
+      isSatisfied = true;
+    else
+      isSatisfied = false;
+
+    return { authorityTrace: trace, satisfiedFromTrace: isSatisfied };
+    // return {
+    //   authorityTrace: [
+    //     {
+    //       rootEntry: {
+    //         processedEntry: 'sunnyvo',
+    //         processedRole: 'posting',
+    //         threshold: 1,
+    //         weight: 0,
+    //         recursionDepth: 0,
+    //         processingStatus: {
+    //           entryAccepted: true,
+    //           isOpenAuthority: false
+    //         },
+    //         visitedEntries: []
+    //       },
+    //       finalAuthorityPath: [
+    //         {
+    //           processedEntry: 'sunnyvo',
+    //           processedRole: 'posting',
+    //           threshold: 1,
+    //           weight: 0,
+    //           recursionDepth: 0,
+    //           processingStatus: {
+    //             entryAccepted: true,
+    //             isOpenAuthority: false
+    //           },
+    //           visitedEntries: []
+    //         },
+    //         {
+    //           processedEntry: 'steemauto',
+    //           processedRole: 'posting',
+    //           threshold: 1,
+    //           weight: 1,
+    //           recursionDepth: 1,
+    //           processingStatus: {
+    //             entryAccepted: true,
+    //             isOpenAuthority: false
+    //           },
+    //           visitedEntries: []
+    //         }
+    //       ],
+    //       verificationStatus: {
+    //         entryAccepted: true,
+    //         isOpenAuthority: false
+    //       }
+    //     }
+    //   ],
+    //   satisfiedFromTrace: true
+    // };
   }
 
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {

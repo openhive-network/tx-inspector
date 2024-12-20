@@ -110,6 +110,11 @@ export interface IProcessedTransaction {
   transactionOtherData: ITransactionOtherData;
 }
 
+export interface IAuthorityTraceData {
+  authorityTrace: IVerifyAuthorityTrace;
+  satisfiedFromTrace: boolean;
+}
+
 export interface ITransactionAnalyzerApi {
   verifyAuthority (params: { trx: ApiTransaction, pack: string }): Promise<{ valid: boolean }> | { valid: boolean };
 
