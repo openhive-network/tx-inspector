@@ -117,6 +117,11 @@ export interface IAuthorityTraceData {
   satisfiedFromTrace: boolean;
 }
 
+export interface IAuthorityTypeData {
+  level: EAuthorityLevel;
+  accounts: string[];
+}
+
 export interface ITransactionAnalyzerApi {
   verifyAuthority (params: { trx: ApiTransaction, pack: string }): Promise<{ valid: boolean }> | { valid: boolean };
 

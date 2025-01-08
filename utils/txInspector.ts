@@ -373,7 +373,7 @@ export class TransactionAnalyzer {
     return result;
   }
 
-  private getAuthorityType (requiredAuthorities: ITransactionRequiredAuthorities): { level: EAuthorityLevel, accounts: string[] }[] {
+  private getAuthorityType (requiredAuthorities: ITransactionRequiredAuthorities): IAuthorityTypeData[] {
     const authLevels: { level: EAuthorityLevel, accounts: string[] }[] = [];
 
     if (requiredAuthorities.owner && requiredAuthorities.owner.size !== 0)
