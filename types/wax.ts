@@ -94,6 +94,8 @@ export interface ITransactionBodyData {
   isSatisfied: ESatisfiedState;
   operationType: string;
   operationContent: object;
+  operationsBinaryView: IBinaryViewOutputData;
+  operationsLegacyBinaryView: IBinaryViewOutputData;
 }
 
 export interface ITransactionOtherData {

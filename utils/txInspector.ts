@@ -95,6 +95,8 @@ export class TransactionAnalyzer {
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
     const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace();
+    const operationsBinaryView = this.getOperationsBinaryView(operations);
+    const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
@@ -149,7 +151,9 @@ export class TransactionAnalyzer {
             authorityType: authority.level,
             isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
             operationType: operations[i].type,
-            operationContent: operations[i].value
+            operationContent: operations[i].value,
+            operationsBinaryView: operationsBinaryView[i],
+            operationsLegacyBinaryView: operationsLegacyBinaryView[i]
           });
         else
           for (let j = 0; j < authority.accounts.length; ++j)
@@ -158,7 +162,9 @@ export class TransactionAnalyzer {
               authorityType: authority.level,
               isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
               operationType: operations[i].type,
-              operationContent: operations[i].value
+              operationContent: operations[i].value,
+              operationsBinaryView: operationsBinaryView[i],
+              operationsLegacyBinaryView: operationsLegacyBinaryView[i]
             });
 
     const transactionOtherData: ITransactionOtherData = {
@@ -637,6 +643,24 @@ export class TransactionAnalyzer {
         return ESatisfiedState.TRUE;
 
     return ESatisfiedState.FALSE;
+  }
+
+  private getOperationsBinaryView (operations: ApiOperation[]): IBinaryViewOutputData[] {
+    const binaryOperations: IBinaryViewOutputData[] = [];
+
+    for (const operation of operations)
+      binaryOperations.push(this.chain.operationBinaryViewMetadata(operation, true));
+
+    return binaryOperations;
+  }
+
+  private getLegacyOperationsBinaryView (operations: ApiOperation[]): IBinaryViewOutputData[] {
+    const binaryOperations: IBinaryViewOutputData[] = [];
+
+    for (const operation of operations)
+      binaryOperations.push(this.chain.operationBinaryViewMetadata(operation, false));
+
+    return binaryOperations;
   }
 
   // Method required for the authority path algorithm
