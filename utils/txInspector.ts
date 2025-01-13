@@ -112,6 +112,9 @@ export class TransactionAnalyzer {
 
     const matchingSignatures = await this.getMatchingSignature(signatures, signatureKeys, authorityType[0].accounts, isValid, authorityPath);
 
+    console.log(JSON.stringify(authorityTrace));
+    console.log(authorityTrace);
+
     const signatureData: ISignatureData[] = [];
 
     for (let i = 0; i < signatures.length; ++i)

@@ -148,22 +148,40 @@
               {{ pathItem.authWeight ? `(${pathItem.authWeight.weight}/${pathItem.authWeight.auth}) ` : '' }}
               <v-icon v-if="item.authorityPath[key + 1]">mdi-chevron-right</v-icon>
             </span> -->
-            <span v-for="(pathItem, key) in item.authorityTrace.finalAuthorityPath.slice().reverse()" :key="key">
+            <span v-if="item.authorityTrace.finalAuthorityPath[index].visitedEntries[0].processedEntry.startsWith('STM')">
               <a
-                :href="`${config.public.blockExplorerUrl}/@${pathItem.processedEntry}`"
+                :href="`${config.public.blockExplorerUrl}/@${item.authorityTrace.finalAuthorityPath[index].processedEntry}`"
                 :class="[
                   {
-                    'text-posting': pathItem.processedRole === 'posting',
-                    'text-active': pathItem.processedRole === 'active',
-                    'text-owner': pathItem.processedRole === 'owner',
+                    'text-posting': item.authorityTrace.finalAuthorityPath[index].processedRole === 'posting',
+                    'text-active': item.authorityTrace.finalAuthorityPath[index].processedRole === 'active',
+                    'text-owner': item.authorityTrace.finalAuthorityPath[index].processedRole === 'owner',
                   },
                   'hover:opacity-70 transition-opacity'
                 ]"
               >
-                {{ `@${pathItem.processedEntry}` }}
+                {{ `@${item.authorityTrace.finalAuthorityPath[index].processedEntry}` }}
               </a>
-              <span v-if="item.authorityTrace.finalAuthorityPath[key + 1]" class="ml-1">{{ `(${pathItem.weight}/${pathItem.threshold})` }}</span>
-              <v-icon v-if="item.authorityTrace.finalAuthorityPath[key + 1]">mdi-chevron-right</v-icon>
+              <span class="ml-1">{{ `(${item.authorityTrace.finalAuthorityPath[index].weight}/${item.authorityTrace.finalAuthorityPath[index].threshold})` }}</span>
+            </span>
+            <span v-else>
+              <AuthorityPathRecursions
+                :visitedEntries="item.authorityTrace.finalAuthorityPath[index].visitedEntries"
+              />
+              <a
+                :href="`${config.public.blockExplorerUrl}/@${item.authorityTrace.finalAuthorityPath[index].processedEntry}`"
+                :class="[
+                  {
+                    'text-posting': item.authorityTrace.finalAuthorityPath[index].processedRole === 'posting',
+                    'text-active': item.authorityTrace.finalAuthorityPath[index].processedRole === 'active',
+                    'text-owner': item.authorityTrace.finalAuthorityPath[index].processedRole === 'owner',
+                  },
+                  'hover:opacity-70 transition-opacity'
+                ]"
+              >
+                {{ `@${item.authorityTrace.finalAuthorityPath[index].processedEntry}` }}
+              </a>
+              <span class="ml-1">{{ `(${item.authorityTrace.finalAuthorityPath[index].weight}/${item.authorityTrace.finalAuthorityPath[index].threshold})` }}</span>
             </span>
           </s-table-cell>
         </s-table-row>
@@ -175,6 +193,7 @@
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
+import AuthorityPathRecursions from './AuthorityPathRecursions.vue';
 import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
