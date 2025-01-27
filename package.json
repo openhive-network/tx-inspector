@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@hiveio/component-binary-view": "^0.2.0",
-    "@hiveio/wax": "1.27.6-rc5-stable.241028191117",
+    "@hiveio/wax": "1.27.6-rc7-250127141902",
     "@pinia/nuxt": "^0.5.1",
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^10.11.1",

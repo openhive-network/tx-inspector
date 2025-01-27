@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type ITransaction, type TWaxExtended } from '@hiveio/wax';
+import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type ITransaction, type TWaxExtended } from '@hiveio/wax/vite';
 import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities } from '../types/wax';
 import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 

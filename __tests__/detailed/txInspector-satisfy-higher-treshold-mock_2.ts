@@ -2,7 +2,7 @@ import { chromium, type ChromiumBrowser } from "playwright";
 import { expect } from '@playwright/test';
 
 import { test } from '../assets/jest-helper';
-import type { ApiTransaction } from "@hiveio/wax";
+import type { ApiTransaction } from "@hiveio/wax/vite";
 import type { IProcessedTransaction } from "../../types/wax";
 
 let browser!: ChromiumBrowser;
