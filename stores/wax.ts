@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
+import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax/vite';
 import { type TxInspectorEngine } from '#imports';
 import { EPackType, type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
 

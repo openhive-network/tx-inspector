@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-var */
-import { createHiveChain } from '@hiveio/wax';
+import { createHiveChain } from '@hiveio/wax/vite';
 import { TransactionAnalyzerApiProvider, TransactionAnalyzer, TxInspectorEngine } from '../../utils/txInspector.js';
 import type { TChainExtendedApiData, ITransactionAnalyzerApi } from '../../types/wax.js';
 import { TransactionAnalyzerApiMock, type IMockData } from './api-mock.js';

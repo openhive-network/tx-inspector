@@ -8,7 +8,7 @@ import { type ConsoleMessage, type Page, test as base } from '@playwright/test';
 
 import './globals';
 
-import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
+import type { ApiTransaction, IWaxOptions } from '@hiveio/wax/vite';
 
 import type { IProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';

@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { authority, TAccountName } from '@hiveio/wax';
+import type { authority, TAccountName } from '@hiveio/wax/vite';
 import { toast } from 'vue-sonner';
 import { TransactionAnalyzer } from '../utils/txInspector';
 import type { ITransactionRequiredAuthorities } from '../types/wax';

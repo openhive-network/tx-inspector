@@ -6,7 +6,7 @@ import {
   ReblogOperationData,
   ResourceCreditsOperationData,
   WaxFormattable
-} from '@hiveio/wax';
+} from '@hiveio/wax/vite';
 import type {
   DeepReadonly,
   IFormatFunctionArguments,
@@ -104,7 +104,7 @@ import type {
   withdraw_vesting,
   witness_set_properties,
   witness_update
-} from '@hiveio/wax';
+} from '@hiveio/wax/vite';
 import { NuxtLink } from '#components';
 import CopyWrapper from '~/components/ui/CopyWrapper.vue';
 import { formatPercent } from '~/utils/formatters';

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import type { ApiAccount, ApiTransaction } from '@hiveio/wax';
+import type { ApiAccount, ApiTransaction } from '@hiveio/wax/vite';
 import type { EPackType, ITransactionAnalyzerApi, IProcessedTransaction } from '../../types/wax.js';
 
 export interface IMockData {
