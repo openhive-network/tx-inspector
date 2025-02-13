@@ -141,48 +141,11 @@
                 </s-tooltip-content>
               </s-tooltip>
             </s-tooltip-provider>
-            <!-- <span v-for="(pathItem, key) in item.authorityPath" v-else :key="key">
-              <a class="text-blue" :href="`${config.public.blockExplorerUrl}/@${Array.isArray(pathItem.account) ? pathItem.account[index] : pathItem.account}`" target="_blank">
-                {{ Array.isArray(pathItem.account) ? `@${pathItem.account[index]}` : `@${pathItem.account}` }}
-              </a>
-              {{ pathItem.authWeight ? `(${pathItem.authWeight.weight}/${pathItem.authWeight.auth}) ` : '' }}
-              <v-icon v-if="item.authorityPath[key + 1]">mdi-chevron-right</v-icon>
-            </span> -->
-            <span v-if="item.authorityTrace.finalAuthorityPath[index].visitedEntries[0].processedEntry.startsWith('STM')">
-              <a
-                :href="`${config.public.blockExplorerUrl}/@${item.authorityTrace.finalAuthorityPath[index].processedEntry}`"
-                :class="[
-                  {
-                    'text-posting': item.authorityTrace.finalAuthorityPath[index].processedRole === 'posting',
-                    'text-active': item.authorityTrace.finalAuthorityPath[index].processedRole === 'active',
-                    'text-owner': item.authorityTrace.finalAuthorityPath[index].processedRole === 'owner',
-                  },
-                  'hover:opacity-70 transition-opacity'
-                ]"
-              >
-                {{ `@${item.authorityTrace.finalAuthorityPath[index].processedEntry}` }}
-              </a>
-              <span class="ml-1">{{ `(${item.authorityTrace.finalAuthorityPath[index].weight}/${item.authorityTrace.finalAuthorityPath[index].threshold})` }}</span>
-            </span>
-            <span v-else>
-              <AuthorityPathRecursions
-                :visitedEntries="item.authorityTrace.finalAuthorityPath[index].visitedEntries"
-              />
-              <a
-                :href="`${config.public.blockExplorerUrl}/@${item.authorityTrace.finalAuthorityPath[index].processedEntry}`"
-                :class="[
-                  {
-                    'text-posting': item.authorityTrace.finalAuthorityPath[index].processedRole === 'posting',
-                    'text-active': item.authorityTrace.finalAuthorityPath[index].processedRole === 'active',
-                    'text-owner': item.authorityTrace.finalAuthorityPath[index].processedRole === 'owner',
-                  },
-                  'hover:opacity-70 transition-opacity'
-                ]"
-              >
-                {{ `@${item.authorityTrace.finalAuthorityPath[index].processedEntry}` }}
-              </a>
-              <span class="ml-1">{{ `(${item.authorityTrace.finalAuthorityPath[index].weight}/${item.authorityTrace.finalAuthorityPath[index].threshold})` }}</span>
-            </span>
+            <AuthorityTraceGraph
+              :graphData="item.graphData[index]"
+              :uniqueId="index"
+              style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px;"
+            />
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -193,13 +156,11 @@
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
-import AuthorityPathRecursions from './AuthorityPathRecursions.vue';
+import AuthorityTraceGraph from './AuthorityTraceGraph.vue';
 import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
-
-const config = useRuntimeConfig();
 </script>
 
 <style scoped>
