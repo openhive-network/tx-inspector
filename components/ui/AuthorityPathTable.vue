@@ -14,7 +14,7 @@
             <s-tooltip-provider :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
-                  <span class="flex items-center">
+                  <span class="flex items-center justify-center">
                     Authority path
                     <v-icon size="small" class="ml-2">
                       mdi-information-slab-circle-outline
