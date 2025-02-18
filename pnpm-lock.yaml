@@ -20,6 +20,9 @@ importers:
       '@radix-icons/vue':
         specifier: ^1.0.0
         version: 1.0.0(vue@3.5.12(typescript@5.5.4))
+      '@types/cytoscape':
+        specifier: ^3.21.9
+        version: 3.21.9
       '@vueuse/core':
         specifier: ^10.11.1
         version: 10.11.1(vue@3.5.12(typescript@5.5.4))

@@ -66,12 +66,22 @@ export interface ITransactionRequiredAuthorities {
   other: Set<string>;
 }
 
+export interface IAuthorityGraphData {
+  data: {
+    id: string;
+    source?: string;
+    target?: string;
+    label?: string;
+  }
+}
+
 export interface ISignatureData {
   signature: string;
   packType: string;
   publicKey: string;
   authorityPath: IAuthorityPaths[] | undefined;
   authorityTrace: IVerifyAuthorityTrace;
+  graphData: IAuthorityGraphData[][];
 }
 
 export interface ITransactionData {

@@ -95,6 +95,7 @@ export class TransactionAnalyzer {
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
     const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace();
+    const graphData = this.generateGraphData(authorityTrace);
     const operationsBinaryView = this.getOperationsBinaryView(operations);
     const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
@@ -123,7 +124,8 @@ export class TransactionAnalyzer {
         packType: Array.isArray(packType) ? packType[i] : packType,
         publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
         authorityPath,
-        authorityTrace
+        authorityTrace,
+        graphData
       });
 
     const transactionData: ITransactionData = {
@@ -568,6 +570,43 @@ export class TransactionAnalyzer {
     //   ],
     //   satisfiedFromTrace: true
     // };
+  }
+
+  private convertEntryTraceData (entry: IAuthorityPathEntry): IAuthorityGraphData[] {
+    const elements: IAuthorityGraphData[] = [];
+
+    for (const visitedEntry of entry.visitedEntries) {
+      if (visitedEntry.processedEntry.startsWith('STM'))
+        continue;
+
+      elements.push(...this.convertEntryTraceData(visitedEntry));
+
+      elements.push({
+        data: {
+          id: `${entry.processedEntry}-${visitedEntry.processedEntry}`,
+          source: visitedEntry.processedEntry,
+          target: entry.processedEntry
+        }
+      });
+    }
+
+    elements.push({
+      data: {
+        id: entry.processedEntry,
+        label: `@${entry.processedEntry} (${entry.weight}/${entry.threshold})`
+      }
+    });
+
+    return elements;
+  }
+
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace): IAuthorityGraphData[][] {
+    const fullCollectedData: IAuthorityGraphData[][] = [];
+
+    for (const entry of authorityTrace.finalAuthorityPath)
+      fullCollectedData.push(this.convertEntryTraceData(entry));
+
+    return fullCollectedData;
   }
 
   private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
