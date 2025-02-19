@@ -1,7 +1,8 @@
 <template>
   <div
     :id="`cy-${props.uniqueId}`"
-    class="min-h-[100px] max-h-[600px] w-[800px] cursor-pointer ma-auto"
+    class="h-[100px] w-[800px] cursor-pointer ma-auto"
+    :class="{ 'h-[400px]': props.graphData.length > 10, 'h-[600px]': props.graphData.length > 30 }"
   />
 </template>
 
@@ -17,10 +18,7 @@ const props = defineProps<{
 
 const config = useRuntimeConfig();
 
-const refEl = ref<IAuthorityGraphData[]>([]);
-
 onMounted(() => {
-  refEl.value = props.graphData;
   const cy = cytoscape({
     container: document.getElementById(`cy-${props.uniqueId}`),
     elements: props.graphData,
