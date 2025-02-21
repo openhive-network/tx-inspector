@@ -8,3 +8,4 @@ dist
 tailwind.config.js
 components/shadcn
 __tests__/detailed
+common-ci-configuration

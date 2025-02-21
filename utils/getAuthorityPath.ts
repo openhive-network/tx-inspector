@@ -286,7 +286,7 @@ const createModuleForTransaction = async (analyzer: TransactionAnalyzer, require
   getAuthority.bind(undefined, analyzer, 'active')); // TODO: get other authority correctly. It is required to check which authority of the account satisfies the required_other
 };
 
-export async function getAuthorityPath (analyzer: TransactionAnalyzer, requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<IAuthorityPaths[] | undefined> {
+export async function getAuthorityPath (analyzer: TransactionAnalyzer, requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<IAuthorityPaths[] | void> {
   try {
     await createModuleForTransaction(analyzer, requiredAuthorities, signatureKeys);
     return paths;

@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
-import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
-import builtins from 'rollup-plugin-node-builtins';
 
 const commonConfiguration = () => ([
   {
@@ -18,23 +16,15 @@ const commonConfiguration = () => ([
     },
     plugins: [
       replace({
-        delimiters: ['', ''],
-        'process.env.NODE_ENV': JSON.stringify('production'),
-        preventAssignment: true
-      }),
-      commonjs(),
-      terser({
-        format: {
-          inline_script: false,
-          comments: false,
-          max_line_len: 100
+        values: {
+          'process.env.NODE_ENV': JSON.stringify('production')
         }
       }),
+      commonjs(),
       resolve({
-        preferBuiltins: true,
+        preferBuiltins: false,
         browser: true
-      }),
-      builtins()
+      })
     ]
   }
 ]);
