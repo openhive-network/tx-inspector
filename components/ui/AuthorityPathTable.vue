@@ -103,7 +103,7 @@
             </CopyWrapper>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="!item.authorityPath || typeof item.authorityPath[0] === 'undefined' || item.authorityPath[0].account[0] === ''" :delayDuration="350">
+            <s-tooltip-provider v-if="!item.authorityTrace" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span

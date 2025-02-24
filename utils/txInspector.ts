@@ -1,6 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
 import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTraceData, type IAuthorityTypeData, type IAuthorityGraphData } from '../types/wax';
-import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -101,11 +100,10 @@ export class TransactionAnalyzer {
 
     const authorityType = this.getAuthorityType(requiredAuthorities);
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
-    const { authorityPath, isSatisfied } = await this.getAuthorityPath(requiredAuthorities, signatureKeys);
+
+    const matchingSignatures = await this.getMatchingSignature(authorityType[0].accounts, authorityTrace.collectedData);
 
     const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, satisfiedFromTrace, requiredAuthorities);
-
-    const matchingSignatures = await this.getMatchingSignature(signatures, signatureKeys, authorityType[0].accounts, isValid, authorityPath);
 
     const signatureData: ISignatureData[] = [];
 
@@ -114,7 +112,6 @@ export class TransactionAnalyzer {
         signature: signatures[i],
         packType: Array.isArray(packType) ? packType[i] : packType,
         publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
-        authorityPath,
         authorityTrace,
         graphData
       });
@@ -145,7 +142,7 @@ export class TransactionAnalyzer {
           transactionBodyData.push({
             authorityAccount: authority.accounts[i],
             authorityType: authority.level,
-            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
+            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, satisfiedFromTrace, i),
             operationType: operations[i].type,
             operationContent: operations[i].value,
             operationsBinaryView: operationsBinaryView[i],
@@ -156,7 +153,7 @@ export class TransactionAnalyzer {
             transactionBodyData.push({
               authorityAccount: authority.accounts[j],
               authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, isSatisfied, i),
+              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, satisfiedFromTrace, i),
               operationType: operations[i].type,
               operationContent: operations[i].value,
               operationsBinaryView: operationsBinaryView[i],
@@ -399,34 +396,26 @@ export class TransactionAnalyzer {
     return operations;
   }
 
-  private async getMatchingSignature (signatures: string[], keys: string[], authorityAccounts: string[], isValid: boolean, authorityPath: IAuthorityPaths[]): Promise<string[]> {
+  private getMatchingSignature (authorityAccounts: string[], authorityTrace: IAuthorityPathTraceData[]): string[] {
     const matchingSignatures: string[] = [];
-
-    const { accounts } = await this.api.getKeyReferences({ keys });
 
     if (authorityAccounts[0] === 'None')
       return ['None'];
 
-    if (signatures.length === 0 || accounts === null || accounts[0].length === 0)
-      if (isValid)
-        return ['Open authority'];
-      else
-        return ['Missing signature'];
+    for (const account of authorityAccounts) {
+      const foundEntry = authorityTrace.find((entry) => {
+        return entry.finalAuthorityPath.processedEntry === account;
+      });
 
-    if (authorityPath.length > 1)
-      while (signatures.length !== matchingSignatures.length)
-        for (let i = 0; i < signatures.length; ++i)
-          accounts.forEach((account: string[], index: number) => {
-            if (account[0] === authorityPath[0].account)
-              matchingSignatures.push(signatures[index]);
-          });
-
-    while (signatures.length !== matchingSignatures.length)
-      for (let i = 0; i < signatures.length; ++i)
-        accounts.forEach((account: string[], index: number) => {
-          if (account[0] === authorityAccounts[i])
-            matchingSignatures.push(signatures[index]);
-        });
+      if (foundEntry)
+        if (foundEntry.matchingSignature)
+          matchingSignatures.push(foundEntry.matchingSignature.signature);
+        else
+          if (foundEntry.finalAuthorityPath.processingStatus.entryAccepted)
+            matchingSignatures.push('Open authority');
+          else
+            matchingSignatures.push('Missing signature');
+    }
 
     return matchingSignatures;
   }
@@ -462,34 +451,6 @@ export class TransactionAnalyzer {
 
   private getExpiration (): string {
     return this.transaction.transaction.expiration;
-  }
-
-  private async getAuthorityPath (requiredAuthorities: ITransactionRequiredAuthorities, signatureKeys: string[]): Promise<{ authorityPath: IAuthorityPaths[], isSatisfied: boolean }> {
-    const authorityPath = await getAuthorityPath(this, requiredAuthorities, signatureKeys);
-
-    if (authorityPath && authorityPath.length > 0) {
-      authorityPath.push(authorityPath.shift()!);
-
-      let totalWeight = 0;
-      let totalThreshold = 0;
-
-      let isSatisfied!: boolean;
-
-      for (let i = 0; i < authorityPath.length; ++i)
-        if (authorityPath[i].authWeight) {
-          totalWeight += authorityPath[i].authWeight!.auth;
-          totalThreshold += authorityPath[i].authWeight!.weight;
-        }
-
-      if (totalWeight >= totalThreshold)
-        isSatisfied = true;
-      else
-        isSatisfied = false;
-
-      return { authorityPath, isSatisfied };
-    }
-
-    return { authorityPath: [], isSatisfied: false };
   }
 
   private async verifyAuthorityTrace (packType: EPackType): Promise<IAuthorityTraceData> {
