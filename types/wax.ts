@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiAccount, ApiTransaction, authority, ITransaction, TWaxApiRequest } from '@hiveio/wax/vite';
+import type { ApiAccount, ApiTransaction, authority, IBinaryViewOutputData, ITransaction, IVerifyAuthorityTrace, TWaxApiRequest } from '@hiveio/wax/vite';
 import type { IAuthorityPaths } from '../utils/getAuthorityPath';
 
 export enum EPackType {

@@ -45,8 +45,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(typescript@5.7.3)
       '@hiveio/wax':
-        specifier: 1.27.6-rc7-250127141902
-        version: 1.27.6-rc7-250127141902
+        specifier: 1.27.6-rc7-stable.250221210126
+        version: 1.27.6-rc7-stable.250221210126
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.4(magicast@0.3.5)(rollup@4.24.0)(typescript@5.7.3)(vue@3.5.12(typescript@5.7.3))
@@ -879,15 +879,15 @@ packages:
   '@floating-ui/vue@1.1.4':
     resolution: {integrity: sha512-ammH7T3vyCx7pmm9OF19Wc42zrGnUw0QvLoidgypWsCLJMtGXEwY7paYIHO+K+oLC3mbWpzIHzeTVienYenlNg==}
 
-  '@hiveio/beekeeper@1.27.8-250127140318':
-    resolution: {integrity: sha1-28h547KZ2qx6DwEq8g+sB0zp1xc=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.8-250127140318.tgz}
+  '@hiveio/beekeeper@1.27.9-stable.250219154236':
+    resolution: {integrity: sha1-6fL+OgTwp6MSp0Xm3fwj+kFLzD8=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.9-stable.250219154236.tgz}
     engines: {node: ^20.11 || >= 21.2}
 
   '@hiveio/component-binary-view@0.2.0':
     resolution: {integrity: sha1-11QcXI/WcTrSRyzCL+9oBy8RvGA=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.2.0.tgz}
 
-  '@hiveio/wax@1.27.6-rc7-250127141902':
-    resolution: {integrity: sha1-wZvWbld1puV7XXxnX66xwyGEwok=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc7-250127141902.tgz}
+  '@hiveio/wax@1.27.6-rc7-stable.250221210126':
+    resolution: {integrity: sha1-JGH0GjmJEmkU8SG64cxFZhkbbu8=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc7-stable.250221210126.tgz}
     engines: {node: ^20.11 || >= 21.2}
 
   '@humanwhocodes/config-array@0.11.14':
@@ -1898,8 +1898,8 @@ packages:
   caniuse-api@3.0.0:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
 
-  caniuse-lite@1.0.30001655:
-    resolution: {integrity: sha512-jRGVy3iSGO5Uutn2owlb5gR6qsGngTw9ZTb4ali9f3glshcNmJ2noam4Mo9zia5P9Dk3jNNydy7vQjuE5dQmfg==}
+  caniuse-lite@1.0.30001700:
+    resolution: {integrity: sha512-2S6XIXwaE7K7erT8dY+kLQcpa5ms63XlRkMkReXjle+kf6c5g38vyMl+Z5y8dSxOFDhcFe+nxnn261PLxBSQsQ==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -3440,8 +3440,8 @@ packages:
     resolution: {integrity: sha512-9ie8ItPR6tjY5uYJh8K/Zrv/RMZ5VOlOWvtZdEHYSTFKZfIBPQa9tOAEeAWhd+AnIneLJ22w5fjOYtoutpWq5w==}
     engines: {node: '>=18'}
 
-  long@5.2.3:
-    resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
+  long@5.3.1:
+    resolution: {integrity: sha512-ka87Jz3gcx/I7Hal94xaN2tZEOPoUOEVftkQqZx2EeQRN7LGdfLlI3FvZ+7WDplm+vK2Urx9ULrvSowtdCieng==}
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
@@ -5845,7 +5845,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@hiveio/beekeeper@1.27.8-250127140318': {}
+  '@hiveio/beekeeper@1.27.9-stable.250219154236': {}
 
   '@hiveio/component-binary-view@0.2.0(typescript@5.7.3)':
     dependencies:
@@ -5855,11 +5855,11 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@hiveio/wax@1.27.6-rc7-250127141902':
+  '@hiveio/wax@1.27.6-rc7-stable.250221210126':
     dependencies:
-      '@hiveio/beekeeper': 1.27.8-250127140318
+      '@hiveio/beekeeper': 1.27.9-stable.250219154236
       events: 3.3.0
-      long: 5.2.3
+      long: 5.3.1
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -7136,7 +7136,7 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.4.44):
     dependencies:
       browserslist: 4.23.3
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001700
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
@@ -7146,7 +7146,7 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.4.47):
     dependencies:
       browserslist: 4.23.3
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001700
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
@@ -7195,7 +7195,7 @@ snapshots:
 
   browserslist@4.23.3:
     dependencies:
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001700
       electron-to-chromium: 1.5.13
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.3)
@@ -7277,11 +7277,11 @@ snapshots:
   caniuse-api@3.0.0:
     dependencies:
       browserslist: 4.23.3
-      caniuse-lite: 1.0.30001655
+      caniuse-lite: 1.0.30001700
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
-  caniuse-lite@1.0.30001655: {}
+  caniuse-lite@1.0.30001700: {}
 
   chalk@2.4.2:
     dependencies:
@@ -9044,7 +9044,7 @@ snapshots:
       strip-ansi: 7.1.0
       wrap-ansi: 9.0.0
 
-  long@5.2.3: {}
+  long@5.3.1: {}
 
   lru-cache@10.4.3: {}
 

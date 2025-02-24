@@ -1,5 +1,5 @@
-import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type ITransaction, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities } from '../types/wax';
+import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTraceData, type IAuthorityTypeData, type IAuthorityGraphData } from '../types/wax';
 import { type IAuthorityPaths, getAuthorityPath } from './getAuthorityPath';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
@@ -94,11 +94,11 @@ export class TransactionAnalyzer {
     const signatures = transaction.signatures;
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
-    const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace();
-    const graphData = this.generateGraphData(authorityTrace);
     const operationsBinaryView = this.getOperationsBinaryView(operations);
     const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
+    const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
+    const graphData = this.generateGraphData(authorityTrace, signatures);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
     const transactionId = this.getTransactionId(Array.isArray(packType) ? packType[0] : packType);
@@ -501,18 +501,20 @@ export class TransactionAnalyzer {
     return { authorityPath: [], isSatisfied: false };
   }
 
-  private async verifyAuthorityTrace (): Promise<IAuthorityTraceData> {
+  private async verifyAuthorityTrace (packType: EPackType): Promise<IAuthorityTraceData> {
     const tx = await this.chain.createTransaction();
 
-    const trace = await tx.generateAuthorityVerificationTrace(this.transaction);
+    const isLegacy = packType === EPackType.LEGACY;
+
+    const trace = await tx.generateAuthorityVerificationTrace(isLegacy, this.transaction);
 
     let totalWeight = 0;
     let totalThreshold = 0;
     let isSatisfied!: boolean;
 
-    for (const item of trace.finalAuthorityPath) {
-      totalWeight += item.weight;
-      totalThreshold += item.threshold;
+    for (const item of trace.collectedData) {
+      totalWeight += item.finalAuthorityPath.weight;
+      totalThreshold += item.finalAuthorityPath.threshold;
     }
 
     if (totalWeight + 1 >= totalThreshold)
@@ -521,55 +523,6 @@ export class TransactionAnalyzer {
       isSatisfied = false;
 
     return { authorityTrace: trace, satisfiedFromTrace: isSatisfied };
-    // return {
-    //   authorityTrace: [
-    //     {
-    //       rootEntry: {
-    //         processedEntry: 'sunnyvo',
-    //         processedRole: 'posting',
-    //         threshold: 1,
-    //         weight: 0,
-    //         recursionDepth: 0,
-    //         processingStatus: {
-    //           entryAccepted: true,
-    //           isOpenAuthority: false
-    //         },
-    //         visitedEntries: []
-    //       },
-    //       finalAuthorityPath: [
-    //         {
-    //           processedEntry: 'sunnyvo',
-    //           processedRole: 'posting',
-    //           threshold: 1,
-    //           weight: 0,
-    //           recursionDepth: 0,
-    //           processingStatus: {
-    //             entryAccepted: true,
-    //             isOpenAuthority: false
-    //           },
-    //           visitedEntries: []
-    //         },
-    //         {
-    //           processedEntry: 'steemauto',
-    //           processedRole: 'posting',
-    //           threshold: 1,
-    //           weight: 1,
-    //           recursionDepth: 1,
-    //           processingStatus: {
-    //             entryAccepted: true,
-    //             isOpenAuthority: false
-    //           },
-    //           visitedEntries: []
-    //         }
-    //       ],
-    //       verificationStatus: {
-    //         entryAccepted: true,
-    //         isOpenAuthority: false
-    //       }
-    //     }
-    //   ],
-    //   satisfiedFromTrace: true
-    // };
   }
 
   private convertEntryTraceData (entry: IAuthorityPathEntry): IAuthorityGraphData[] {
@@ -600,11 +553,21 @@ export class TransactionAnalyzer {
     return elements;
   }
 
-  private generateGraphData (authorityTrace: IVerifyAuthorityTrace): IAuthorityGraphData[][] {
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): IAuthorityGraphData[][] {
     const fullCollectedData: IAuthorityGraphData[][] = [];
+    const sortedData: IAuthorityPathTraceData[] = [];
 
-    for (const entry of authorityTrace.finalAuthorityPath)
-      fullCollectedData.push(this.convertEntryTraceData(entry));
+    signatures.forEach((signature: string) => {
+      const foundEntry = authorityTrace.collectedData.find((entry) => {
+        return entry.matchingSignature?.signature === signature;
+      });
+
+      if (foundEntry)
+        sortedData.push(foundEntry);
+    });
+
+    for (const entry of sortedData)
+      fullCollectedData.push(this.convertEntryTraceData(entry.finalAuthorityPath));
 
     return fullCollectedData;
   }
