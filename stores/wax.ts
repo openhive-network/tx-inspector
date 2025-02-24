@@ -90,9 +90,14 @@ export const useWaxStore = defineStore('wax', {
     },
 
     async handleTransactionFromJson (inspector: TxInspectorEngine, formatter: IWaxExtendableFormatter, json: string): Promise<void> {
-      this.$state.json = JSON.parse(String(json!.trim()));
+      const jsonTx = JSON.parse(String(json!.trim())) as unknown as ApiTransaction;
+      this.$state.json = jsonTx as unknown as string;
 
-      const tx = await inspector.processTransaction(JSON.parse(String(json!.trim())) as unknown as ApiTransaction);
+      const signaturesArr = jsonTx.signatures[0] === null ? [] : jsonTx.signatures;
+
+      jsonTx.signatures = signaturesArr;
+
+      const tx = await inspector.processTransaction(jsonTx);
       this.$state.processedTransaction = tx;
       this.$state.formattedOperations = this.useOperationsFormatter(formatter, tx.transactionOtherData.transaction.transaction).operations;
       this.$state.binaryViewOutputData = tx.transactionOtherData.transaction.binaryViewMetadata;
