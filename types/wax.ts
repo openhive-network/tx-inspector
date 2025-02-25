@@ -98,7 +98,7 @@ export interface IRequiredAuthoritiesData {
   matchingSignature: string;
   authorityAccount: string | authority;
   authorityType: EAuthorityLevel;
-  isSatisfied: ESatisfiedState;
+  isSatisfied: ESatisfiedState[];
 }
 
 export interface ITransactionBodyData {

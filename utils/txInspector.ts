@@ -103,7 +103,7 @@ export class TransactionAnalyzer {
 
     const matchingSignatures = this.getMatchingSignature(authorityType[0].accounts, authorityTrace.collectedData);
 
-    const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, satisfiedFromTrace, requiredAuthorities);
+    const satisfied = this.isSatisfied(requiredAuthorities, authorityTrace);
 
     const signatureData: ISignatureData[] = [];
 
@@ -529,42 +529,26 @@ export class TransactionAnalyzer {
     return fullCollectedData;
   }
 
-  private async isSatisfied (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, requiredAuthorities: ITransactionRequiredAuthorities): Promise<ESatisfiedState> {
-    if (signatures.length === 0)
-      if (isValid)
-        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
-      else
-        return ESatisfiedState.FALSE;
+  private isSatisfied (requiredAuthorities: ITransactionRequiredAuthorities, authorityTrace: IVerifyAuthorityTrace): ESatisfiedState[] {
+    const isSatisfiedArray: ESatisfiedState[] = [];
 
-    const keyReferences = await this.api.getKeyReferences({ keys });
+    for (const entry of authorityTrace.collectedData) {
+      const requiredAuthLevel = entry.finalAuthorityPath.processedRole;
 
-    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
-      if (isValid)
-        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
-      else
-        return ESatisfiedState.FALSE;
+      const requiredAuthArr = Array.from(requiredAuthorities[requiredAuthLevel]);
 
-    if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
-      return ESatisfiedState.FALSE;
+      if (requiredAuthArr.length === 0)
+        isSatisfiedArray.push(ESatisfiedState.FALSE);
 
-    const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
+      const foundEntry = requiredAuthArr.find((auth) => {
+        return auth === entry.finalAuthorityPath.processedEntry;
+      });
 
-    let requiredAuthLevel!: EAuthorityLevel;
+      if (foundEntry && entry.finalAuthorityPath.processingStatus.entryAccepted)
+        isSatisfiedArray.push(ESatisfiedState.TRUE);
+    }
 
-    if (requiredAuthorities.owner.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.OWNER;
-    else if (requiredAuthorities.active.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.ACTIVE;
-    else if (requiredAuthorities.posting.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.POSTING;
-    else
-      requiredAuthLevel = EAuthorityLevel.OTHER;
-
-    for (let i = 0; i < keys.length; ++i)
-      if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][0] === keys[i])
-        return ESatisfiedState.TRUE;
-
-    return ESatisfiedState.FALSE;
+    return isSatisfiedArray;
   }
 
   private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<ESatisfiedState> {
