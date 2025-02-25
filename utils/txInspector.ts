@@ -101,7 +101,7 @@ export class TransactionAnalyzer {
     const authorityType = this.getAuthorityType(requiredAuthorities);
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
 
-    const matchingSignatures = await this.getMatchingSignature(authorityType[0].accounts, authorityTrace.collectedData);
+    const matchingSignatures = this.getMatchingSignature(authorityType[0].accounts, authorityTrace.collectedData);
 
     const satisfied = await this.isSatisfied(signatures, isValid, signatureKeys, satisfiedFromTrace, requiredAuthorities);
 
@@ -505,9 +505,9 @@ export class TransactionAnalyzer {
     return elements;
   }
 
-  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): IAuthorityGraphData[][] {
-    const fullCollectedData: IAuthorityGraphData[][] = [];
-    const sortedData: IAuthorityPathTraceData[] = [];
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphData[] | string[]> {
+    const fullCollectedData: Array<IAuthorityGraphData[] | string[]> = [];
+    const sortedData: Array<IAuthorityPathTraceData | string> = [];
 
     signatures.forEach((signature: string) => {
       const foundEntry = authorityTrace.collectedData.find((entry) => {
@@ -516,10 +516,15 @@ export class TransactionAnalyzer {
 
       if (foundEntry)
         sortedData.push(foundEntry);
+      else
+        sortedData.push('NOT_FOUND');
     });
 
     for (const entry of sortedData)
-      fullCollectedData.push(this.convertEntryTraceData(entry.finalAuthorityPath));
+      if (typeof entry === 'string')
+        fullCollectedData.push(['NOT_FOUND']);
+      else
+        fullCollectedData.push(this.convertEntryTraceData(entry.finalAuthorityPath));
 
     return fullCollectedData;
   }

@@ -79,7 +79,7 @@ export interface ISignatureData {
   packType: string;
   publicKey: string;
   authorityTrace: IVerifyAuthorityTrace;
-  graphData: IAuthorityGraphData[][];
+  graphData: Array<IAuthorityGraphData[] | string[]>;
 }
 
 export interface ITransactionData {

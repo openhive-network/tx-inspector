@@ -103,14 +103,17 @@
             </CopyWrapper>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="!item.authorityTrace" :delayDuration="350">
+            <s-tooltip-provider v-if="typeof item.graphData[index][0] === 'string'" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
                     class="flex items-center text-red font-semibold cursor-pointer"
+                    style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 40px; margin: 0 52px;"
                   >
-                    <span class="mr-3">Cannot find any account attached to the public key</span>
-                    <v-icon>mdi-information-slab-circle</v-icon>
+                    <div class="mx-auto">
+                      <span class="mr-3">Cannot find any account attached to the public key</span>
+                      <v-icon>mdi-information-slab-circle</v-icon>
+                    </div>
                   </span>
                 </s-tooltip-trigger>
                 <s-tooltip-content class="bg-red">
@@ -142,7 +145,8 @@
               </s-tooltip>
             </s-tooltip-provider>
             <AuthorityTraceGraph
-              :graphData="item.graphData[index]"
+              v-else
+              :graphData="item.graphData[index] as IAuthorityGraphData[]"
               :uniqueId="index"
               style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px;"
             />
@@ -157,7 +161,7 @@
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
 import AuthorityTraceGraph from './AuthorityTraceGraph.vue';
-import { EPackType } from '~/types/wax';
+import { EPackType, type IAuthorityGraphData } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
