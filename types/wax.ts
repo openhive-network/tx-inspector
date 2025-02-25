@@ -74,12 +74,17 @@ export interface IAuthorityGraphData {
   }
 }
 
+export interface IAuthorityGraphFullCollectedData {
+  data: IAuthorityGraphData[];
+  level: string;
+}
+
 export interface ISignatureData {
   signature: string;
   packType: string;
   publicKey: string;
   authorityTrace: IVerifyAuthorityTrace;
-  graphData: Array<IAuthorityGraphData[] | string[]>;
+  graphData: Array<IAuthorityGraphFullCollectedData | string[]>;
 }
 
 export interface ITransactionData {

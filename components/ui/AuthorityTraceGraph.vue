@@ -14,9 +14,23 @@ import type { IAuthorityGraphData } from '~/types/wax';
 const props = defineProps<{
   graphData: IAuthorityGraphData[];
   uniqueId: number;
+  color: string;
 }>();
 
 const config = useRuntimeConfig();
+
+const color = () => {
+  switch (props.color) {
+    case 'posting':
+      return '#0fbd86';
+    case 'active':
+      return '#0fbabd';
+    case 'owner':
+      return '#bd740f';
+    default:
+      return '#fff';
+  }
+};
 
 onMounted(() => {
   const cy = cytoscape({
@@ -27,7 +41,7 @@ onMounted(() => {
         selector: 'node',
         style: {
           'background-color': '#000',
-          color: '#0fbd86',
+          color: color(),
           'text-valign': 'center',
           'text-halign': 'center',
           width: 'label',

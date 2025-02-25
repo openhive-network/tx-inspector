@@ -103,7 +103,7 @@
             </CopyWrapper>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="typeof item.graphData[index][0] === 'string'" :delayDuration="350">
+            <s-tooltip-provider v-if="typeof (item.graphData[index] as string[])[0] === 'string'" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
@@ -146,8 +146,9 @@
             </s-tooltip-provider>
             <AuthorityTraceGraph
               v-else
-              :graphData="item.graphData[index] as IAuthorityGraphData[]"
+              :graphData="(item.graphData[index] as IAuthorityGraphFullCollectedData).data"
               :uniqueId="index"
+              :color="(item.graphData[index] as IAuthorityGraphFullCollectedData).level"
               style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px;"
             />
           </s-table-cell>
@@ -161,7 +162,7 @@
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
 import AuthorityTraceGraph from './AuthorityTraceGraph.vue';
-import { EPackType, type IAuthorityGraphData } from '~/types/wax';
+import { EPackType, type IAuthorityGraphFullCollectedData } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);

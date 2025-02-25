@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTraceData, type IAuthorityTypeData, type IAuthorityGraphData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTraceData, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -505,8 +505,8 @@ export class TransactionAnalyzer {
     return elements;
   }
 
-  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphData[] | string[]> {
-    const fullCollectedData: Array<IAuthorityGraphData[] | string[]> = [];
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphFullCollectedData | string[]> {
+    const fullCollectedData: Array<IAuthorityGraphFullCollectedData | string[]> = [];
     const sortedData: Array<IAuthorityPathTraceData | string> = [];
 
     signatures.forEach((signature: string) => {
@@ -524,7 +524,7 @@ export class TransactionAnalyzer {
       if (typeof entry === 'string')
         fullCollectedData.push(['NOT_FOUND']);
       else
-        fullCollectedData.push(this.convertEntryTraceData(entry.finalAuthorityPath));
+        fullCollectedData.push({ data: this.convertEntryTraceData(entry.finalAuthorityPath), level: entry.finalAuthorityPath.processedRole });
 
     return fullCollectedData;
   }
