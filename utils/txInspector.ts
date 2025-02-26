@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTraceData, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -90,7 +90,7 @@ export class TransactionAnalyzer {
     const operationsBinaryView = this.getOperationsBinaryView(operations);
     const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
-    const { authorityTrace } = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
+    const authorityTrace = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
     const graphData = this.generateGraphData(authorityTrace, signatures);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
@@ -453,28 +453,14 @@ export class TransactionAnalyzer {
     return this.transaction.transaction.expiration;
   }
 
-  private async verifyAuthorityTrace (packType: EPackType): Promise<IAuthorityTraceData> {
+  private async verifyAuthorityTrace (packType: EPackType): Promise<IVerifyAuthorityTrace> {
     const tx = await this.chain.createTransaction();
 
     const isLegacy = packType === EPackType.LEGACY;
 
     const trace = await tx.generateAuthorityVerificationTrace(isLegacy, this.transaction);
 
-    let totalWeight = 0;
-    let totalThreshold = 0;
-    let isSatisfied!: boolean;
-
-    for (const item of trace.collectedData) {
-      totalWeight += item.finalAuthorityPath.weight;
-      totalThreshold += item.finalAuthorityPath.threshold;
-    }
-
-    if (totalWeight + 1 >= totalThreshold)
-      isSatisfied = true;
-    else
-      isSatisfied = false;
-
-    return { authorityTrace: trace, satisfiedFromTrace: isSatisfied };
+    return trace;
   }
 
   private convertEntryTraceData (entry: IAuthorityPathEntry): IAuthorityGraphData[] {

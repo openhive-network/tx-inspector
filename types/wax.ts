@@ -125,11 +125,6 @@ export interface IProcessedTransaction {
   transactionOtherData: ITransactionOtherData;
 }
 
-export interface IAuthorityTraceData {
-  authorityTrace: IVerifyAuthorityTrace;
-  satisfiedFromTrace: boolean;
-}
-
 export interface IAuthorityTypeData {
   level: EAuthorityLevel;
   accounts: string[];
