@@ -180,13 +180,13 @@
               </span>
             </s-table-cell>
             <s-table-cell class="p-5">
-              <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
+              <v-icon v-if="item.isSatisfied[index] === ESatisfiedState.TRUE" color="green">
                 mdi-check
               </v-icon>
-              <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
+              <v-icon v-else-if="item.isSatisfied[index] === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
-              <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+              <s-tooltip-provider v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
                 <s-tooltip>
                   <s-tooltip-trigger as-child>
                     <v-icon color="yellow">
@@ -238,13 +238,13 @@
               </span>
             </s-table-cell>
             <s-table-cell class="p-5">
-              <v-icon v-if="item.isSatisfied === ESatisfiedState.TRUE" color="green">
+              <v-icon v-if="item.isSatisfied[index] === ESatisfiedState.TRUE" color="green">
                 mdi-check
               </v-icon>
-              <v-icon v-else-if="item.isSatisfied === ESatisfiedState.FALSE" color="red">
+              <v-icon v-else-if="item.isSatisfied[index] === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
-              <s-tooltip-provider v-else-if="item.isSatisfied === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
+              <s-tooltip-provider v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
                 <s-tooltip>
                   <s-tooltip-trigger as-child>
                     <v-icon color="yellow">

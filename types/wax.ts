@@ -104,7 +104,7 @@ export interface IRequiredAuthoritiesData {
 export interface ITransactionBodyData {
   authorityAccount: string | authority;
   authorityType: EAuthorityLevel;
-  isSatisfied: ESatisfiedState;
+  isSatisfied: ESatisfiedState[];
   operationType: string;
   operationContent: object;
   operationsBinaryView: IBinaryViewOutputData;

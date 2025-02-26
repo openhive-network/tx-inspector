@@ -90,7 +90,7 @@ export class TransactionAnalyzer {
     const operationsBinaryView = this.getOperationsBinaryView(operations);
     const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
-    const { authorityTrace, satisfiedFromTrace } = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
+    const { authorityTrace } = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
     const graphData = this.generateGraphData(authorityTrace, signatures);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
@@ -142,7 +142,7 @@ export class TransactionAnalyzer {
           transactionBodyData.push({
             authorityAccount: authority.accounts[i],
             authorityType: authority.level,
-            isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, satisfiedFromTrace, i),
+            isSatisfied: await this.isSatisfiedForOperation(authorityTrace, i),
             operationType: operations[i].type,
             operationContent: operations[i].value,
             operationsBinaryView: operationsBinaryView[i],
@@ -153,7 +153,7 @@ export class TransactionAnalyzer {
             transactionBodyData.push({
               authorityAccount: authority.accounts[j],
               authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(signatures, isValid, signatureKeys, satisfiedFromTrace, i),
+              isSatisfied: await this.isSatisfiedForOperation(authorityTrace, i),
               operationType: operations[i].type,
               operationContent: operations[i].value,
               operationsBinaryView: operationsBinaryView[i],
@@ -551,44 +551,26 @@ export class TransactionAnalyzer {
     return isSatisfiedArray;
   }
 
-  private async isSatisfiedForOperation (signatures: string[], isValid: boolean, keys: string[], isSatisfiedFromPath: boolean, index: number): Promise<ESatisfiedState> {
-    if (signatures.length === 0)
-      if (isValid)
-        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
-      else
-        return ESatisfiedState.FALSE;
+  private async isSatisfiedForOperation (authorityTrace: IVerifyAuthorityTrace, index: number): Promise<ESatisfiedState[]> {
+    const isSatisfiedArray: ESatisfiedState[] = [];
 
-    const keyReferences = await this.api.getKeyReferences({ keys });
+    for (const entry of authorityTrace.collectedData) {
+      const requiredAuthLevel = entry.finalAuthorityPath.processedRole;
 
-    if (keyReferences.accounts === null || keyReferences.accounts.length === 0)
-      if (isValid)
-        return ESatisfiedState.BLOCKCHAIN_FORCED_TRUE;
-      else
-        return ESatisfiedState.FALSE;
+      const requiredAuthArr = Array.from((await this.getRequiredAuthoritiesForOperation(index))[requiredAuthLevel]);
 
-    if (keyReferences.accounts === null || keyReferences.accounts[0].length === 0)
-      return ESatisfiedState.FALSE;
+      if (requiredAuthArr.length === 0)
+        isSatisfiedArray.push(ESatisfiedState.FALSE);
 
-    const { accounts } = await this.api.findAccounts({ accounts: keyReferences.accounts[0] });
+      const foundEntry = requiredAuthArr.find((auth) => {
+        return auth === entry.finalAuthorityPath.processedEntry;
+      });
 
-    const requiredAuthorities = await this.getRequiredAuthoritiesForOperation(index);
+      if (foundEntry && entry.finalAuthorityPath.processingStatus.entryAccepted)
+        isSatisfiedArray.push(ESatisfiedState.TRUE);
+    }
 
-    let requiredAuthLevel!: EAuthorityLevel;
-
-    if (requiredAuthorities.owner.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.OWNER;
-    else if (requiredAuthorities.active.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.ACTIVE;
-    else if (requiredAuthorities.posting.size !== 0)
-      requiredAuthLevel = EAuthorityLevel.POSTING;
-    else
-      requiredAuthLevel = EAuthorityLevel.OTHER;
-
-    for (let i = 0; i < keys.length; ++i)
-      if (isSatisfiedFromPath && accounts[0][requiredAuthLevel.toLowerCase()].key_auths[0][0] === keys[i])
-        return ESatisfiedState.TRUE;
-
-    return ESatisfiedState.FALSE;
+    return isSatisfiedArray;
   }
 
   private getOperationsBinaryView (operations: ApiOperation[]): IBinaryViewOutputData[] {
