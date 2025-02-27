@@ -22,7 +22,7 @@
             size="large"
             append-icon="mdi-check"
           >
-            Transaction valid
+            Processing status
           </v-chip>
           <v-chip
             v-else
@@ -31,7 +31,7 @@
             size="large"
             append-icon="mdi-close"
           >
-            Transaction invalid
+            Processing status
           </v-chip>
         </div>
       </div>

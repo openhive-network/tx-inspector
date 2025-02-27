@@ -103,41 +103,35 @@
             </CopyWrapper>
           </s-table-cell>
           <s-table-cell>
-            <s-tooltip-provider v-if="typeof (item.graphData[index] as string[])[0] === 'string'" :delayDuration="350">
+            <s-tooltip-provider v-if="'reasons' in item.graphData[index]" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>
                   <span
                     class="flex items-center text-red font-semibold cursor-pointer"
                     style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 40px; margin: 0 52px;"
                   >
-                    <div class="mx-auto">
-                      <span class="mr-3">Cannot find any account attached to the public key</span>
+                    <div class="flex items-center justify-center mx-auto">
+                      <span class="mr-3">{{ item.graphData[index].message }}</span>
                       <v-icon>mdi-information-slab-circle</v-icon>
                     </div>
                   </span>
                 </s-tooltip-trigger>
                 <s-tooltip-content class="bg-red">
                   <div class="flex flex-col">
-                    <span class="text-lg font-semibold">Potential problems:</span>
+                    <span class="text-lg font-semibold">Likely reasons:</span>
                     <hr class="my-2">
                     <ul>
-                      <li class="flex items-center font-semibold mb-2">
+                      <li v-for="(reason, key) in item.graphData[index].reasons" v-if="item.graphData[index].reasons.length > 0" :key="key" class="flex items-center font-semibold mb-2">
                         <v-icon class="mr-3">
-                          mdi-lightbulb-question-outline
+                          mdi-alert-circle
                         </v-icon>
-                        The public key has been changed after the transaction was signed.
+                        {{ reason }}
                       </li>
-                      <li class="flex items-center font-semibold mb-2">
+                      <li v-else class="flex items-center font-semibold mb-2">
                         <v-icon class="mr-3">
-                          mdi-lightbulb-question-outline
+                          mdi-alert-circle
                         </v-icon>
-                        The transaction has been signed with a incorrect public key.
-                      </li>
-                      <li v-if="item.packType === EPackType.UNKNOWN" class="flex items-center font-semibold mb-2">
-                        <v-icon class="mr-3">
-                          mdi-lightbulb-question-outline
-                        </v-icon>
-                        The pack type is unknown so we could not process the transaction correctly.
+                        Unknown reason occured
                       </li>
                     </ul>
                   </div>

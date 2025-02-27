@@ -79,12 +79,17 @@ export interface IAuthorityGraphFullCollectedData {
   level: string;
 }
 
+export interface IAuthorityGraphErrorCollectedData {
+  message: 'Authority failure!';
+  reasons: string[];
+}
+
 export interface ISignatureData {
   signature: string;
   packType: string;
   publicKey: string;
   authorityTrace: IVerifyAuthorityTrace;
-  graphData: Array<IAuthorityGraphFullCollectedData | string[]>;
+  graphData: Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData>;
 }
 
 export interface ITransactionData {

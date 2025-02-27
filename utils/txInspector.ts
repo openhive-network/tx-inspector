@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type IAuthorityGraphErrorCollectedData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -491,24 +491,56 @@ export class TransactionAnalyzer {
     return elements;
   }
 
-  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphFullCollectedData | string[]> {
-    const fullCollectedData: Array<IAuthorityGraphFullCollectedData | string[]> = [];
-    const sortedData: Array<IAuthorityPathTraceData | string> = [];
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData> {
+    const fullCollectedData: Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData> = [];
+    const sortedData: Array<IAuthorityPathTraceData | IAuthorityGraphErrorCollectedData> = [];
 
-    signatures.forEach((signature: string) => {
+    signatures.forEach((signature) => {
       const foundEntry = authorityTrace.collectedData.find((entry) => {
         return entry.matchingSignature?.signature === signature;
       });
 
       if (foundEntry)
         sortedData.push(foundEntry);
-      else
-        sortedData.push('NOT_FOUND');
+      else {
+        const notFoundEntry = authorityTrace.collectedData.find((entry) => {
+          return !entry.matchingSignature || entry.matchingSignature.signature !== signature;
+        });
+
+        if (notFoundEntry) {
+          const processingStatus = notFoundEntry.finalAuthorityPath.processingStatus;
+
+          if (!processingStatus.entryAccepted) {
+            const errorMessage = 'Authority failure!';
+            const reasons: string[] = [];
+
+            if (!notFoundEntry.matchingSignature)
+              reasons.push('No required authority matched to given signature.');
+
+            if (processingStatus.accountAuthorityCountExceeded)
+              reasons.push('Path entry processing has been interrupted by crossing total number of processed account redirections.');
+
+            if (processingStatus.accountAuthorityPointsMissingAccount)
+              reasons.push('Path entry points to the account not known by the blockchain.');
+
+            if (processingStatus.accountAuthorityProcessingDepthExceeded)
+              reasons.push('Path entry processing has been interrupted by crossing recursion limit.');
+
+            if (processingStatus.hasAccountAuthorityCycle)
+              reasons.push('Path entry created a cycle while processig authority account redirection.');
+
+            if (processingStatus.hasInsufficientWeight)
+              reasons.push('Path entry matched, but the weight was insufficient.');
+
+            sortedData.push({ message: errorMessage, reasons });
+          }
+        }
+      }
     });
 
     for (const entry of sortedData)
-      if (typeof entry === 'string')
-        fullCollectedData.push(['NOT_FOUND']);
+      if (typeof entry === 'object' && 'reasons' in entry)
+        fullCollectedData.push(entry);
       else
         fullCollectedData.push({ data: this.convertEntryTraceData(entry.finalAuthorityPath), level: entry.finalAuthorityPath.processedRole });
 
