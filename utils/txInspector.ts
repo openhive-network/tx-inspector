@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
+import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, isPublicKey, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
 import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type IAuthorityGraphErrorCollectedData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
@@ -467,7 +467,7 @@ export class TransactionAnalyzer {
     const elements: IAuthorityGraphData[] = [];
 
     for (const visitedEntry of entry.visitedEntries) {
-      if (visitedEntry.processedEntry.startsWith('STM'))
+      if (isPublicKey(visitedEntry.processedEntry))
         continue;
 
       elements.push(...this.convertEntryTraceData(visitedEntry));
