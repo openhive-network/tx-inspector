@@ -102,7 +102,7 @@
               </s-tooltip-provider>
             </CopyWrapper>
           </s-table-cell>
-          <s-table-cell>
+          <s-table-cell class="w-1/2 min-w-[300px]">
             <s-tooltip-provider v-if="'reasons' in item.graphData[index]" :delayDuration="350">
               <s-tooltip>
                 <s-tooltip-trigger as-child>

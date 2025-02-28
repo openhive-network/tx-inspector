@@ -1,9 +1,31 @@
 <template>
-  <div
-    :id="`cy-${props.uniqueId}`"
-    class="h-[100px] w-[800px] cursor-pointer ma-auto"
-    :class="{ 'h-[400px]': props.graphData.length > 10, 'h-[600px]': props.graphData.length > 30 }"
-  />
+  <div class="position-relative">
+    <div
+      :id="`cy-${props.uniqueId}`"
+      class="h-[100px] w-full cursor-pointer ma-auto"
+    />
+    <s-dialog>
+      <s-dialog-trigger as-child @click="renderGraphInDialog">
+        <v-icon class="position-absolute top-[20px] right-[20px] opacity-80">
+          mdi-arrow-expand-all
+        </v-icon>
+      </s-dialog-trigger>
+      <s-dialog-content class="min-w-[90vw] min-h-[90vh]">
+        <s-dialog-header>
+          <s-dialog-title>
+            Authority path preview
+          </s-dialog-title>
+          <s-dialog-description>
+            Click on the node to open the block explorer
+          </s-dialog-description>
+        </s-dialog-header>
+        <div
+          :id="`cy-preview-${props.uniqueId}`"
+          class="h-[80vh] w-[80vw] cursor-pointer ma-auto"
+        />
+      </s-dialog-content>
+    </s-dialog>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -17,8 +39,6 @@ const props = defineProps<{
   color: string;
 }>();
 
-const config = useRuntimeConfig();
-
 const color = () => {
   switch (props.color) {
     case 'posting':
@@ -30,6 +50,70 @@ const color = () => {
     default:
       return '#fff';
   }
+};
+
+const config = useRuntimeConfig();
+
+const renderGraphInDialog = async () => {
+  const cyElement = computed(() => document.getElementById(`cy-preview-${props.uniqueId}`));
+
+  await nextTick(() => {
+    const cy = cytoscape({
+      container: cyElement.value,
+      elements: props.graphData,
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'background-color': '#000',
+            color: color(),
+            'text-valign': 'center',
+            'text-halign': 'center',
+            width: 'label',
+            height: 'label',
+            label: 'data(label)',
+            shape: 'rectangle',
+            'font-size': props.graphData.length > 1 ? '' : 1.5,
+            // @ts-expect-error
+            padding: props.graphData.length > 1 ? 10 : 1
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            width: 1,
+            'line-color': '#ccc',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier'
+          }
+        }
+      ],
+      layout: {
+        name: 'breadthfirst',
+        directed: true,
+        spacingFactor: 1,
+        nodeDimensionsIncludeLabels: false,
+        fit: true,
+        transform: (_node, position) => {
+          return {
+            x: position.y * 2,
+            y: position.x / 2
+          };
+        }
+      },
+      autoungrabify: true,
+      wheelSensitivity: 0.1
+    });
+
+    cy.fit();
+
+    cy.on('tap', 'node', (evt) => {
+      const node = evt.target;
+      const id = node.id().replace(/\d+$/, '');
+      const url = `${config.public.blockExplorerUrl}/@${id}`;
+      window.open(url, '_blank');
+    });
+  });
 };
 
 onMounted(() => {
@@ -76,7 +160,9 @@ onMounted(() => {
         };
       }
     },
-    wheelSensitivity: 0.1,
+    // Disable zooming and grabbing by default for the authority path preview.
+    userZoomingEnabled: false,
+    userPanningEnabled: false,
     autoungrabify: true
   });
 
