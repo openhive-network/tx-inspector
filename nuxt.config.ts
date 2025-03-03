@@ -11,13 +11,6 @@ const getCommitHash = () => {
     return fs.readFileSync(`.git/${rev.substring(5)}`).toString().trim();
 };
 
-const requiredEnvVars = ['NUXT_PUBLIC_BLOCK_EXPLORER_URL', 'NUXT_PUBLIC_DEFAULT_CHAIN_ID', 'NUXT_PUBLIC_DEFAULT_ENDPOINT_URL'];
-
-const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar] || process.env[envVar] === '');
-
-if (missingEnvVars.length > 0)
-  throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')} (see .env.example)`);
-
 export default defineNuxtConfig({
   ssr: false,
   app: {
@@ -87,9 +80,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      blockExplorerUrl: '',
-      defaultChainId: '',
-      defaultEndpointUrl: ''
+      blockExplorerUrl: process.env.NUXT_PUBLIC_BLOCK_EXPLORER_URL ? '' : 'https://explore.openhive.network',
+      defaultChainId: process.env.NUXT_PUBLIC_DEFAULT_CHAIN_ID ? '' : 'beeab0de00000000000000000000000000000000000000000000000000000000',
+      defaultEndpointUrl: process.env.NUXT_PUBLIC_DEFAULT_ENDPOINT_URL ? '' : 'https://api.hive.blog/'
     }
   }
 });
