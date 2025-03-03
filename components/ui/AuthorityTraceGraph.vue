@@ -5,11 +5,32 @@
       class="h-[75px] w-full cursor-pointer ma-auto"
     />
     <s-dialog>
-      <s-dialog-trigger class="position-absolute top-[5px] right-[5px] hover:opacity-80 p-3 !text-muted-foreground transition-opacity" as-child @click="renderGraphInDialog">
-        <v-icon size="medium">
-          mdi-arrow-expand-all
-        </v-icon>
-      </s-dialog-trigger>
+      <s-tooltip-provider :delay-duration="350">
+        <s-tooltip>
+          <s-tooltip-trigger class="position-absolute top-[5px] right-[5px] hover:opacity-80 p-3 !text-muted-foreground transition-opacity" as-child>
+            <s-dialog-trigger as-child @click="renderGraphInDialog">
+              <v-icon size="medium">
+                mdi-arrow-expand-all
+              </v-icon>
+            </s-dialog-trigger>
+          </s-tooltip-trigger>
+          <s-tooltip-content>
+            <div class="flex flex-col">
+              <span class="text-lg">Authority path preview:</span>
+              <hr class="my-2">
+              <span>
+                <p>Click to display the full screen, interactive authority path preview.</p>
+                <p class="font-bold my-2">In the preview mode, you can:</p>
+                <ul>
+                  <li><v-icon>mdi-hand-pointing-right</v-icon> Zoom in and out,</li>
+                  <li><v-icon>mdi-hand-pointing-right</v-icon> Drag the graph,</li>
+                  <li><v-icon>mdi-hand-pointing-right</v-icon> Click on the nodes to open detailed account information.</li>
+                </ul>
+              </span>
+            </div>
+          </s-tooltip-content>
+        </s-tooltip>
+      </s-tooltip-provider>
       <s-dialog-content class="min-w-[90vw] min-h-[90dvh]">
         <s-dialog-header>
           <s-dialog-title>
