@@ -2,15 +2,15 @@
   <div class="position-relative">
     <div
       :id="`cy-${props.uniqueId}`"
-      class="h-[100px] w-full cursor-pointer ma-auto"
+      class="h-[75px] w-full cursor-pointer ma-auto"
     />
     <s-dialog>
-      <s-dialog-trigger as-child @click="renderGraphInDialog">
-        <v-icon class="position-absolute top-[20px] right-[20px] opacity-80">
+      <s-dialog-trigger class="position-absolute top-[5px] right-[5px] hover:opacity-80 p-3 !text-muted-foreground transition-opacity" as-child @click="renderGraphInDialog">
+        <v-icon size="medium">
           mdi-arrow-expand-all
         </v-icon>
       </s-dialog-trigger>
-      <s-dialog-content class="min-w-[90vw] min-h-[90vh]">
+      <s-dialog-content class="min-w-[90vw] min-h-[90dvh]">
         <s-dialog-header>
           <s-dialog-title>
             Authority path preview
