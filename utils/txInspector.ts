@@ -553,7 +553,7 @@ export class TransactionAnalyzer {
     for (const entry of authorityTrace.collectedData) {
       const requiredAuthLevel = entry.finalAuthorityPath.processedRole;
 
-      const requiredAuthArr = Array.from(requiredAuthorities[requiredAuthLevel]);
+      const requiredAuthArr = Array.from(requiredAuthorities[requiredAuthLevel as keyof ITransactionRequiredAuthorities]);
 
       if (requiredAuthArr.length === 0)
         isSatisfiedArray.push(ESatisfiedState.FALSE);
@@ -575,7 +575,7 @@ export class TransactionAnalyzer {
     for (const entry of authorityTrace.collectedData) {
       const requiredAuthLevel = entry.finalAuthorityPath.processedRole;
 
-      const requiredAuthArr = Array.from((await this.getRequiredAuthoritiesForOperation(index))[requiredAuthLevel]);
+      const requiredAuthArr = Array.from((await this.getRequiredAuthoritiesForOperation(index))[requiredAuthLevel as keyof ITransactionRequiredAuthorities]);
 
       if (requiredAuthArr.length === 0)
         isSatisfiedArray.push(ESatisfiedState.FALSE);
