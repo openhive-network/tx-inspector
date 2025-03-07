@@ -45,8 +45,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(typescript@5.7.3)
       '@hiveio/wax':
-        specifier: 1.27.6-rc7-stable.250221210126
-        version: 1.27.6-rc7-stable.250221210126
+        specifier: 1.27.6-rc7-stable.250306142932
+        version: 1.27.6-rc7-stable.250306142932
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.4(magicast@0.3.5)(rollup@4.24.0)(typescript@5.7.3)(vue@3.5.12(typescript@5.7.3))
@@ -894,15 +894,15 @@ packages:
   '@floating-ui/vue@1.1.6':
     resolution: {integrity: sha512-XFlUzGHGv12zbgHNk5FN2mUB7ROul3oG2ENdTpWdE+qMFxyNxWSRmsoyhiEnpmabNm6WnUvR1OvJfUfN4ojC1A==}
 
-  '@hiveio/beekeeper@1.27.9-stable.250219154236':
-    resolution: {integrity: sha1-6fL+OgTwp6MSp0Xm3fwj+kFLzD8=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.9-stable.250219154236.tgz}
+  '@hiveio/beekeeper@1.27.10-stable.250305202831':
+    resolution: {integrity: sha1-mPx0QrDh3NSPSOYGyR1SUyi3lyA=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.10-stable.250305202831.tgz}
     engines: {node: ^20.11 || >= 21.2}
 
   '@hiveio/component-binary-view@0.2.0':
     resolution: {integrity: sha1-11QcXI/WcTrSRyzCL+9oBy8RvGA=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.2.0.tgz}
 
-  '@hiveio/wax@1.27.6-rc7-stable.250221210126':
-    resolution: {integrity: sha1-JGH0GjmJEmkU8SG64cxFZhkbbu8=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc7-stable.250221210126.tgz}
+  '@hiveio/wax@1.27.6-rc7-stable.250306142932':
+    resolution: {integrity: sha1-2PeYuU5MtuuChX4H3GwAEf7TJEQ=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc7-stable.250306142932.tgz}
     engines: {node: ^20.11 || >= 21.2}
 
   '@humanwhocodes/config-array@0.11.14':
@@ -5954,7 +5954,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@hiveio/beekeeper@1.27.9-stable.250219154236': {}
+  '@hiveio/beekeeper@1.27.10-stable.250305202831': {}
 
   '@hiveio/component-binary-view@0.2.0(typescript@5.7.3)':
     dependencies:
@@ -5964,9 +5964,9 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@hiveio/wax@1.27.6-rc7-stable.250221210126':
+  '@hiveio/wax@1.27.6-rc7-stable.250306142932':
     dependencies:
-      '@hiveio/beekeeper': 1.27.9-stable.250219154236
+      '@hiveio/beekeeper': 1.27.10-stable.250305202831
       events: 3.3.0
       long: 5.3.1
 
