@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
 import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax/vite';
 import { type TxInspectorEngine } from '#imports';
-import { EPackType, type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
+import { EPackType, type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureTraceData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
 
 export const useWaxStore = defineStore('wax', {
   state: () => ({
@@ -19,7 +19,7 @@ export const useWaxStore = defineStore('wax', {
     defaultBinaryRadioState: '',
     processingTime: 0,
     processedTransaction: {
-      signatureData: [] as ISignatureData[],
+      signatureData: [] as ISignatureTraceData[],
       transactionData: {
         id: '',
         sigDigest: '',
@@ -58,20 +58,20 @@ export const useWaxStore = defineStore('wax', {
       if (!this.$state.processedTransaction.signatureData[0])
         return 'hf26-binary';
 
-      if (Array.isArray(this.$state.processedTransaction.signatureData[0].packType)) {
-        if (this.$state.processedTransaction.signatureData[0].packType[0] === EPackType.HF26)
+      if (Array.isArray(this.$state.processedTransaction.signatureData[0].rows[0].packType)) {
+        if (this.$state.processedTransaction.signatureData[0].rows[0].packType[0] === EPackType.HF26)
           return 'hf26-binary';
 
-        if (this.$state.processedTransaction.signatureData[0].packType[0] === EPackType.LEGACY)
+        if (this.$state.processedTransaction.signatureData[0].rows[0].packType[0] === EPackType.LEGACY)
           return 'legacy-binary';
 
         return 'hf26-binary';
       }
 
-      if (this.$state.processedTransaction.signatureData[0].packType === EPackType.HF26)
+      if (this.$state.processedTransaction.signatureData[0].rows[0].packType === EPackType.HF26)
         return 'hf26-binary';
 
-      if (this.$state.processedTransaction.signatureData[0].packType === EPackType.LEGACY)
+      if (this.$state.processedTransaction.signatureData[0].rows[0].packType === EPackType.LEGACY)
         return 'legacy-binary';
 
       return 'hf26-binary';

@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, isPublicKey, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type IAuthorityGraphErrorCollectedData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type ISignatureTraceData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -105,16 +105,89 @@ export class TransactionAnalyzer {
 
     const satisfied = this.isSatisfied(requiredAuthorities, authorityTrace);
 
-    const signatureData: ISignatureData[] = [];
+    const signatureData: ISignatureTraceData[] = [];
 
-    for (let i = 0; i < signatures.length; ++i)
-      signatureData.push({
-        signature: signatures[i],
-        packType: Array.isArray(packType) ? packType[i] : packType,
-        publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[i] : packType)[i],
-        authorityTrace,
-        graphData
+    const notMatchingSignatures = signatures.filter(sig => authorityTrace.collectedData.every(entry => !entry.matchingSignatures.some(matchingSig => matchingSig.signature === sig)));
+
+    graphData.forEach((entry) => {
+      const rows: ISignatureData[] = [];
+
+      signatures.forEach((signature, index) => {
+        if ('data' in entry)
+          if (entry.matchingSignatures.length === 1 && entry.matchingSignatures[0].signature === signature)
+            rows.push({
+              signature,
+              packType: Array.isArray(packType) ? packType[index] : packType,
+              publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[index] : packType)[index]
+            });
+          else
+            entry.matchingSignatures.forEach((sig, key) => {
+              if (sig.signature === signature)
+                rows.push({
+                  signature,
+                  packType: Array.isArray(packType) ? packType[key] : packType,
+                  publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[key] : packType)[key]
+                });
+            });
+        else
+          rows.push({
+            signature,
+            packType: Array.isArray(packType) ? packType[index] : packType,
+            publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[index] : packType)[index]
+          });
       });
+
+      signatureData.push({
+        rows,
+        graphData: entry
+      });
+    });
+
+    if (notMatchingSignatures.length > 0) {
+      const reasons: string[] = [];
+
+      authorityTrace.collectedData.forEach((entry) => {
+        const processingStatus = entry.finalAuthorityPath.processingStatus;
+
+        if (!processingStatus.entryAccepted) {
+          if (entry.matchingSignatures.length === 0)
+            reasons.push('No required authority matched to given signature.');
+
+          if (processingStatus.accountAuthorityCountExceeded)
+            reasons.push('Path entry processing has been interrupted by crossing total number of processed account redirections.');
+
+          if (processingStatus.accountAuthorityPointsMissingAccount)
+            reasons.push('Path entry points to the account not known by the blockchain.');
+
+          if (processingStatus.accountAuthorityProcessingDepthExceeded)
+            reasons.push('Path entry processing has been interrupted by crossing recursion limit.');
+
+          if (processingStatus.hasAccountAuthorityCycle)
+            reasons.push('Path entry created a cycle while processig authority account redirection.');
+
+          if (processingStatus.hasInsufficientWeight)
+            reasons.push('Path entry matched, but the weight was insufficient.');
+        }
+      });
+
+      notMatchingSignatures.forEach((signature) => {
+        const rows: ISignatureData[] = [];
+
+        rows.push({
+          signature,
+          packType: EPackType.UNKNOWN,
+          publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType)[signatures.indexOf(signature)]
+        });
+
+        signatureData.push({
+          rows,
+          graphData: {
+            message: 'Authority failure!',
+            reasons
+          }
+        });
+      });
+    }
 
     const transactionData: ITransactionData = {
       id: transactionId,
@@ -396,25 +469,28 @@ export class TransactionAnalyzer {
     return operations;
   }
 
-  private getMatchingSignature (authorityAccounts: string[], authorityTrace: IAuthorityPathTraceData[]): string[] {
-    const matchingSignatures: string[] = [];
+  private getMatchingSignature (authorityAccounts: string[], authorityTrace: IAuthorityPathTraceData[]): Array<string[] | string> {
+    const matchingSignatures: Array<string[] | string> = [];
 
     if (authorityAccounts[0] === 'None')
       return ['None'];
 
     for (const account of authorityAccounts) {
-      const foundEntry = authorityTrace.find((entry) => {
-        return entry.finalAuthorityPath.processedEntry === account;
-      });
+      const entryFound = authorityTrace.find(entry => entry.finalAuthorityPath.processedEntry === account);
 
-      if (foundEntry)
-        if (foundEntry.matchingSignature)
-          matchingSignatures.push(foundEntry.matchingSignature.signature);
+      if (!entryFound)
+        return ['Missing signature'];
+
+      if (entryFound.matchingSignatures.length === 0)
+        if (entryFound.finalAuthorityPath.processingStatus.entryAccepted)
+          matchingSignatures.push('Open authority');
         else
-          if (foundEntry.finalAuthorityPath.processingStatus.entryAccepted)
-            matchingSignatures.push('Open authority');
-          else
-            matchingSignatures.push('Missing signature');
+          matchingSignatures.push('Missing signature');
+      else
+        if (entryFound.matchingSignatures.length > 1)
+          matchingSignatures.push(entryFound.matchingSignatures.map(sig => sig.signature));
+        else
+          matchingSignatures.push(entryFound.matchingSignatures[0].signature);
     }
 
     return matchingSignatures;
@@ -491,58 +567,21 @@ export class TransactionAnalyzer {
     return elements;
   }
 
-  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData> {
-    const fullCollectedData: Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData> = [];
-    const sortedData: Array<IAuthorityPathTraceData | IAuthorityGraphErrorCollectedData> = [];
+  private generateGraphData (authorityTrace: IVerifyAuthorityTrace, signatures: string[]): Array<IAuthorityGraphFullCollectedData> {
+    const fullCollectedData: Array<IAuthorityGraphFullCollectedData> = [];
+    const sortedData: Array<IAuthorityPathTraceData> = [];
 
     signatures.forEach((signature) => {
-      const foundEntry = authorityTrace.collectedData.find((entry) => {
-        return entry.matchingSignature?.signature === signature;
+      authorityTrace.collectedData.forEach((entry) => {
+        const item = entry.matchingSignatures.find(sig => sig.signature === signature);
+
+        if (item && !sortedData.find(data => JSON.stringify(data) === JSON.stringify(entry)))
+          sortedData.push(entry);
       });
-
-      if (foundEntry)
-        sortedData.push(foundEntry);
-      else {
-        const notFoundEntry = authorityTrace.collectedData.find((entry) => {
-          return !entry.matchingSignature || entry.matchingSignature.signature !== signature;
-        });
-
-        if (notFoundEntry) {
-          const processingStatus = notFoundEntry.finalAuthorityPath.processingStatus;
-
-          if (!processingStatus.entryAccepted) {
-            const errorMessage = 'Authority failure!';
-            const reasons: string[] = [];
-
-            if (!notFoundEntry.matchingSignature)
-              reasons.push('No required authority matched to given signature.');
-
-            if (processingStatus.accountAuthorityCountExceeded)
-              reasons.push('Path entry processing has been interrupted by crossing total number of processed account redirections.');
-
-            if (processingStatus.accountAuthorityPointsMissingAccount)
-              reasons.push('Path entry points to the account not known by the blockchain.');
-
-            if (processingStatus.accountAuthorityProcessingDepthExceeded)
-              reasons.push('Path entry processing has been interrupted by crossing recursion limit.');
-
-            if (processingStatus.hasAccountAuthorityCycle)
-              reasons.push('Path entry created a cycle while processig authority account redirection.');
-
-            if (processingStatus.hasInsufficientWeight)
-              reasons.push('Path entry matched, but the weight was insufficient.');
-
-            sortedData.push({ message: errorMessage, reasons });
-          }
-        }
-      }
     });
 
     for (const entry of sortedData)
-      if (typeof entry === 'object' && 'reasons' in entry)
-        fullCollectedData.push(entry);
-      else
-        fullCollectedData.push({ data: this.convertEntryTraceData(entry.finalAuthorityPath), level: entry.finalAuthorityPath.processedRole });
+      fullCollectedData.push({ data: this.convertEntryTraceData(entry.finalAuthorityPath), level: entry.finalAuthorityPath.processedRole, matchingSignatures: entry.matchingSignatures });
 
     return fullCollectedData;
   }

@@ -18,30 +18,56 @@
           v-for="(item, index) in store.processedTransaction.value.requiredAuthoritiesData"
           :key="index"
         >
-          <s-table-cell>
-            <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
-              <s-tooltip>
-                <CopyWrapper :toCopy="item.matchingSignature">
-                  <s-tooltip-trigger as-child>
-                    <span
-                      :class="{
-                        'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
-                        'text-yellow': item.matchingSignature === 'Open authority',
-                      }"
-                    >
-                      {{ waxStore.shortenString(item.matchingSignature) }}
-                    </span>
-                  </s-tooltip-trigger>
-                </CopyWrapper>
-                <s-tooltip-content>
-                  <div class="flex flex-col">
-                    <span class="text-lg">Signature:</span>
-                    <hr class="my-2">
-                    <span>{{ item.matchingSignature }}</span>
-                  </div>
-                </s-tooltip-content>
-              </s-tooltip>
-            </s-tooltip-provider>
+          <s-table-cell class="flex flex-col">
+            <span
+              v-for="(sig, key) in item.matchingSignature"
+              v-if="Array.isArray(item.matchingSignature)"
+              :key="key"
+            >
+              <s-tooltip-provider :delayDuration="350">
+                <s-tooltip>
+                  <CopyWrapper :toCopy="sig">
+                    <s-tooltip-trigger as-child>
+                      <span>
+                        {{ waxStore.shortenString(sig) }}
+                      </span>
+                    </s-tooltip-trigger>
+                  </CopyWrapper>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Signature:</span>
+                      <hr class="my-2">
+                      <span>{{ sig }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
+            </span>
+            <span v-else>
+              <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
+                <s-tooltip>
+                  <CopyWrapper :toCopy="item.matchingSignature">
+                    <s-tooltip-trigger as-child>
+                      <span
+                        :class="{
+                          'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
+                          'text-yellow': item.matchingSignature === 'Open authority',
+                        }"
+                      >
+                        {{ waxStore.shortenString(item.matchingSignature) }}
+                      </span>
+                    </s-tooltip-trigger>
+                  </CopyWrapper>
+                  <s-tooltip-content>
+                    <div class="flex flex-col">
+                      <span class="text-lg">Signature:</span>
+                      <hr class="my-2">
+                      <span>{{ item.matchingSignature }}</span>
+                    </div>
+                  </s-tooltip-content>
+                </s-tooltip>
+              </s-tooltip-provider>
+            </span>
           </s-table-cell>
           <s-table-cell>
             <span class="inline-flex flex-col">

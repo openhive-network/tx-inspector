@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiAccount, ApiTransaction, authority, IBinaryViewOutputData, ITransaction, IVerifyAuthorityTrace, TWaxApiRequest } from '@hiveio/wax/vite';
+import type { ApiAccount, ApiTransaction, authority, IAuthorityTraceSignatureInfo, IBinaryViewOutputData, ITransaction, TWaxApiRequest } from '@hiveio/wax/vite';
 
 export enum EPackType {
   LEGACY = 'legacy',
@@ -77,6 +77,7 @@ export interface IAuthorityGraphData {
 export interface IAuthorityGraphFullCollectedData {
   data: IAuthorityGraphData[];
   level: string;
+  matchingSignatures: IAuthorityTraceSignatureInfo[];
 }
 
 export interface IAuthorityGraphErrorCollectedData {
@@ -88,8 +89,11 @@ export interface ISignatureData {
   signature: string;
   packType: string;
   publicKey: string;
-  authorityTrace: IVerifyAuthorityTrace;
-  graphData: Array<IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData>;
+}
+
+export interface ISignatureTraceData {
+  rows: ISignatureData[];
+  graphData: IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData;
 }
 
 export interface ITransactionData {
@@ -100,7 +104,7 @@ export interface ITransactionData {
 }
 
 export interface IRequiredAuthoritiesData {
-  matchingSignature: string;
+  matchingSignature: string | string[];
   authorityAccount: string | authority;
   authorityType: EAuthorityLevel;
   isSatisfied: ESatisfiedState[];
@@ -123,7 +127,7 @@ export interface ITransactionOtherData {
 }
 
 export interface IProcessedTransaction {
-  signatureData: ISignatureData[];
+  signatureData: ISignatureTraceData[];
   transactionData: ITransactionData;
   requiredAuthoritiesData: IRequiredAuthoritiesData[];
   transactionBodyData: ITransactionBodyData[];

@@ -4,7 +4,7 @@
       Body:
     </Subtitle>
     <div class="flex">
-      <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex gap-6">
+      <s-radio-group v-if="store.processedTransaction.value.transactionBodyData.length !== 0" v-model="radioState" default-value="formatted" class="flex flex-col md:flex-row gap-6">
         <div class="flex items-center space-x-2">
           <s-radio-group-item id="formatted-body" value="formatted" />
           <s-label for="formatted-body">
@@ -43,7 +43,7 @@
                     <ul class="mt-2">
                       <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
                       <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                      <li v-if="store.processedTransaction.value.signatureData[0].packType === EPackType.UNKNOWN">
+                      <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
                         <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
                       </li>
                       <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
@@ -80,7 +80,7 @@
                     <ul class="mt-2">
                       <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
                       <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                      <li v-if="store.processedTransaction.value.signatureData[0].packType === EPackType.UNKNOWN">
+                      <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
                         <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
                       </li>
                       <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
