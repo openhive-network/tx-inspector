@@ -1,6 +1,6 @@
 <template>
   <footer class="text-sm text-center mb-3 flex flex-col">
-    <div>
+    <div class="flex flex-col md:flex-row justify-center items-center">
       <span class="inline-flex items-center">
         Transaction Inspector by HIVE &copy; {{ new Date().getFullYear() }}
       </span>
@@ -11,7 +11,7 @@
         Transaction processing time: {{ Number.isNaN(store.processingTime.value) ? 0 : store.processingTime.value }} seconds
       </span>
     </div>
-    <div>
+    <div class="flex flex-col md:flex-row justify-center items-center">
       <span>
         Endpoint URL:
         <s-dialog v-model:open="openEndpointUrl">
@@ -47,7 +47,7 @@
         <s-dialog v-model:open="openChainId">
           <s-dialog-trigger as-child>
             <span class="text-blue cursor-pointer hover:underline">
-              <span>{{ chainId }} <v-icon size="16px">mdi-note-edit-outline</v-icon></span>
+              <span>{{ waxStore.shortenString(chainId) }} <v-icon size="16px">mdi-note-edit-outline</v-icon></span>
             </span>
           </s-dialog-trigger>
           <s-dialog-content>

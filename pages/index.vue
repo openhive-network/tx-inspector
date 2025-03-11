@@ -1,5 +1,5 @@
 <template>
-  <s-card class="w-full md:w-4/5 card">
+  <s-card class="w-full md:w-4/5 md:p-[2rem] mb-[2rem] md:mt-[2rem] card">
     <s-card-header class="flex flex-col xl:flex-row justify-between items-center">
       <div class="flex flex-col xl:flex-row items-center mb-4 md:mb-0">
         <img src="../assets/images/hive-logo.webp" alt="hive-logo" width="70px">
@@ -98,10 +98,8 @@ onMounted(async () => {
 
 <style scoped>
 .card {
-  margin: 2rem 0;
   background-color: #000;
   border-color: #3f3f46 !important;
-  padding: 2rem;
 }
 
 .skeleton {

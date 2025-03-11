@@ -315,3 +315,18 @@ watch(() => wax.$state.defaultBinaryRadioState, (newValue) => {
   background: rgb(63 63 70);
 }
 </style>
+
+<style>
+@media (max-width: 768px) {
+  .binary-view-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+    gap: 1rem;
+  }
+
+  .binary-view-left-pane-hex-data {
+    max-width: 70% !important;
+  }
+}
+</style>
