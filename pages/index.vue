@@ -41,9 +41,9 @@
       <AuthorityPathTable />
       <hr class="my-8">
       <div class="flex flex-col gap-4">
-        <TrxTable class="w-full" />
-        <hr class="my-3">
         <AuthTable class="w-full" />
+        <hr class="my-3">
+        <TrxTable class="w-full" />
       </div>
       <hr class="my-8">
       <div class="mb-16">
