@@ -90,11 +90,11 @@ const renderGraphInDialog = async () => {
             color: color(),
             'text-valign': 'center',
             'text-halign': 'center',
-            width: 'label',
-            height: 'label',
+            width: 200,
+            height: 50,
             label: 'data(label)',
             shape: 'rectangle',
-            'font-size': props.graphData.length > 1 ? '' : 1.5,
+            'font-size': props.graphData.length > 1 ? 15 : 10,
             // @ts-expect-error
             padding: props.graphData.length > 1 ? 10 : 1
           }
@@ -122,8 +122,7 @@ const renderGraphInDialog = async () => {
           };
         }
       },
-      autoungrabify: true,
-      wheelSensitivity: 0.1
+      autoungrabify: true
     });
 
     cy.fit();
@@ -149,11 +148,11 @@ onMounted(() => {
           color: color(),
           'text-valign': 'center',
           'text-halign': 'center',
-          width: 'label',
-          height: 'label',
+          width: 200,
+          height: 50,
           label: 'data(label)',
           shape: 'rectangle',
-          'font-size': props.graphData.length > 1 ? '' : 1.5,
+          'font-size': props.graphData.length > 1 ? 20 : 15,
           // @ts-expect-error
           padding: props.graphData.length > 1 ? 10 : 1
         }
