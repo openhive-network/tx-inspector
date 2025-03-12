@@ -142,11 +142,20 @@ class OperationsFormatter implements IWaxCustomFormatter {
     return h(
       CopyWrapper,
       { toCopy: account },
-      h(
-        NuxtLink,
-        { to: `${this.blockExplorerUrl}/@${account}`, class: 'text-blue hover:opacity-70 transition-opacity', target: '_blank' },
-        () => `@${account} `
-      )
+      {
+        default: () =>
+          h(
+            NuxtLink,
+            {
+              to: `${this.blockExplorerUrl}/@${account}`,
+              class: 'text-blue hover:opacity-70 transition-opacity',
+              target: '_blank'
+            },
+            {
+              default: () => `@${account} `
+            }
+          )
+      }
     );
   }
 
@@ -163,11 +172,14 @@ class OperationsFormatter implements IWaxCustomFormatter {
     return h(
       CopyWrapper,
       { toCopy: permlink },
-      h(
-        NuxtLink,
-        { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green hover:opacity-70 transition-opacity' },
-        () => permlink
-      )
+      {
+        default: () =>
+          h(
+            NuxtLink,
+            { rel: 'noopener noreferrer', target: '_blank', href: `https://hive.blog/@${author}/${permlink}`, class: 'text-green hover:opacity-70 transition-opacity' },
+            () => permlink
+          )
+      }
     );
   }
 
