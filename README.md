@@ -367,11 +367,11 @@ The binary view provides users with a detailed hexadecimal (hex) representation 
 
 Below we present some real transactions examples. Simply copy the id or json, and paste into the application's specific input to see the results.
 
-1. Valid tranasction without any signature (open authority): `a94716f567611b9f930369c8f53df27d4efe5ad2`
-2. Transaction directly signed with legacy serialization mode by the required authority account: `da9602787693edccdafa1e7325502e0bb14453d1`
-3. Transaction directly signed with hf26 serialization mode by the required authority account: `7b84c7620c95eaf341821d4bfb126a219b0d0150`
-4. Transaction with multiple operations and multiple signatures. All of them are directly authorized: `a7efc7be69861fdcdc39712e532beb8ddc701f03`
-5. Transaction with single nest level for delegated authority: `897233fbcbe012e340478c8de7eb97755c542f09`
-6. Transaction with 2 (maximum for valid transactions) nest levels for delegated authority: `07e7d9ecaad2a11bc36db6d7046a55e231627574`
-7. Transaction where the account's authority has been changed after the transaction was signed: `3e28cc95c2169c53e38a90b2ff667fedbbfba6ca`
+1. [Valid tranasction without any signature (open authority)](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=a94716f567611b9f930369c8f53df27d4efe5ad2)
+2. [Transaction directly signed with legacy serialization mode by the required authority account](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=da9602787693edccdafa1e7325502e0bb14453d1)
+3. [Transaction directly signed with hf26 serialization mode by the required authority account](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=7b84c7620c95eaf341821d4bfb126a219b0d0150)
+4. [Transaction with multiple operations and multiple signatures. All of them are directly authorized](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=a7efc7be69861fdcdc39712e532beb8ddc701f03)
+5. [Transaction with single nest level for delegated authority](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=897233fbcbe012e340478c8de7eb97755c542f09)
+6. [Transaction with 2 (maximum for valid transactions) nest levels for delegated authority](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=07e7d9ecaad2a11bc36db6d7046a55e231627574)
+7. [Transaction where the account's authority has been changed after the transaction was signed](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=3e28cc95c2169c53e38a90b2ff667fedbbfba6ca)
 8. [Transaction with 2 signatures and 1 required authority (threshold 2), this example presents more complex authority graph](https://tx-inspector-hive-5af49bf57ce424da225b46e33deb8019d559e31cef0d7.pages.syncad.com/?transaction=eyJyZWZfYmxvY2tfbnVtIjoyNTY3NCwicmVmX2Jsb2NrX3ByZWZpeCI6MTU0MDIxMDEzMywiZXhwaXJhdGlvbiI6IjIwMjUtMDMtMDNUMDg6NTU6NDgiLCJvcGVyYXRpb25zIjpbeyJ0eXBlIjoidHJhbnNmZXJfb3BlcmF0aW9uIiwidmFsdWUiOnsiZnJvbSI6Imd1ZXN0NHRlc3Q0IiwidG8iOiJhbGljZSIsImFtb3VudCI6eyJhbW91bnQiOiIxIiwicHJlY2lzaW9uIjozLCJuYWkiOiJAQDAwMDAwMDAyMSJ9LCJtZW1vIjoiVGhpcyBpcyBhIHRlc3QgdHJhbnNmZXIifX1dLCJzaWduYXR1cmVzIjpbIjIwYWVhMWRlOWZjZWNlNjM3ODA0NTAwMWQzYmI5NWFiNTJiZjk1ZmVmNGY1MzMyMzg1NWJmMDAyNDUyYjQyMTY1MTAzNGIyMTQyZDU2MzI2OWU2YmE4YTIxZmYxYTdlNGY1MDQ1ZDdjYzQ2ZDA3NTM4MTQwZTUyMmIzNjg1YzI1MzQiLCIyMDQxNmMwOTNiNGRlODljNTgzYmUwZmExNDE0Mzc2MDM0MzA1Zjk4ZDE4ZjM2ZWI5OWY5MzI3OTQ4NTNiMzIyOWM3OWU0ZmMxYjYwOGQ0ZGRmYzFlNzFiYzQ2ZjQ1ZTI2YjZhOGM2MWYwYmIxM2JhZWQ2NTJlYzNhNGM5ZGFjMGJjIl19)
