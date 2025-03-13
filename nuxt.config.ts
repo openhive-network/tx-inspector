@@ -54,7 +54,8 @@ export default defineNuxtConfig({
     '~/plugins/vuetify.ts',
     '~/plugins/txInspector.ts',
     '~/plugins/formatter.ts',
-    '~/plugins/binaryView.ts'
+    '~/plugins/binaryView.ts',
+    '~/plugins/buffer.ts'
   ],
 
   components: {

@@ -20,9 +20,15 @@
             Binary
           </s-label>
         </div>
+        <div class="flex items-center space-x-2">
+          <s-radio-group-item id="file" value="file" />
+          <s-label for="file">
+            Upload File
+          </s-label>
+        </div>
       </s-radio-group>
       <s-label>
-        Transaction ({{ radioState }} format)
+        Transaction ({{ radioState !== 'file' ? radioState : 'upload file with transaction in json/binary' }} format)
       </s-label>
       <v-text-field
         v-if="radioState === 'hash'"
@@ -38,6 +44,16 @@
         v-else-if="radioState === 'binary'"
         v-model="binary"
         placeholder="Provide your transaction hexstring"
+        class="mt-3 mb-[12.9rem]"
+        required
+        autofocus
+        variant="outlined"
+        density="compact"
+      />
+      <v-file-input
+        v-else-if="radioState === 'file'"
+        v-model="file"
+        label="Upload your transaction file"
         class="mt-3 mb-[12.9rem]"
         required
         autofocus
@@ -76,13 +92,14 @@ const MAX_URL_LENGTH = 1024;
 
 const store = useWaxStore();
 
-const { $txInspector, $formatter } = useNuxtApp();
+const { $txInspector, $formatter, $buffer } = useNuxtApp();
 
 const radioState = ref('json');
 
 const trx = ref<string>();
 const hash = ref<string>();
 const binary = ref<string>();
+const file = ref<File>();
 
 onMounted(() => {
   store.$state.qs = new URLSearchParams(location.search);
@@ -147,6 +164,68 @@ const submitTransaction = async () => {
 
         await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
       }
+    } else if (radioState.value === 'file') {
+      if (file.value) {
+        const reader = new FileReader();
+
+        reader.onload = async () => {
+          try {
+            store.$state.isLoading = true;
+            const result = reader.result as string;
+            if (result)
+              try {
+                JSON.parse(result);
+
+                if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(result))}`.length < MAX_URL_LENGTH)
+                  store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(result)));
+                else {
+                  store.$state.qs.delete('transaction');
+                  toast.info('Info', {
+                    description: 'Transaction is too long to be stored in URL'
+                  });
+                }
+
+                await store.handleTransactionFromJson($txInspector, $formatter, result);
+              } catch {
+                try {
+                  if (`${location.origin}/?transaction=${result}`.length < MAX_URL_LENGTH)
+                    store.$state.qs.set('transaction', result.trim());
+                  else {
+                    store.$state.qs.delete('transaction');
+                    toast.info('Info', {
+                      description: 'Transaction is too long to be stored in URL'
+                    });
+                  }
+
+                  await store.handleTransactionFromBinary($txInspector, $formatter, result.trim());
+                } catch {
+                  const binary = $buffer.from(result, 'binary').toString('hex');
+
+                  if (`${location.origin}/?transaction=${binary}`.length < MAX_URL_LENGTH)
+                    store.$state.qs.set('transaction', binary);
+                  else {
+                    store.$state.qs.delete('transaction');
+                    toast.info('Info', {
+                      description: 'Transaction is too long to be stored in URL'
+                    });
+                  }
+
+                  await store.handleTransactionFromBinary($txInspector, $formatter, binary);
+                }
+              }
+          } catch (error) {
+            toast.error('Error', {
+              description: error instanceof Error ? error.message : 'Unknown error occured'
+            });
+          } finally {
+            store.$state.isLoading = false;
+            end = Date.now();
+          }
+
+          window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+        };
+        reader.readAsText(file.value);
+      }
     } else
       throw new Error('Provide transaction in choosen format');
 
@@ -169,7 +248,7 @@ const handleKeydown = (event: KeyboardEvent): void => {
     event.preventDefault();
     submitTransaction();
 
-    if (trx.value !== undefined || hash.value !== undefined || binary.value !== undefined)
+    if (trx.value !== undefined || hash.value !== undefined || binary.value !== undefined || file.value !== undefined)
       store.$state.trxDialogOpen = false;
   }
 };
