@@ -69,7 +69,10 @@
 
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
+import { decompressFromEncodedURIComponent, compressToEncodedURIComponent } from 'lz-string';
 import Button from '~/components/ui/Button.vue';
+
+const MAX_URL_LENGTH = 1024;
 
 const store = useWaxStore();
 
@@ -88,8 +91,8 @@ onMounted(() => {
     const transaction = store.$state.qs.get('transaction');
     if (transaction)
       try {
-        JSON.parse(atob(transaction));
-        trx.value = atob(transaction);
+        JSON.parse(decodeURIComponent(decompressFromEncodedURIComponent(transaction)));
+        trx.value = decodeURIComponent(decompressFromEncodedURIComponent(transaction));
       } catch {
         if (transaction.length === 40)
           hash.value = transaction;
@@ -120,7 +123,15 @@ const submitTransaction = async () => {
       }
     } else if (radioState.value === 'json') {
       if (trx.value) {
-        store.$state.qs.set('transaction', btoa(trx.value));
+        if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(trx.value))}`.length < MAX_URL_LENGTH)
+          store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(trx.value)));
+        else {
+          store.$state.qs.delete('transaction');
+          toast.info('Info', {
+            description: 'Transaction is too long to be stored in URL'
+          });
+        }
+
         await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
       }
     } else if (radioState.value === 'binary') {

@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+import { decompressFromEncodedURIComponent } from 'lz-string';
 import TrxDialog from '~/components/ui/TrxDialog.vue';
 import AuthorityPathTable from '~/components/ui/AuthorityPathTable.vue';
 import TrxTable from '~/components/ui/TrxTable.vue';
@@ -79,7 +80,7 @@ onMounted(async () => {
     await wax.handleTransactionFromHash($txInspector, $formatter, qs.get('transaction')!);
   } catch (_error) {
     try {
-      await wax.handleTransactionFromJson($txInspector, $formatter, atob(qs.get('transaction')!));
+      await wax.handleTransactionFromJson($txInspector, $formatter, decodeURIComponent(decompressFromEncodedURIComponent(qs.get('transaction')!)));
     } catch (_error) {
       try {
         await wax.handleTransactionFromBinary($txInspector, $formatter, qs.get('transaction')!);
