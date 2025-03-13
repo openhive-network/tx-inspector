@@ -373,3 +373,4 @@ Below we present some real transactions examples. Simply copy the id, and paste 
 4. Transaction with multiple operations and multiple signatures. All of them are directly authorized: `a7efc7be69861fdcdc39712e532beb8ddc701f03`
 5. Transaction with single nest level for delegated authority: `897233fbcbe012e340478c8de7eb97755c542f09`
 6. Transaction with 2 (maximum for valid transactions) nest levels for delegated authority: `07e7d9ecaad2a11bc36db6d7046a55e231627574`
+7. Transaction where the account's authority has been changed after the transaction was signed: `3e28cc95c2169c53e38a90b2ff667fedbbfba6ca`
