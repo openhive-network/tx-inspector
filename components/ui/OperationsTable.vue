@@ -198,8 +198,9 @@
                       <span class="text-lg">Blockchain Forced True</span>
                       <hr class="my-2">
                       <span class="leading-6">
-                        The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
-                        but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                        The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
+                        Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
+                        This can happen when accout's authority has been changed after the transaction was signed.
                       </span>
                     </div>
                   </s-tooltip-content>
@@ -256,8 +257,9 @@
                       <span class="text-lg">Blockchain Forced True</span>
                       <hr class="my-2">
                       <span class="leading-6">
-                        The application cannot deduce the satisfied state correctly due to a missing signature or the lack of a matching account for the public key, <br>
-                        but the transaction is valid and originates from the chain, so we assume that the required authority is satisfied.
+                        The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
+                        Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
+                        This can happen when accout's authority has been changed after the transaction was signed.
                       </span>
                     </div>
                   </s-tooltip-content>

@@ -103,7 +103,7 @@ export class TransactionAnalyzer {
 
     const matchingSignatures = this.getMatchingSignature(authorityType[0].accounts, authorityTrace.collectedData);
 
-    const satisfied = this.isSatisfied(requiredAuthorities, authorityTrace);
+    const satisfied = await this.isSatisfied(requiredAuthorities, authorityTrace);
 
     const signatureData: ISignatureTraceData[] = [];
 
@@ -586,7 +586,7 @@ export class TransactionAnalyzer {
     return fullCollectedData;
   }
 
-  private isSatisfied (requiredAuthorities: ITransactionRequiredAuthorities, authorityTrace: IVerifyAuthorityTrace): ESatisfiedState[] {
+  private async isSatisfied (requiredAuthorities: ITransactionRequiredAuthorities, authorityTrace: IVerifyAuthorityTrace): Promise<ESatisfiedState[]> {
     const isSatisfiedArray: ESatisfiedState[] = [];
 
     for (const entry of authorityTrace.collectedData) {
@@ -603,6 +603,11 @@ export class TransactionAnalyzer {
 
       if (foundEntry && entry.finalAuthorityPath.processingStatus.entryAccepted)
         isSatisfiedArray.push(ESatisfiedState.TRUE);
+
+      if (foundEntry &&
+          entry.finalAuthorityPath.processingStatus.entryAccepted === false &&
+          await this.chain.api.account_history_api.get_transaction({ id: this.transaction.id }))
+        isSatisfiedArray.push(ESatisfiedState.BLOCKCHAIN_FORCED_TRUE);
     }
 
     return isSatisfiedArray;
@@ -625,6 +630,11 @@ export class TransactionAnalyzer {
 
       if (foundEntry && entry.finalAuthorityPath.processingStatus.entryAccepted)
         isSatisfiedArray.push(ESatisfiedState.TRUE);
+
+      if (foundEntry &&
+        entry.finalAuthorityPath.processingStatus.entryAccepted === false &&
+        await this.chain.api.account_history_api.get_transaction({ id: this.transaction.id }))
+        isSatisfiedArray.push(ESatisfiedState.BLOCKCHAIN_FORCED_TRUE);
     }
 
     return isSatisfiedArray;
