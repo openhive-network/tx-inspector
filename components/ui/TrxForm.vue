@@ -136,7 +136,15 @@ const submitTransaction = async () => {
       }
     } else if (radioState.value === 'binary') {
       if (binary.value) {
-        store.$state.qs.set('transaction', binary.value);
+        if (`${location.origin}/?transaction=${binary.value}`.length < MAX_URL_LENGTH)
+          store.$state.qs.set('transaction', binary.value);
+        else {
+          store.$state.qs.delete('transaction');
+          toast.info('Info', {
+            description: 'Transaction is too long to be stored in URL'
+          });
+        }
+
         await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
       }
     } else
