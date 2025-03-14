@@ -42,8 +42,8 @@ importers:
   .:
     dependencies:
       '@hiveio/component-binary-view':
-        specifier: ^0.2.0
-        version: 0.2.0(typescript@5.7.3)
+        specifier: ^0.4.0
+        version: 0.4.0(typescript@5.7.3)
       '@hiveio/wax':
         specifier: 1.27.6-rc7-stable.250306142932
         version: 1.27.6-rc7-stable.250306142932
@@ -904,8 +904,8 @@ packages:
     resolution: {integrity: sha1-mPx0QrDh3NSPSOYGyR1SUyi3lyA=, tarball: https://gitlab.syncad.com/api/v4/projects/198/packages/npm/@hiveio/beekeeper/-/@hiveio/beekeeper-1.27.10-stable.250305202831.tgz}
     engines: {node: ^20.11 || >= 21.2}
 
-  '@hiveio/component-binary-view@0.2.0':
-    resolution: {integrity: sha1-11QcXI/WcTrSRyzCL+9oBy8RvGA=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.2.0.tgz}
+  '@hiveio/component-binary-view@0.4.0':
+    resolution: {integrity: sha1-VB4Fm+Q62kQiXKHLsmwmEyZqEMw=, tarball: https://gitlab.syncad.com/api/v4/projects/491/packages/npm/@hiveio/component-binary-view/-/@hiveio/component-binary-view-0.4.0.tgz}
 
   '@hiveio/wax@1.27.6-rc7-stable.250306142932':
     resolution: {integrity: sha1-2PeYuU5MtuuChX4H3GwAEf7TJEQ=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc7-stable.250306142932.tgz}
@@ -5966,10 +5966,10 @@ snapshots:
 
   '@hiveio/beekeeper@1.27.10-stable.250305202831': {}
 
-  '@hiveio/component-binary-view@0.2.0(typescript@5.7.3)':
+  '@hiveio/component-binary-view@0.4.0(typescript@5.7.3)':
     dependencies:
-      pinia: 2.2.4(typescript@5.7.3)(vue@3.5.12(typescript@5.7.3))
-      vue: 3.5.12(typescript@5.7.3)
+      pinia: 2.2.4(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
+      vue: 3.5.13(typescript@5.7.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - typescript
@@ -9858,11 +9858,11 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.3
 
-  pinia@2.2.4(typescript@5.7.3)(vue@3.5.12(typescript@5.7.3)):
+  pinia@2.2.4(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       '@vue/devtools-api': 6.6.3
-      vue: 3.5.12(typescript@5.7.3)
-      vue-demi: 0.14.10(vue@3.5.12(typescript@5.7.3))
+      vue: 3.5.13(typescript@5.7.3)
+      vue-demi: 0.14.10(vue@3.5.13(typescript@5.7.3))
     optionalDependencies:
       typescript: 5.7.3
 
@@ -11118,6 +11118,10 @@ snapshots:
   vue-demi@0.14.10(vue@3.5.12(typescript@5.7.3)):
     dependencies:
       vue: 3.5.12(typescript@5.7.3)
+
+  vue-demi@0.14.10(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      vue: 3.5.13(typescript@5.7.3)
 
   vue-devtools-stub@0.1.0: {}
 
