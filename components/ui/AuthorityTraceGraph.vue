@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative">
+  <div class="position-relative canvas-container">
     <div
       :id="`cy-${props.uniqueId}`"
       class="h-[75px] w-full cursor-pointer ma-auto"
@@ -196,3 +196,9 @@ onMounted(() => {
   });
 });
 </script>
+
+<style>
+.canvas-container [id^="cy-"] {
+  pointer-events: none;
+}
+</style>
