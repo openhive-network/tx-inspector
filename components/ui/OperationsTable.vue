@@ -120,6 +120,7 @@
         v-show="radioState === 'binary' && binaryRadioState === 'hf26-binary'"
         :data="store.binaryViewOutputData.value"
         dark
+        :rowbytes="mobile ? 10 : 16"
         @copy="toast.success('Copied selected range to clipboard')"
       />
       <BinaryView
@@ -127,6 +128,7 @@
         v-show="radioState === 'binary' && binaryRadioState === 'legacy-binary'"
         :data="store.legacyBinaryViewOutputData.value"
         dark
+        :rowbytes="mobile ? 10 : 16"
         @copy="toast.success('Copied selected range to clipboard')"
       />
       <div v-for="(item, index) in store.processedTransaction.value.transactionBodyData" :key="index">
@@ -136,12 +138,14 @@
             :data="item.operationsBinaryView"
             rootnode="operation"
             dark
+            :rowbytes="mobile ? 10 : 16"
           />
           <BinaryView
             v-show="binaryRadioState === 'legacy-binary'"
             :data="item.operationsLegacyBinaryView"
             rootnode="operation"
             dark
+            :rowbytes="mobile ? 10 : 16"
           />
           <s-separator v-if="store.processedTransaction.value.transactionBodyData[index + 1]" class="my-8" />
         </div>
@@ -210,7 +214,7 @@
             <s-table-cell>
               <span>{{ item.operationType }}</span>
             </s-table-cell>
-            <s-table-cell class="max-w-[30vw]">
+            <s-table-cell class="min-w-[400px] max-w-[600px]">
               <component :is="store.formattedOperations.value[index].value.message ?? store.formattedOperations.value[index].value" />
             </s-table-cell>
           </s-table-row>
@@ -269,8 +273,8 @@
             <s-table-cell>
               <span>{{ item.operationType }}</span>
             </s-table-cell>
-            <s-table-cell class="flex flex-col items-center gap-4 max-w-[30vw]">
-              <CopyWrapper :toCopy="JSON.stringify(item.operationContent)">
+            <s-table-cell class="flex flex-col items-center gap-4 min-w-[400px] max-w-[600px]">
+              <CopyWrapper :toCopy="JSON.stringify(item.operationContent)" class="min-w-[400px] max-w-[600px]">
                 <code>
                   {{ (JSON.stringify(item.operationContent, null, 2).length > 600 && expanded === false) ? `${JSON.stringify(item.operationContent, null, 2).slice(0, 600)}...` : JSON.stringify(item.operationContent, null, 2) }}
                 </code>
@@ -292,9 +296,12 @@
 
 <script lang="ts" setup>
 import { toast } from 'vue-sonner';
+import { useDisplay } from 'vuetify';
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
 import { EPackType, ESatisfiedState } from '~/types/wax';
+
+const { mobile } = useDisplay();
 
 const wax = useWaxStore();
 const store = storeToRefs(wax);
@@ -315,20 +322,5 @@ watch(() => wax.$state.defaultBinaryRadioState, (newValue) => {
 <style scoped>
 .skeleton {
   background: rgb(63 63 70);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .binary-view-container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 4rem;
-    gap: 1rem;
-  }
-
-  .binary-view-left-pane-hex-data {
-    max-width: 70% !important;
-  }
 }
 </style>
