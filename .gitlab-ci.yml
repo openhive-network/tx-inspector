@@ -28,25 +28,72 @@ default:
     - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
 
+.content_path_evaluator:
+  rules:
+    # default branch is exposed at GitLab Pages root
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      variables:
+        # subpath to ephemeral branches content for preview
+        CURRENT_CONTENT_PATH: "preview/$CI_COMMIT_REF_SLUG"
+    - variables:
+        CURRENT_CONTENT_PATH: "." # default subdir for main branch (be overrided for others)
+
 build:
-  extends: .npm_based_job
+  extends:
+    - .npm_based_job
+    - .content_path_evaluator
+
   stage: build
-  script:
-    - pnpm generate
+  script: |
+    set -xe
+    export NUXT_APP_BASE_URL="/$CURRENT_CONTENT_PATH/"
+    echo "App base url used for generation $NUXT_APP_BASE_URL"
+    pnpm generate
+
   artifacts:
     paths:
       - .output
     when: always
     expire_in: 1 week
 
-pages:
+.pages_deployment_base:
+  extends: .content_path_evaluator
   stage: deploy
-  script:
-    - echo "The site will be deployed to $CI_PAGES_URL"
-  publish: .output/public
-  artifacts:
-    paths:
-      - .output/public
-  only:
-    - main
 
+  cache:
+    key: gitlab-pages
+    paths: [public]
+
+  artifacts:
+    paths: [public]
+
+pages:
+  extends: .pages_deployment_base
+
+  needs:
+    - job: build
+      artifacts: true
+
+  script:
+    - echo "App specific directory used for gitlab pages publishing $CURRENT_CONTENT_PATH"
+    - rm -vrf public/$CURRENT_CONTENT_PATH # remove last version of current branch
+    - mkdir -vp public/$CURRENT_CONTENT_PATH
+    - mv .output/public/* public/$CURRENT_CONTENT_PATH
+
+  environment:
+    name: "pages/$CI_COMMIT_REF_SLUG"
+    action: start
+    url: $CI_PAGES_URL/$CURRENT_CONTENT_PATH
+    on_stop: pages-clean-preview
+
+
+pages-clean-preview:
+  extends: .pages_deployment_base
+  script:
+    - rm -vrf public/$CURRENT_CONTENT_PATH
+  environment:
+    name: "pages/$CI_COMMIT_REF_SLUG"
+    action: stop
+
+  when: manual
+  allow_failure: true
