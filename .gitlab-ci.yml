@@ -4,6 +4,9 @@ stages:
   - build
   - deploy
 
+include:
+  - template: Workflows/Branch-Pipelines.gitlab-ci.yml
+
 variables:
   GIT_DEPTH: 0
   GIT_STRATEGY: clone
