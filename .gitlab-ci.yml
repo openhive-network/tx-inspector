@@ -82,6 +82,7 @@ pages:
     - rm -vrf public/$CURRENT_CONTENT_PATH # remove last version of current branch
     - mkdir -vp public/$CURRENT_CONTENT_PATH
     - mv .output/public/* public/$CURRENT_CONTENT_PATH
+    - echo "App instance will be available at $CI_PAGES_URL/$CURRENT_CONTENT_PATH" or through Operate/Environments view by pointing "pages/$CI_COMMIT_REF_SLUG"
 
   environment:
     name: "pages/$CI_COMMIT_REF_SLUG"
