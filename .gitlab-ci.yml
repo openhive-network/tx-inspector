@@ -1,37 +1,34 @@
-image: node:20.18.3
-
 stages:
   - build
   - deploy
 
 include:
   - template: Workflows/Branch-Pipelines.gitlab-ci.yml
+  - project: 'hive/common-ci-configuration'
+    ref: 590bfd88a491efba5a39571bc2c82ffbabda2ec8
+    file:
+      - '/templates/docker_image_jobs.gitlab-ci.yml'
+      - '/templates/npm_projects.gitlab-ci.yml'
 
 variables:
   GIT_DEPTH: 0
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
 
-cache:
-  key:
-    files:
-      - pnpm-lock.yaml
-  paths:
-    - node_modules/
-    - .pnpm-store/
+#cache:
+#  key:
+#    files:
+#      - pnpm-lock.yaml
+#  paths:
+#    - node_modules/
+#    - .pnpm-store/
 
 default:
   tags:
     - public-runner-docker
 
-.npm_based_job:
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@10.0.0 --activate
-    - pnpm config set store-dir .pnpm-store
-    - pnpm install --frozen-lockfile
-
 .content_path_evaluator:
+  extends: .job-defaults
   rules:
     # default branch is exposed at GitLab Pages root
     - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
@@ -41,9 +38,9 @@ default:
     - variables:
         CURRENT_CONTENT_PATH: "." # default subdir for main branch (be overrided for others)
 
-build:
+build4pages:
   extends:
-    - .npm_based_job
+    - .npm_based_job_base
     - .content_path_evaluator
 
   stage: build
@@ -58,6 +55,42 @@ build:
       - .output
     when: always
     expire_in: 1 week
+
+build:
+  extends:
+    - .npm_based_job_base
+
+  stage: build
+  script:
+    - pnpm generate
+
+  artifacts:
+    paths:
+      - .output
+    when: always
+    expire_in: 1 week
+
+build_app_image:
+  extends: .docker_image_builder_job_template
+  stage: build
+
+  needs:
+    - job: build
+      artifacts: true
+
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+    GIT_DEPTH: 1
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+    - ./scripts/ci-helpers/build_instance.sh --push "$CI_COMMIT_SHORT_SHA" "$CI_PROJECT_DIR" "$CI_REGISTRY_IMAGE" --progress="plain"
+
+  artifacts:
+    reports:
+      dotenv: app_docker_image_name.env
+  tags:
+  - public-runner-docker
+  - hived-for-tests
 
 .pages_deployment_base:
   extends: .content_path_evaluator
@@ -74,7 +107,7 @@ pages:
   extends: .pages_deployment_base
 
   needs:
-    - job: build
+    - job: build4pages
       artifacts: true
 
   script:
