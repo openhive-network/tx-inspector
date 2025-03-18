@@ -31,7 +31,7 @@
           </s-tooltip-content>
         </s-tooltip>
       </s-tooltip-provider>
-      <s-dialog-content class="min-w-[90vw] min-h-[90dvh]">
+      <s-dialog-content class="min-w-[90vw] max-h-[80dvh]">
         <s-dialog-header>
           <s-dialog-title>
             Authority path preview
