@@ -64,6 +64,7 @@
     "http-server": "catalog:playwright-toolset",
     "husky": "catalog:husky",
     "lint-staged": "^15.2.5",
+    "nuxt-vitalizer": "^0.10.0",
     "playwright": "catalog:playwright-toolset",
     "rollup": "catalog:rollup-toolset",
     "typescript": "catalog:typescript-toolset",

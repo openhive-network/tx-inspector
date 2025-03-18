@@ -22,7 +22,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    'nuxt-vitalizer'
   ],
 
   shadcn: {
@@ -75,6 +76,10 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+
+  vitalizer: {
+    disablePrefetchLinks: true
   },
 
   compatibilityDate: '2024-10-08',
