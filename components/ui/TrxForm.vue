@@ -121,6 +121,127 @@ onMounted(() => {
 
 const qs = store.$state.qs;
 
+const handleHexadecimalFile = async (hexadecimalValue: string) => {
+  if (`${location.origin}/?transaction=${hexadecimalValue}`.length < MAX_URL_LENGTH)
+    store.$state.qs.set('transaction', hexadecimalValue);
+  else {
+    store.$state.qs.delete('transaction');
+    toast.info('Info', {
+      description: 'Transaction is too long to be stored in URL'
+    });
+  }
+
+  await store.handleTransactionFromBinary($txInspector, $formatter, hexadecimalValue);
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+  store.$state.isLoading = false;
+};
+
+const handleJSONFile = async (jsonValue: any) => {
+  if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(jsonValue))}`.length < MAX_URL_LENGTH)
+    store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(jsonValue)));
+  else {
+    store.$state.qs.delete('transaction');
+    toast.info('Info', {
+      description: 'Transaction is too long to be stored in URL'
+    });
+  }
+
+  await store.handleTransactionFromJson($txInspector, $formatter, jsonValue);
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+  store.$state.isLoading = false;
+};
+
+const handleBinaryFile = async (binaryValue: string) => {
+  const binary = $buffer.from(binaryValue, 'ascii').toString('hex');
+
+  if (`${location.origin}/?transaction=${binary}`.length < MAX_URL_LENGTH)
+    store.$state.qs.set('transaction', binary);
+  else {
+    store.$state.qs.delete('transaction');
+    toast.info('Info', {
+      description: 'Transaction is too long to be stored in URL'
+    });
+  }
+
+  await store.handleTransactionFromBinary($txInspector, $formatter, binary);
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+  store.$state.isLoading = false;
+};
+
+const handleTransactionFromHash = async (): Promise<void> => {
+  if (hash.value) {
+    store.$state.qs.set('transaction', hash.value);
+    await store.handleTransactionFromHash($txInspector, $formatter, hash.value);
+    store.$state.isLoading = false;
+  }
+
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+};
+
+const handleTransactionFromJson = async (): Promise<void> => {
+  if (trx.value) {
+    if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(trx.value))}`.length < MAX_URL_LENGTH)
+      store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(trx.value)));
+    else {
+      store.$state.qs.delete('transaction');
+      toast.info('Info', {
+        description: 'Transaction is too long to be stored in URL'
+      });
+    }
+
+    await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
+    store.$state.isLoading = false;
+  }
+
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+};
+
+const handleTransactionFromBinary = async (): Promise<void> => {
+  if (binary.value) {
+    if (`${location.origin}/?transaction=${binary.value}`.length < MAX_URL_LENGTH)
+      store.$state.qs.set('transaction', binary.value);
+    else {
+      store.$state.qs.delete('transaction');
+      toast.info('Info', {
+        description: 'Transaction is too long to be stored in URL'
+      });
+    }
+
+    await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
+    store.$state.isLoading = false;
+  }
+
+  window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+};
+
+const readFromFile = (): void => {
+  const localFileValue = file.value;
+  if (localFileValue) {
+    const textReader = new FileReader();
+    const binaryReader = new FileReader();
+    textReader.onload = async () => {
+      try {
+        const result = (textReader.result as string).trim();
+        if (/^[0-9a-fA-F]+$/.test(result))
+          await handleHexadecimalFile(result);
+        else {
+          // If JSON parse throws error go to binary file handling.
+          JSON.parse(result);
+          await handleJSONFile(result);
+        }
+      } catch (error) {
+        binaryReader.onload = async () => {
+          const result = binaryReader.result as string;
+          await handleBinaryFile(result);
+        };
+        binaryReader.readAsArrayBuffer(localFileValue);
+      }
+    };
+    textReader.readAsText(localFileValue);
+  } else
+    throw new Error('Provide transaction in choosen format');
+};
+
 const submitTransaction = async () => {
   store.$state.isLoading = false;
   store.$state.processingTime = 0;
@@ -133,109 +254,27 @@ const submitTransaction = async () => {
     store.$state.isLoading = true;
     start = Date.now();
 
-    if (radioState.value === 'hash') {
-      if (hash.value) {
-        store.$state.qs.set('transaction', hash.value);
-        await store.handleTransactionFromHash($txInspector, $formatter, hash.value);
-      }
-    } else if (radioState.value === 'json') {
-      if (trx.value) {
-        if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(trx.value))}`.length < MAX_URL_LENGTH)
-          store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(trx.value)));
-        else {
-          store.$state.qs.delete('transaction');
-          toast.info('Info', {
-            description: 'Transaction is too long to be stored in URL'
-          });
-        }
-
-        await store.handleTransactionFromJson($txInspector, $formatter, trx.value);
-      }
-    } else if (radioState.value === 'binary') {
-      if (binary.value) {
-        if (`${location.origin}/?transaction=${binary.value}`.length < MAX_URL_LENGTH)
-          store.$state.qs.set('transaction', binary.value);
-        else {
-          store.$state.qs.delete('transaction');
-          toast.info('Info', {
-            description: 'Transaction is too long to be stored in URL'
-          });
-        }
-
-        await store.handleTransactionFromBinary($txInspector, $formatter, binary.value);
-      }
-    } else if (radioState.value === 'file') {
-      if (file.value) {
-        const reader = new FileReader();
-
-        reader.onload = async () => {
-          try {
-            store.$state.isLoading = true;
-            const result = reader.result as string;
-            if (result)
-              try {
-                JSON.parse(result);
-
-                if (`${location.origin}/?transaction=${compressToEncodedURIComponent(encodeURIComponent(result))}`.length < MAX_URL_LENGTH)
-                  store.$state.qs.set('transaction', compressToEncodedURIComponent(encodeURIComponent(result)));
-                else {
-                  store.$state.qs.delete('transaction');
-                  toast.info('Info', {
-                    description: 'Transaction is too long to be stored in URL'
-                  });
-                }
-
-                await store.handleTransactionFromJson($txInspector, $formatter, result);
-              } catch {
-                try {
-                  if (`${location.origin}/?transaction=${result}`.length < MAX_URL_LENGTH)
-                    store.$state.qs.set('transaction', result.trim());
-                  else {
-                    store.$state.qs.delete('transaction');
-                    toast.info('Info', {
-                      description: 'Transaction is too long to be stored in URL'
-                    });
-                  }
-
-                  await store.handleTransactionFromBinary($txInspector, $formatter, result.trim());
-                } catch {
-                  const binary = $buffer.from(result, 'binary').toString('hex');
-
-                  if (`${location.origin}/?transaction=${binary}`.length < MAX_URL_LENGTH)
-                    store.$state.qs.set('transaction', binary);
-                  else {
-                    store.$state.qs.delete('transaction');
-                    toast.info('Info', {
-                      description: 'Transaction is too long to be stored in URL'
-                    });
-                  }
-
-                  await store.handleTransactionFromBinary($txInspector, $formatter, binary);
-                }
-              }
-          } catch (error) {
-            toast.error('Error', {
-              description: error instanceof Error ? error.message : 'Unknown error occured'
-            });
-          } finally {
-            store.$state.isLoading = false;
-            end = Date.now();
-          }
-
-          window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
-        };
-        reader.readAsText(file.value);
-      }
-    } else
-      throw new Error('Provide transaction in choosen format');
-
-    window.history.replaceState({}, '', `${location.pathname}?${store.qs.toString()}`);
+    switch (radioState.value) {
+      case 'hash':
+        await handleTransactionFromHash();
+        break;
+      case 'json':
+        await handleTransactionFromJson();
+        break;
+      case 'binary':
+        await handleTransactionFromBinary();
+        break;
+      case 'file':
+        readFromFile();
+        break;
+      default:
+        throw new Error('Provide transaction in choosen format');
+    }
   } catch (error) {
     toast.error('Error', {
       description: error instanceof Error ? error.message : 'Unknown error occured'
     });
   } finally {
-    store.$state.isLoading = false;
     end = Date.now();
 
     processingTime = Number(((end - start) / 1000).toFixed(2));
