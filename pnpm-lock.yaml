@@ -7,27 +7,27 @@ settings:
 catalogs:
   husky:
     husky:
-      specifier: 8.0.3
+      specifier: 9.1.5
       version: 8.0.3
   playwright-toolset:
     '@playwright/test':
-      specifier: ^1.50.1
+      specifier: 1.50.1
       version: 1.50.1
     http-server:
-      specifier: ^14.1.1
+      specifier: 14.1.1
       version: 14.1.1
     playwright:
-      specifier: ^1.50.1
+      specifier: 1.50.1
       version: 1.50.1
   rollup-toolset:
     '@rollup/plugin-commonjs':
-      specifier: ^27.0.0
+      specifier: 27.0.0
       version: 27.0.0
     '@rollup/plugin-node-resolve':
-      specifier: ^15.3.1
+      specifier: 15.3.1
       version: 15.3.1
     '@rollup/plugin-replace':
-      specifier: ^6.0.2
+      specifier: 6.0.2
       version: 6.0.2
     rollup:
       specifier: 4.24.0
@@ -74,6 +74,9 @@ importers:
       cytoscape:
         specifier: ^3.31.0
         version: 3.31.0
+      lucide-vue-next:
+        specifier: ^0.483.0
+        version: 0.483.0(vue@3.5.12(typescript@5.7.3))
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
@@ -96,7 +99,7 @@ importers:
         specifier: ^0.10.4
         version: 0.10.4(magicast@0.3.5)(rollup@4.24.0)
       tailwind-merge:
-        specifier: ^2.3.0
+        specifier: ^2.5.2
         version: 2.5.2
       tailwindcss-animate:
         specifier: ^1.0.7
@@ -3528,6 +3531,11 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide-vue-next@0.483.0:
+    resolution: {integrity: sha512-oMX1hfH7hOAdwaJdddYTSN0Z+WomndF3KXryCP/I6iu+4jZL6a4YyYi1J23EzP3/wOWCaj9mDuVhxgK+xqX8vQ==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -9261,6 +9269,10 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-vue-next@0.483.0(vue@3.5.12(typescript@5.7.3)):
+    dependencies:
+      vue: 3.5.12(typescript@5.7.3)
 
   lz-string@1.5.0: {}
 

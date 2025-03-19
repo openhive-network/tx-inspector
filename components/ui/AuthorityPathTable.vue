@@ -148,46 +148,64 @@
               v-else
               class="w-1/2 min-w-[300px]"
             >
-              <Tooltip error>
-                <template #activator>
-                  <span
-                    class="flex items-center text-red font-semibold cursor-pointer"
-                    style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 40px; margin: 0 52px;"
-                  >
-                    <div class="flex items-center justify-center mx-auto">
-                      <span class="mr-3">
-                        {{ item.graphData.message }}
-                      </span>
-                      <v-icon>mdi-information-slab-circle</v-icon>
+              <div class="flex justify-between">
+                <Tooltip error>
+                  <template #activator>
+                    <span
+                      class="flex items-center text-red font-semibold cursor-pointer w-[135%]"
+                      style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 40px; margin: 0 52px;"
+                    >
+                      <div class="flex items-center justify-center mx-auto">
+                        <span class="mr-3">
+                          {{ item.graphData.message }}
+                        </span>
+                        <v-icon>mdi-information-slab-circle</v-icon>
+                      </div>
+                    </span>
+                  </template>
+                  <template #content>
+                    <div class="flex flex-col">
+                      <span class="text-lg font-semibold">Likely reasons:</span>
+                      <hr class="my-2">
+                      <ul>
+                        <li
+                          v-for="(reason, key) in item.graphData.reasons"
+                          v-if="item.graphData.reasons.length > 0"
+                          :key="key"
+                          class="flex items-center font-semibold mb-2"
+                        >
+                          <v-icon class="mr-3">
+                            mdi-alert-circle
+                          </v-icon>
+                          {{ reason }}
+                        </li>
+                        <li v-else class="flex items-center font-semibold mb-2">
+                          <v-icon class="mr-3">
+                            mdi-alert-circle
+                          </v-icon>
+                          Unknown reason occured
+                        </li>
+                      </ul>
                     </div>
-                  </span>
-                </template>
-                <template #content>
-                  <div class="flex flex-col">
-                    <span class="text-lg font-semibold">Likely reasons:</span>
-                    <hr class="my-2">
-                    <ul>
-                      <li
-                        v-for="(reason, key) in item.graphData.reasons"
-                        v-if="item.graphData.reasons.length > 0"
-                        :key="key"
-                        class="flex items-center font-semibold mb-2"
-                      >
-                        <v-icon class="mr-3">
-                          mdi-alert-circle
-                        </v-icon>
-                        {{ reason }}
-                      </li>
-                      <li v-else class="flex items-center font-semibold mb-2">
-                        <v-icon class="mr-3">
-                          mdi-alert-circle
-                        </v-icon>
-                        Unknown reason occured
-                      </li>
-                    </ul>
-                  </div>
-                </template>
-              </Tooltip>
+                  </template>
+                </Tooltip>
+                <s-select>
+                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                    <s-select-value placeholder="Select path" />
+                  </s-select-trigger>
+                  <s-select-content class="bg-[#000] text-[#fff]">
+                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                      <s-select-label>Path index</s-select-label>
+                      <s-select-item value="1">
+                        1
+                      </s-select-item>
+                      <s-select-item value="2">
+                        2
+                      </s-select-item>
+                    </s-select-group>
+                  </s-select-content>
+                </s-select>
+              </div>
             </s-table-cell>
           </template>
         </s-table-row>
