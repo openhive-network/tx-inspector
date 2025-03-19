@@ -19,77 +19,73 @@
         </div>
         <div class="flex items-center space-x-2">
           <s-radio-group-item id="binary-body" value="binary" />
-          <s-tooltip-provider :delayDuration="350">
-            <s-tooltip>
-              <s-tooltip-trigger as-child>
-                <s-label for="binary-body" class="inline-flex items-center">
-                  <span>Binary</span>
-                  <v-icon size="small" class="ml-2">
-                    mdi-information-slab-circle-outline
-                  </v-icon>
-                </s-label>
-              </s-tooltip-trigger>
-              <s-tooltip-content>
-                <div class="flex flex-col">
-                  <span class="text-lg">Binary format</span>
-                  <hr class="my-2">
-                  <span class="leading-6">
-                    <b>The binary view displays transaction in hexadecimal format. You can:</b>
-                    <ul class="mt-2">
-                      <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
-                      <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
-                    </ul><br>
-                    <b>Some transactions (containing assets) are serialization sensitive:</b>
-                    <ul class="mt-2">
-                      <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
-                      <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                      <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
-                        <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
-                      </li>
-                      <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
-                    </ul>
-                  </span>
-                </div>
-              </s-tooltip-content>
-            </s-tooltip>
-          </s-tooltip-provider>
+          <Tooltip>
+            <template #activator>
+              <s-label for="binary-body" class="inline-flex items-center">
+                <span>Binary</span>
+                <v-icon size="small" class="ml-2">
+                  mdi-information-slab-circle-outline
+                </v-icon>
+              </s-label>
+            </template>
+            <template #content>
+              <div class="flex flex-col">
+                <span class="text-lg">Binary format</span>
+                <hr class="my-2">
+                <span class="leading-6">
+                  <b>The binary view displays transaction in hexadecimal format. You can:</b>
+                  <ul class="mt-2">
+                    <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
+                    <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
+                  </ul><br>
+                  <b>Some transactions (containing assets) are serialization sensitive:</b>
+                  <ul class="mt-2">
+                    <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
+                    <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
+                    <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
+                      <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
+                    </li>
+                    <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
+                  </ul>
+                </span>
+              </div>
+            </template>
+          </Tooltip>
         </div>
         <div class="flex items-center space-x-2">
           <s-radio-group-item id="operation-binary" value="operation-binary" />
-          <s-tooltip-provider :delayDuration="350">
-            <s-tooltip>
-              <s-tooltip-trigger as-child>
-                <s-label for="operation-binary" class="inline-flex items-center">
-                  <span>Operation Binary</span>
-                  <v-icon size="small" class="ml-2">
-                    mdi-information-slab-circle-outline
-                  </v-icon>
-                </s-label>
-              </s-tooltip-trigger>
-              <s-tooltip-content>
-                <div class="flex flex-col">
-                  <span class="text-lg">Operation binary format</span>
-                  <hr class="my-2">
-                  <span class="leading-6">
-                    <b>The operation binary view displays operations in hexadecimal format. You can:</b>
-                    <ul class="mt-2">
-                      <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
-                      <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
-                    </ul><br>
-                    <b>Some operations (containing assets) are serialization sensitive:</b>
-                    <ul class="mt-2">
-                      <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
-                      <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                      <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
-                        <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
-                      </li>
-                      <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
-                    </ul>
-                  </span>
-                </div>
-              </s-tooltip-content>
-            </s-tooltip>
-          </s-tooltip-provider>
+          <Tooltip>
+            <template #activator>
+              <s-label for="operation-binary" class="inline-flex items-center">
+                <span>Operation Binary</span>
+                <v-icon size="small" class="ml-2">
+                  mdi-information-slab-circle-outline
+                </v-icon>
+              </s-label>
+            </template>
+            <template #content>
+              <div class="flex flex-col">
+                <span class="text-lg">Operation binary format</span>
+                <hr class="my-2">
+                <span class="leading-6">
+                  <b>The operation binary view displays operations in hexadecimal format. You can:</b>
+                  <ul class="mt-2">
+                    <li> <v-icon>mdi-hand-pointing-right</v-icon> Select and copy a specific hex or binary (ANSI) values.</li>
+                    <li class="mt-1"> <v-icon>mdi-hand-pointing-right</v-icon> Hover over hex ranges to highlight its representation within JSON structure for easier and faster analysis.</li>
+                  </ul><br>
+                  <b>Some operations (containing assets) are serialization sensitive:</b>
+                  <ul class="mt-2">
+                    <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
+                    <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
+                    <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
+                      <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
+                    </li>
+                    <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
+                  </ul>
+                </span>
+              </div>
+            </template>
+          </Tooltip>
         </div>
       </s-radio-group>
       <s-radio-group v-if="radioState === 'binary' || radioState === 'operation-binary'" v-model="binaryRadioState" class="ml-4 pl-4 flex gap-6 border-l-2">
@@ -190,26 +186,24 @@
               <v-icon v-else-if="item.isSatisfied[index] === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
-              <s-tooltip-provider v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
-                <s-tooltip>
-                  <s-tooltip-trigger as-child>
-                    <v-icon color="yellow">
-                      mdi-alert-circle-check-outline
-                    </v-icon>
-                  </s-tooltip-trigger>
-                  <s-tooltip-content>
-                    <div class="flex flex-col">
-                      <span class="text-lg">Blockchain Forced True</span>
-                      <hr class="my-2">
-                      <span class="leading-6">
-                        The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
-                        Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
-                        This can happen when accout's authority has been changed after the transaction was signed.
-                      </span>
-                    </div>
-                  </s-tooltip-content>
-                </s-tooltip>
-              </s-tooltip-provider>
+              <Tooltip v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE">
+                <template #activator>
+                  <v-icon color="yellow">
+                    mdi-alert-circle-check-outline
+                  </v-icon>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Blockchain Forced True</span>
+                    <hr class="my-2">
+                    <span class="leading-6">
+                      The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
+                      Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
+                      This can happen when accout's authority has been changed after the transaction was signed.
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
             </s-table-cell>
             <s-table-cell>
               <span>{{ item.operationType }}</span>
@@ -249,26 +243,24 @@
               <v-icon v-else-if="item.isSatisfied[index] === ESatisfiedState.FALSE" color="red">
                 mdi-close
               </v-icon>
-              <s-tooltip-provider v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
-                <s-tooltip>
-                  <s-tooltip-trigger as-child>
-                    <v-icon color="yellow">
-                      mdi-alert-circle-check-outline
-                    </v-icon>
-                  </s-tooltip-trigger>
-                  <s-tooltip-content>
-                    <div class="flex flex-col">
-                      <span class="text-lg">Blockchain Forced True</span>
-                      <hr class="my-2">
-                      <span class="leading-6">
-                        The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
-                        Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
-                        This can happen when accout's authority has been changed after the transaction was signed.
-                      </span>
-                    </div>
-                  </s-tooltip-content>
-                </s-tooltip>
-              </s-tooltip-provider>
+              <Tooltip v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE">
+                <template #activator>
+                  <v-icon color="yellow">
+                    mdi-alert-circle-check-outline
+                  </v-icon>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Blockchain Forced True</span>
+                    <hr class="my-2">
+                    <span class="leading-6">
+                      The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
+                      Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
+                      This can happen when accout's authority has been changed after the transaction was signed.
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
             </s-table-cell>
             <s-table-cell>
               <span>{{ item.operationType }}</span>
@@ -299,6 +291,7 @@ import { toast } from 'vue-sonner';
 import { useDisplay } from 'vuetify';
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
+import Tooltip from './Tooltip.vue';
 import { EPackType, ESatisfiedState } from '~/types/wax';
 
 const { mobile } = useDisplay();

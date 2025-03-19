@@ -24,49 +24,45 @@
               v-if="Array.isArray(item.matchingSignature)"
               :key="key"
             >
-              <s-tooltip-provider :delayDuration="350">
-                <s-tooltip>
-                  <CopyWrapper :toCopy="sig">
-                    <s-tooltip-trigger as-child>
-                      <span>
-                        {{ waxStore.shortenString(sig) }}
-                      </span>
-                    </s-tooltip-trigger>
-                  </CopyWrapper>
-                  <s-tooltip-content>
+              <CopyWrapper :toCopy="sig">
+                <Tooltip :disabled="sig.length < 30">
+                  <template #activator>
+                    <span>
+                      {{ waxStore.shortenString(sig) }}
+                    </span>
+                  </template>
+                  <template #content>
                     <div class="flex flex-col">
                       <span class="text-lg">Signature:</span>
                       <hr class="my-2">
                       <span>{{ sig }}</span>
                     </div>
-                  </s-tooltip-content>
-                </s-tooltip>
-              </s-tooltip-provider>
+                  </template>
+                </Tooltip>
+              </CopyWrapper>
             </span>
             <span v-else>
-              <s-tooltip-provider :disabled="item.matchingSignature.length < 30" :delayDuration="350">
-                <s-tooltip>
-                  <CopyWrapper :toCopy="item.matchingSignature">
-                    <s-tooltip-trigger as-child>
-                      <span
-                        :class="{
-                          'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
-                          'text-yellow': item.matchingSignature === 'Open authority',
-                        }"
-                      >
-                        {{ waxStore.shortenString(item.matchingSignature) }}
-                      </span>
-                    </s-tooltip-trigger>
-                  </CopyWrapper>
-                  <s-tooltip-content>
+              <CopyWrapper :toCopy="item.matchingSignature">
+                <Tooltip :disabled="item.matchingSignature.length < 30">
+                  <template #activator>
+                    <span
+                      :class="{
+                        'text-red font-bold': item.matchingSignature === 'Missing signature' || item.matchingSignature === 'None',
+                        'text-yellow': item.matchingSignature === 'Open authority',
+                      }"
+                    >
+                      {{ waxStore.shortenString(item.matchingSignature) }}
+                    </span>
+                  </template>
+                  <template #content>
                     <div class="flex flex-col">
                       <span class="text-lg">Signature:</span>
                       <hr class="my-2">
                       <span>{{ item.matchingSignature }}</span>
                     </div>
-                  </s-tooltip-content>
-                </s-tooltip>
-              </s-tooltip-provider>
+                  </template>
+                </Tooltip>
+              </CopyWrapper>
             </span>
           </s-table-cell>
           <s-table-cell>
@@ -99,26 +95,24 @@
             <v-icon v-else-if="item.isSatisfied[index] === ESatisfiedState.FALSE" color="red">
               mdi-close
             </v-icon>
-            <s-tooltip-provider v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE" :delayDuration="350">
-              <s-tooltip>
-                <s-tooltip-trigger as-child>
-                  <v-icon color="yellow">
-                    mdi-alert-circle-check-outline
-                  </v-icon>
-                </s-tooltip-trigger>
-                <s-tooltip-content>
-                  <div class="flex flex-col">
-                    <span class="text-lg">Blockchain Forced True</span>
-                    <hr class="my-2">
-                    <span class="leading-6">
-                      The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
-                      Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
-                      This can happen when accout's authority has been changed after the transaction was signed.
-                    </span>
-                  </div>
-                </s-tooltip-content>
-              </s-tooltip>
-            </s-tooltip-provider>
+            <Tooltip v-else-if="item.isSatisfied[index] === ESatisfiedState.BLOCKCHAIN_FORCED_TRUE">
+              <template #activator>
+                <v-icon color="yellow">
+                  mdi-alert-circle-check-outline
+                </v-icon>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Blockchain Forced True</span>
+                  <hr class="my-2">
+                  <span class="leading-6">
+                    The application cannot deduce the satisfied state correctly due to a missing signature of the required authority. <br>
+                    Anyway we assume that the required authority is satisfied because the transaction originates from the chain and processed entry matches the required authority. <br>
+                    This can happen when accout's authority has been changed after the transaction was signed.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
           </s-table-cell>
         </s-table-row>
       </s-table-body>
@@ -129,6 +123,7 @@
 <script lang="ts" setup>
 import Subtitle from './Subtitle.vue';
 import CopyWrapper from './CopyWrapper.vue';
+import Tooltip from './Tooltip.vue';
 import { ESatisfiedState } from '~/types/wax';
 
 const waxStore = useWaxStore();
