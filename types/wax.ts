@@ -91,9 +91,15 @@ export interface ISignatureData {
   publicKey: string;
 }
 
+export interface IAuthorityRootEntriesGraphData {
+  data: IAuthorityGraphData[];
+  level: string;
+}
+
 export interface ISignatureTraceData {
   rows: ISignatureData[];
   graphData: IAuthorityGraphFullCollectedData | IAuthorityGraphErrorCollectedData;
+  rootEntriesGraphData: IAuthorityRootEntriesGraphData[];
 }
 
 export interface ITransactionData {

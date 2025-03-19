@@ -145,15 +145,15 @@
               />
             </s-table-cell>
             <s-table-cell
-              v-else
+              v-else-if="'message' in item.graphData && selectIndex === null"
               class="w-1/2 min-w-[300px]"
             >
               <div class="flex justify-between">
                 <Tooltip error>
                   <template #activator>
                     <span
-                      class="flex items-center text-red font-semibold cursor-pointer w-[135%]"
-                      style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 40px; margin: 0 52px;"
+                      class="flex items-center text-red font-semibold cursor-pointer w-[500px]"
+                      style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 27px; margin: 0 52px;"
                     >
                       <div class="flex items-center justify-center mx-auto">
                         <span class="mr-3">
@@ -189,18 +189,46 @@
                     </div>
                   </template>
                 </Tooltip>
-                <s-select>
+                <s-select v-model="selectIndex" @update:model-value="console.log(selectIndex);">
                   <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
                     <s-select-value placeholder="Select path" />
                   </s-select-trigger>
                   <s-select-content class="bg-[#000] text-[#fff]">
                     <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
                       <s-select-label>Path index</s-select-label>
-                      <s-select-item value="1">
-                        1
+                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
+                        {{ key + 1 }}
                       </s-select-item>
-                      <s-select-item value="2">
-                        2
+                    </s-select-group>
+                  </s-select-content>
+                </s-select>
+              </div>
+            </s-table-cell>
+            <s-table-cell
+              v-else
+              class="w-1/2 min-w-[300px]"
+            >
+              <div class="flex justify-between">
+                <AuthorityTraceGraph
+                  :key="selectIndex!"
+                  :graphData="item.rootEntriesGraphData[selectIndex!].data"
+                  :uniqueId="index"
+                  :color="item.rootEntriesGraphData[selectIndex!].level"
+                  class="w-[500px]"
+                  style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 52px;"
+                />
+                <s-select v-model="selectIndex" @update:model-value="console.log(selectIndex);">
+                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                    <s-select-value placeholder="Select path" />
+                  </s-select-trigger>
+                  <s-select-content class="bg-[#000] text-[#fff]">
+                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                      <s-select-label>Path index</s-select-label>
+                      <s-select-item :value="null">
+                        Error info
+                      </s-select-item>
+                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
+                        {{ key + 1 }}
                       </s-select-item>
                     </s-select-group>
                   </s-select-content>
@@ -223,6 +251,8 @@ import { EPackType } from '~/types/wax';
 
 const waxStore = useWaxStore();
 const store = storeToRefs(waxStore);
+
+const selectIndex = ref<number | null>(null);
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, isPublicKey, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
-import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type ISignatureTraceData } from '../types/wax';
+import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type ISignatureTraceData, type IAuthorityRootEntriesGraphData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
   private readonly chain: TWaxExtended<TChainExtendedApiData>;
@@ -92,6 +92,7 @@ export class TransactionAnalyzer {
     const packType = await this.getPackType(requiredAuthorities, id);
     const authorityTrace = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
     const graphData = this.generateGraphData(authorityTrace, signatures);
+    const rootEntriesGraphData = this.generateGraphDataForRootEntries(authorityTrace);
 
     const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
     const transactionId = this.getTransactionId(Array.isArray(packType) ? packType[0] : packType);
@@ -139,7 +140,8 @@ export class TransactionAnalyzer {
 
       signatureData.push({
         rows,
-        graphData: entry
+        graphData: entry,
+        rootEntriesGraphData
       });
     });
 
@@ -184,7 +186,8 @@ export class TransactionAnalyzer {
           graphData: {
             message: 'Authority failure!',
             reasons
-          }
+          },
+          rootEntriesGraphData
         });
       });
     }
@@ -584,6 +587,16 @@ export class TransactionAnalyzer {
       fullCollectedData.push({ data: this.convertEntryTraceData(entry.finalAuthorityPath), level: entry.finalAuthorityPath.processedRole, matchingSignatures: entry.matchingSignatures });
 
     return fullCollectedData;
+  }
+
+  private generateGraphDataForRootEntries (authorityTrace: IVerifyAuthorityTrace): IAuthorityRootEntriesGraphData[] {
+    const graphData: IAuthorityRootEntriesGraphData[] = [];
+
+    authorityTrace.rootEntries.forEach((entry) => {
+      graphData.push({ data: this.convertEntryTraceData(entry), level: entry.processedRole });
+    });
+
+    return graphData;
   }
 
   private async isSatisfied (requiredAuthorities: ITransactionRequiredAuthorities, authorityTrace: IVerifyAuthorityTrace): Promise<ESatisfiedState[]> {
