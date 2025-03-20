@@ -11,8 +11,62 @@
       <s-table-header>
         <s-table-row>
           <s-table-head>Signature</s-table-head>
-          <s-table-head>Pack</s-table-head>
-          <s-table-head>Public key</s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  Pack
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Pack type</span>
+                  <hr class="my-2">
+                  <span>
+                    The pack type determines how the transaction has been serialized. <br>
+                    There are allowed two serialization forms:
+                    <ul class="my-2">
+                      <li><v-icon>mdi-hand-pointing-right</v-icon> Legacy (where assets have been serialized, using their token textual names i.e. "1.000000 VESTS")</li>
+                      <li><v-icon>mdi-hand-pointing-right</v-icon> HF26 (where assets have been serialized, using NAI form i.e. <code>{"amount":"1000000","precision":6,"nai":"@@000000037"}</code>)</li>
+                    </ul>
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  Public key
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Public key</span>
+                  <hr class="my-2">
+                  <span>
+                    The public key, calculated from the signature. <br>
+                    This key was used to sign the transaction.
+                    There are 3 types of public keys that can be used to sign a transaction:
+                    <ul class="my-2">
+                      <li class="text-posting"><v-icon>mdi-hand-pointing-right</v-icon> Posting</li>
+                      <li class="text-active"><v-icon>mdi-hand-pointing-right</v-icon> Active</li>
+                      <li class="text-owner"><v-icon>mdi-hand-pointing-right</v-icon> Owner</li>
+                    </ul>
+                    The signer does not have to be the same as the required authority. <br>
+                    Required authority account can delegate the signing to another account, what is presented in authority path cell.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
           <s-table-head>
             <Tooltip>
               <template #activator>
