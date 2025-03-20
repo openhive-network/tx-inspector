@@ -149,11 +149,123 @@
       <s-table v-if="radioState !== 'binary' && radioState !== 'operation-binary'">
         <s-table-header>
           <s-table-row>
-            <s-table-head>Authority account</s-table-head>
-            <s-table-head>Authority type</s-table-head>
-            <s-table-head>Satisfied</s-table-head>
-            <s-table-head>Operation type</s-table-head>
-            <s-table-head>Operation content</s-table-head>
+            <s-table-head>
+              <Tooltip>
+                <template #activator>
+                  <span class="flex items-center">
+                    Authority account
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Authority account</span>
+                    <hr class="my-2">
+                    <span>
+                      Authority account is an account whose authority is required for this operation. <br>
+                      It is determined based on the operation type and content. <br>
+                      For example if it is a vote operation, the authority account is the account that voted. <br>
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
+            </s-table-head>
+            <s-table-head>
+              <Tooltip>
+                <template #activator>
+                  <span class="flex items-center">
+                    Authority type
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Authority type</span>
+                    <hr class="my-2">
+                    <span>
+                      Authority type is one of three types: <span class="text-posting">Posting</span>, <span class="text-active">Active</span>, <span class="text-owner">Owner</span>. <br>
+                      It means that the public key that was used to sign the transaction has to be at least at this authority level to satisfy the operation required authority. <br>
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
+            </s-table-head>
+            <s-table-head>
+              <Tooltip>
+                <template #activator>
+                  <span class="flex items-center">
+                    Satisfied
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Satisfied state</span>
+                    <hr class="my-2">
+                    <span>
+                      The Satisfied property indicates whether the operation required authority is covered by the transaction signatures (excluding open authority case). <br>
+                      It also verifies that the authority weight meets or exceeds the required threshold.
+                      <b class="mt-2">Satisfied property is one of three possible values:</b>
+                      <ul class="my-2">
+                        <li class="text-green"><v-icon>mdi-check</v-icon> True</li>
+                        <li class="text-red"><v-icon>mdi-close</v-icon> False</li>
+                        <li class="text-yellow"><v-icon>mdi-alert-circle-check-outline</v-icon> Blockchain forced true</li>
+                      </ul>
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
+            </s-table-head>
+            <s-table-head>
+              <Tooltip>
+                <template #activator>
+                  <span class="flex items-center">
+                    Operation type
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Operation type</span>
+                    <hr class="my-2">
+                    <span>
+                      The type of operation, such as a vote_operation.
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
+            </s-table-head>
+            <s-table-head>
+              <Tooltip>
+                <template #activator>
+                  <span class="flex items-center">
+                    Operation content
+                    <v-icon size="small" class="ml-2">
+                      mdi-information-slab-circle-outline
+                    </v-icon>
+                  </span>
+                </template>
+                <template #content>
+                  <div class="flex flex-col">
+                    <span class="text-lg">Operation content</span>
+                    <hr class="my-2">
+                    <span>
+                      This filed contains the content of the operation in a chosen format, allowing for customizable representation of the operation details. <br>
+                      The transaction content can be displayed in a <b>Formatted</b> or <b>JSON</b> format. <br>
+                      Formatted content is a easy, human-readable text representation of the operation, while JSON is a raw operation content.
+                    </span>
+                  </div>
+                </template>
+              </Tooltip>
+            </s-table-head>
           </s-table-row>
         </s-table-header>
         <s-table-body v-show="radioState === 'formatted'">
