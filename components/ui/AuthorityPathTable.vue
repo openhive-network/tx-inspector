@@ -10,7 +10,27 @@
     <s-table v-else>
       <s-table-header>
         <s-table-row>
-          <s-table-head>Signature</s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  Signature
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Signature</span>
+                  <hr class="my-2">
+                  <span>
+                    The signature in hex string format generated from the public key used to sign the transaction.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
           <s-table-head>
             <Tooltip>
               <template #activator>
