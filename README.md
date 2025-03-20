@@ -100,6 +100,22 @@ Below is information about the individual fields in the tables. It explains what
     <td>No authority path</td>
     <td>Authority path can be not determined, when public key calculated from signature is invalid or does not match to any blockchain account. There can be no matching account for given public key because the account authority was changed over time and this key is not referenced anymore. That can happen for old valid blockchain transactions specific to accounts which changed their authority.</td>
   </tr>
+  <tr>
+    <td rowspan="2">Evaluated path</td>
+    <td rowspan="2">
+      Evaluated path is an select input in which you can choose the another path that should be displayed in authority path field.
+    </td>
+    <td>Effective path and other paths indexes</td>
+    <td>
+      In this case one of the paths has been choosen by the blockchain as the most effective, successfull path. Other paths are less effective or unsuccessfull.
+    </td>
+  </tr>
+  <tr>
+    <td>Error info and paths indexes</td>
+    <td>
+      In this case none of the paths was successfull. You can all paths and verify the error reason or check what authority changes are required to satisfy transaction's required authority.
+    </td>
+  </tr>
 </table>
 
 ### Transaction Section
