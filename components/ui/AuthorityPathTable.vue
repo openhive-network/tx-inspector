@@ -58,6 +58,11 @@
                         <span class="text-owner">Owner</span>.
                       </li>
                     </ul>
+                    <p class="mt-2">
+                      You can also analyze other authority paths (unsuccessfull) by selecting the index from provided select input. <br>
+                      In case of an error, this allows you to see the reason why the path was not successfull and what authority changes could be made to make it successfull. <br>
+                      In case when one of the paths is successfull, you can analyze other paths to see what changes could be made to for example shorten the path.
+                    </p>
                   </span>
                 </div>
               </template>
