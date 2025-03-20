@@ -132,11 +132,29 @@
                         <span class="text-owner">Owner</span>.
                       </li>
                     </ul>
-                    <p class="mt-2">
-                      You can also analyze other authority paths (unsuccessfull) by selecting the index from provided select input. <br>
-                      In case of an error, this allows you to see the reason why the path was not successfull and what authority changes could be made to make it successfull. <br>
-                      In case when one of the paths is successfull, you can analyze other paths to see what changes could be made to for example shorten the path.
-                    </p>
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
+          <s-table-head class="w-[150px]">
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center justify-center">
+                  Evaluated path
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Evaluated Path</span>
+                  <hr class="my-2">
+                  <span class="leading-6">
+                    You can analyze other authority paths (unsuccessfull) by selecting the index from provided select input. <br>
+                    In case of an error, this allows you to see the reason why the path was not successfull and what authority changes could be made to make it successfull. <br>
+                    In case when one of the paths is successfull, you can analyze other paths to see what changes could be made to for example shorten the path.
                   </span>
                 </div>
               </template>
@@ -216,7 +234,7 @@
               v-if="'data' in item.graphData && selectIndex === null"
               class="w-1/2 min-w-[300px]"
             >
-              <div class="flex justify-between">
+              <div class="flex justify-end">
                 <AuthorityTraceGraph
                   :graphData="item.graphData.data"
                   :uniqueId="index"
@@ -224,23 +242,10 @@
                   class="w-[500px]"
                   style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
-                <s-select v-model="selectIndex">
-                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                    <s-select-value placeholder="Select path" />
-                  </s-select-trigger>
-                  <s-select-content class="bg-[#000] text-[#fff]">
-                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                      <s-select-label>Path index</s-select-label>
-                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
-                        {{ key + 1 }}
-                      </s-select-item>
-                    </s-select-group>
-                  </s-select-content>
-                </s-select>
               </div>
             </s-table-cell>
             <s-table-cell v-else-if="'data' in item.graphData && selectIndex !== null" class="w-1/2 min-w-[300px]">
-              <div class="flex justify-between">
+              <div class="flex justify-end">
                 <AuthorityTraceGraph
                   :key="selectIndex"
                   :graphData="item.rootEntriesGraphData[selectIndex].data"
@@ -249,29 +254,13 @@
                   class="w-[500px]"
                   style="border: 1.75px solid rgba(245, 40, 40, 0.5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
-                <s-select v-model="selectIndex">
-                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                    <s-select-value placeholder="Select path" />
-                  </s-select-trigger>
-                  <s-select-content class="bg-[#000] text-[#fff]">
-                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                      <s-select-label>Path index</s-select-label>
-                      <s-select-item :value="null">
-                        Successfull path
-                      </s-select-item>
-                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
-                        {{ key + 1 }}
-                      </s-select-item>
-                    </s-select-group>
-                  </s-select-content>
-                </s-select>
               </div>
             </s-table-cell>
             <s-table-cell
               v-else-if="'message' in item.graphData && selectIndex === null"
               class="w-1/2 min-w-[300px]"
             >
-              <div class="flex justify-between">
+              <div class="flex justify-end">
                 <Tooltip error>
                   <template #activator>
                     <span
@@ -312,26 +301,13 @@
                     </div>
                   </template>
                 </Tooltip>
-                <s-select v-model="selectIndex">
-                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                    <s-select-value placeholder="Select path" />
-                  </s-select-trigger>
-                  <s-select-content class="bg-[#000] text-[#fff]">
-                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                      <s-select-label>Path index</s-select-label>
-                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
-                        {{ key + 1 }}
-                      </s-select-item>
-                    </s-select-group>
-                  </s-select-content>
-                </s-select>
               </div>
             </s-table-cell>
             <s-table-cell
               v-else
               class="w-1/2 min-w-[300px]"
             >
-              <div class="flex justify-between">
+              <div class="flex justify-end">
                 <AuthorityTraceGraph
                   :key="selectIndex!"
                   :graphData="item.rootEntriesGraphData[selectIndex!].data"
@@ -340,25 +316,30 @@
                   class="w-[500px]"
                   style="border: 1.75px solid rgba(245, 40, 40, 0.5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
-                <s-select v-model="selectIndex">
-                  <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                    <s-select-value placeholder="Select path" />
-                  </s-select-trigger>
-                  <s-select-content class="bg-[#000] text-[#fff]">
-                    <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
-                      <s-select-label>Path index</s-select-label>
-                      <s-select-item :value="null">
-                        Error info
-                      </s-select-item>
-                      <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
-                        {{ key + 1 }}
-                      </s-select-item>
-                    </s-select-group>
-                  </s-select-content>
-                </s-select>
               </div>
             </s-table-cell>
           </template>
+          <s-table-cell>
+            <s-select v-model="selectIndex">
+              <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                <s-select-value placeholder="Select path" />
+              </s-select-trigger>
+              <s-select-content class="bg-[#000] text-[#fff]">
+                <s-select-group style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
+                  <s-select-label>Path index</s-select-label>
+                  <s-select-item v-if="'message' in item.graphData" :value="null">
+                    Error info
+                  </s-select-item>
+                  <s-select-item v-if="'data' in item.graphData" :value="null">
+                    Effective path
+                  </s-select-item>
+                  <s-select-item v-for="(_data, key) in item.rootEntriesGraphData" :key="key" :value="key">
+                    {{ key + 1 }}
+                  </s-select-item>
+                </s-select-group>
+              </s-select-content>
+            </s-select>
+          </s-table-cell>
         </s-table-row>
       </s-table-body>
     </s-table>
