@@ -143,7 +143,7 @@
                   :uniqueId="index"
                   :color="item.graphData.level"
                   class="w-[500px]"
-                  style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 52px;"
+                  style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
                 <s-select v-model="selectIndex">
                   <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
@@ -168,7 +168,7 @@
                   :uniqueId="index"
                   :color="item.rootEntriesGraphData[selectIndex].level"
                   class="w-[500px]"
-                  style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 52px;"
+                  style="border: 1.75px solid rgba(245, 40, 40, 0.5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
                 <s-select v-model="selectIndex">
                   <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
@@ -197,7 +197,7 @@
                   <template #activator>
                     <span
                       class="flex items-center text-red font-semibold cursor-pointer w-[500px]"
-                      style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 27px; margin-right: 52px;"
+                      style="border: 1.75px solid rgba(245, 40, 40, 0.5); border-radius: 4px; padding: 27px; margin-right: 50px;"
                     >
                       <div class="flex items-center justify-center mx-auto">
                         <span class="mr-3">
@@ -259,7 +259,7 @@
                   :uniqueId="index"
                   :color="item.rootEntriesGraphData[selectIndex!].level"
                   class="w-[500px]"
-                  style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px; padding: 0 10px; margin-right: 52px;"
+                  style="border: 1.75px solid rgba(245, 40, 40, 0.5); border-radius: 4px; padding: 0 10px; margin-right: 50px;"
                 />
                 <s-select v-model="selectIndex">
                   <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
