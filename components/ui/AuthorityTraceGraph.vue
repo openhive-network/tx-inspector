@@ -42,7 +42,7 @@
         </s-dialog-header>
         <div
           :id="`cy-preview-${props.uniqueId}`"
-          class="h-[80vh] w-[80vw] cursor-pointer ma-auto"
+          class="h-[70vh] w-[80vw] cursor-pointer ma-auto"
         />
       </s-dialog-content>
     </s-dialog>
