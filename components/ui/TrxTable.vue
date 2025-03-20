@@ -7,10 +7,100 @@
     <s-table v-else>
       <s-table-header>
         <s-table-row>
-          <s-table-head>ID</s-table-head>
-          <s-table-head>Sig Digest</s-table-head>
-          <s-table-head>TaPoS</s-table-head>
-          <s-table-head>Expiration time</s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  ID
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Transaction ID</span>
+                  <hr class="my-2">
+                  <span>
+                    ID of the transaction (transaction hash, which depends on the chosen pack type). <br>
+                    Uniquely identifies the transaction within the blockchain network. <br>
+                    When the pack type is unknown, both ID variants - HF26 and Legacy are displayed.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  Sig Digest
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Transaction Sig Digest</span>
+                  <hr class="my-2">
+                  <span>
+                    The transaction digest calculated for signing purposes. <br>
+                    It depends on transaction content (ID), chosen chain ID and the pack type. <br>
+                    When the pack type is unknown, both Sig Digest variants - HF26 and Legacy are displayed.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  TaPoS
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Transaction TaPoS</span>
+                  <hr class="my-2">
+                  <span>
+                    Part of transaction data, matching rules defined in Transaction as Proof of Stake to conform blockchain sanity. <br>
+                    In HIVE TaPoS data are valid for 64k blocks.
+                    You can find more information
+                    <NuxtLink to="https://hive.pages.syncad.com/wax-doc/typescript/transaction-and-operation/#transaction-as-proof-of-stake-tapos" target="_blank" class="text-blue hover:opacity-70 transition-opacity">
+                      here.
+                    </NuxtLink>
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
+          <s-table-head>
+            <Tooltip>
+              <template #activator>
+                <span class="flex items-center">
+                  Expiration time
+                  <v-icon size="small" class="ml-2">
+                    mdi-information-slab-circle-outline
+                  </v-icon>
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Transaction expiration time</span>
+                  <hr class="my-2">
+                  <span>
+                    The Expiration Time of the transaction indicates the time limit within the transaction must be included in a block to be considered valid. <br>
+                    The maximum of expiration time in HIVE blockchain is 1 hour.
+                  </span>
+                </div>
+              </template>
+            </Tooltip>
+          </s-table-head>
         </s-table-row>
       </s-table-header>
       <s-table-body>
