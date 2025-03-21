@@ -137,7 +137,7 @@
               </template>
             </Tooltip>
           </s-table-head>
-          <s-table-head class="w-[150px]">
+          <!-- <s-table-head class="w-[150px]">
             <Tooltip>
               <template #activator>
                 <span class="flex items-center justify-center">
@@ -159,7 +159,7 @@
                 </div>
               </template>
             </Tooltip>
-          </s-table-head>
+          </s-table-head> -->
         </s-table-row>
       </s-table-header>
       <s-table-body>
@@ -319,7 +319,7 @@
               </div>
             </s-table-cell>
           </template>
-          <s-table-cell>
+          <!-- <s-table-cell>
             <s-select v-model="selectIndex">
               <s-select-trigger class="w-[150px]" style="border: 1.75px solid rgba(255, 255, 255, .5); border-radius: 4px;">
                 <s-select-value placeholder="Select path" />
@@ -339,7 +339,7 @@
                 </s-select-group>
               </s-select-content>
             </s-select>
-          </s-table-cell>
+          </s-table-cell> -->
         </s-table-row>
       </s-table-body>
     </s-table>
