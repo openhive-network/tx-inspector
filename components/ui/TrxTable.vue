@@ -18,7 +18,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Transaction ID</span>
                   <hr class="my-2">
                   <span>
@@ -41,7 +41,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Transaction Sig Digest</span>
                   <hr class="my-2">
                   <span>
@@ -64,7 +64,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Transaction TaPoS</span>
                   <hr class="my-2">
                   <span>
@@ -90,7 +90,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Transaction expiration time</span>
                   <hr class="my-2">
                   <span>
@@ -112,7 +112,7 @@
                   <span>{{ waxStore.shortenString(store.processedTransaction.value.transactionData.id) }}</span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">ID</span>
                     <hr class="my-2">
                     <span>{{ store.processedTransaction.value.transactionData.id }}</span>
@@ -127,7 +127,7 @@
                     <span>HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.hf26) }}</span>
                   </template>
                   <template #content>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col overflow-x-scroll">
                       <span class="text-lg">HF26 ID</span>
                       <hr class="my-2">
                       <span>{{ store.processedTransaction.value.transactionData.id.hf26 }}</span>
@@ -141,7 +141,7 @@
                     <span>Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.id.legacy) }}</span>
                   </template>
                   <template #content>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col overflow-x-scroll">
                       <span class="text-lg">Legacy ID</span>
                       <hr class="my-2">
                       <span>{{ store.processedTransaction.value.transactionData.id.legacy }}</span>
@@ -158,7 +158,7 @@
                   <span>{{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest) }}</span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Sig Digest</span>
                     <hr class="my-2">
                     <span>{{ store.processedTransaction.value.transactionData.sigDigest }}</span>
@@ -173,7 +173,7 @@
                     <span>HF26: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.hf26) }}</span>
                   </template>
                   <template #content>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col overflow-x-scroll">
                       <span class="text-lg">HF26 Sig Digest</span>
                       <hr class="my-2">
                       <span>{{ store.processedTransaction.value.transactionData.sigDigest.hf26 }}</span>
@@ -187,7 +187,7 @@
                     <span>Legacy: {{ waxStore.shortenString(store.processedTransaction.value.transactionData.sigDigest.legacy) }}</span>
                   </template>
                   <template #content>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col overflow-x-scroll">
                       <span class="text-lg">Legacy Sig Digest</span>
                       <hr class="my-2">
                       <span>{{ store.processedTransaction.value.transactionData.sigDigest.legacy }}</span>

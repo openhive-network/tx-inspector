@@ -21,7 +21,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Signature</span>
                   <hr class="my-2">
                   <span>
@@ -42,7 +42,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Pack type</span>
                   <hr class="my-2">
                   <span>
@@ -68,7 +68,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Public key</span>
                   <hr class="my-2">
                   <span>
@@ -98,7 +98,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Authority Path</span>
                   <hr class="my-2">
                   <span class="leading-6">
@@ -148,7 +148,7 @@
                 </span>
               </template>
               <template #content>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-x-scroll">
                   <span class="text-lg">Evaluated Path</span>
                   <hr class="my-2">
                   <span class="leading-6">
@@ -186,7 +186,7 @@
                       </span>
                     </template>
                     <template #content>
-                      <div class="flex flex-col">
+                      <div class="flex flex-col text-wrap overflow-x-scroll">
                         <span class="text-lg">Signature:</span>
                         <hr class="my-2">
                         <span>{{ signature }}</span>
@@ -218,7 +218,7 @@
                       </span>
                     </template>
                     <template #content>
-                      <div class="flex flex-col">
+                      <div class="flex flex-col overflow-x-scroll">
                         <span class="text-lg">Public key:</span>
                         <hr class="my-2">
                         <span>{{ publicKey }}</span>
@@ -276,7 +276,7 @@
                     </span>
                   </template>
                   <template #content>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col overflow-x-scroll">
                       <span class="text-lg font-semibold">Likely reasons:</span>
                       <hr class="my-2">
                       <ul>

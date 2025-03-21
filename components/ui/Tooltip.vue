@@ -6,6 +6,7 @@
     no-click-animation
     location="top center"
     close-delay="50"
+    class="overflow-x-hidden"
   >
     <template #activator="{ props }">
       <span v-bind="props">
@@ -13,7 +14,7 @@
       </span>
     </template>
     <template #default>
-      <div class="rounded-md px-3 py-1.5 text-sm text-primary-foreground flex flex-col" :class="tooltipProps.error ? 'bg-destructive' : 'bg-[#3f3f46]'">
+      <div class="rounded-md px-3 py-1.5 text-sm text-primary-foreground flex flex-col max-w-[95vw]" :class="tooltipProps.error ? 'bg-destructive' : 'bg-[#3f3f46]'">
         <slot name="content" />
       </div>
     </template>

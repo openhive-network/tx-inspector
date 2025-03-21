@@ -29,7 +29,7 @@
               </s-label>
             </template>
             <template #content>
-              <div class="flex flex-col">
+              <div class="flex flex-col overflow-x-scroll">
                 <span class="text-lg">Binary format</span>
                 <hr class="my-2">
                 <span class="leading-6">
@@ -64,7 +64,7 @@
               </s-label>
             </template>
             <template #content>
-              <div class="flex flex-col">
+              <div class="flex flex-col overflow-x-scroll">
                 <span class="text-lg">Operation binary format</span>
                 <hr class="my-2">
                 <span class="leading-6">
@@ -160,7 +160,7 @@
                   </span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Authority account</span>
                     <hr class="my-2">
                     <span>
@@ -183,7 +183,7 @@
                   </span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Authority type</span>
                     <hr class="my-2">
                     <span>
@@ -205,7 +205,7 @@
                   </span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Satisfied state</span>
                     <hr class="my-2">
                     <span>
@@ -233,7 +233,7 @@
                   </span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Operation type</span>
                     <hr class="my-2">
                     <span>
@@ -254,7 +254,7 @@
                   </span>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Operation content</span>
                     <hr class="my-2">
                     <span>
@@ -305,7 +305,7 @@
                   </v-icon>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Blockchain Forced True</span>
                     <hr class="my-2">
                     <span class="leading-6">
@@ -362,7 +362,7 @@
                   </v-icon>
                 </template>
                 <template #content>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col overflow-x-scroll">
                     <span class="text-lg">Blockchain Forced True</span>
                     <hr class="my-2">
                     <span class="leading-6">
