@@ -1,4 +1,4 @@
-# Transaction inspector
+# Transaction inspector - deployment test
 
 This app allows to check all important information about your transaction, like `id`, `sig digest`, `public keys` etc.
 It will check if the transaction is valid and will display the whole authority path.
