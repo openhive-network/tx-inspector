@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
   - cleanup
-  
+
 include:
   - template: Workflows/Branch-Pipelines.gitlab-ci.yml
   - project: 'hive/common-ci-configuration'
@@ -55,7 +55,7 @@ build:
 
   stage: build
   script:
-    - pnpm generate
+    - pnpm build
 
   artifacts:
     paths:
