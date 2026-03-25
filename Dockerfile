@@ -1,11 +1,5 @@
-ARG NGNIX_VERSION=mainline-alpine3.21
-
-FROM nginxinc/nginx-unprivileged:$NGNIX_VERSION AS app
-
-USER root
-COPY .output/public /usr/share/nginx/html/
-
-USER nginx
+FROM node:22-slim AS app
+WORKDIR /app
 
 ARG BUILD_TIME
 ARG GIT_COMMIT_SHA
@@ -28,3 +22,19 @@ LABEL io.hive.image.branch="$GIT_CURRENT_BRANCH"
 LABEL io.hive.image.commit.log_message="$GIT_LAST_LOG_MESSAGE"
 LABEL io.hive.image.commit.author="$GIT_LAST_COMMITTER"
 LABEL io.hive.image.commit.date="$GIT_LAST_COMMIT_DATE"
+
+# Runtime environment defaults
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV HOST=0.0.0.0
+
+# .output contains the server and public assets built by Nuxt.
+COPY .output/ .output/
+
+# Expose the Nuxt server port
+EXPOSE 8080
+
+# warning: while starting this image, external env file must be mapped as /app/mapped.env
+
+# Run the Nuxt server from the generated .output
+CMD ["node", "--env-file=/app/mapped.env", ".output/server/index.mjs"]
