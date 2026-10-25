@@ -1,12 +1,13 @@
 stages:
   - build
+  - test
   - deploy
   - cleanup
 
 include:
   - template: Workflows/Branch-Pipelines.gitlab-ci.yml
   - project: 'hive/common-ci-configuration'
-    ref: c9cb02ea67f9f381f52280be4ca1f708243373a0
+    ref: develop
     file:
       - '/templates/docker_image_jobs.gitlab-ci.yml'
       - '/templates/npm_projects.gitlab-ci.yml'
@@ -60,6 +61,33 @@ build:
   artifacts:
     paths:
       - .output
+    when: always
+    expire_in: 1 week
+
+# The Playwright projects that run against recorded fixtures; tx_inspector_api_testsuite
+# analyses transactions through the live api.hive.blog and is left out.
+test:
+  extends:
+    - .npm_based_job_base
+
+  stage: test
+  image: "${NODE_TEST_TOOLS_IMAGE}"
+  needs: []
+  variables:
+    PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+  script:
+    - pnpm build:test
+    - >-
+      projects=$(node -e 'for (const [, p] of require("./package.json").scripts.test.matchAll(/--project[= ](\S+)/g))
+      if (p !== "tx_inspector_api_testsuite") console.log(`--project=${p}`)')
+    - pnpm exec playwright test --workers 1 --reporter=list,junit $projects
+
+  artifacts:
+    reports:
+      junit: results.xml
+    paths:
+      - results.xml
+      - test-results/
     when: always
     expire_in: 1 week
 

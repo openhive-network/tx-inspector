@@ -2,13 +2,21 @@
   "validTxAuthority": true,
   "keyReferences": [
     {
-      "keys": ["STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"],
-      "accounts": [["alice"]]
+      "keys": [
+        "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+      ],
+      "accounts": [
+        [
+          "alice"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["alice"],
+      "paramsAccounts": [
+        "alice"
+      ],
       "accounts": [
         {
           "active": {
@@ -191,6 +199,167 @@
           "witnesses_voted_for": 7
         }
       ]
+    },
+    {
+      "paramsAccounts": [
+        "signer"
+      ],
+      "accounts": [
+        {
+          "id": 233724,
+          "name": "signer",
+          "owner": {
+            "weight_threshold": 1,
+            "account_auths": [],
+            "key_auths": [
+              [
+                "STM5sETYxNP7MQMAbkhX68tjQQFkqgv5ie9nE2iGy4bzDmh2P9dz6",
+                1
+              ]
+            ]
+          },
+          "active": {
+            "weight_threshold": 1,
+            "account_auths": [],
+            "key_auths": [
+              [
+                "STM8VLaPemehjzB5S7nFMqUJ1qH38H1bFq4eR92STfSFWQSBjHqbY",
+                1
+              ]
+            ]
+          },
+          "posting": {
+            "weight_threshold": 1,
+            "account_auths": [],
+            "key_auths": [
+              [
+                "STM77E7UG35Pg6UZTe4a9MWMPchn5NJNjecSuHXpNERumwXTb5XFb",
+                1
+              ]
+            ]
+          },
+          "memo_key": "STM5XXw3wGzdyAjbYXU5Lwq4NQyrxtYinjtCVEJhmpX4yxKQAjnGQ",
+          "json_metadata": "",
+          "posting_json_metadata": "",
+          "proxy": "",
+          "previous_owner_update": "1970-01-01T00:00:00",
+          "last_owner_update": "1970-01-01T00:00:00",
+          "last_account_update": "1970-01-01T00:00:00",
+          "created": "2017-06-29T21:34:33",
+          "mined": false,
+          "recovery_account": "steem",
+          "last_account_recovery": "1970-01-01T00:00:00",
+          "reset_account": "null",
+          "comment_count": 0,
+          "lifetime_vote_count": 0,
+          "post_count": 0,
+          "can_vote": true,
+          "voting_manabar": {
+            "current_mana": 1046892519,
+            "last_update_time": 1584712800
+          },
+          "downvote_manabar": {
+            "current_mana": 261723130,
+            "last_update_time": 1584712800
+          },
+          "balance": {
+            "amount": "1",
+            "precision": 3,
+            "nai": "@@000000021"
+          },
+          "savings_balance": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000021"
+          },
+          "hbd_balance": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "hbd_seconds": "0",
+          "hbd_seconds_last_update": "2017-07-24T09:58:51",
+          "hbd_last_interest_payment": "1970-01-01T00:00:00",
+          "savings_hbd_balance": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "savings_hbd_seconds": "0",
+          "savings_hbd_seconds_last_update": "1970-01-01T00:00:00",
+          "savings_hbd_last_interest_payment": "1970-01-01T00:00:00",
+          "savings_withdraw_requests": 0,
+          "reward_hbd_balance": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000013"
+          },
+          "reward_hive_balance": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000021"
+          },
+          "reward_vesting_balance": {
+            "amount": "0",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "reward_vesting_hive": {
+            "amount": "0",
+            "precision": 3,
+            "nai": "@@000000021"
+          },
+          "vesting_shares": {
+            "amount": "1046892519",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "delegated_vesting_shares": {
+            "amount": "0",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "received_vesting_shares": {
+            "amount": "0",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "vesting_withdraw_rate": {
+            "amount": "0",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "post_voting_power": {
+            "amount": "1046892519",
+            "precision": 6,
+            "nai": "@@000000037"
+          },
+          "next_vesting_withdrawal": "1969-12-31T23:59:59",
+          "withdrawn": 0,
+          "to_withdraw": 0,
+          "withdraw_routes": 0,
+          "pending_transfers": 0,
+          "curation_rewards": 6,
+          "posting_rewards": 0,
+          "proxied_vsf_votes": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "witnesses_voted_for": 0,
+          "last_post": "1970-01-01T00:00:00",
+          "last_root_post": "1970-01-01T00:00:00",
+          "last_post_edit": "1970-01-01T00:00:00",
+          "last_vote_time": "2017-08-14T23:47:51",
+          "post_bandwidth": 0,
+          "pending_claimed_accounts": 0,
+          "open_recurrent_transfers": 0,
+          "is_smt": false,
+          "delayed_votes": [],
+          "governance_vote_expiration_ts": "1969-12-31T23:59:59"
+        }
+      ]
     }
   ],
   "packType": "hf26",
@@ -216,10 +385,30 @@
   "activeAuthorityToSatisfyPostingExpectedResult": {
     "signatureData": [
       {
-        "signature": "20ab3d98a94c09fa8bd47dafc5606efd04e119fce63236e1d8278261093a916ed314a4d9620c4e69f8bcdc5811b7765d665a1ba2a703ed5c4e455400a5ad003a8c",
-        "packType": "hf26",
-        "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh",
-        "authorityPath": []
+        "rows": [
+          {
+            "signature": "20ab3d98a94c09fa8bd47dafc5606efd04e119fce63236e1d8278261093a916ed314a4d9620c4e69f8bcdc5811b7765d665a1ba2a703ed5c4e455400a5ad003a8c",
+            "packType": "hf26",
+            "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+          }
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "alice",
+                "label": "@alice (1/1)"
+              }
+            }
+          ],
+          "level": "active",
+          "matchingSignatures": [
+            {
+              "signature": "20ab3d98a94c09fa8bd47dafc5606efd04e119fce63236e1d8278261093a916ed314a4d9620c4e69f8bcdc5811b7765d665a1ba2a703ed5c4e455400a5ad003a8c",
+              "signatureKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -236,20 +425,120 @@
         "matchingSignature": "20ab3d98a94c09fa8bd47dafc5606efd04e119fce63236e1d8278261093a916ed314a4d9620c4e69f8bcdc5811b7765d665a1ba2a703ed5c4e455400a5ad003a8c",
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "false"
+        "isSatisfied": [
+          "false"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "false",
+        "isSatisfied": [
+          "false"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "alice",
           "author": "bob",
           "permlink": "example-post",
           "weight": 10000
+        },
+        "operationsBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
         }
       }
     ],
