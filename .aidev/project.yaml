@@ -1,0 +1,89 @@
+# Profile for hive/tx-inspector, written by hand after `aidev project scaffold`'s
+# shape (#13561).
+#
+# Schema reference: docs/architecture/project-profile.md
+# Onboarding procedure: the `onboard-external-project` skill.
+# Guide: docs/operations/onboarding-an-external-project.md
+#
+# The generator writes a starting point, not a governed answer: every
+# binding below is the command a maintainer said this project runs, and it
+# is reviewed and edited like any other declaration.
+version: 2
+project: tx-inspector
+
+gitlab:
+  host: "gitlab.syncad.com"
+  path: "hive/tx-inspector"
+  id: 481
+
+# A single-branch topology: this is both what work integrates into and what
+# ships. `stable` is omitted rather than declared equal to it — declaring
+# them equal is a typo, omitting one is a topology. Add `stable:` when this
+# project genuinely promotes to a second branch.
+branches:
+  integration: "aidev/integration"
+  # main is fast-forward only: hand off by merge request as a linear one-commit-per-change copy.
+  handoff: "main"
+  handoff_history: "linear"
+
+# How this project's suites execute (#13892): one kind, stated once.
+# The image is .aidev/runtime/Dockerfile, built and pinned by .aidev/runtime/build.sh.
+# pnpm-workspace.yaml (the catalogs) and .npmrc are inputs of the image too, but
+# they are symlinks into the common-ci-configuration submodule: a submodule bump
+# that changes them shows up in build.sh's tag, not here.
+environment:
+  kind: "container"
+  image: "registry.gitlab.syncad.com/hive/tx-inspector/aidev-tests@sha256:9ef4e0ff0d2c231e8dc7434b53e484a3cbb317787683437749966587cdac2cdd"
+  inputs: ["pnpm-lock.yaml"]
+
+issues:
+  intake_label: todo
+  taxonomy: ".aidev/labels.yaml"
+  decompose:
+    # `never` is where an external project starts: nothing marks work
+    # approved on this project's behalf until there is a track record.
+    auto_todo: never
+  # Reports about this project's work are filed against this project.
+  watcher_reports: self
+
+# Verification slots. Each binding is what this project genuinely runs for
+# that slot — never one selection repeated under seven names, which makes
+# seven gates report on the same evidence while claiming to check seven
+# different things.
+#
+# `test` runs the Playwright projects package.json's `test` names minus the
+# live-network ones (NETWORK_PROJECTS in .aidev/run-checks.sh). `typecheck`
+# (nuxt typecheck) is not bound: vue-tsc 1.8.27 crashes on typescript 5.7.3
+# before checking anything; bind it in `static` once vue-tsc is upgraded.
+verification:
+  quick:
+    adapter: command
+    args: [".aidev/run-checks.sh", "quick", "lint", "build", "test-build", "test"]
+    artifacts: ["test-results/quick/"]
+  full:
+    adapter: command
+    args: [".aidev/run-checks.sh", "full", "lint", "build", "test-build", "test"]
+    artifacts: ["test-results/full/"]
+  baseline:
+    adapter: command
+    args: [".aidev/run-checks.sh", "baseline", "build", "test-build", "test"]
+    artifacts: ["test-results/baseline/"]
+  canary:
+    adapter: command
+    args: [".aidev/run-checks.sh", "canary", "lint", "build", "test-build", "test"]
+    artifacts: ["test-results/canary/"]
+  static:
+    adapter: command
+    args: [".aidev/run-checks.sh", "static", "lint"]
+    artifacts: ["test-results/static/"]
+  coverage:
+    adapter: command
+    args: [".aidev/run-checks.sh", "coverage", "test-build", "test"]
+    artifacts: ["test-results/coverage/"]
+  system:
+    adapter: command
+    args: [".aidev/run-checks.sh", "system", "build", "test-build", "test"]
+    artifacts: ["test-results/system/"]
+
+# Capability grants for target-side code. Empty until this project needs one.
+capabilities: []
