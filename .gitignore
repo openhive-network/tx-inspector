@@ -27,3 +27,6 @@ logs
 results.json
 results.xml
 .last-run.json
+
+# AIDEV suite output (.aidev/run-checks.sh)
+test-results/
