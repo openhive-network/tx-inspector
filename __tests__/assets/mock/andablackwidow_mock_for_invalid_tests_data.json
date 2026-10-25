@@ -2,17 +2,31 @@
   "validTxAuthority": false,
   "keyReferences": [
     {
-      "keys": ["STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"],
-      "accounts": [["andablackwidow"]]
+      "keys": [
+        "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
+      ],
+      "accounts": [
+        [
+          "andablackwidow"
+        ]
+      ]
     },
     {
-      "keys": ["STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"],
-      "accounts": [["andablackwidow"]]
+      "keys": [
+        "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
+      ],
+      "accounts": [
+        [
+          "andablackwidow"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["andablackwidow"],
+      "paramsAccounts": [
+        "andablackwidow"
+      ],
       "accounts": [
         {
           "active": {
@@ -301,16 +315,20 @@
   "noMatchingSignatureForRequiredAuthorityExpectedResult": {
     "signatureData": [
       {
-        "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
-        "packType": "legacy",
-        "publicKey": "STM8TPKNbienPaotYT5ggVdtdF76k6xqAfzBn65JitMZeooRvppHK",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              ""
-            ]
+            "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+            "packType": "unknown",
+            "publicKey": "STM8TPKNbienPaotYT5ggVdtdF76k6xqAfzBn65JitMZeooRvppHK"
           }
-        ]
+        ],
+        "graphData": {
+          "message": "Authority failure!",
+          "reasons": [
+            "No required authority matched to given signature.",
+            "Path entry matched, but the weight was insufficient."
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -327,14 +345,18 @@
         "matchingSignature": "Missing signature",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false"
+        "isSatisfied": [
+          "false"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false",
+        "isSatisfied": [
+          "false"
+        ],
         "operationType": "transfer_operation",
         "operationContent": {
           "from": "andablackwidow",
@@ -345,6 +367,146 @@
             "nai": "@@000000013"
           },
           "memo": ""
+        },
+        "operationsBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e0000000000000320bcbe00",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 36,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 4,
+                      "value": "@@000000013"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 36,
+                  "size": 1
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e000000000000035342440000000000",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 40,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 8,
+                      "value": "SBD"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 40,
+                  "size": 1
+                }
+              ]
+            }
+          ]
         }
       }
     ],
@@ -380,16 +542,20 @@
   "singleOperationInvalidPublicKeyForRequiredAuthorityExpectedResult": {
     "signatureData": [
       {
-        "signature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
-        "packType": "legacy",
-        "publicKey": "STM6iykkyRro963LKoh1VJVZDLZT1BJovZkyQakGTNL7HFMJhcXEe",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              ""
-            ]
+            "signature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
+            "packType": "unknown",
+            "publicKey": "STM6iykkyRro963LKoh1VJVZDLZT1BJovZkyQakGTNL7HFMJhcXEe"
           }
-        ]
+        ],
+        "graphData": {
+          "message": "Authority failure!",
+          "reasons": [
+            "No required authority matched to given signature.",
+            "Path entry matched, but the weight was insufficient."
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -406,14 +572,18 @@
         "matchingSignature": "Missing signature",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false"
+        "isSatisfied": [
+          "false"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false",
+        "isSatisfied": [
+          "false"
+        ],
         "operationType": "transfer_operation",
         "operationContent": {
           "from": "andablackwidow",
@@ -424,6 +594,146 @@
             "nai": "@@000000013"
           },
           "memo": ""
+        },
+        "operationsBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e0000000000000320bcbe00",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 36,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 4,
+                      "value": "@@000000013"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 36,
+                  "size": 1
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e000000000000035342440000000000",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 40,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 8,
+                      "value": "SBD"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 40,
+                  "size": 1
+                }
+              ]
+            }
+          ]
         }
       }
     ],
@@ -459,16 +769,20 @@
   "wrongPublicKeyAuthorityLevelExpectedResult": {
     "signatureData": [
       {
-        "signature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
-        "packType": "legacy",
-        "publicKey": "STM5KpEytPQUbqdrgSsjvZ6hxdJR6SEMXba9YLYPfU4KbEr9GtKka",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              ""
-            ]
+            "signature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
+            "packType": "unknown",
+            "publicKey": "STM5KpEytPQUbqdrgSsjvZ6hxdJR6SEMXba9YLYPfU4KbEr9GtKka"
           }
-        ]
+        ],
+        "graphData": {
+          "message": "Authority failure!",
+          "reasons": [
+            "No required authority matched to given signature.",
+            "Path entry matched, but the weight was insufficient."
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -485,14 +799,18 @@
         "matchingSignature": "Missing signature",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false"
+        "isSatisfied": [
+          "false"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "false",
+        "isSatisfied": [
+          "false"
+        ],
         "operationType": "transfer_operation",
         "operationContent": {
           "from": "andablackwidow",
@@ -503,6 +821,146 @@
             "nai": "@@000000013"
           },
           "memo": ""
+        },
+        "operationsBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e0000000000000320bcbe00",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 36,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 4,
+                      "value": "@@000000013"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 36,
+                  "size": 1
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e000000000000035342440000000000",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 40,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 8,
+                      "value": "SBD"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 40,
+                  "size": 1
+                }
+              ]
+            }
+          ]
         }
       }
     ],

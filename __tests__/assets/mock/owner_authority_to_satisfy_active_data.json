@@ -2,13 +2,21 @@
   "validTxAuthority": true,
   "keyReferences": [
     {
-      "keys": ["STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"],
-      "accounts": [["alice"]]
+      "keys": [
+        "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+      ],
+      "accounts": [
+        [
+          "alice"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["alice"],
+      "paramsAccounts": [
+        "alice"
+      ],
       "accounts": [
         {
           "active": {
@@ -204,7 +212,11 @@
         "value": {
           "from": "alice",
           "to": "bob",
-          "amount": { "amount": "100", "precision": 3, "nai": "@@000000021" },
+          "amount": {
+            "amount": "100",
+            "precision": 3,
+            "nai": "@@000000021"
+          },
           "memo": "Hello, Bob!"
         }
       }
@@ -216,16 +228,30 @@
   "ownerAuthorityToSatisfyActiveExpectedResult": {
     "signatureData": [
       {
-        "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
-        "packType": "hf26",
-        "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "alice"
-            ]
+            "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+            "packType": "hf26",
+            "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "alice",
+                "label": "@alice (1/1)"
+              }
+            }
+          ],
+          "level": "owner",
+          "matchingSignatures": [
+            {
+              "signature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
+              "signatureKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -242,14 +268,18 @@
         "matchingSignature": "20ed6eef0b25266c9eaf13a4808deed4efcc1ba51e3f97c09400b83e9c03516b3625c6e77d3f32a438495a06df03dac0b26dc10c488771304fb52b7d2eeb06f577",
         "authorityAccount": "alice",
         "authorityType": "Active",
-        "isSatisfied": "false"
+        "isSatisfied": [
+          "false"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "alice",
         "authorityType": "Active",
-        "isSatisfied": "false",
+        "isSatisfied": [
+          "false"
+        ],
         "operationType": "transfer_operation",
         "operationContent": {
           "from": "alice",
@@ -260,6 +290,148 @@
             "nai": "@@000000021"
           },
           "memo": "Hello, Bob!"
+        },
+        "operationsBinaryView": {
+          "binary": "0205616c69636503626f6264000000000000002320bcbe0b48656c6c6f2c20426f6221",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 34,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 11,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 11,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 11,
+                          "size": 8,
+                          "value": "100"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 19,
+                      "size": 4,
+                      "value": "@@000000021"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 23,
+                  "size": 12,
+                  "value": "Hello, Bob!"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "0205616c69636503626f62640000000000000003535445454d00000b48656c6c6f2c20426f6221",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 38,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 11,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 11,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 11,
+                          "size": 8,
+                          "value": "100"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 19,
+                      "size": 8,
+                      "value": "STEEM"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 27,
+                  "size": 12,
+                  "value": "Hello, Bob!"
+                }
+              ]
+            }
+          ]
         }
       }
     ],

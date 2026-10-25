@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import fs from 'fs';
+import { execFileSync } from 'child_process';
 import { defineNuxtConfig } from 'nuxt/config';
 
+// `git rev-parse` rather than reading .git/HEAD: in a linked worktree .git is a file.
+// Builds outside a usable git checkout (e.g. a source tarball) get a placeholder.
 const getCommitHash = () => {
-  const rev = fs.readFileSync('.git/HEAD').toString().trim();
-
-  if (!rev.includes(':'))
-    return rev;
-  else
-    return fs.readFileSync(`.git/${rev.substring(5)}`).toString().trim();
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return 'unknown';
+  }
 };
 
 export default defineNuxtConfig({
@@ -75,6 +76,13 @@ export default defineNuxtConfig({
           experimentalDecorators: true
         }
       }
+    }
+  },
+
+  typescript: {
+    tsConfig: {
+      // The submodule's shared TS sources are not part of the app
+      exclude: ['../common-ci-configuration']
     }
   },
 

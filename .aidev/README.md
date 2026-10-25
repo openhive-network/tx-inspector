@@ -23,14 +23,15 @@ project's CI rules; maintainers record that decision here.
 ## Suites run before work lands
 
 Declared in `.aidev/project.yaml` under `verification`, all through `.aidev/run-checks.sh`
-(steps: `lint` = `eslint .` without `--fix`; `build` = `nuxt build`; `test-build` =
-`pnpm run build:test`, tsc plus the rollup test bundle; `test` = Playwright):
+(steps: `lint` = `eslint .` without `--fix`; `build` = `nuxt build`; `typecheck` =
+`nuxt typecheck`; `test-build` = `pnpm run build:test`, tsc plus the rollup test bundle;
+`test` = Playwright):
 
 - `quick` — lint build test-build test
 - `full` — lint build test-build test
 - `baseline` — build test-build test
 - `canary` — lint build test-build test
-- `static` — lint
+- `static` — lint typecheck
 - `coverage` — test-build test
 - `system` — build test-build test
 
@@ -52,26 +53,17 @@ build of the lockfile's Playwright version. Rebuild and re-pin it with
 submodule's `pnpm-workspace.yaml` / `.npmrc` changes, and put the printed
 `repo@sha256:…` into `environment.image`.
 
-## Known failures at onboarding (2026-10-25)
+## Offline tests
 
-The tests never ran in CI, and fail on the existing code:
+The mock projects answer the chain API calls wax makes from the page
+(`get_dynamic_global_properties`, `find_accounts`) from the project's mock file and
+`__tests__/assets/mock/dynamic_global_properties_data.json`
+(`__tests__/assets/chain-api-mock.ts`); any other request leaving the page gets a JSON-RPC
+error naming the call. CI's `test` job runs the same projects.
 
-- `test-build`: rollup cannot bundle `@hiveio/wax/vite` (its `wax.common.wasm?url`
-  import is a Vite-only feature), so `dist/bundle` is never written.
-- `test`: with no bundle, 27 of the 29 offline tests fail
-  (`createTxAnalyzerTestFor is not a function`). The "mock" projects also reach
-  `https://api.hive.blog` through wax's `createTransaction` (chain reference data),
-  which the mocked API provider does not cover.
-- `typecheck` (not bound): vue-tsc 1.8.27 crashes on typescript 5.7.3.
-- Every `nuxt` command (`postinstall`'s `nuxt prepare`, `build`, `typecheck`) fails in
-  a linked git worktree: `nuxt.config.ts`'s `getCommitHash` reads `.git/HEAD` as a
-  path, and there `.git` is a file (`ENOTDIR`).
-
-## Known state at onboarding (2026-10-25)
-
-The runtime installs offline, builds the app and launches Chromium, but the suite does not pass yet:
-`nuxt.config.ts` reads `.git/HEAD` as a path (fails in a git worktree, where `.git` is a file);
-`pnpm build:test` cannot bundle `@hiveio/wax/vite` (`wasm?url` needs Vite); the "mock" test
-projects still reach api.hive.blog through wax; `nuxt typecheck` crashes (vue-tsc 1.8.27 with
-TypeScript 5.7.3). `tx_inspector_api_testsuite` is left out of the required slots because it
-analyses transactions through the live api.hive.blog.
+Twelve mock test cases are marked `test.fail`: with the chain calls answered from their
+own mock data, the analyzer's verdict disagrees with the recorded expectation (satisfied
+or not, which signature matched which authority, `blockchain_forced_true`), or the
+analyzer throws (recover account). Each marker names the disagreement. Whether the
+expectation or the analyzer is wrong is for a maintainer to decide; a marked case that
+starts passing fails the suite, so fixing either side shows up.
