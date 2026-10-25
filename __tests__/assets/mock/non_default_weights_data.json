@@ -2,17 +2,31 @@
   "validTxAuthority": true,
   "keyReferences": [
     {
-      "keys": ["STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"],
-      "accounts": [["sketch.and.jam"]]
+      "keys": [
+        "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
+      ],
+      "accounts": [
+        [
+          "sketch.and.jam"
+        ]
+      ]
     },
     {
-      "keys": ["STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"],
-      "accounts": [["steemauto"]]
+      "keys": [
+        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+      ],
+      "accounts": [
+        [
+          "steemauto"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["sketch.and.jam"],
+      "paramsAccounts": [
+        "sketch.and.jam"
+      ],
       "accounts": [
         {
           "active": {
@@ -204,7 +218,9 @@
       ]
     },
     {
-      "paramsAccounts": ["tattooworld"],
+      "paramsAccounts": [
+        "tattooworld"
+      ],
       "accounts": [
         {
           "active": {
@@ -405,7 +421,9 @@
       ]
     },
     {
-      "paramsAccounts": ["ecency.app"],
+      "paramsAccounts": [
+        "ecency.app"
+      ],
       "accounts": [
         {
           "active": {
@@ -569,7 +587,9 @@
       ]
     },
     {
-      "paramsAccounts": ["hivesigner"],
+      "paramsAccounts": [
+        "hivesigner"
+      ],
       "accounts": [
         {
           "active": {
@@ -728,7 +748,9 @@
       ]
     },
     {
-      "paramsAccounts": ["leofinance"],
+      "paramsAccounts": [
+        "leofinance"
+      ],
       "accounts": [
         {
           "active": {
@@ -912,7 +934,9 @@
       ]
     },
     {
-      "paramsAccounts": ["peakd.app"],
+      "paramsAccounts": [
+        "peakd.app"
+      ],
       "accounts": [
         {
           "active": {
@@ -1076,7 +1100,9 @@
       ]
     },
     {
-      "paramsAccounts": ["steem.leo"],
+      "paramsAccounts": [
+        "steem.leo"
+      ],
       "accounts": [
         {
           "active": {
@@ -1265,7 +1291,9 @@
       ]
     },
     {
-      "paramsAccounts": ["steemauto"],
+      "paramsAccounts": [
+        "steemauto"
+      ],
       "accounts": [
         {
           "active": {
@@ -1453,16 +1481,30 @@
   "singleSignatureExpectedResult": {
     "signatureData": [
       {
-        "signature": "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7",
-        "packType": "hf26",
-        "publicKey": "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "sketch.and.jam"
-            ]
+            "signature": "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7",
+            "packType": "hf26",
+            "publicKey": "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "sketch.and.jam",
+                "label": "@sketch.and.jam (3/2)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7",
+              "signatureKey": "STM8CxhFNGAr1moHg4YS8cERs5Vec6JTC9zhtJwZu6sMYxLeXiC2t"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -1479,20 +1521,120 @@
         "matchingSignature": "1f76601f89a489e822b71f04355d16c9ade6cfb013fa973797bdcb39c413e4952323a17ec287059b11df349e2d78890103b6b1a322d3d456dd783869733dd76fc7",
         "authorityAccount": "sketch.and.jam",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "sketch.and.jam",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "sketch.and.jam",
           "author": "yisusth",
           "permlink": "all-ive-got-to-do-the-beatles-cover-by-yisusth",
           "weight": 3300
+        },
+        "operationsBinaryView": {
+          "binary": "000e736b657463682e616e642e6a616d07796973757374682e616c6c2d6976652d676f742d746f2d646f2d7468652d626561746c65732d636f7665722d62792d79697375737468e40c",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 72,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "sketch.and.jam"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "yisusth"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 47,
+                  "value": "all-ive-got-to-do-the-beatles-cover-by-yisusth"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 71,
+                  "size": 2,
+                  "value": "3300"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "000e736b657463682e616e642e6a616d07796973757374682e616c6c2d6976652d676f742d746f2d646f2d7468652d626561746c65732d636f7665722d62792d79697375737468e40c",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 72,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "sketch.and.jam"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "yisusth"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 47,
+                  "value": "all-ive-got-to-do-the-beatles-cover-by-yisusth"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 71,
+                  "size": 2,
+                  "value": "3300"
+                }
+              ]
+            }
+          ]
         }
       }
     ],

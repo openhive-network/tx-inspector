@@ -2,13 +2,21 @@
   "validTxAuthority": true,
   "keyReferences": [
     {
-      "keys": ["STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"],
-      "accounts": [["steemauto"]]
+      "keys": [
+        "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+      ],
+      "accounts": [
+        [
+          "steemauto"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["tattooworld"],
+      "paramsAccounts": [
+        "tattooworld"
+      ],
       "accounts": [
         {
           "active": {
@@ -209,7 +217,9 @@
       ]
     },
     {
-      "paramsAccounts": ["ecency.app"],
+      "paramsAccounts": [
+        "ecency.app"
+      ],
       "accounts": [
         {
           "active": {
@@ -373,7 +383,9 @@
       ]
     },
     {
-      "paramsAccounts": ["hivesigner"],
+      "paramsAccounts": [
+        "hivesigner"
+      ],
       "accounts": [
         {
           "active": {
@@ -532,7 +544,9 @@
       ]
     },
     {
-      "paramsAccounts": ["leofinance"],
+      "paramsAccounts": [
+        "leofinance"
+      ],
       "accounts": [
         {
           "active": {
@@ -716,7 +730,9 @@
       ]
     },
     {
-      "paramsAccounts": ["peakd.app"],
+      "paramsAccounts": [
+        "peakd.app"
+      ],
       "accounts": [
         {
           "active": {
@@ -880,7 +896,9 @@
       ]
     },
     {
-      "paramsAccounts": ["steem.leo"],
+      "paramsAccounts": [
+        "steem.leo"
+      ],
       "accounts": [
         {
           "active": {
@@ -1069,7 +1087,9 @@
       ]
     },
     {
-      "paramsAccounts": ["steemauto"],
+      "paramsAccounts": [
+        "steemauto"
+      ],
       "accounts": [
         {
           "active": {
@@ -1233,7 +1253,9 @@
       ]
     },
     {
-      "paramsAccounts": ["hivetoolsio"],
+      "paramsAccounts": [
+        "hivetoolsio"
+      ],
       "accounts": [
         {
           "active": {
@@ -1421,30 +1443,56 @@
   "singleSignatureExpectedResult": {
     "signatureData": [
       {
-        "signature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
-        "packType": "hf26",
-        "publicKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF",
-        "authorityPath": [
+        "rows": [
           {
-            "account": "steemauto",
-            "authWeight": {
-              "weight": 1,
-              "auth": 1
-            }
-          },
-          {
-            "account": "leofinance",
-            "authWeight": {
-              "weight": 1,
-              "auth": 1
-            }
-          },
-          {
-            "account": [
-              "tattooworld"
-            ]
+            "signature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
+            "packType": "hf26",
+            "publicKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "steemauto",
+                "label": "@steemauto (1/1)"
+              }
+            },
+            {
+              "data": {
+                "id": "leofinance-steemauto",
+                "source": "steemauto",
+                "target": "leofinance"
+              }
+            },
+            {
+              "data": {
+                "id": "leofinance",
+                "label": "@leofinance (1/1)"
+              }
+            },
+            {
+              "data": {
+                "id": "tattooworld-leofinance",
+                "source": "leofinance",
+                "target": "tattooworld"
+              }
+            },
+            {
+              "data": {
+                "id": "tattooworld",
+                "label": "@tattooworld (1/1)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
+              "signatureKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -1461,20 +1509,120 @@
         "matchingSignature": "20543c6e9e5ea2acfb94e9c5cd6672f302d067b62a4c71832dcaec7caf5e83a83b45ae76c55e3f51f8eb254b460a0585e7f911a93d6e5a58522429b7a4678dc22e",
         "authorityAccount": "tattooworld",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "tattooworld",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "tattooworld",
           "author": "mamaemigrante",
           "permlink": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen",
           "weight": 10000
+        },
+        "operationsBinaryView": {
+          "binary": "000b746174746f6f776f726c640d6d616d61656d696772616e74655162757363616e646f2d6f6c6c61732d6e75657661732d706172612d6d692d636f63696e612d6c6f6f6b696e672d666f722d6e65772d706f74732d616e642d70616e732d666f722d6d792d6b69746368656e1027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 110,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "tattooworld"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 14,
+                  "value": "mamaemigrante"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 27,
+                  "size": 82,
+                  "value": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 109,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "000b746174746f6f776f726c640d6d616d61656d696772616e74655162757363616e646f2d6f6c6c61732d6e75657661732d706172612d6d692d636f63696e612d6c6f6f6b696e672d666f722d6e65772d706f74732d616e642d70616e732d666f722d6d792d6b69746368656e1027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 110,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "tattooworld"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 14,
+                  "value": "mamaemigrante"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 27,
+                  "size": 82,
+                  "value": "buscando-ollas-nuevas-para-mi-cocina-looking-for-new-pots-and-pans-for-my-kitchen"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 109,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
         }
       }
     ],
@@ -1510,23 +1658,43 @@
   "singleNestLevelExpectedResult": {
     "signatureData": [
       {
-        "signature": "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7",
-        "packType": "hf26",
-        "publicKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF",
-        "authorityPath": [
+        "rows": [
           {
-            "account": "steemauto",
-            "authWeight": {
-              "weight": 1,
-              "auth": 1
-            }
-          },
-          {
-            "account": [
-              "hivetoolsio"
-            ]
+            "signature": "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7",
+            "packType": "hf26",
+            "publicKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "steemauto",
+                "label": "@steemauto (1/1)"
+              }
+            },
+            {
+              "data": {
+                "id": "hivetoolsio-steemauto",
+                "source": "steemauto",
+                "target": "hivetoolsio"
+              }
+            },
+            {
+              "data": {
+                "id": "hivetoolsio",
+                "label": "@hivetoolsio (1/1)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7",
+              "signatureKey": "STM8WWUYHMdHLgEHidYCztswzfZCViA16EqGkAxt7RG4dWwDpFtCF"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -1543,20 +1711,120 @@
         "matchingSignature": "2067c9358594238d38b26e5e4127033f219e2a963f55553c68dc5c86be7e3ce5814861702a8267404dd1275a00ee6f49cf4111687b6dd475adde92423024c1fef7",
         "authorityAccount": "hivetoolsio",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "hivetoolsio",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "hivetoolsio",
           "author": "ervin-lemark",
           "permlink": "12821436584-6030263055",
           "weight": 4900
+        },
+        "operationsBinaryView": {
+          "binary": "000b68697665746f6f6c73696f0c657276696e2d6c656d61726b1631323832313433363538342d363033303236333035352413",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 50,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "hivetoolsio"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 13,
+                  "value": "ervin-lemark"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 26,
+                  "size": 23,
+                  "value": "12821436584-6030263055"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 49,
+                  "size": 2,
+                  "value": "4900"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "000b68697665746f6f6c73696f0c657276696e2d6c656d61726b1631323832313433363538342d363033303236333035352413",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 50,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "hivetoolsio"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 13,
+                  "value": "ervin-lemark"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 26,
+                  "size": 23,
+                  "value": "12821436584-6030263055"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 49,
+                  "size": 2,
+                  "value": "4900"
+                }
+              ]
+            }
+          ]
         }
       }
     ],
