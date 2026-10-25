@@ -13,6 +13,7 @@ import type { ApiTransaction, IWaxOptions } from '@hiveio/wax/vite';
 import type { IProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
 import type { IMockData, TMockExtendedData } from './api-mock';
+import { routeChainApiToMock } from './chain-api-mock';
 
 type TTxInspectorTestCallable<R, Args extends any[]> = (globals: ITxInspectorGlobals, ...args: Args) => (R | Promise<R>);
 type TTxAnalyzerTestCallable<R, Args extends any[]> = (globals: ITxAnalyzerGlobals, ...args: Args) => (R | Promise<R>);
@@ -139,8 +140,9 @@ export const test = base.extend<ITxInspectorTest>({
     use(txInspectorTest(page));
   },
 
-  txAnalyzerMockedTest: ({ page, mockData }, use) => {
-    use(txAnalyzerMockedTestEnvironment(page, mockData as unknown as IMockData));
+  txAnalyzerMockedTest: async ({ page, mockData }, use) => {
+    await routeChainApiToMock(page, mockData as unknown as IMockData);
+    await use(txAnalyzerMockedTestEnvironment(page, mockData as unknown as IMockData));
   },
 
   analyzeAndCompareTransaction: ({ txAnalyzerMockedTest }, use) => {

@@ -2,17 +2,31 @@
   "validTxAuthority": true,
   "keyReferences": [
     {
-      "keys": ["STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"],
-      "accounts": [["andablackwidow"]]
+      "keys": [
+        "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
+      ],
+      "accounts": [
+        [
+          "andablackwidow"
+        ]
+      ]
     },
     {
-      "keys": ["STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"],
-      "accounts": [["andablackwidow"]]
+      "keys": [
+        "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
+      ],
+      "accounts": [
+        [
+          "andablackwidow"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["andablackwidow"],
+      "paramsAccounts": [
+        "andablackwidow"
+      ],
       "accounts": [
         {
           "active": {
@@ -204,16 +218,30 @@
   "singleOperationExpectedResult": {
     "signatureData": [
       {
-        "signature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
-        "packType": "legacy",
-        "publicKey": "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "andablackwidow"
-            ]
+            "signature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
+            "packType": "legacy",
+            "publicKey": "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "andablackwidow",
+                "label": "@andablackwidow (1/1)"
+              }
+            }
+          ],
+          "level": "active",
+          "matchingSignatures": [
+            {
+              "signature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
+              "signatureKey": "STM5bAX9A3CR7CeYRP2Zv6doCQMwiYTfViXqj6wqafpUZwq1yFbxh"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -230,14 +258,18 @@
         "matchingSignature": "204e6e9b49d7aa38c5ed10e48c0f6371fba4b018c450590b6e4025e3e96ed3e30c57eb05d545ea5319825c859a9752487c25c7e5086f7971675e55037f922e5295",
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Active",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "transfer_operation",
         "operationContent": {
           "from": "andablackwidow",
@@ -248,6 +280,146 @@
             "nai": "@@000000013"
           },
           "memo": ""
+        },
+        "operationsBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e0000000000000320bcbe00",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 36,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 4,
+                      "value": "@@000000013"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 36,
+                  "size": 1
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "020e616e6461626c61636b7769646f77076162772e706179204e000000000000035342440000000000",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "transfer_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 40,
+              "children": [
+                {
+                  "key": "from",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "to",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 8,
+                  "value": "abw.pay"
+                },
+                {
+                  "key": "amount",
+                  "type": "object",
+                  "offset": 24,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 24,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 24,
+                          "size": 8,
+                          "value": "20000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 32,
+                      "size": 8,
+                      "value": "SBD"
+                    }
+                  ]
+                },
+                {
+                  "key": "memo",
+                  "type": "scalar",
+                  "offset": 40,
+                  "size": 1
+                }
+              ]
+            }
+          ]
         }
       }
     ],
@@ -302,16 +474,30 @@
   "multipleOperationsSingleSignatureExpectedResult": {
     "signatureData": [
       {
-        "signature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
-        "packType": "legacy",
-        "publicKey": "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "andablackwidow"
-            ]
+            "signature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
+            "packType": "legacy",
+            "publicKey": "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "andablackwidow",
+                "label": "@andablackwidow (1/1)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
+              "signatureKey": "STM7UEziXTT9CMCTLvSpWsS974XiYCGSb9jP3ycriAXFFoQVWxzZK"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -328,14 +514,18 @@
         "matchingSignature": "1f4d77e5138520c691f1fdcb794a2056a2f6a28fed02d85e4fcda2768ea852144a7eb141d23e00ec9033ba80f7bae711f61d7a6a85fad80916a8bfe6586f645200",
         "authorityAccount": "andablackwidow",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "comment_operation",
         "operationContent": {
           "parent_author": "blocktrades",
@@ -345,12 +535,150 @@
           "title": "",
           "body": "It should be easy to test - just cut out two lines with `session` in `database::apply_block_extended` (I'm actually assuming that out of order blocks won't reach that routine during sync, but if they do, it would be a source of slowdown).\n\nI'd be surprised if undo sessions were the problem. They are relatively slow and [worthy of optimization](https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293), but in relation to simple transactions, mostly custom_jsons, so their performance is significant when there is many of them, like during block production, reapplication of pending or in extreme stress tests with `colony`+`queen`. During sync we only have one session per block.",
           "json_metadata": "{\"links\":[\"https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293\"],\"app\":\"hiveblog/0.1\"}"
+        },
+        "operationsBinaryView": {
+          "binary": "010b626c6f636b7472616465730673686179616e0e616e6461626c61636b7769646f7706736865306a6300ae0549742073686f756c64206265206561737920746f2074657374202d206a75737420637574206f75742074776f206c696e65732077697468206073657373696f6e6020696e206064617461626173653a3a6170706c795f626c6f636b5f657874656e64656460202849276d2061637475616c6c7920617373756d696e672074686174206f7574206f66206f7264657220626c6f636b7320776f6e2774207265616368207468617420726f7574696e6520647572696e672073796e632c20627574206966207468657920646f2c20697420776f756c64206265206120736f75726365206f6620736c6f77646f776e292e0a0a4927642062652073757270726973656420696620756e646f2073657373696f6e732077657265207468652070726f626c656d2e2054686579206172652072656c61746976656c7920736c6f7720616e64205b776f72746879206f66206f7074696d697a6174696f6e5d2868747470733a2f2f6769746c61622e73796e6361642e636f6d2f686976652f686976652f2d2f6973737565732f363735236e6f74655f313539323933292c2062757420696e2072656c6174696f6e20746f2073696d706c65207472616e73616374696f6e732c206d6f73746c7920637573746f6d5f6a736f6e732c20736f20746865697220706572666f726d616e6365206973207369676e69666963616e74207768656e207468657265206973206d616e79206f66207468656d2c206c696b6520647572696e6720626c6f636b2070726f64756374696f6e2c2072656170706c69636174696f6e206f662070656e64696e67206f7220696e2065787472656d652073747265737320746573747320776974682060636f6c6f6e79602b60717565656e602e20447572696e672073796e63207765206f6e6c792068617665206f6e652073657373696f6e2070657220626c6f636b2e5f7b226c696e6b73223a5b2268747470733a2f2f6769746c61622e73796e6361642e636f6d2f686976652f686976652f2d2f6973737565732f363735236e6f74655f313539323933225d2c22617070223a2268697665626c6f672f302e31227d",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "comment_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 826,
+              "children": [
+                {
+                  "key": "parent_author",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "blocktrades"
+                },
+                {
+                  "key": "parent_permlink",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 7,
+                  "value": "shayan"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 20,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 35,
+                  "size": 7,
+                  "value": "she0jc"
+                },
+                {
+                  "key": "title",
+                  "type": "scalar",
+                  "offset": 42,
+                  "size": 1
+                },
+                {
+                  "key": "body",
+                  "type": "scalar",
+                  "offset": 43,
+                  "size": 688,
+                  "value": "It should be easy to test - just cut out two lines with `session` in `database::apply_block_extended` (I'm actually assuming that out of order blocks won't reach that routine during sync, but if they do, it would be a source of slowdown).\n\nI'd be surprised if undo sessions were the problem. They are relatively slow and [worthy of optimization](https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293), but in relation to simple transactions, mostly custom_jsons, so their performance is significant when there is many of them, like during block production, reapplication of pending or in extreme stress tests with `colony`+`queen`. During sync we only have one session per block."
+                },
+                {
+                  "key": "json_metadata",
+                  "type": "scalar",
+                  "offset": 731,
+                  "size": 96,
+                  "value": "{\"links\":[\"https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293\"],\"app\":\"hiveblog/0.1\"}"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "010b626c6f636b7472616465730673686179616e0e616e6461626c61636b7769646f7706736865306a6300ae0549742073686f756c64206265206561737920746f2074657374202d206a75737420637574206f75742074776f206c696e65732077697468206073657373696f6e6020696e206064617461626173653a3a6170706c795f626c6f636b5f657874656e64656460202849276d2061637475616c6c7920617373756d696e672074686174206f7574206f66206f7264657220626c6f636b7320776f6e2774207265616368207468617420726f7574696e6520647572696e672073796e632c20627574206966207468657920646f2c20697420776f756c64206265206120736f75726365206f6620736c6f77646f776e292e0a0a4927642062652073757270726973656420696620756e646f2073657373696f6e732077657265207468652070726f626c656d2e2054686579206172652072656c61746976656c7920736c6f7720616e64205b776f72746879206f66206f7074696d697a6174696f6e5d2868747470733a2f2f6769746c61622e73796e6361642e636f6d2f686976652f686976652f2d2f6973737565732f363735236e6f74655f313539323933292c2062757420696e2072656c6174696f6e20746f2073696d706c65207472616e73616374696f6e732c206d6f73746c7920637573746f6d5f6a736f6e732c20736f20746865697220706572666f726d616e6365206973207369676e69666963616e74207768656e207468657265206973206d616e79206f66207468656d2c206c696b6520647572696e6720626c6f636b2070726f64756374696f6e2c2072656170706c69636174696f6e206f662070656e64696e67206f7220696e2065787472656d652073747265737320746573747320776974682060636f6c6f6e79602b60717565656e602e20447572696e672073796e63207765206f6e6c792068617665206f6e652073657373696f6e2070657220626c6f636b2e5f7b226c696e6b73223a5b2268747470733a2f2f6769746c61622e73796e6361642e636f6d2f686976652f686976652f2d2f6973737565732f363735236e6f74655f313539323933225d2c22617070223a2268697665626c6f672f302e31227d",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "comment_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 826,
+              "children": [
+                {
+                  "key": "parent_author",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 12,
+                  "value": "blocktrades"
+                },
+                {
+                  "key": "parent_permlink",
+                  "type": "scalar",
+                  "offset": 13,
+                  "size": 7,
+                  "value": "shayan"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 20,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 35,
+                  "size": 7,
+                  "value": "she0jc"
+                },
+                {
+                  "key": "title",
+                  "type": "scalar",
+                  "offset": 42,
+                  "size": 1
+                },
+                {
+                  "key": "body",
+                  "type": "scalar",
+                  "offset": 43,
+                  "size": 688,
+                  "value": "It should be easy to test - just cut out two lines with `session` in `database::apply_block_extended` (I'm actually assuming that out of order blocks won't reach that routine during sync, but if they do, it would be a source of slowdown).\n\nI'd be surprised if undo sessions were the problem. They are relatively slow and [worthy of optimization](https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293), but in relation to simple transactions, mostly custom_jsons, so their performance is significant when there is many of them, like during block production, reapplication of pending or in extreme stress tests with `colony`+`queen`. During sync we only have one session per block."
+                },
+                {
+                  "key": "json_metadata",
+                  "type": "scalar",
+                  "offset": 731,
+                  "size": 96,
+                  "value": "{\"links\":[\"https://gitlab.syncad.com/hive/hive/-/issues/675#note_159293\"],\"app\":\"hiveblog/0.1\"}"
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "authorityAccount": "andablackwidow",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "comment_options_operation",
         "operationContent": {
           "author": "andablackwidow",
@@ -363,6 +691,194 @@
           "percent_hbd": 10000,
           "allow_votes": true,
           "allow_curation_rewards": true
+        },
+        "operationsBinaryView": {
+          "binary": "130e616e6461626c61636b7769646f7706736865306a6300ca9a3b000000000320bcbe1027010100",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "comment_options_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 39,
+              "children": [
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 7,
+                  "value": "she0jc"
+                },
+                {
+                  "key": "max_accepted_payout",
+                  "type": "object",
+                  "offset": 23,
+                  "size": 12,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 23,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 23,
+                          "size": 8,
+                          "value": "1000000000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 31,
+                      "size": 4,
+                      "value": "@@000000013"
+                    }
+                  ]
+                },
+                {
+                  "key": "percent_hbd",
+                  "type": "scalar",
+                  "offset": 35,
+                  "size": 2,
+                  "value": "10000"
+                },
+                {
+                  "key": "allow_votes",
+                  "type": "scalar",
+                  "offset": 37,
+                  "size": 1,
+                  "value": "true"
+                },
+                {
+                  "key": "allow_curation_rewards",
+                  "type": "scalar",
+                  "offset": 38,
+                  "size": 1,
+                  "value": "true"
+                },
+                {
+                  "key": "extensions",
+                  "type": "array",
+                  "offset": 39,
+                  "size": 1,
+                  "value": "Length: 0",
+                  "length": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "130e616e6461626c61636b7769646f7706736865306a6300ca9a3b0000000003534244000000001027010100",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "comment_options_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 43,
+              "children": [
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 15,
+                  "value": "andablackwidow"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 16,
+                  "size": 7,
+                  "value": "she0jc"
+                },
+                {
+                  "key": "max_accepted_payout",
+                  "type": "object",
+                  "offset": 23,
+                  "size": 16,
+                  "children": [
+                    {
+                      "key": "amount",
+                      "type": "object",
+                      "offset": 23,
+                      "size": 8,
+                      "children": [
+                        {
+                          "key": "value",
+                          "type": "scalar",
+                          "offset": 23,
+                          "size": 8,
+                          "value": "1000000000"
+                        }
+                      ]
+                    },
+                    {
+                      "key": "symbol",
+                      "type": "scalar",
+                      "offset": 31,
+                      "size": 8,
+                      "value": "SBD"
+                    }
+                  ]
+                },
+                {
+                  "key": "percent_hbd",
+                  "type": "scalar",
+                  "offset": 39,
+                  "size": 2,
+                  "value": "10000"
+                },
+                {
+                  "key": "allow_votes",
+                  "type": "scalar",
+                  "offset": 41,
+                  "size": 1,
+                  "value": "true"
+                },
+                {
+                  "key": "allow_curation_rewards",
+                  "type": "scalar",
+                  "offset": 42,
+                  "size": 1,
+                  "value": "true"
+                },
+                {
+                  "key": "extensions",
+                  "type": "array",
+                  "offset": 43,
+                  "size": 1,
+                  "value": "Length: 0",
+                  "length": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
         }
       }
     ],

@@ -2,13 +2,21 @@
   "validTxAuthority": false,
   "keyReferences": [
     {
-      "keys": ["STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"],
-      "accounts": [["alice"]]
+      "keys": [
+        "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+      ],
+      "accounts": [
+        [
+          "alice"
+        ]
+      ]
     }
   ],
   "findAccounts": [
     {
-      "paramsAccounts": ["alice"],
+      "paramsAccounts": [
+        "alice"
+      ],
       "accounts": [
         {
           "active": {
@@ -216,16 +224,30 @@
   "expirationTimeFromFarFutureExpectedResult": {
     "signatureData": [
       {
-        "signature": "20eb7e77d9cd6b030bca48d0b12fd67fee91ae3b744e1aaaab40b87245a039f3ce398ec45d3685cfcd4a8bfd3d421e7148bb4d04ce46e6473c20fa475aad5ff603",
-        "packType": "hf26",
-        "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "alice"
-            ]
+            "signature": "20eb7e77d9cd6b030bca48d0b12fd67fee91ae3b744e1aaaab40b87245a039f3ce398ec45d3685cfcd4a8bfd3d421e7148bb4d04ce46e6473c20fa475aad5ff603",
+            "packType": "hf26",
+            "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "alice",
+                "label": "@alice (1/1)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "20eb7e77d9cd6b030bca48d0b12fd67fee91ae3b744e1aaaab40b87245a039f3ce398ec45d3685cfcd4a8bfd3d421e7148bb4d04ce46e6473c20fa475aad5ff603",
+              "signatureKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -242,20 +264,120 @@
         "matchingSignature": "20eb7e77d9cd6b030bca48d0b12fd67fee91ae3b744e1aaaab40b87245a039f3ce398ec45d3685cfcd4a8bfd3d421e7148bb4d04ce46e6473c20fa475aad5ff603",
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "alice",
           "author": "bob",
           "permlink": "example-post",
           "weight": 10000
+        },
+        "operationsBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
         }
       }
     ],
@@ -290,16 +412,30 @@
   "invalidTaposExpectedResult": {
     "signatureData": [
       {
-        "signature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
-        "packType": "hf26",
-        "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh",
-        "authorityPath": [
+        "rows": [
           {
-            "account": [
-              "alice"
-            ]
+            "signature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
+            "packType": "hf26",
+            "publicKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
           }
-        ]
+        ],
+        "graphData": {
+          "data": [
+            {
+              "data": {
+                "id": "alice",
+                "label": "@alice (1/1)"
+              }
+            }
+          ],
+          "level": "posting",
+          "matchingSignatures": [
+            {
+              "signature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
+              "signatureKey": "STM5RqVBAVNp5ufMCetQtvLGLJo7unX9nyCBMMrTXRWQ9i1Zzzizh"
+            }
+          ]
+        }
       }
     ],
     "transactionData": {
@@ -316,20 +452,120 @@
         "matchingSignature": "1fcbc7fd88a1e145a04f845539b182d69b7bae4fb2db7a19dd8883573edb4578116dc8f5f42e0779eb4c782cc532f7190c5d9f449834f594cb663a5060f481a94e",
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "true"
+        "isSatisfied": [
+          "true"
+        ]
       }
     ],
     "transactionBodyData": [
       {
         "authorityAccount": "alice",
         "authorityType": "Posting",
-        "isSatisfied": "true",
+        "isSatisfied": [
+          "true"
+        ],
         "operationType": "vote_operation",
         "operationContent": {
           "voter": "alice",
           "author": "bob",
           "permlink": "example-post",
           "weight": 10000
+        },
+        "operationsBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
+        },
+        "operationsLegacyBinaryView": {
+          "binary": "0005616c69636503626f620c6578616d706c652d706f73741027",
+          "offsets": [
+            {
+              "key": "type",
+              "type": "scalar",
+              "offset": 0,
+              "size": 1,
+              "value": "vote_operation"
+            },
+            {
+              "key": "value",
+              "type": "object",
+              "offset": 1,
+              "size": 25,
+              "children": [
+                {
+                  "key": "voter",
+                  "type": "scalar",
+                  "offset": 1,
+                  "size": 6,
+                  "value": "alice"
+                },
+                {
+                  "key": "author",
+                  "type": "scalar",
+                  "offset": 7,
+                  "size": 4,
+                  "value": "bob"
+                },
+                {
+                  "key": "permlink",
+                  "type": "scalar",
+                  "offset": 11,
+                  "size": 13,
+                  "value": "example-post"
+                },
+                {
+                  "key": "weight",
+                  "type": "scalar",
+                  "offset": 24,
+                  "size": 2,
+                  "value": "10000"
+                }
+              ]
+            }
+          ]
         }
       }
     ],
