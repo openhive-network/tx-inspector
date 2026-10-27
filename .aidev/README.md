@@ -50,8 +50,9 @@ a pnpm store filled from `pnpm-lock.yaml` (with the workspace catalogs and `.npm
 registry, both symlinks into the `common-ci-configuration` submodule) and the Chromium
 build of the lockfile's Playwright version. Rebuild and re-pin it with
 `.aidev/runtime/build.sh --push` when the Dockerfile, `pnpm-lock.yaml`, or the
-submodule's `pnpm-workspace.yaml` / `.npmrc` changes, and put the printed
-`repo@sha256:…` into `environment.image`.
+submodule's `pnpm-workspace.yaml` / `.npmrc` changes, or when common-ci-configuration
+moves `node-test-tools:develop` (e.g. a Node bump; the base digest is part of the
+image tag), and put the printed `repo@sha256:…` into `environment.image`.
 
 ## Offline tests
 

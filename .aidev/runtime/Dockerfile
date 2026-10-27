@@ -2,10 +2,12 @@
 # .aidev/project.yaml). Suites run with `--network none` and the caller's uid, so
 # everything they need is in the image:
 #
-# * common-ci-configuration's node-test-tools (Ubuntu 26.04, Node v24.21.0, pnpm),
-#   the same tool image CI's npm templates use. Its own pnpm runs as is:
-#   npm_config_manage_package_manager_versions=false stops it switching to
-#   package.json's `packageManager` if the two ever differ, which would be a download;
+# * common-ci-configuration's node-test-tools at its moving `develop` tag (Ubuntu,
+#   ccc's Node and pnpm), the same tool image CI's npm templates use; build.sh
+#   folds the tag's current digest into the image tag, so a ccc Node bump makes a
+#   new image. Its own pnpm runs as is: npm_config_manage_package_manager_versions=false
+#   stops it switching to package.json's `packageManager` if the two ever differ,
+#   which would be a download;
 # * a pnpm store filled from pnpm-lock.yaml (`pnpm fetch`, with the catalogs of
 #   pnpm-workspace.yaml and the @hiveio registry of .npmrc — both symlinks into
 #   the common-ci-configuration submodule, copied resolved by build.sh), so
@@ -18,7 +20,7 @@
 #   Chromium's system libraries.
 #
 # Build and pin it with .aidev/runtime/build.sh; see .aidev/README.md.
-FROM registry.gitlab.syncad.com/hive/common-ci-configuration/node-test-tools@sha256:c15f6782c675ddbe8a5d5b05cfa27cfa7b606ecd8bc67a3b5d0c2206f2733994
+FROM registry.gitlab.syncad.com/hive/common-ci-configuration/node-test-tools:develop
 USER root
 ENV HOME=/tmp \
     npm_config_store_dir=/opt/pnpm-store \

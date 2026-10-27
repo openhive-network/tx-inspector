@@ -5,8 +5,9 @@
 #
 # The tag is `aidev-<hash>` of the image inputs (the Dockerfile, pnpm-lock.yaml,
 # pnpm-workspace.yaml and .npmrc — the last two resolved through their symlinks
-# into common-ci-configuration). When <repository>:aidev-<hash> is already in
-# the registry nothing is built: the script prints its digest.
+# into common-ci-configuration — and the current digest of the Dockerfile's
+# moving FROM image). When <repository>:aidev-<hash> is already in the registry
+# nothing is built: the script prints its digest.
 #
 #   .aidev/runtime/build.sh           # registry digest, or build locally and print the local tag
 #   .aidev/runtime/build.sh --push    # registry digest, or build + push and print repo@sha256:<digest>
@@ -18,12 +19,21 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 REPOSITORY="${AIDEV_RUNTIME_REPOSITORY:-registry.gitlab.syncad.com/hive/tx-inspector/aidev-tests}"
 INPUTS=(.aidev/runtime/Dockerfile pnpm-lock.yaml pnpm-workspace.yaml .npmrc)
+manifest_digest() {
+    docker buildx imagetools inspect "$1" --format '{{json .Manifest}}' 2>/dev/null \
+        | grep -o '"digest": *"sha256:[0-9a-f]*"' | head -1 | grep -o 'sha256:[0-9a-f]*' || true
+}
+BASE="$(awk '/^FROM /{print $2; exit}' .aidev/runtime/Dockerfile)"
 input_hash() {
     # cat follows the symlinks, so a submodule bump that changes the catalogs
-    # or the registry makes a new tag.
-    local f
-    for f in "${INPUTS[@]}"; do printf '%s  %s\n' "$(cat "$f" | sha256sum | cut -d' ' -f1)" "$f"; done \
-        | sha256sum | cut -c1-16
+    # or the registry makes a new tag; the base digest makes a new tag whenever
+    # ccc moves the base tag (e.g. a Node bump).
+    local f base_digest
+    base_digest="$(manifest_digest "$BASE")"
+    {
+        for f in "${INPUTS[@]}"; do printf '%s  %s\n' "$(cat "$f" | sha256sum | cut -d' ' -f1)" "$f"; done
+        printf '%s  %s\n' "${base_digest:?cannot resolve the digest of $BASE}" "$BASE"
+    } | sha256sum | cut -c1-16
 }
 TAG="aidev-$(input_hash)"
 case "${1:-}" in
@@ -31,11 +41,7 @@ case "${1:-}" in
     ""|--push) ;;
     *) echo "usage: $0 [--push|--tag]" >&2; exit 2 ;;
 esac
-registry_digest() {
-    docker buildx imagetools inspect "$REPOSITORY:$TAG" --format '{{json .Manifest}}' 2>/dev/null \
-        | grep -o '"digest": *"sha256:[0-9a-f]*"' | head -1 | grep -o 'sha256:[0-9a-f]*' || true
-}
-digest="$(registry_digest)"
+digest="$(manifest_digest "$REPOSITORY:$TAG")"
 if [ -n "$digest" ]; then
     echo "$REPOSITORY:$TAG exists in the registry; not building" >&2
     echo "$REPOSITORY@$digest"
