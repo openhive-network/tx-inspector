@@ -1,4 +1,7 @@
-FROM node:22-slim AS app
+# NODE_VERSION has no default: CI passes common-ci-configuration's NODE_IMAGE_VERSION
+# (see scripts/ci-helpers/build_instance.sh).
+ARG NODE_VERSION
+FROM node:${NODE_VERSION}-slim AS app
 WORKDIR /app
 
 ARG BUILD_TIME
