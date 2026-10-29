@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { ApiAccount, ApiTransaction, authority, IAuthorityTraceSignatureInfo, IBinaryViewOutputData, ITransaction, TWaxApiRequest } from '@hiveio/wax/vite';
+import type { ApiAccount, ApiTransaction, authority, IAuthorityTraceSignatureInfo, IBinaryViewOutputData, ITransaction, TWaxApiRequest } from '@hiveio/wax';
 
 export enum EPackType {
   LEGACY = 'legacy',

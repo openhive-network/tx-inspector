@@ -8,7 +8,7 @@ import { type ConsoleMessage, type Page, test as base } from '@playwright/test';
 
 import './globals';
 
-import type { ApiTransaction, IWaxOptions } from '@hiveio/wax/vite';
+import type { ApiTransaction, IWaxOptions } from '@hiveio/wax';
 
 import type { IProcessedTransaction } from '../../types/wax';
 import type { ITxAnalyzerGlobals, ITxInspectorGlobals } from './globals';
@@ -94,6 +94,13 @@ const txAnalyzerMockedTestEnvironment = (
   return runner;
 };
 
+// Object key order follows wax's JSON serializer and carries no meaning, so it is normalized
+const canonicalJson = (value: unknown): string => JSON.stringify(value, (_key, item: unknown) =>
+  item !== null && typeof item === 'object' && !Array.isArray(item)
+    ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)))
+    : item
+);
+
 const analyzeAndCompareTransaction = async (
   txAnalyzerMockedTest: ITxInspectorTest['txAnalyzerMockedTest'],
   inputTransaction: ApiTransaction,
@@ -112,7 +119,7 @@ const analyzeAndCompareTransaction = async (
   }, inputTransaction);
 
   console.log('retVal', JSON.stringify(retVal, null, 2));
-  return JSON.stringify(retVal) === JSON.stringify(expectedResult);
+  return canonicalJson(retVal) === canonicalJson(expectedResult);
 };
 
 export const test = base.extend<ITxInspectorTest>({
