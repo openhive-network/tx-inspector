@@ -3,7 +3,6 @@
   "compilerOptions": {
     "rootDir": "../",
     "outDir": "../dist/tests",
-    "baseUrl": ".",
 
     "target": "ES2022",
     "lib": [
@@ -11,7 +10,10 @@
       "DOM"
     ],
     "module": "ES2022",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "../lib",
