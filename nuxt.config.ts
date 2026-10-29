@@ -13,6 +13,13 @@ const getCommitHash = () => {
 };
 
 export default defineNuxtConfig({
+  // Nuxt 3's layout: the sources stay at the root, where the rollup test bundle
+  // compiles utils/, types/ and lib/ too; app/ only holds spa-loading-template.html.
+  // Explicit, because Nuxt 4 makes app/ the srcDir as soon as it holds any other file.
+  srcDir: '.',
+  dir: {
+    app: 'app'
+  },
   ssr: false,
   app: {
     head: {
@@ -42,7 +49,16 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**']
   },
 
+  postcss: {
+    plugins: {
+      // Not used by the styles, and Nuxt 4 resolves PostCSS plugins from the root, where pnpm
+      // does not hoist the tailwindcss that @nuxtjs/tailwindcss brings
+      'tailwindcss/nesting': false
+    }
+  },
+
   css: [
+    // First: it declares the cascade layer order Vuetify's styles are ranked in
     '~/assets/css/tailwind.css',
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.css'
@@ -67,15 +83,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    // Vite's oxc transform takes experimentalDecorators (plugins/formatter.ts) from tsconfig.json
     define: {
       COMMIT_HASH: `'${getCommitHash()}'`
-    },
-    esbuild: {
-      tsconfigRaw: {
-        compilerOptions: {
-          experimentalDecorators: true
-        }
-      }
     }
   },
 

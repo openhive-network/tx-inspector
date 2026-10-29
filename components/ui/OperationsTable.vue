@@ -42,7 +42,7 @@
                   <ul class="mt-2">
                     <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
                     <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                    <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
+                    <li v-if="isUnknownPackType">
                       <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
                     </li>
                     <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
@@ -77,7 +77,7 @@
                   <ul class="mt-2">
                     <li> <v-icon>mdi-hand-pointing-right</v-icon> The binary format as well as JSON will differ based on the pack type.</li>
                     <li class="my-1"> <v-icon>mdi-hand-pointing-right</v-icon> Choose the variant to show: <b>HF26</b> or <b>Legacy</b>.</li>
-                    <li v-if="store.processedTransaction.value.signatureData[0].rows[0].packType === EPackType.UNKNOWN">
+                    <li v-if="isUnknownPackType">
                       <v-icon>mdi-hand-pointing-right</v-icon> Due to <b>unknown pack</b> type, the <b>HF26</b> variant is selected by default.
                     </li>
                     <li v-else> <v-icon>mdi-hand-pointing-right</v-icon> By default, the pack type deduced from the transaction analysis is selected.</li>
@@ -304,6 +304,8 @@ const config = useRuntimeConfig();
 const radioState = ref('formatted');
 
 const binaryRadioState = ref('hf26-binary');
+
+const isUnknownPackType = computed(() => store.processedTransaction.value.signatureData[0]?.rows[0]?.packType === EPackType.UNKNOWN);
 
 const expanded = ref(false);
 

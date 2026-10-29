@@ -103,12 +103,12 @@
           <s-table-cell
             :class="{
               'text-red capitalize font-semibold':
-                item.rows[0].packType === EPackType.UNKNOWN,
-              capitalize: item.rows[0].packType === EPackType.LEGACY,
-              uppercase: item.rows[0].packType === EPackType.HF26,
+                item.rows[0]?.packType === EPackType.UNKNOWN,
+              capitalize: item.rows[0]?.packType === EPackType.LEGACY,
+              uppercase: item.rows[0]?.packType === EPackType.HF26,
             }"
           >
-            {{ item.rows[0].packType }}
+            {{ item.rows[0]?.packType }}
           </s-table-cell>
           <s-table-cell>
             <div class="flex flex-col">

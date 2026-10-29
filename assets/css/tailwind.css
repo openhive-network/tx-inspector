@@ -1,6 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Vuetify 4 puts its styles in cascade layers, which lose to any unlayered rule; Vuetify 3's were
+   unlayered, loaded after this file, and its theme and colour classes (.bg-background, .bg-primary,
+   .text-white, ...) were !important. Tailwind goes into layers ranked the way it ranked against
+   Vuetify 3: the preflight under everything, the utilities above Vuetify's reset but under its
+   components and its utility classes. This file must stay the first entry of nuxt.config's `css`,
+   so this statement fixes the order before Vuetify's stylesheet declares its layers. */
+@layer tailwind-base, vuetify-core, tailwind, vuetify-components, vuetify-overrides, vuetify-utilities, vuetify-final;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+@layer tailwind {
+  @tailwind components;
+  @tailwind utilities;
+}
 
 
 @layer base {

@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ApiTransaction } from '@hiveio/wax/vite';
+import type { ApiTransaction } from '@hiveio/wax';
 import { toast } from 'vue-sonner';
 import Button from '~/components/ui/Button.vue';
 
