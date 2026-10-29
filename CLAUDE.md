@@ -15,7 +15,7 @@ The app accepts transactions in multiple formats: transaction hash/ID, JSON, bin
 ## Tech Stack
 
 **Core:**
-- Nuxt 3 (v3.13.2) - Vue 3 meta-framework (SSR disabled, SPA mode)
+- Nuxt 4 - Vue 3 meta-framework (SSR disabled, SPA mode), Nuxt 3 directory layout kept (`srcDir: '.'`)
 - Vue 3 with Composition API (`<script setup>` syntax)
 - TypeScript
 - Pinia for state management
@@ -23,12 +23,16 @@ The app accepts transactions in multiple formats: transaction hash/ID, JSON, bin
 **UI:**
 - Tailwind CSS with CSS variables
 - shadcn-nuxt (New York style)
-- Vuetify 3 with Material Design 3 blueprint
+- Vuetify 4 with Material Design 3 blueprint
 - Radix Vue / Reka UI for headless components
 - Cytoscape for graph visualization
 
 **Blockchain:**
 - @hiveio/wax - HIVE blockchain interaction library
+
+Versions of vue, nuxt, pinia, vuetify, vue-tsc, @hiveio/wax, typescript, playwright and rollup come from
+common-ci-configuration's pnpm catalogs (`pnpm-workspace.yaml` is a symlink into the submodule) and are
+referenced as `catalog:<name>`; never write a version for them in package.json.
 - @hiveio/component-binary-view - Binary transaction display
 
 **Testing:**

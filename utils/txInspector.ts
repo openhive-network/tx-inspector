@@ -1,4 +1,4 @@
-import { ApiAccount, ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, isPublicKey, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax/vite';
+import { type ApiAccount, type ApiOperation, type ApiTransaction, createHiveChain, type IAuthorityPathEntry, type IAuthorityPathTraceData, type IBinaryViewOutputData, isPublicKey, type ITransaction, type IVerifyAuthorityTrace, type TWaxExtended } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type TChainExtendedApiData, type ITransactionAnalyzerApi, type IProcessedTransaction, type ISignatureData, type ITransactionData, type IRequiredAuthoritiesData, ESatisfiedState, type ITransactionBodyData, type ITransactionOtherData, type ITransactionRequiredAuthorities, type IAuthorityTypeData, type IAuthorityGraphData, type IAuthorityGraphFullCollectedData, type ISignatureTraceData } from '../types/wax';
 
 export class TransactionAnalyzerApiProvider implements ITransactionAnalyzerApi {
@@ -78,7 +78,8 @@ export class TransactionAnalyzer {
    * @returns {IProcessedTransaction} object with all information about the transaction.
    */
   public async analyzeTransaction (transaction: ApiTransaction, id?: string): Promise<IProcessedTransaction> {
-    const tx = this.chain.createTransactionFromJson(transaction);
+    // Pasted JSON may omit the empty `extensions`, which wax (since 1.28) rejects
+    const tx = this.chain.createTransactionFromJson({ ...transaction, extensions: transaction.extensions ?? [] });
 
     this.transaction = tx;
 
@@ -87,16 +88,23 @@ export class TransactionAnalyzer {
     const signatures = transaction.signatures;
     const requiredAuthorities = await this.getRequiredAuthorities();
     const operations = this.getOperationsFromTransaction();
-    const operationsBinaryView = this.getOperationsBinaryView(operations);
-    const operationsLegacyBinaryView = this.getLegacyOperationsBinaryView(operations);
+    const operationsWithBinaryViews = this.getOperationsWithBinaryViews(operations);
     const packType = await this.getPackType(requiredAuthorities, id);
-    const authorityTrace = await this.verifyAuthorityTrace(Array.isArray(packType) ? packType[0] : packType);
+    // A per-signature pack type list may be shorter than the signatures it is indexed by
+    const packTypeAt = (index: number): EPackType => (Array.isArray(packType) ? packType[index] : packType) ?? EPackType.UNKNOWN;
+    const primaryPackType = packTypeAt(0);
+    const signatureRow = (signature: string, index: number): ISignatureData => ({
+      signature,
+      packType: packTypeAt(index),
+      publicKey: this.getSignatureKeys(packTypeAt(index))[index] ?? ''
+    });
+    const authorityTrace = await this.verifyAuthorityTrace(primaryPackType);
     const graphData = this.generateGraphData(authorityTrace, signatures);
 
-    const signatureKeys = this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType);
-    const transactionId = this.getTransactionId(Array.isArray(packType) ? packType[0] : packType);
-    const sigDigest = this.getSigDigest(Array.isArray(packType) ? packType[0] : packType);
-    const isValid = await this.checkVerifyAuthority(Array.isArray(packType) ? packType[0] : packType);
+    const signatureKeys = this.getSignatureKeys(primaryPackType);
+    const transactionId = this.getTransactionId(primaryPackType);
+    const sigDigest = this.getSigDigest(primaryPackType);
+    const isValid = await this.checkVerifyAuthority(primaryPackType);
 
     const authorityType = this.getAuthorityType(requiredAuthorities);
     const signeesByKeys = await this.findSigneesForKeys(signatureKeys);
@@ -114,27 +122,15 @@ export class TransactionAnalyzer {
 
       signatures.forEach((signature, index) => {
         if ('data' in entry)
-          if (entry.matchingSignatures.length === 1 && entry.matchingSignatures[0].signature === signature)
-            rows.push({
-              signature,
-              packType: Array.isArray(packType) ? packType[index] : packType,
-              publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[index] : packType)[index]
-            });
+          if (entry.matchingSignatures.length === 1 && entry.matchingSignatures[0]?.signature === signature)
+            rows.push(signatureRow(signature, index));
           else
             entry.matchingSignatures.forEach((sig, key) => {
               if (sig.signature === signature)
-                rows.push({
-                  signature,
-                  packType: Array.isArray(packType) ? packType[key] : packType,
-                  publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[key] : packType)[key]
-                });
+                rows.push(signatureRow(signature, key));
             });
         else
-          rows.push({
-            signature,
-            packType: Array.isArray(packType) ? packType[index] : packType,
-            publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[index] : packType)[index]
-          });
+          rows.push(signatureRow(signature, index));
       });
 
       signatureData.push({
@@ -176,7 +172,7 @@ export class TransactionAnalyzer {
         rows.push({
           signature,
           packType: EPackType.UNKNOWN,
-          publicKey: this.getSignatureKeys(Array.isArray(packType) ? packType[0] : packType)[signatures.indexOf(signature)]
+          publicKey: signatureKeys[signatures.indexOf(signature)] ?? ''
         });
 
         signatureData.push({
@@ -199,39 +195,32 @@ export class TransactionAnalyzer {
     const requiredAuthoritiesData: IRequiredAuthoritiesData[] = [];
 
     for (const authority of authorityType)
-      for (let i = 0; i < authority.accounts.length; ++i)
+      for (const [i, authorityAccount] of authority.accounts.entries())
         requiredAuthoritiesData.push({
-          matchingSignature: matchingSignatures.length === 1 ? matchingSignatures[0] : matchingSignatures[i],
-          authorityAccount: authority.accounts[i],
+          matchingSignature: (matchingSignatures.length === 1 ? matchingSignatures[0] : matchingSignatures[i]) ?? 'Missing signature',
+          authorityAccount,
           authorityType: authority.level,
           isSatisfied: satisfied
         });
 
     const transactionBodyData: ITransactionBodyData[] = [];
 
-    for (let i = 0; i < operations.length; ++i)
-      for (const authority of this.getAuthorityType(await this.getRequiredAuthoritiesForOperation(i)))
-        if (authority.accounts.length >= operations.length)
+    for (const [i, { operation, binaryView, legacyBinaryView }] of operationsWithBinaryViews.entries())
+      for (const authority of this.getAuthorityType(await this.getRequiredAuthoritiesForOperation(i))) {
+        // An authority with an account per operation contributes only the account of this one
+        const authorityAccounts = authority.accounts.length >= operations.length ? authority.accounts.slice(i, i + 1) : authority.accounts;
+
+        for (const authorityAccount of authorityAccounts)
           transactionBodyData.push({
-            authorityAccount: authority.accounts[i],
+            authorityAccount,
             authorityType: authority.level,
             isSatisfied: await this.isSatisfiedForOperation(authorityTrace, i),
-            operationType: operations[i].type,
-            operationContent: operations[i].value,
-            operationsBinaryView: operationsBinaryView[i],
-            operationsLegacyBinaryView: operationsLegacyBinaryView[i]
+            operationType: operation.type,
+            operationContent: operation.value,
+            operationsBinaryView: binaryView,
+            operationsLegacyBinaryView: legacyBinaryView
           });
-        else
-          for (let j = 0; j < authority.accounts.length; ++j)
-            transactionBodyData.push({
-              authorityAccount: authority.accounts[j],
-              authorityType: authority.level,
-              isSatisfied: await this.isSatisfiedForOperation(authorityTrace, i),
-              operationType: operations[i].type,
-              operationContent: operations[i].value,
-              operationsBinaryView: operationsBinaryView[i],
-              operationsLegacyBinaryView: operationsLegacyBinaryView[i]
-            });
+      }
 
     const transactionOtherData: ITransactionOtherData = {
       isValid,
@@ -289,8 +278,8 @@ export class TransactionAnalyzer {
 
         const { accounts } = await this.api.getKeyReferences({ keys: signatureKeys });
 
-        for (const account of accounts)
-          if (requiredAuthoritiesArray.includes(account[0]))
+        for (const [account] of accounts)
+          if (account !== undefined && requiredAuthoritiesArray.includes(account))
             packTypeArray.push(EPackType.HF26);
 
         return packTypeArray;
@@ -301,8 +290,8 @@ export class TransactionAnalyzer {
 
         const { accounts } = await this.api.getKeyReferences({ keys: signatureKeys });
 
-        for (const account of accounts)
-          if (requiredAuthoritiesArray.includes(account[0]))
+        for (const [account] of accounts)
+          if (account !== undefined && requiredAuthoritiesArray.includes(account))
             packTypeArray.push(EPackType.LEGACY);
 
         return packTypeArray;
@@ -399,12 +388,14 @@ export class TransactionAnalyzer {
   }
 
   private async getRequiredAuthoritiesForOperation (operationIndex: number): Promise<ITransactionRequiredAuthorities> {
-    if (this.transaction.transaction.operations.length < operationIndex)
+    const operation = this.transaction.transaction.operations[operationIndex];
+
+    if (operation === undefined)
       throw new Error('Cannot get required authorities for operation');
 
     const tx = this.chain.createTransactionFromProto(this.transaction.transaction);
 
-    tx.pushOperation(this.transaction.transaction.operations[operationIndex]);
+    tx.pushOperation(operation);
 
     const requiredAuthorities = tx.requiredAuthorities;
 
@@ -439,7 +430,7 @@ export class TransactionAnalyzer {
     return result;
   }
 
-  private getAuthorityType (requiredAuthorities: ITransactionRequiredAuthorities): IAuthorityTypeData[] {
+  private getAuthorityType (requiredAuthorities: ITransactionRequiredAuthorities): [IAuthorityTypeData, ...IAuthorityTypeData[]] {
     const authLevels: { level: EAuthorityLevel, accounts: string[] }[] = [];
 
     if (requiredAuthorities.owner && requiredAuthorities.owner.size !== 0)
@@ -454,10 +445,9 @@ export class TransactionAnalyzer {
     if (requiredAuthorities.other && requiredAuthorities.other.size !== 0)
       authLevels.push({ level: EAuthorityLevel.OTHER, accounts: Array.from(requiredAuthorities.other) });
 
-    if (authLevels.length === 0)
-      authLevels.push({ level: EAuthorityLevel.OTHER, accounts: ['None'] });
+    const [firstLevel = { level: EAuthorityLevel.OTHER, accounts: ['None'] }, ...otherLevels] = authLevels;
 
-    return authLevels;
+    return [firstLevel, ...otherLevels];
   }
 
   private getOperationsFromTransaction (): ApiOperation[] {
@@ -481,16 +471,18 @@ export class TransactionAnalyzer {
       if (!entryFound)
         return ['Missing signature'];
 
-      if (entryFound.matchingSignatures.length === 0)
+      const [firstSignature, ...otherSignatures] = entryFound.matchingSignatures;
+
+      if (firstSignature === undefined)
         if (entryFound.finalAuthorityPath.processingStatus.entryAccepted)
           matchingSignatures.push('Open authority');
         else
           matchingSignatures.push('Missing signature');
       else
-        if (entryFound.matchingSignatures.length > 1)
+        if (otherSignatures.length > 0)
           matchingSignatures.push(entryFound.matchingSignatures.map(sig => sig.signature));
         else
-          matchingSignatures.push(entryFound.matchingSignatures[0].signature);
+          matchingSignatures.push(firstSignature.signature);
     }
 
     return matchingSignatures;
@@ -640,22 +632,12 @@ export class TransactionAnalyzer {
     return isSatisfiedArray;
   }
 
-  private getOperationsBinaryView (operations: ApiOperation[]): IBinaryViewOutputData[] {
-    const binaryOperations: IBinaryViewOutputData[] = [];
-
-    for (const operation of operations)
-      binaryOperations.push(this.chain.operationBinaryViewMetadata(operation, true));
-
-    return binaryOperations;
-  }
-
-  private getLegacyOperationsBinaryView (operations: ApiOperation[]): IBinaryViewOutputData[] {
-    const binaryOperations: IBinaryViewOutputData[] = [];
-
-    for (const operation of operations)
-      binaryOperations.push(this.chain.operationBinaryViewMetadata(operation, false));
-
-    return binaryOperations;
+  private getOperationsWithBinaryViews (operations: ApiOperation[]): { operation: ApiOperation, binaryView: IBinaryViewOutputData, legacyBinaryView: IBinaryViewOutputData }[] {
+    return operations.map(operation => ({
+      operation,
+      binaryView: this.chain.operationBinaryViewMetadata(operation, true),
+      legacyBinaryView: this.chain.operationBinaryViewMetadata(operation, false)
+    }));
   }
 
   // Method required for the authority path algorithm

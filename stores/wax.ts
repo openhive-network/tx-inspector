@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue-sonner';
-import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax/vite';
+import { type ApiTransaction, type IBinaryViewOutputData, type ITransaction, type IWaxExtendableFormatter, type THexString } from '@hiveio/wax';
 import { type TxInspectorEngine } from '#imports';
 import { EPackType, type IProcessedTransaction, type IRequiredAuthoritiesData, type ISignatureTraceData, type ITransactionBodyData, type ITransactionData, type ITransactionOtherData } from '~/types/wax';
 
@@ -55,23 +55,9 @@ export const useWaxStore = defineStore('wax', {
     },
 
     defaultBinaryRadioState (): string {
-      if (!this.$state.processedTransaction.signatureData[0])
-        return 'hf26-binary';
+      const packType = this.$state.processedTransaction.signatureData[0]?.rows[0]?.packType;
 
-      if (Array.isArray(this.$state.processedTransaction.signatureData[0].rows[0].packType)) {
-        if (this.$state.processedTransaction.signatureData[0].rows[0].packType[0] === EPackType.HF26)
-          return 'hf26-binary';
-
-        if (this.$state.processedTransaction.signatureData[0].rows[0].packType[0] === EPackType.LEGACY)
-          return 'legacy-binary';
-
-        return 'hf26-binary';
-      }
-
-      if (this.$state.processedTransaction.signatureData[0].rows[0].packType === EPackType.HF26)
-        return 'hf26-binary';
-
-      if (this.$state.processedTransaction.signatureData[0].rows[0].packType === EPackType.LEGACY)
+      if ((Array.isArray(packType) ? packType[0] : packType) === EPackType.LEGACY)
         return 'legacy-binary';
 
       return 'hf26-binary';

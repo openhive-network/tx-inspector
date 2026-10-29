@@ -690,7 +690,8 @@
           },
           "percent_hbd": 10000,
           "allow_votes": true,
-          "allow_curation_rewards": true
+          "allow_curation_rewards": true,
+          "extensions": []
         },
         "operationsBinaryView": {
           "binary": "130e616e6461626c61636b7769646f7706736865306a6300ca9a3b000000000320bcbe1027010100",
