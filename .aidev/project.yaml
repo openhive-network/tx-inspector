@@ -33,7 +33,7 @@ branches:
 # that changes them shows up in build.sh's tag, not here.
 environment:
   kind: "container"
-  image: "registry.gitlab.syncad.com/hive/tx-inspector/aidev-tests@sha256:cd19cb7fa31997b5c573d112fb4ae6ded81f6805979dd72c3b77dd9fbaa9c1ad"
+  image: "registry.gitlab.syncad.com/hive/tx-inspector/aidev-tests@sha256:9df8611e8aed73564a23fe19ec609f539af402f76e0b71636fb79f6a17ad931d"
   inputs: [".aidev/runtime/Dockerfile", "pnpm-lock.yaml"]
 
 issues:
